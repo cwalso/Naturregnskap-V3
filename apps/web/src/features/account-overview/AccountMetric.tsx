@@ -18,7 +18,7 @@ export function AccountMetric({ metric }: AccountMetricProps) {
         {hasArea ? <>{areaFormatter.format(metric.areaKm2)} <span>km²</span></> : '—'}
       </p>
       <p className="account-metric__status">
-        {hasArea ? (metric.sharePercent === null ? 'Beregnet areal' : `${areaFormatter.format(metric.sharePercent)} % av kommunen`) : 'Ikke beregnet ennå'}
+        {hasArea ? (metric.sharePercent === null ? 'Beregnet areal' : `${areaFormatter.format(metric.sharePercent)} % av landarealet`) : 'Ikke beregnet ennå'}
       </p>
       <p className="account-metric__description">{content.description}</p>
     </article>
