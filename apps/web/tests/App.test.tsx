@@ -2,13 +2,22 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
+import { datasetRegistry, nationalLandCover2025 } from '../src/datasets/registry'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 
 const boundary = { type: 'Feature', geometry: { type: 'Polygon', coordinates: [] }, properties: { number: '5001', name: 'Trondheim' } }
 
 function mapMock(): MunicipalityMap {
-  return { showBoundary: vi.fn(), clearBoundary: vi.fn(), destroy: vi.fn() }
+  return { showBoundary: vi.fn(), clearBoundary: vi.fn(), setAccountLayerVisible: vi.fn(), destroy: vi.fn() }
 }
+
+describe('dataset registry', () => {
+  it('registrerer Grunnkart 2025 med WMS kun som visualSource', () => {
+    expect(datasetRegistry).toContain(nationalLandCover2025)
+    expect(nationalLandCover2025.visualSource).toMatchObject({ type: 'wms', layer: 'arealdekkeniva1' })
+    expect(nationalLandCover2025.analysisSource).toBeNull()
+  })
+})
 
 describe('kommunevalg', () => {
   afterEach(() => {
@@ -47,5 +56,18 @@ describe('kommunevalg', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status: 503 }))
     render(<App createMap={() => mapMock()} />)
     expect(await screen.findByRole('alert')).toHaveTextContent('Kunne ikke hente kommunelisten')
+  })
+
+  it('viser lagkontrollen og endrer synlighet i kartmodulen', async () => {
+    const map = mapMock()
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
+    render(<App createMap={() => map} />)
+
+    const layerControl = screen.getByRole('checkbox', { name: 'Arealdekke nivå 1 (2025)' })
+    expect(layerControl).toBeChecked()
+    fireEvent.click(layerControl)
+    expect(map.setAccountLayerVisible).toHaveBeenCalledWith(false)
+    fireEvent.click(layerControl)
+    expect(map.setAccountLayerVisible).toHaveBeenLastCalledWith(true)
   })
 })

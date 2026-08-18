@@ -79,7 +79,8 @@ Frontend og backend skal så langt det er hensiktsmessig organiseres rundt følg
 
 Eksterne tjenester skal isoleres bak adaptere. Analysemoduler skal ikke kjenne detaljer om GeoServer, ArcGIS REST eller en konkret WFS dersom dette kan unngås.
 
-Et sentralt datasettregister skal etter hvert holde informasjon om:
+Et lite sentralt datasettregister er innført for de datasettene som faktisk er
+koblet til løsningen. Registeret konkretiseres trinnvis og holder informasjon om:
 
 - identifikator
 - navn
@@ -89,8 +90,10 @@ Et sentralt datasettregister skal etter hvert holde informasjon om:
 - analysekilde
 - versjon/gyldighetsdato
 - metadata
-- dekningsgrad
-- analysemuligheter
+- eksplisitt skille mellom visualiseringskilde og eventuell analysekilde
+
+Felt for dekningsgrad og analysemuligheter innføres først når implementert
+funksjonalitet trenger dem.
 
 ## Geometri
 
