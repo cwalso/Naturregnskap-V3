@@ -1,39 +1,59 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { getHealth } from '../api/health'
+import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
+import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 
-type BackendState = 'loading' | 'available' | 'unavailable'
+interface AppProps { createMap?: MunicipalityMapFactory }
 
-export function App() {
-  const [backendState, setBackendState] = useState<BackendState>('loading')
+export function App({ createMap = createMunicipalityMap }: AppProps) {
+  const mapElement = useRef<HTMLDivElement>(null)
+  const map = useRef<MunicipalityMap | null>(null)
+  const [municipalities, setMunicipalities] = useState<Municipality[]>([])
+  const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [boundaryState, setBoundaryState] = useState<'idle' | 'loading' | 'error'>('idle')
+
+  useEffect(() => {
+    if (mapElement.current) map.current = createMap(mapElement.current)
+    return () => { map.current?.destroy(); map.current = null }
+  }, [createMap])
 
   useEffect(() => {
     const controller = new AbortController()
-
-    getHealth(controller.signal)
-      .then(() => setBackendState('available'))
+    getMunicipalities(controller.signal)
+      .then((items) => { setMunicipalities(items); setListState('ready') })
       .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === 'AbortError') {
-          return
-        }
-        setBackendState('unavailable')
+        if (!(error instanceof DOMException && error.name === 'AbortError')) setListState('error')
       })
-
     return () => controller.abort()
   }, [])
 
-  const statusText = {
-    loading: 'Kontakter backend…',
-    available: 'Backend svarer',
-    unavailable: 'Backend svarer ikke',
-  }[backendState]
+  async function selectMunicipality(number: string) {
+    map.current?.clearBoundary()
+    if (!number) { setBoundaryState('idle'); return }
+    setBoundaryState('loading')
+    try {
+      const boundary = await getMunicipalityBoundary(number)
+      map.current?.showBoundary(boundary)
+      setBoundaryState('idle')
+    } catch {
+      setBoundaryState('error')
+    }
+  }
 
   return (
     <main className="app-shell">
-      <h1>Kommunale naturregnskap V3</h1>
-      <p role="status" data-state={backendState}>
-        {statusText}
-      </p>
+      <header><h1>Kommunale naturregnskap V3</h1></header>
+      <section className="controls" aria-label="Kommunevalg">
+        <label htmlFor="municipality">Velg kommune</label>
+        <select id="municipality" disabled={listState !== 'ready'} onChange={(event) => void selectMunicipality(event.target.value)}>
+          <option value="">{listState === 'loading' ? 'Laster kommuner…' : 'Velg en kommune'}</option>
+          {municipalities.map((item) => <option key={item.number} value={item.number}>{item.name}</option>)}
+        </select>
+        {listState === 'error' && <p role="alert">Kunne ikke hente kommunelisten. Prøv igjen senere.</p>}
+        {boundaryState === 'loading' && <p role="status">Laster kommunegrense…</p>}
+        {boundaryState === 'error' && <p role="alert">Kunne ikke hente kommunegrensen. Prøv igjen senere.</p>}
+      </section>
+      <div ref={mapElement} className="map" aria-label="Kart over Norge" />
     </main>
   )
 }
