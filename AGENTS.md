@@ -33,6 +33,7 @@ Løsningen er et virkemiddel. Verdien ligger i et felles og etterprøvbart regns
 8. Datasettene skal beskrives i et sentralt register med kilde, kategori, versjon, gyldighetsdato, metadata og analysemuligheter.
 9. Analyse-, data- og metodeversjon skal kunne spores i resultater.
 10. Kart, tabeller, grafer og rapporter skal bygge på samme analyseresultat, ikke egne parallelle beregninger.
+11. Visuell presentasjon og theme skal kunne byttes uten å endre fagmodell, analyse, API-kontrakter eller datakildeadaptere. UI-komponenter skal konsumere typed data/view models, bruke semantiske design tokens og ikke eie faglige beregninger eller datakildekunnskap.
 
 ## 4. Domeneskille
 

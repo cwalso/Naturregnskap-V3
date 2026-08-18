@@ -1,0 +1,11 @@
+@property --color-page-background { syntax: "<color>"; inherits: true; initial-value: #fff; }
+@property --color-surface { syntax: "<color>"; inherits: true; initial-value: #fff; }
+@property --color-surface-subtle { syntax: "<color>"; inherits: true; initial-value: #f5f5f5; }
+@property --color-text { syntax: "<color>"; inherits: true; initial-value: #111; }
+@property --color-text-muted { syntax: "<color>"; inherits: true; initial-value: #555; }
+@property --color-accent { syntax: "<color>"; inherits: true; initial-value: #333; }
+@property --color-accent-contrast { syntax: "<color>"; inherits: true; initial-value: #fff; }
+@property --color-border { syntax: "<color>"; inherits: true; initial-value: #ccc; }
+@property --color-focus { syntax: "<color>"; inherits: true; initial-value: #000; }
+@property --color-error { syntax: "<color>"; inherits: true; initial-value: #a00; }
+@property --color-brand-surface { syntax: "<color>"; inherits: true; initial-value: #f5f5f5; }

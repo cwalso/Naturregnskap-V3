@@ -5,6 +5,8 @@ import { App } from '../src/app/App'
 import agencyLogo from '../src/assets/miljodirektoratet-logo-primary.svg'
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import { datasetRegistry, nationalLandCover2025 } from '../src/datasets/registry'
+import { AccountOverview } from '../src/features/account-overview/AccountOverview'
+import { accountCategoryIds, type AccountOverviewData } from '../src/features/account-overview/model'
 import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 import { buildWmsLegendUrl } from '../src/map/wmsLegend'
@@ -132,6 +134,14 @@ describe('kommunevalg', () => {
     expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Oslo0301', 'Trondheim5001'])
   })
 
+  it('viser starttilstanden uten kommuneoversikt før valg', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
+    render(<App createMap={() => mapMock()} />)
+
+    expect(screen.getByRole('heading', { name: 'Velg kommune for å se naturregnskapet' })).toBeInTheDocument()
+    expect(screen.queryByText(/kommune$/, { selector: '#account-overview-title' })).not.toBeInTheDocument()
+  })
+
   it('henter og viser grensen når en kommune velges', async () => {
     const map = mapMock()
     vi.spyOn(globalThis, 'fetch')
@@ -143,10 +153,33 @@ describe('kommunevalg', () => {
     await vi.waitFor(() => expect(input).toBeEnabled())
     fireEvent.focus(input)
     fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
+    expect(screen.getByRole('heading', { name: 'Trondheim kommune' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
+    expect(screen.getAllByText('Ikke beregnet ennå')).toHaveLength(3)
     expect(map.clearBoundary).toHaveBeenCalled()
     await vi.waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/municipalities/5001/boundary', { signal: undefined }))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalledWith(boundary))
     expect(fetch).toHaveBeenLastCalledWith('/api/municipalities/5001/boundary', { signal: undefined })
+  })
+
+  it('tømmer kommunegrense og oversikt og går tilbake til starttilstanden', async () => {
+    const map = mapMock()
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
+    render(<App createMap={() => map} />)
+
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    await vi.waitFor(() => expect(input).toBeEnabled())
+    fireEvent.focus(input)
+    fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Tøm kommunesøk' }))
+
+    expect(map.clearBoundary).toHaveBeenCalledTimes(2)
+    expect(screen.queryByRole('heading', { name: 'Trondheim kommune' })).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Velg kommune for å se naturregnskapet' })).toBeInTheDocument()
   })
 
   it('viser feil når kommunelisten ikke kan hentes', async () => {
@@ -187,5 +220,31 @@ describe('kommunevalg', () => {
     expect(header).toHaveTextContent('Prototype')
     expect(logo).toHaveAttribute('src', agencyLogo)
     expect(logo.getAttribute('src')).not.toMatch(/^https?:/)
+  })
+})
+
+describe('overordnet regnskapsoversikt', () => {
+  afterEach(cleanup)
+
+  it('bruker de stabile domenekategoriene', () => {
+    expect(accountCategoryIds).toEqual(['nature', 'built', 'agriculture'])
+  })
+
+  it('rendrer eksplisitte beregnede testdata uten at de brukes i runtime', () => {
+    const testData: AccountOverviewData = {
+      municipalityNumber: '5001',
+      municipalityName: 'Trondheim',
+      metrics: [
+        { id: 'nature', areaKm2: 123.45, sharePercent: 40.5, status: 'available' },
+        { id: 'built', areaKm2: 12, sharePercent: null, status: 'available' },
+        { id: 'agriculture', areaKm2: null, sharePercent: null, status: 'not-calculated' },
+      ],
+    }
+
+    render(<AccountOverview data={testData} />)
+
+    expect(screen.getByText(/123,45/)).toHaveTextContent('123,45 km²')
+    expect(screen.getByText('40,5 % av landarealet')).toBeInTheDocument()
+    expect(screen.getByText('Ikke beregnet ennå')).toBeInTheDocument()
   })
 })
