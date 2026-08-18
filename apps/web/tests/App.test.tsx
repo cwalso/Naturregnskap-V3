@@ -244,7 +244,7 @@ describe('overordnet regnskapsoversikt', () => {
     render(<AccountOverview data={testData} />)
 
     expect(screen.getByText(/123,45/)).toHaveTextContent('123,45 km²')
-    expect(screen.getByText('40,5 % av kommunen')).toBeInTheDocument()
+    expect(screen.getByText('40,5 % av landarealet')).toBeInTheDocument()
     expect(screen.getByText('Ikke beregnet ennå')).toBeInTheDocument()
   })
 })
