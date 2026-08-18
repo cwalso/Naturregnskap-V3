@@ -2,10 +2,12 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
+import agencyLogo from '../src/assets/miljodirektoratet-logo-primary.svg'
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import { datasetRegistry, nationalLandCover2025 } from '../src/datasets/registry'
 import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
+import { buildWmsLegendUrl } from '../src/map/wmsLegend'
 
 const boundary = { type: 'Feature', geometry: { type: 'Polygon', coordinates: [] }, properties: { number: '5001', name: 'Trondheim' } }
 
@@ -18,6 +20,22 @@ describe('dataset registry', () => {
     expect(datasetRegistry).toContain(nationalLandCover2025)
     expect(nationalLandCover2025.visualSource).toMatchObject({ type: 'wms', layer: 'arealdekkeniva1' })
     expect(nationalLandCover2025.analysisSource).toBeNull()
+  })
+})
+
+describe('WMS-tegnforklaring', () => {
+  it('bygger GetLegendGraphic-URL uten nettverkskall', () => {
+    const url = new URL(buildWmsLegendUrl(nationalLandCover2025.visualSource))
+
+    expect(`${url.origin}${url.pathname}`).toBe(nationalLandCover2025.visualSource.endpoint)
+    expect(Object.fromEntries(url.searchParams)).toMatchObject({
+      SERVICE: 'WMS',
+      REQUEST: 'GetLegendGraphic',
+      VERSION: '1.3.0',
+      FORMAT: 'image/png',
+      LAYER: 'arealdekkeniva1',
+      SLD_VERSION: '1.1.0',
+    })
   })
 })
 
@@ -144,9 +162,30 @@ describe('kommunevalg', () => {
 
     const layerControl = screen.getByRole('checkbox', { name: 'Arealdekke nivå 1 (2025)' })
     expect(layerControl).toBeChecked()
+    const legend = screen.getByRole('complementary', { name: 'Tegnforklaring' })
+    expect(legend).toHaveTextContent('Arealdekke nivå 1 (2025)')
+    expect(screen.getByRole('img', { name: 'Tegnforklaring for Arealdekke nivå 1 (2025)' })).toHaveAttribute(
+      'src', expect.stringContaining('REQUEST=GetLegendGraphic'),
+    )
     fireEvent.click(layerControl)
     expect(map.setAccountLayerVisible).toHaveBeenCalledWith(false)
+    expect(legend).toHaveTextContent('Ingen aktive faglag')
+    expect(legend).not.toHaveTextContent('Arealdekke nivå 1 (2025)')
     fireEvent.click(layerControl)
     expect(map.setAccountLayerVisible).toHaveBeenLastCalledWith(true)
+    expect(legend).toHaveTextContent('Arealdekke nivå 1 (2025)')
+  })
+
+  it('viser lokal offisiell logo, produktnavn og prototype-status i lys profilheader', () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
+    render(<App createMap={() => mapMock()} />)
+
+    const header = screen.getByRole('banner')
+    const logo = screen.getByRole('img', { name: 'Miljødirektoratet' })
+    expect(header).toHaveClass('site-header')
+    expect(header).toHaveTextContent('Kommunale naturregnskap')
+    expect(header).toHaveTextContent('Prototype')
+    expect(logo).toHaveAttribute('src', agencyLogo)
+    expect(logo.getAttribute('src')).not.toMatch(/^https?:/)
   })
 })

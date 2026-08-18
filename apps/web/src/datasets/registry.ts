@@ -5,6 +5,10 @@ export interface WmsVisualSource {
   readonly title: string
   readonly version: '1.3.0'
   readonly supportedCrs: readonly string[]
+  readonly legend: {
+    readonly format: 'image/png'
+    readonly sldVersion: '1.1.0'
+  }
 }
 
 export interface DatasetDefinition {
@@ -40,6 +44,10 @@ export const nationalLandCover2025 = {
       'EPSG:25834', 'EPSG:25835', 'EPSG:25836', 'EPSG:32632', 'EPSG:32633',
       'EPSG:32634', 'EPSG:32635', 'EPSG:32636', 'EPSG:3857', 'EPSG:900913',
     ],
+    legend: {
+      format: 'image/png',
+      sldVersion: '1.1.0',
+    },
   },
   analysisSource: null,
 } as const satisfies DatasetDefinition

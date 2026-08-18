@@ -9,9 +9,10 @@ grunnkart for arealanalyse, årsversjon 2025, kan visualiseres som kartlaget
 analysegrunnlag; naturregnskap, arealberegninger og GIS-analyser er ikke
 implementert.
 
-Brukerflaten bruker Kartverkets gråtonekart som standard bakgrunnskart og følger
-nå et første sett med visuelle føringer fra Miljødirektoratets designmanual.
-Dette er en tidlig profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
+Brukerflaten bruker Kartverkets gråtonekart som standard bakgrunnskart, en lys
+profilheader med Miljødirektoratets offisielle logo og en permanent
+kart-tegnforklaring som følger aktive faglag. Dette er en tidlig
+profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
 
 ## Arkitektur
 
