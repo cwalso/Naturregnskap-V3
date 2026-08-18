@@ -11,6 +11,7 @@ import View from 'ol/View'
 
 import type { MunicipalityBoundary } from '../api/municipalities'
 import { nationalLandCover2025 } from '../datasets/registry'
+import { defaultBasemap } from './basemaps'
 
 export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
@@ -43,15 +44,15 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       fill: new Fill({ color: 'rgba(0, 91, 66, 0.08)' }),
     }),
   })
-  const view = new View({ center: [1_050_000, 9_100_000], zoom: 4, projection: 'EPSG:3857' })
+  const view = new View({ center: [1_050_000, 9_100_000], zoom: 4, projection: defaultBasemap.projection })
   const map = new Map({
     target,
     view,
     layers: [
       new TileLayer({
         source: new XYZ({
-          url: 'https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png',
-          attributions: '© Kartverket',
+          url: defaultBasemap.url,
+          attributions: defaultBasemap.attribution,
         }),
       }),
       accountLayer,

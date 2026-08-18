@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
+import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { nationalLandCover2025 } from '../datasets/registry'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 
@@ -28,12 +29,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => controller.abort()
   }, [])
 
-  async function selectMunicipality(number: string) {
+  async function selectMunicipality(municipality: Municipality | null) {
     map.current?.clearBoundary()
-    if (!number) { setBoundaryState('idle'); return }
+    if (!municipality) { setBoundaryState('idle'); return }
     setBoundaryState('loading')
     try {
-      const boundary = await getMunicipalityBoundary(number)
+      const boundary = await getMunicipalityBoundary(municipality.number)
       map.current?.showBoundary(boundary)
       setBoundaryState('idle')
     } catch {
@@ -43,13 +44,18 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   return (
     <main className="app-shell">
-      <header><h1>Kommunale naturregnskap V3</h1></header>
+      <header className="site-header">
+        <div className="site-header__agency">Miljødirektoratet</div>
+        <h1>Kommunale naturregnskap</h1>
+        <span className="site-header__version">V3</span>
+      </header>
       <section className="controls" aria-label="Kommunevalg">
-        <label htmlFor="municipality">Velg kommune</label>
-        <select id="municipality" disabled={listState !== 'ready'} onChange={(event) => void selectMunicipality(event.target.value)}>
-          <option value="">{listState === 'loading' ? 'Laster kommuner…' : 'Velg en kommune'}</option>
-          {municipalities.map((item) => <option key={item.number} value={item.number}>{item.name}</option>)}
-        </select>
+        <MunicipalityCombobox
+          municipalities={municipalities}
+          disabled={listState !== 'ready'}
+          placeholder={listState === 'loading' ? 'Laster kommuner…' : 'Søk etter kommune'}
+          onSelect={(municipality) => void selectMunicipality(municipality)}
+        />
         {listState === 'error' && <p role="alert">Kunne ikke hente kommunelisten. Prøv igjen senere.</p>}
         {boundaryState === 'loading' && <p role="status">Laster kommunegrense…</p>}
         {boundaryState === 'error' && <p role="alert">Kunne ikke hente kommunegrensen. Prøv igjen senere.</p>}
