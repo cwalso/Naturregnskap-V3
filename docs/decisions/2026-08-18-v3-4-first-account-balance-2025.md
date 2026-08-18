@@ -1,89 +1,126 @@
-# V3.4: Første beholdningsbalanse 2025 – blokkert research gate
+# V3.4: Første beholdningsbalanse 2025 – research gate delvis avklart
 
-**Dato:** 2026-08-18
-**Utgangspunkt:** `32e261f14eccac30ed1146fe144fea8e6df721b3`
-**Status:** Research gate blokkert; ingen regnskapsmotor besluttet
+**Dato:** 2026-08-18  
+**Utgangspunkt:** `32e261f14eccac30ed1146fe144fea8e6df721b3`  
+**Status:** Datakilde og klassifikasjon delvis verifisert; operativ regnskapsmotor fortsatt ikke implementert
 
 ## Beslutning
 
-V3.4 implementerer ikke operative regnskapstall i denne endringen. Tilgang fra
-arbeidsmiljøet til Geonorges capabilities, metadata og produktmodell ble
-blokkert før faktisk distribusjon, GeoPackage-skjema og komplett nivå-1-
-klassifikasjon kunne undersøkes. Å implementere resten av kjeden ville dermed
-brutt kravet om ikke å basere regnskapstall på antakelser.
+V3.4 implementerer ikke operative regnskapstall i denne endringen.
+
+Codex-miljøet ble blokkert av sitt nettverkslag før det kunne lese Geonorges
+capabilities og åpne en faktisk GeoPackage. Etter Codex-kjøringen er flere
+forhold likevel verifisert uavhengig mot offisielle kilder: årsversjon 2025 er
+tilgjengelig som GeoPackage, GML og File Geodatabase; produktmodellen inneholder
+de relevante arealdekkeegenskapene og kommunenummer; og den offisielle
+kartografien dokumenterer de elleve nivå-1-etikettene.
+
+Det er derfor ikke riktig å betrakte selve datasettet eller klassifikasjonen som
+uavklart i sin helhet. Implementeringsgaten forblir likevel stengt fordi den
+faktiske GeoPackage-filen og datasettets konkrete capabilities-respons ikke er
+inspisert. Vi mangler dermed blant annet faktisk GPKG-skjema, kodeverdier, CRS,
+områdeinndeling, filstørrelse og praktisk tilgangsmekanisme.
 
 Det eneste arkitekturgrepet utenfor dokumentasjonen er å reservere `.data/` som
 gitignorert runtime-område. Det er ikke en aktiv analysekilde og inneholder ingen
 committede data.
 
-## Research-resultat og tilgang
+## Verifisert etter Codex-kjøringen
 
-Den eksplisitte API v3 capabilities-ruten og API-hjelpen svarte HTTP 403
-`Domain forbidden` i dette miljøets nettverkslag. Geonorge-metadata ble avvist
-på samme måte. Dette avgjør ikke om den virkelige distribusjonen er anonym,
-gratis, direkte, kommunevis eller bestillingsbasert. Det avgjør bare at disse
-egenskapene ikke kunne verifiseres her. Detaljert evidens og listen over åpne
-felt ligger i `docs/data/grunnkart-2025-analysis-source.md`.
+Offisielle kilder bekrefter:
 
-Ingen filstørrelse ble kjent, så ingen nasjonal eller kommunevis nedlasting ble
-startet. Ingen ekte smoke-test ble kjørt.
+- Årsversjon 2025 har GeoPackage-, File Geodatabase- og GML-distribusjoner.
+- Kildedataene i denne årsversjonen var oppdatert per `2025-01-01`.
+- Geonorges nedlastings-API bruker `capabilities` som rot for å finne
+  datasettspesifikke formater, projeksjoner og områder, og dokumentasjonen
+  anbefaler eksplisitt `/api/v3/...`.
+- Produktmodellen for `GrunnkartFlate` har `GM_MultiSurface` og obligatoriske
+  egenskaper som `arealdekkeNiva1`, `arealdekkeNiva2`, `arealdekkeKode` og
+  `kommunenummer`.
+- Offisiell kartografi for Arealdekke nivå 1 viser klassene «Bebygd og
+  opparbeidet areal», «Dyrket mark», «Grasmark», «Skog», «Hei og buskmark»,
+  «Lite vegetert mark», «Våtmark», «Elver, bekker og kanaler», «Innsjøer og
+  vannmagasiner», «Kyststrender, svaberg og dyner» og «Hav».
+
+Detaljene og åpne punkter er dokumentert i
+`docs/data/grunnkart-2025-analysis-source.md`.
+
+## Tilgang og capabilities
+
+Codex-miljøets HTTP 403 `Domain forbidden` var en miljøbegrensning og er ikke
+evidens for at Geonorge faktisk avviser brukeren.
+
+data.norge.no merker likevel datasettet som «Begrenset tilgang» og viser Norge
+digitalt-lisens for distribusjonene. Dette må ikke tolkes videre enn metadataene
+støtter. Før implementering skal den konkrete capabilities-responsen avklare
+praktisk områdevalg, format-id, projeksjon, direkte/bestillingsbasert levering,
+e-postkrav og eventuell autentisering.
+
+Ingen filstørrelse er verifisert og ingen nedlasting er startet. Ingen ekte
+smoke-test er derfor kjørt.
 
 ## Analysis source og WMS
 
-Ingen `analysisSource` velges før en faktisk vektordistribusjon er validert. Det
-eksisterende WMS-et forblir utelukkende `visualSource`: ferdig tegnede bilder
-kan ikke dokumentere kildeklassene eller brukes til eksakt geometriinterseksjon
-og arealberegning.
+Ingen `analysisSource` aktiveres før en faktisk vektordistribusjon er åpnet og
+validert. Det eksisterende WMS-et forblir utelukkende `visualSource`: ferdig
+kartografi skal ikke brukes som grunnlag for autoritative arealberegninger.
 
-Hvis gaten senere passerer, skal lokal runtime-data ligge deterministisk under
-`.data/grunnkart/2025/{municipality_number}/` og aldri lastes i webrequesten fra
-en asynkron bestillingsflyt.
+Når implementeringsgaten passerer, skal lokale analysedata ligge deterministisk
+under `.data/grunnkart/2025/{municipality_number}/` eller tilsvarende og ikke
+committes til Git.
 
 ## GIS og kommune-klipping
 
-Det er ikke valgt eller lagt til GIS-bibliotek, fordi faktisk GeoPackage-format,
-skjema og CRS ikke ble bekreftet. En senere beslutning må begrunne det minste
-nødvendige biblioteksettet for GeoPackage-lesing, CRS-transformasjon,
-interseksjon og areal.
+Det velges fortsatt ikke GIS-bibliotek i denne endringen. Bibliotekvalg tas når
+faktisk GPKG, CRS og distribusjonsmåte er kjent.
 
-En senere motor skal bruke kommunegeometrien fra den eksisterende
-Kartverket-adapteren, eventuelt bruke kommunenummer som prefilter, og alltid
-utføre endelig geometrisk klipping i et dokumentert metrisk CRS. Den skal telle
-null, tomme og ugyldige geometrier; eventuell reparasjon skal være synlig i
-provenance og warnings.
+Regnskapsmotoren skal senere kunne bruke `kommunenummer` som effektivt prefilter,
+men endelig resultat skal bygge på eksplisitt kommunegeometri og dokumentert
+geometrisk klipping/interseksjon i et egnet metrisk CRS. Null, tomme, ugyldige
+eller reparerte geometrier skal håndteres og rapporteres eksplisitt.
 
 ## Prototype-regelsett
 
-`built`, `agriculture` og `nature` forblir de stabile domenekategoriene. Den
-foreslåtte kildemappingen og navnet `level0-v0.1-prototype` er bare en
-arbeidshypotese. Verken mappingen, havbehandlingen eller status `prototype` er
-implementert, fordi faktisk nivå-1-kodeliste ikke ble observert. Dette er heller
-ikke en endelig metodegodkjenning.
+`built`, `agriculture` og `nature` forblir de stabile domenekategoriene.
 
-Før implementering må alle arealbærende kildeklasser være eksplisitt mappet
-eller ekskludert. «Hav» kan bare behandles som `excluded` dersom faktisk felt og
-klasse er bekreftet. Ukjente klasser skal gi `unmappedAreaKm2` og hindre at et
-resultat presenteres som komplett.
+Den offisielle nivå-1-listen gir nå et bedre grunnlag for følgende
+prototypehypotese:
+
+- `built`: Bebygd og opparbeidet areal
+- `agriculture`: Dyrket mark
+- `nature`: øvrige land-/ferskvannsklasser
+- `excluded`: Hav
+
+Metodeversjonen kan, dersom faktisk GeoPackage bekrefter klassene og kodene,
+innføres som `level0-v0.1-prototype` med status `prototype`.
+
+Dette er fortsatt ikke en endelig metodegodkjenning. Mappingen skal ikke kodes
+før den er kontrollert mot faktiske GPKG-kodeverdier. Alle arealbærende klasser
+skal være eksplisitt mappet eller ekskludert; ukjente klasser skal gi
+`unmappedAreaKm2` og hindre at resultatet presenteres som komplett.
 
 ## Rekonsiliering og prosent
 
 En senere motor skal rekonsiliere klassifisert, ekskludert og unmapped areal og
-aldri la en klasse forsvinne stille. Ingen nevner for prosentandel er metodisk
-besluttet; `sharePercent` skal derfor være `null` når et resultat senere
-implementeres.
+aldri la en kildeklasse forsvinne stille.
+
+Nevner for prosentandel er fortsatt ikke metodisk besluttet. `sharePercent` skal
+derfor være `null` i første operative implementering.
 
 ## API og frontend
 
 Endepunktet `GET /api/municipalities/{municipality_number}/account-overview` og
-frontendkoblingen opprettes ikke i denne blokkerte endringen. Et tomt endepunkt
-ville antydet en tilgjengelig analyse, og fake nuller eller eksempelverdier
-ville blandet teknisk utilgjengelighet med et beregnet resultat. V3.3-visningen
-fortsetter derfor å vise «Ikke beregnet ennå», mens kart, WMS og kommunegrense er
-uendret.
+frontendkoblingen opprettes ikke i denne dokumentasjonsendringen. V3.3 fortsetter
+å vise «Ikke beregnet ennå» mens kart, WMS og kommunegrense fungerer som før.
 
-## Begrensninger og ny beslutning
+## Neste beslutningspunkt
 
-Research må gjentas fra et miljø med tilgang til de offisielle tjenestene. En ny
-beslutning skal dokumentere capabilities, faktisk avgrenset GeoPackage,
-klasseliste, mapping, bibliotek, CRS, geometrihåndtering, rekonsiliering og en
-intern konsistent live smoke-test før README eller UI påstår operativ beregning.
+Neste implementasjonsforsøk skal først:
+
+1. hente datasettets konkrete v3-capabilities,
+2. avklare om en kommune kan hentes som avgrenset GeoPackage,
+3. åpne faktisk GPKG og kontrollere skjema, CRS og nivå-1-koder,
+4. validere prototype-mappingen mot alle arealbærende klasser.
+
+Når disse fire punktene er oppfylt, kan GIS-stack, `analysisSource`,
+regnskapsmotor, API og live smoke-test implementeres i samme vertikale slice.
