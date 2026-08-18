@@ -2,16 +2,21 @@
 
 V3 er en modulær prototype for et felles, etterprøvbart grunnlag for kommunale
 naturregnskap og framtidig analyse- og beslutningsstøtte. Dette repoet inneholder
-det tekniske fundamentet og en første kartflyt. Brukeren kan velge en norsk
-kommune, se kommunegrensen og få kartet tilpasset kommunen. Nasjonalt grunnkart
-for arealanalyse, årsversjon 2025, kan visualiseres som kartlaget «Arealdekke
-nivå 1» via WMS. WMS er bare en `visualSource`, ikke et analysegrunnlag;
-naturregnskap, arealberegninger og GIS-analyser er ikke implementert.
+det tekniske fundamentet og en første kartflyt. Brukeren kan søke etter og velge
+en norsk kommune, se kommunegrensen og få kartet tilpasset kommunen. Nasjonalt
+grunnkart for arealanalyse, årsversjon 2025, kan visualiseres som kartlaget
+«Arealdekke nivå 1» via WMS. WMS er bare en `visualSource`, ikke et
+analysegrunnlag; naturregnskap, arealberegninger og GIS-analyser er ikke
+implementert.
+
+Brukerflaten bruker Kartverkets gråtonekart som standard bakgrunnskart og følger
+nå et første sett med visuelle føringer fra Miljødirektoratets designmanual.
+Dette er en tidlig profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
 
 ## Arkitektur
 
 - `apps/web`: React, TypeScript i strict mode, Vite og OpenLayers. Kartmodulen
-  viser Kartverkets topografiske bakgrunnskart, Grunnkartets WMS-lag og en valgt
+  viser Kartverkets gråtonebakgrunn, Grunnkartets WMS-lag og en valgt
   kommunegrense. Et lite dataset registry holder metadata og kildekonfigurasjon.
 - `apps/api`: FastAPI og Pydantic. API-et tilbyr helsesjekk og egne endepunkter
   for kommuneliste og kommunegrense. Kartverkets Administrative enheter API er
