@@ -13,7 +13,7 @@ export interface DatasetDefinition {
   readonly category: 'account'
   readonly version: string
   readonly sourceDataCutoff: string
-  readonly datasetOwner: string
+  readonly publisher: string
   readonly serviceProvider: string
   readonly metadataUrl: string
   readonly visualSource: WmsVisualSource
@@ -26,7 +26,7 @@ export const nationalLandCover2025 = {
   category: 'account',
   version: '2025',
   sourceDataCutoff: '2025-01-01',
-  datasetOwner: 'Norsk institutt for bioøkonomi (NIBIO)',
+  publisher: 'Norsk institutt for bioøkonomi (NIBIO)',
   serviceProvider: 'Norsk institutt for bioøkonomi (NIBIO)',
   metadataUrl: 'https://kartkatalog.geonorge.no/Metadata/c7dc425b-60cd-42f7-a84e-202c7d7b912a',
   visualSource: {
