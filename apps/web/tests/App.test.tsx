@@ -2,7 +2,9 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
+import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import { datasetRegistry, nationalLandCover2025 } from '../src/datasets/registry'
+import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 
 const boundary = { type: 'Feature', geometry: { type: 'Polygon', coordinates: [] }, properties: { number: '5001', name: 'Trondheim' } }
@@ -19,21 +21,97 @@ describe('dataset registry', () => {
   })
 })
 
+describe('bakgrunnskart', () => {
+  it('bruker Kartverkets gråtonekart i EPSG:3857 utenfor dataset registry', () => {
+    expect(defaultBasemap).toMatchObject({
+      id: 'kartverket-topograatone',
+      projection: 'EPSG:3857',
+      attribution: '© Kartverket',
+    })
+    expect(defaultBasemap.url).toContain('/topograatone/')
+    expect(datasetRegistry).not.toContain(defaultBasemap)
+  })
+})
+
+describe('søkbar kommunevelger', () => {
+  const municipalities = [
+    { number: '0301', name: 'Oslo' },
+    { number: '5001', name: 'Trondheim' },
+    { number: '4204', name: 'Kristiansand' },
+  ]
+
+  afterEach(cleanup)
+
+  it('filtrerer navn og lar brukeren velge med mus', () => {
+    const onSelect = vi.fn()
+    render(<MunicipalityCombobox municipalities={municipalities} onSelect={onSelect} />)
+
+    const input = screen.getByRole('combobox', { name: 'Velg kommune' })
+    fireEvent.change(input, { target: { value: 'trond' } })
+    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Trondheim5001'])
+    fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
+
+    expect(input).toHaveValue('Trondheim')
+    expect(onSelect).toHaveBeenLastCalledWith(municipalities[1])
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+
+  it('kan også søke på kommunenummer', () => {
+    render(<MunicipalityCombobox municipalities={municipalities} onSelect={vi.fn()} />)
+    const input = screen.getByRole('combobox', { name: 'Velg kommune' })
+
+    fireEvent.change(input, { target: { value: '5001' } })
+
+    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Trondheim5001'])
+  })
+
+  it('viser maksimalt ti treff om gangen', () => {
+    const manyMunicipalities = Array.from({ length: 15 }, (_, index) => ({
+      number: String(1000 + index),
+      name: `Kommune ${String(index + 1).padStart(2, '0')}`,
+    }))
+    render(<MunicipalityCombobox municipalities={manyMunicipalities} onSelect={vi.fn()} />)
+
+    fireEvent.focus(screen.getByRole('combobox', { name: 'Velg kommune' }))
+
+    expect(screen.getAllByRole('option')).toHaveLength(10)
+  })
+
+  it('støtter piltaster, Enter, Escape og tømming', () => {
+    const onSelect = vi.fn()
+    render(<MunicipalityCombobox municipalities={municipalities} onSelect={onSelect} />)
+    const input = screen.getByRole('combobox', { name: 'Velg kommune' })
+
+    fireEvent.focus(input)
+    fireEvent.keyDown(input, { key: 'ArrowDown' })
+    fireEvent.keyDown(input, { key: 'ArrowDown' })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    expect(onSelect).toHaveBeenLastCalledWith(municipalities[1])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tøm kommunesøk' }))
+    expect(input).toHaveValue('')
+    expect(onSelect).toHaveBeenLastCalledWith(null)
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+})
+
 describe('kommunevalg', () => {
   afterEach(() => {
     cleanup()
     vi.restoreAllMocks()
   })
 
-  it('viser den alfabetisk sorterte kommunelisten', async () => {
+  it('viser den alfabetisk sorterte kommunelisten i søkefeltet', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([
       { number: '5001', name: 'Trondheim' }, { number: '0301', name: 'Oslo' },
     ]), { status: 200 }))
     render(<App createMap={() => mapMock()} />)
 
-    const select = await screen.findByLabelText('Velg kommune')
-    expect(select).toBeEnabled()
-    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Velg en kommune', 'Oslo', 'Trondheim'])
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    expect(input).toBeEnabled()
+    fireEvent.focus(input)
+    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Oslo0301', 'Trondheim5001'])
   })
 
   it('henter og viser grensen når en kommune velges', async () => {
@@ -43,9 +121,10 @@ describe('kommunevalg', () => {
       .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
     render(<App createMap={() => map} />)
 
-    const select = await screen.findByLabelText('Velg kommune')
-    await vi.waitFor(() => expect(select).toBeEnabled())
-    fireEvent.change(select, { target: { value: '5001' } })
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    await vi.waitFor(() => expect(input).toBeEnabled())
+    fireEvent.focus(input)
+    fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
     expect(map.clearBoundary).toHaveBeenCalled()
     await vi.waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/municipalities/5001/boundary', { signal: undefined }))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalledWith(boundary))
