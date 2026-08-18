@@ -1,0 +1,17 @@
+:root {
+  --color-page-background: #fcfaf6;
+  --color-surface: #fff;
+  --color-surface-subtle: #f5f1e5;
+  --color-text: #1b1b1b;
+  --color-text-muted: #52615c;
+  --color-accent: #005e5d;
+  --color-accent-contrast: #fff;
+  --color-border: #ccdfde;
+  --color-focus: #d86018;
+  --color-error: #a52020;
+  --color-brand-surface: #e5eeee;
+  --font-body: "Open Sans", Arial, sans-serif;
+  --radius-control: 0;
+  --radius-surface: .125rem;
+  --shadow-floating: 0 .2rem .7rem rgb(0 0 0 / 16%);
+}

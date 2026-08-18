@@ -41,6 +41,24 @@ Frontend har ansvar for:
 
 Frontend skal ikke eie faglige beregningsregler eller autoritative arealberegninger.
 
+### Presentation architecture
+
+Frontendens presentasjonskjede er eksplisitt lagdelt:
+
+```text
+domain/data
+    ↓
+typed view model
+    ↓
+presentational components
+    ↓
+layout
+    ↓
+theme
+```
+
+Presentasjonskomponenter mottar ferdige view data via props og kjenner ikke API-endepunkter, datakilder eller beregningsmetode. Layout styrer plassering og responsiv oppførsel, mens semantiske design tokens kobler komponentene til et separat theme. Dermed kan fagmodellen og datakontraktene være stabile når uttrykket itereres gjennom brukertesting, og et redesign kan i hovedsak gjennomføres ved å bytte theme, layout eller presentasjonskomponenter.
+
 ### Analyse-API
 
 Backend har ansvar for:
