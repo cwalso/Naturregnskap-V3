@@ -11,8 +11,11 @@ kontrollerte visualiseringen og beregner ikke et naturregnskap.
 
 Dataset registry registrerer «Nasjonalt grunnkart for arealanalyse – Årsversjon
 2025» i kategorien `account`, med `version` lik `2025` og
-`sourceDataCutoff` lik `2025-01-01`. Norsk institutt for bioøkonomi (NIBIO) er
-registrert som dataeier og tjenesteleverandør, i tråd med tjenestens kontaktdata.
+`sourceDataCutoff` lik `2025-01-01`. NIBIO er registrert som utgiver og
+tjenesteleverandør. Eget felt for dataeier er ikke brukt i V3.2, fordi offentlige
+metadata ikke gir et tilstrekkelig entydig grunnlag for å skille dette presist fra
+utgiver, tjenesteleverandør og samarbeidsansvar. Grunnkartet er utviklet i
+samarbeid mellom NIBIO, SSB, Kartverket og Miljødirektoratet.
 
 Offisiell GetCapabilities ble hentet 2026-08-18. Tjenesten bruker WMS 1.3.0, og
 laget er identifisert med:
