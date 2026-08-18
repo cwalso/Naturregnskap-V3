@@ -52,6 +52,25 @@ Kommunedata er tilgjengelig via `GET /api/municipalities` og
 at kommunevelgeren skal fungere. Bakgrunnskartet lastes direkte fra Kartverket
 som en ren visualiseringskilde.
 
+## Browser-preview med GitHub Codespaces
+
+1. Åpne repoet i GitHub.
+2. Velg **Code → Codespaces**.
+3. Opprett et Codespace på `main`.
+4. Vent til det automatiske oppsettet er ferdig.
+5. Kjør fra roten av repoet:
+
+   ```bash
+   ./.devcontainer/start-preview.sh
+   ```
+
+6. Åpne port 5173 når GitHub tilbyr **Open in Browser**.
+
+Previewen kjører bare mens Codespace-et er aktivt. Dette er en
+utviklingspreview, ikke en produksjonsdeployment. Frontend bruker backend i det
+samme Codespace-et gjennom den eksisterende `/api`-proxyen. Eksterne kilder fra
+Kartverket og NIBIO brukes på samme måte som i V3.2.
+
 ## Tester og kvalitetskontroll
 
 ```bash
