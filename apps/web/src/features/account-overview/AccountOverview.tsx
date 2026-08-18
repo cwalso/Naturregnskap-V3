@@ -11,10 +11,10 @@ export function AccountOverview({ data }: AccountOverviewProps) {
       <header className="account-overview__header">
         <p className="account-overview__eyebrow">Overordnet arealoversikt</p>
         <h1 id="account-overview-title">{data.municipalityName} kommune</h1>
-        <p>Her ser du en overordnet oversikt over arealene i kommunen. Kart og statistikk bygger på et felles datagrunnlag.</p>
+        <p>Her ser du den overordnede inndelingen av arealene i kommunen. Kartet viser foreløpig Grunnkart for arealanalyse; arealverdiene er ikke koblet til ennå.</p>
       </header>
       <AccountSummary metrics={data.metrics} />
-      <p className="account-overview__notice">Arealverdiene vises når en autoritativ analysekilde og beregningsmetode er koblet til.</p>
+      <p className="account-overview__notice">Arealverdier vises når analysekilde og beregningsmetode er avklart og koblet til løsningen.</p>
     </section>
   )
 }
