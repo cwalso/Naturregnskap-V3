@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
+import { nationalLandCover2025 } from '../datasets/registry'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
@@ -52,6 +53,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         {listState === 'error' && <p role="alert">Kunne ikke hente kommunelisten. Prøv igjen senere.</p>}
         {boundaryState === 'loading' && <p role="status">Laster kommunegrense…</p>}
         {boundaryState === 'error' && <p role="alert">Kunne ikke hente kommunegrensen. Prøv igjen senere.</p>}
+      </section>
+      <section className="layer-control" aria-label="Kartlag">
+        <label>
+          <input
+            type="checkbox"
+            defaultChecked
+            onChange={(event) => map.current?.setAccountLayerVisible(event.target.checked)}
+          />
+          {nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})
+        </label>
       </section>
       <div ref={mapElement} className="map" aria-label="Kart over Norge" />
     </main>
