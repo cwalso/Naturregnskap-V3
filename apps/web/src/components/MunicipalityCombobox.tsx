@@ -9,6 +9,8 @@ interface MunicipalityComboboxProps {
   onSelect(municipality: Municipality | null): void
 }
 
+const MAX_RESULTS = 10
+
 export function MunicipalityCombobox({
   municipalities,
   disabled = false,
@@ -23,9 +25,12 @@ export function MunicipalityCombobox({
   const [activeIndex, setActiveIndex] = useState(-1)
 
   const normalizedQuery = query.trim().toLocaleLowerCase('nb')
-  const matches = municipalities.filter((municipality) =>
-    municipality.name.toLocaleLowerCase('nb').includes(normalizedQuery),
-  )
+  const matches = municipalities
+    .filter((municipality) => (
+      municipality.name.toLocaleLowerCase('nb').includes(normalizedQuery)
+      || municipality.number.includes(normalizedQuery)
+    ))
+    .slice(0, MAX_RESULTS)
 
   function open() {
     if (!disabled) setIsOpen(true)
