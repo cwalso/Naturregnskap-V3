@@ -17,3 +17,6 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+
+# Lokale analysedata og midlertidige Geonorge-nedlastinger
+.data/
