@@ -56,6 +56,27 @@ describe('søkbar kommunevelger', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
   })
 
+  it('kan også søke på kommunenummer', () => {
+    render(<MunicipalityCombobox municipalities={municipalities} onSelect={vi.fn()} />)
+    const input = screen.getByRole('combobox', { name: 'Velg kommune' })
+
+    fireEvent.change(input, { target: { value: '5001' } })
+
+    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Trondheim5001'])
+  })
+
+  it('viser maksimalt ti treff om gangen', () => {
+    const manyMunicipalities = Array.from({ length: 15 }, (_, index) => ({
+      number: String(1000 + index),
+      name: `Kommune ${String(index + 1).padStart(2, '0')}`,
+    }))
+    render(<MunicipalityCombobox municipalities={manyMunicipalities} onSelect={vi.fn()} />)
+
+    fireEvent.focus(screen.getByRole('combobox', { name: 'Velg kommune' }))
+
+    expect(screen.getAllByRole('option')).toHaveLength(10)
+  })
+
   it('støtter piltaster, Enter, Escape og tømming', () => {
     const onSelect = vi.fn()
     render(<MunicipalityCombobox municipalities={municipalities} onSelect={onSelect} />)
