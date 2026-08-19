@@ -281,6 +281,37 @@ describe('kommunevalg', () => {
     expect(screen.getByText(/20.000/)).toBeInTheDocument()
   })
 
+  it('viser teknisk feil separat fra manglende endringsdata', async () => {
+    const map = mapMock()
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      const url = String(input)
+      if (url === '/api/municipalities') {
+        return Promise.resolve(new Response(JSON.stringify([{ number: '5054', name: 'Indre Fosen' }]), { status: 200 }))
+      }
+      if (url.endsWith('/account-overview')) {
+        return Promise.resolve(new Response(JSON.stringify(accountResponse('5054', 'Indre Fosen')), { status: 200 }))
+      }
+      if (url.endsWith('/changes')) {
+        return Promise.resolve(new Response(null, { status: 503 }))
+      }
+      return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+    })
+
+    render(<App createMap={() => map} />)
+
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    await vi.waitFor(() => expect(input).toBeEnabled())
+    fireEvent.focus(input)
+    fireEvent.click(screen.getByRole('option', { name: 'Indre Fosen 5054' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Kunne ikke hente endringsdata. Prøv igjen senere.',
+    )
+    expect(
+      screen.queryByText('Endringsdata er foreløpig ikke tilgjengelig for denne kommunen.'),
+    ).not.toBeInTheDocument()
+  })
+
   it('viser syntetiske endringer og sender de samme polygonene til kartet', async () => {
     const map = mapMock()
     const changes = changesResponse('5054', 'Indre Fosen', true)

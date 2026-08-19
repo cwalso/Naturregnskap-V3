@@ -1,8 +1,7 @@
-import json
 from pathlib import Path
 
 from app.domain.changes import aggregate_transition_areas
-from app.models.change import ChangeCollection, ChangeFeature, PreparedChangeSummary
+from app.models.change import ChangeCollection, PreparedChangeFeatures, PreparedChangeSummary
 from app.services.account_balance import data_root
 
 
@@ -31,10 +30,10 @@ class PreparedChangesProvider:
                 status="not_available",
             )
         summary = PreparedChangeSummary.model_validate_json(summary_path.read_text())
-        features = [
-            ChangeFeature.model_validate(item)
-            for item in json.loads(features_path.read_text())
-        ]
+        prepared_features = PreparedChangeFeatures.model_validate_json(
+            features_path.read_text()
+        )
+        features = prepared_features.features
         try:
             feature_totals = aggregate_transition_areas(
                 [
@@ -57,7 +56,8 @@ class PreparedChangesProvider:
             for item in summary.transitions
         }
         if (
-            summary.municipality_number != municipality_number
+            summary.generation_id != prepared_features.generation_id
+            or summary.municipality_number != municipality_number
             or summary.feature_count != len(features)
             or abs(summary.total_area_m2 - sum(item.area_m2 for item in features))
             > 1e-6

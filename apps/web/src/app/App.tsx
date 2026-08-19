@@ -155,7 +155,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             <div className="account-panel">
               <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
               {changesState === 'loading' ? <section className="changes"><p role="status">Laster endringsdata…</p></section> :
-                <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
+                changesState === 'error' ? <section className="changes"><p role="alert">Kunne ikke hente endringsdata. Prøv igjen senere.</p></section> :
+                  <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
             </div>
         ) : (
           <section className="start-view__intro" aria-labelledby="start-title">

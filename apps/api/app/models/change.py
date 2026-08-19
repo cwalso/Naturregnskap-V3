@@ -45,6 +45,7 @@ class ChangeArea(CamelModel):
 
 
 class PreparedChangeSummary(CamelModel):
+    generation_id: str
     municipality_number: str = Field(pattern=r"^\d{4}$")
     period: str
     source: ChangeSource
@@ -52,6 +53,11 @@ class PreparedChangeSummary(CamelModel):
     feature_count: int = Field(ge=0)
     total_area_m2: float = Field(ge=0)
     transitions: list[ChangeArea]
+
+
+class PreparedChangeFeatures(CamelModel):
+    generation_id: str
+    features: list[ChangeFeature]
 
 
 class ChangeCollection(CamelModel):

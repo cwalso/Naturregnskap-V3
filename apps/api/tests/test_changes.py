@@ -57,7 +57,38 @@ def test_preparation_uses_geometry_for_summary_and_marks_synthetic_source(
         ("nature", "agriculture", 6_000),
     }
     assert all(feature.transition.from_source_class is None for feature in features)
-    assert json.loads(features_path.read_text())[0]["geometryCrs"] == "EPSG:25833"
+    prepared_features = json.loads(features_path.read_text())
+    assert prepared_features["generationId"] == summary.generation_id
+    assert prepared_features["features"][0]["geometryCrs"] == "EPSG:25833"
+
+
+def test_provider_rejects_mixed_preparation_generations(
+    tmp_path: Path,
+) -> None:
+    run_a = tmp_path / "run-a"
+    run_b = tmp_path / "run-b"
+    mixed = tmp_path / "mixed"
+
+    prepare(run_a)
+    prepare(run_b)
+
+    summary_a, _ = prepared_change_paths("5054", run_a)
+    _, features_b = prepared_change_paths("5054", run_b)
+    mixed_summary, mixed_features = prepared_change_paths("5054", mixed)
+
+    mixed_summary.parent.mkdir(parents=True, exist_ok=True)
+    mixed_summary.write_text(summary_a.read_text())
+    mixed_features.write_text(features_b.read_text())
+
+    summary_generation = json.loads(mixed_summary.read_text())["generationId"]
+    features_generation = json.loads(mixed_features.read_text())["generationId"]
+    assert summary_generation != features_generation
+
+    result = PreparedChangesProvider(mixed).get("5054", "Indre Fosen")
+
+    assert result.status == "not_available"
+    assert result.transitions == []
+    assert result.features == []
 
 
 def test_provider_returns_available_and_missing_without_false_zero(

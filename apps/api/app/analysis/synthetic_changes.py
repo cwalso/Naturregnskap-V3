@@ -2,6 +2,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from app.domain.changes import aggregate_transition_areas
 from app.models.change import (
@@ -10,6 +11,7 @@ from app.models.change import (
     ChangeProvenance,
     ChangeSource,
     ChangeTransition,
+    PreparedChangeFeatures,
     PreparedChangeSummary,
 )
 
@@ -63,6 +65,7 @@ def prepare_synthetic_changes(
     period = str(fixture["period"])
     crs = str(fixture["geometryCrs"])
     calculated_at = datetime.now(UTC).isoformat()
+    generation_id = str(uuid4())
     provenance = ChangeProvenance(
         method_version=METHOD_VERSION,
         method_status="architecture_test",
@@ -101,6 +104,7 @@ def prepare_synthetic_changes(
         for (before, after), area in sorted(totals.items())
     ]
     summary = PreparedChangeSummary(
+        generation_id=generation_id,
         municipality_number=municipality_number,
         period=period,
         source=source,
@@ -112,12 +116,11 @@ def prepare_synthetic_changes(
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     features_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(summary.model_dump_json(by_alias=True, indent=2) + "\n")
+    prepared_features = PreparedChangeFeatures(
+        generation_id=generation_id,
+        features=features,
+    )
     features_path.write_text(
-        json.dumps(
-            [feature.model_dump(by_alias=True) for feature in features],
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n"
+        prepared_features.model_dump_json(by_alias=True, indent=2) + "\n"
     )
     return summary, features
