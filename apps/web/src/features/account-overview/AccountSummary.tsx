@@ -6,5 +6,8 @@ interface AccountSummaryProps {
 }
 
 export function AccountSummary({ metrics }: AccountSummaryProps) {
-  return <div className="account-summary">{metrics.map((metric) => <AccountMetric key={metric.id} metric={metric} />)}</div>
+  const orderedMetrics = ['nature', 'agriculture', 'built'].map((id) =>
+    metrics.find((metric) => metric.id === id),
+  ).filter((metric): metric is AccountMetricData => metric !== undefined)
+  return <div className="account-summary">{orderedMetrics.map((metric) => <AccountMetric key={metric.id} metric={metric} />)}</div>
 }

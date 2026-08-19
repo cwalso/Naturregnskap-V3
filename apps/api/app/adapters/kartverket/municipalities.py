@@ -51,6 +51,15 @@ class KartverketMunicipalitiesAdapter:
                 "Ugyldig kommunegeometri fra Kartverket"
             ) from error
 
+    async def get_municipality(self, municipality_number: str) -> Municipality:
+        data = await self._get_json(f"/kommuner/{municipality_number}")
+        try:
+            return Municipality(
+                number=data["kommunenummer"], name=data["kommunenavnNorsk"]
+            )
+        except (KeyError, TypeError, ValueError) as error:
+            raise MunicipalityUpstreamError("Ugyldig kommune fra Kartverket") from error
+
     async def _get_json(self, path: str) -> Any:
         try:
             if self._client is not None:

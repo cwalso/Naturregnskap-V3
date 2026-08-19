@@ -28,10 +28,10 @@ label { font-weight: 700; }
 .account-overview { border-top: 1px solid var(--color-border); }
 .account-overview h1 { margin-bottom: .75rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
 .account-metric { background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-left: .3rem solid var(--color-accent); border-radius: var(--radius-surface); }
+.account-metric--nature { display: flex; flex-direction: column; justify-content: center; background: var(--color-brand-surface); }
 .account-metric h2 { margin-bottom: .5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
 .account-metric__value { margin: 0; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; font-variant-numeric: tabular-nums; }
 .account-metric__value span { font-size: 1rem; }
-.account-metric__status { margin: .15rem 0 .7rem; font-weight: 700; }
 .account-metric__description, .account-overview__notice { color: var(--color-text-muted); line-height: 1.45; }
 .account-metric__description { margin-bottom: 0; }
 .account-overview__notice { margin: 1.25rem 0 0; font-size: .9rem; }

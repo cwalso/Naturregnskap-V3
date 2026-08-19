@@ -9,7 +9,8 @@
 .selected-municipality-picker .municipality-picker, .start-municipality-picker .municipality-picker { margin: 0; }
 .account-workspace { display: grid; grid-template-columns: minmax(20rem, 2fr) minmax(30rem, 3fr); min-height: calc(100vh - 11.5rem); }
 .account-overview { padding: clamp(1.5rem, 3vw, 3rem); }
-.account-summary { display: grid; gap: 1rem; margin-top: 2rem; }
+.account-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.account-metric--nature { grid-column: 1 / -1; min-height: 11rem; }
 .account-metric { padding: 1.25rem 1.5rem; }
 .map-workspace { display: grid; grid-template-rows: auto minmax(28rem, 1fr); min-width: 0; }
 .layer-control { padding: .8rem 1rem; }
@@ -24,4 +25,6 @@
 @media (max-width: 40rem) {
   .site-header { align-items: flex-start; flex-direction: column; gap: .5rem; padding-block: .7rem; }
   .site-header__logo { width: 10.5rem; }
+  .account-summary { grid-template-columns: 1fr; }
+  .account-metric--nature { grid-column: auto; }
 }
