@@ -146,7 +146,7 @@ def prepare_balance(
         period="2025",
         dataset_version=dataset_version,
         source_file=input_path.name,
-        source_schema_version=_schema_version(parquet),
+        geo_parquet_version=_geo_parquet_version(parquet),
         method_version=rules.version,
         method_status=rules.status,
         calculated_at=datetime.now(UTC).isoformat(),
@@ -176,7 +176,7 @@ def _geo_metadata(parquet: pq.ParquetFile) -> dict[str, Any] | None:
         return {"raw": value.decode(errors="replace")}
 
 
-def _schema_version(parquet: pq.ParquetFile) -> str | None:
+def _geo_parquet_version(parquet: pq.ParquetFile) -> str | None:
     geo = _geo_metadata(parquet)
     return str(geo.get("version")) if geo and geo.get("version") else None
 

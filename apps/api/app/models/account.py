@@ -30,7 +30,7 @@ class PreparedAccountBalance(CamelModel):
     period: Literal["2025"]
     dataset_version: str
     source_file: str
-    source_schema_version: str | None = None
+    geo_parquet_version: str | None = None
     method_version: str
     method_status: Literal["prototype"]
     calculated_at: str

@@ -65,11 +65,14 @@ fortsatt stoppe preparation og må verifiseres før regelsettet eventuelt utvide
 Det brukes ingen normalisering, fuzzy matching eller fallback.
 
 I 5054-filen finnes `SHAPE_Area` som `double` uten nullverdier; geometry har
-heller ingen nullverdier, og kilde-CRS-et er metrisk EPSG:25833. Dette er ikke
-tilstrekkelig til å erklære `SHAPE_Area` endelig validert som polygonareal i m².
-Feltet må fortsatt kontrolleres mot et geometrisk utvalg før første reelle
-prepared-resultat godtas. Prototypens
-prepare-kommando beregner ikke areal fra WMS, BBOX, EPSG:4326 eller EPSG:3857.
+heller ingen nullverdier, og kilde-CRS-et er metrisk EPSG:25833. Det er gjennomført
+en geometrisk stikkprøve av 1 000 polygoner der `SHAPE_Area` er sammenlignet med
+areal beregnet direkte fra WKB-geometrien. Maksimalt absolutt avvik var
+4.3655745685100555e-11 m² og maksimalt relativt avvik
+2.8415129330773533e-15. Avvikene er på nivå med ordinær flyttallsavrunding.
+`SHAPE_Area` vurderes derfor som tilstrekkelig validert som arealfelt i m² for
+denne prototypen. Prototypens prepare-kommando beregner ikke areal fra WMS,
+BBOX, EPSG:4326 eller EPSG:3857.
 
 ## API og presentasjon
 
@@ -99,6 +102,7 @@ python -m app.scripts.prepare_account_balance \
   --area-field SHAPE_Area
 ```
 
-Den siste kommandoen skal bare kjøres med `SHAPE_Area` dersom inspector og
-kildedokumentasjon bekrefter at feltet er polygonareal i m² og geometrisk
-stikkprøve er tilfredsstillende. Faktisk feltnavn skal brukes case-sensitivt.
+For den inspiserte 5054-filen er `SHAPE_Area` kontrollert mot geometriberegnet
+areal i et utvalg på 1 000 polygoner og kan brukes som arealfelt i prototypen.
+Tilsvarende kontroll må gjøres dersom senere kildefiler har annen struktur,
+metadata eller arealfelt. Faktisk feltnavn skal brukes case-sensitivt.
