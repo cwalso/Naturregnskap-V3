@@ -163,3 +163,26 @@ def test_api_returns_missing_as_expected_state(tmp_path: Path) -> None:
         metric["areaKm2"] is None and metric["sharePercent"] is None
         for metric in body["metrics"]
     )
+
+
+def test_default_data_root_is_repo_relative(monkeypatch, tmp_path: Path) -> None:
+    from app.services.account_balance import data_root
+
+    monkeypatch.delenv("NATURREGNSKAP_DATA_ROOT", raising=False)
+    monkeypatch.chdir(tmp_path)
+
+    root = data_root()
+
+    assert root.name == ".data"
+    assert root.parent.name == "Naturregnskap-V3"
+
+
+def test_data_root_can_be_overridden_by_environment(
+    monkeypatch, tmp_path: Path
+) -> None:
+    from app.services.account_balance import data_root
+
+    custom_root = tmp_path / "custom-data"
+    monkeypatch.setenv("NATURREGNSKAP_DATA_ROOT", str(custom_root))
+
+    assert data_root() == custom_root

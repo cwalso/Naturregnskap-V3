@@ -12,7 +12,12 @@ PERIOD = "2025"
 
 
 def data_root() -> Path:
-    return Path(os.environ.get("NATURREGNSKAP_DATA_ROOT", ".data"))
+    configured_root = os.environ.get("NATURREGNSKAP_DATA_ROOT")
+    if configured_root:
+        return Path(configured_root)
+
+    repo_root = Path(__file__).resolve().parents[4]
+    return repo_root / ".data"
 
 
 def source_path(municipality_number: str, root: Path | None = None) -> Path:
