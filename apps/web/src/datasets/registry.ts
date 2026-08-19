@@ -21,7 +21,12 @@ export interface DatasetDefinition {
   readonly serviceProvider: string
   readonly metadataUrl: string
   readonly visualSource: WmsVisualSource
-  readonly analysisSource: null
+  readonly analysisSource: null | {
+    readonly type: 'prepared-parquet'
+    readonly period: '2025'
+    readonly sourcePathConvention: string
+    readonly preparedPathConvention: string
+  }
 }
 
 export const nationalLandCover2025 = {
@@ -49,7 +54,12 @@ export const nationalLandCover2025 = {
       sldVersion: '1.1.0',
     },
   },
-  analysisSource: null,
+  analysisSource: {
+    type: 'prepared-parquet',
+    period: '2025',
+    sourcePathConvention: '.data/grunnkart/2025/source/grunnkart_{municipality_number}.parquet',
+    preparedPathConvention: '.data/grunnkart/2025/prepared/{municipality_number}.json',
+  },
 } as const satisfies DatasetDefinition
 
 export const datasetRegistry = [nationalLandCover2025] as const

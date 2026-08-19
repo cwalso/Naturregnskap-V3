@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
+import { getAccountOverview } from '../api/accountOverview'
 import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { nationalLandCover2025 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
-import { createUncalculatedAccountOverview } from '../features/account-overview/model'
+import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 
@@ -16,11 +17,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const mapElement = useRef<HTMLDivElement>(null)
   const map = useRef<MunicipalityMap | null>(null)
   const boundaryRequest = useRef(0)
+  const accountRequest = useRef(0)
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
   const [boundaryState, setBoundaryState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [accountLayerVisible, setAccountLayerVisible] = useState(true)
+  const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
+  const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   useEffect(() => {
     if (mapElement.current) map.current = createMap(mapElement.current)
@@ -39,10 +43,23 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   async function selectMunicipality(municipality: Municipality | null) {
     const requestId = ++boundaryRequest.current
+    const accountRequestId = ++accountRequest.current
     setSelectedMunicipality(municipality)
+    setAccountData(null)
     map.current?.clearBoundary()
-    if (!municipality) { setBoundaryState('idle'); return }
+    if (!municipality) { setBoundaryState('idle'); setAccountState('idle'); return }
     setBoundaryState('loading')
+    setAccountState('loading')
+    void getAccountOverview(municipality.number)
+      .then((data) => {
+        if (accountRequestId === accountRequest.current) { setAccountData(data); setAccountState('idle') }
+      })
+      .catch(() => {
+        if (accountRequestId === accountRequest.current) {
+          setAccountData(createUnavailableAccountOverview(municipality.number, municipality.name))
+          setAccountState('error')
+        }
+      })
     try {
       const boundary = await getMunicipalityBoundary(municipality.number)
       if (requestId === boundaryRequest.current) {
@@ -103,7 +120,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       </div>
       <div className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
         {selectedMunicipality ? (
-          <AccountOverview data={createUncalculatedAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
+          accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
+            accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
+            <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
         ) : (
           <section className="start-view__intro" aria-labelledby="start-title">
             <p className="start-view__eyebrow">Kommunale naturregnskap</p>

@@ -21,7 +21,7 @@ describe('dataset registry', () => {
   it('registrerer Grunnkart 2025 med WMS kun som visualSource', () => {
     expect(datasetRegistry).toContain(nationalLandCover2025)
     expect(nationalLandCover2025.visualSource).toMatchObject({ type: 'wms', layer: 'arealdekkeniva1' })
-    expect(nationalLandCover2025.analysisSource).toBeNull()
+    expect(nationalLandCover2025.analysisSource).toMatchObject({ type: 'prepared-parquet', period: '2025' })
   })
 })
 
@@ -146,6 +146,14 @@ describe('kommunevalg', () => {
     const map = mapMock()
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        municipalityNumber: '5001', municipalityName: 'Trondheim', period: '2025', status: 'not_available',
+        metrics: [
+          { id: 'nature', areaKm2: null, sharePercent: null },
+          { id: 'agriculture', areaKm2: null, sharePercent: null },
+          { id: 'built', areaKm2: null, sharePercent: null },
+        ],
+      }), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
     render(<App createMap={() => map} />)
 
@@ -153,21 +161,29 @@ describe('kommunevalg', () => {
     await vi.waitFor(() => expect(input).toBeEnabled())
     fireEvent.focus(input)
     fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
-    expect(screen.getByRole('heading', { name: 'Trondheim kommune' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Trondheim kommune' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
-    expect(screen.getAllByText('Ikke beregnet ennå')).toHaveLength(3)
+    expect(screen.getAllByText('XX')).toHaveLength(3)
     expect(map.clearBoundary).toHaveBeenCalled()
     await vi.waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/municipalities/5001/boundary', { signal: undefined }))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalledWith(boundary))
-    expect(fetch).toHaveBeenLastCalledWith('/api/municipalities/5001/boundary', { signal: undefined })
+    expect(fetch).toHaveBeenCalledWith('/api/municipalities/5001/boundary', { signal: undefined })
   })
 
   it('tømmer kommunegrense og oversikt og går tilbake til starttilstanden', async () => {
     const map = mapMock()
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        municipalityNumber: '5001', municipalityName: 'Trondheim', period: '2025', status: 'not_available',
+        metrics: [
+          { id: 'nature', areaKm2: null, sharePercent: null },
+          { id: 'agriculture', areaKm2: null, sharePercent: null },
+          { id: 'built', areaKm2: null, sharePercent: null },
+        ],
+      }), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
     render(<App createMap={() => map} />)
 
@@ -227,24 +243,26 @@ describe('overordnet regnskapsoversikt', () => {
   afterEach(cleanup)
 
   it('bruker de stabile domenekategoriene', () => {
-    expect(accountCategoryIds).toEqual(['nature', 'built', 'agriculture'])
+    expect(accountCategoryIds).toEqual(['nature', 'agriculture', 'built'])
   })
 
   it('rendrer eksplisitte beregnede testdata uten at de brukes i runtime', () => {
     const testData: AccountOverviewData = {
       municipalityNumber: '5001',
       municipalityName: 'Trondheim',
+      period: '2025',
+      status: 'available',
       metrics: [
-        { id: 'nature', areaKm2: 123.45, sharePercent: 40.5, status: 'available' },
-        { id: 'built', areaKm2: 12, sharePercent: null, status: 'available' },
-        { id: 'agriculture', areaKm2: null, sharePercent: null, status: 'not-calculated' },
+        { id: 'nature', areaKm2: 123.45, sharePercent: null },
+        { id: 'built', areaKm2: 12, sharePercent: null },
+        { id: 'agriculture', areaKm2: null, sharePercent: null },
       ],
     }
 
     render(<AccountOverview data={testData} />)
 
-    expect(screen.getByText(/123,45/)).toHaveTextContent('123,45 km²')
-    expect(screen.getByText('40,5 % av landarealet')).toBeInTheDocument()
-    expect(screen.getByText('Ikke beregnet ennå')).toBeInTheDocument()
+    expect(screen.getByText(/123.450/)).toHaveTextContent('123 450 dekar')
+    expect(screen.queryByText(/%/)).not.toBeInTheDocument()
+    expect(screen.getByText('XX')).toBeInTheDocument()
   })
 })

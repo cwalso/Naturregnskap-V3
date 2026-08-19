@@ -2,7 +2,12 @@
 
 **Dato:** 2026-08-18  
 **Utgangspunkt:** `32e261f14eccac30ed1146fe144fea8e6df721b3`  
-**Status:** Datakilde og klassifikasjon delvis verifisert; operativ regnskapsmotor fortsatt ikke implementert
+**Status:** Historisk research gate; erstattet av V3.4B 2026-08-19
+
+> V3.4B valgte lokal kommunevis Parquet som preprocessing-kilde. Geonorge
+> direkte download er ikke runtime-løsningen, WMS er fortsatt `visualSource`,
+> og FastAPI leser prepared resultater fremfor stor Parquet. Se
+> `2026-08-19-v3-4b-parquet-account-balance.md`.
 
 ## Beslutning
 

@@ -9,12 +9,12 @@ export function AccountOverview({ data }: AccountOverviewProps) {
   return (
     <section className="account-overview" aria-labelledby="account-overview-title">
       <header className="account-overview__header">
-        <p className="account-overview__eyebrow">Overordnet arealoversikt</p>
+        <p className="account-overview__eyebrow">Arealbalanse {data.period}</p>
         <h1 id="account-overview-title">{data.municipalityName} kommune</h1>
-        <p>Her ser du den overordnede inndelingen av arealene i kommunen. Kartet viser foreløpig Grunnkart for arealanalyse; arealverdiene er ikke koblet til ennå.</p>
+        <p>Beholdning på overordnet nivå 0, basert på klargjort Grunnkart for arealanalyse.</p>
       </header>
       <AccountSummary metrics={data.metrics} />
-      <p className="account-overview__notice">Arealverdier vises når analysekilde og beregningsmetode er avklart og koblet til løsningen.</p>
+      {data.status === 'not_available' && <p className="account-overview__notice">Data er foreløpig ikke tilgjengelig for denne kommunen i prototypen.</p>}
     </section>
   )
 }

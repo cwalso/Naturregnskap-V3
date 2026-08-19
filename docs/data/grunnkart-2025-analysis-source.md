@@ -2,7 +2,13 @@
 
 **Undersøkt:** 2026-08-18  
 **Metadata UUID:** `28c28e3a-d88f-4a34-8c60-5efe6d56a44d`  
-**Research gate:** **DELVIS AVKLART – implementeringsgate fortsatt BLOCKED**
+**Research gate:** Erstattet av V3.4B sin lokale Parquet/preparation-gate
+
+> Oppdatert 2026-08-19: Direkte Geonorge-nedlasting er ikke runtime-løsningen i
+> prototypen. Kommunevis lokal Parquet er `analysisSource` for offline
+> preprocessing, API-et leser kun prepared JSON, og eksisterende WMS forblir
+> separat `visualSource`. Se beslutningen
+> `2026-08-19-v3-4b-parquet-account-balance.md`.
 
 ## Konklusjon
 
