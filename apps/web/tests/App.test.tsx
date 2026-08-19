@@ -7,6 +7,7 @@ import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import { datasetRegistry, nationalLandCover2025 } from '../src/datasets/registry'
 import { AccountOverview } from '../src/features/account-overview/AccountOverview'
 import { accountCategoryIds, type AccountOverviewData } from '../src/features/account-overview/model'
+import type { ChangesData } from '../src/features/changes/model'
 import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 import { buildWmsLegendUrl } from '../src/map/wmsLegend'
@@ -14,7 +15,14 @@ import { buildWmsLegendUrl } from '../src/map/wmsLegend'
 const boundary = { type: 'Feature', geometry: { type: 'Polygon', coordinates: [] }, properties: { number: '5001', name: 'Trondheim' } }
 
 function mapMock(): MunicipalityMap {
-  return { showBoundary: vi.fn(), clearBoundary: vi.fn(), setAccountLayerVisible: vi.fn(), destroy: vi.fn() }
+  return {
+    showBoundary: vi.fn(),
+    clearBoundary: vi.fn(),
+    setAccountLayerVisible: vi.fn(),
+    showChanges: vi.fn(),
+    clearChanges: vi.fn(),
+    destroy: vi.fn(),
+  }
 }
 
 function accountResponse(number: string, name: string, areaKm2: number | null = null) {
@@ -28,6 +36,30 @@ function accountResponse(number: string, name: string, areaKm2: number | null = 
       { id: 'agriculture', areaKm2: areaKm2 === null ? null : 2, sharePercent: null },
       { id: 'built', areaKm2: areaKm2 === null ? null : 1, sharePercent: null },
     ],
+  }
+}
+
+function changesResponse(number: string, name: string, available = false) {
+  return {
+    municipalityNumber: number,
+    municipalityName: name,
+    status: available ? 'available' : 'not_available',
+    period: available ? 'synthetic-period-1' : null,
+    source: available ? { dataset: 'synthetic-change-fixture', version: 'v1', purpose: 'architecture_test' } : null,
+    transitions: available ? [
+      { fromLevel0: 'nature', toLevel0: 'built', areaM2: 10_000 },
+      { fromLevel0: 'agriculture', toLevel0: 'built', areaM2: 12_000 },
+    ] : [],
+    features: available ? [{
+      changeId: 'synthetic-1',
+      municipalityNumber: number,
+      geometry: { type: 'Polygon', coordinates: [] },
+      geometryCrs: 'EPSG:25833',
+      areaM2: 10_000,
+      period: 'synthetic-period-1',
+      source: { dataset: 'synthetic-change-fixture', version: 'v1', purpose: 'architecture_test' },
+      transition: { fromLevel0: 'nature', toLevel0: 'built' },
+    }] : [],
   }
 }
 
@@ -163,6 +195,7 @@ describe('kommunevalg', () => {
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(accountResponse('5001', 'Trondheim')), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(changesResponse('5001', 'Trondheim')), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
     render(<App createMap={() => map} />)
 
@@ -175,6 +208,8 @@ describe('kommunevalg', () => {
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
     expect(screen.getAllByText('XX')).toHaveLength(3)
+    expect(screen.getByRole('heading', { name: 'Endringer' })).toBeInTheDocument()
+    expect(screen.getByText('Endringsdata er foreløpig ikke tilgjengelig for denne kommunen.')).toBeInTheDocument()
     expect(map.clearBoundary).toHaveBeenCalled()
     await vi.waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/municipalities/5001/boundary', { signal: undefined }))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalledWith(boundary))
@@ -186,6 +221,7 @@ describe('kommunevalg', () => {
     vi.spyOn(globalThis, 'fetch')
       .mockResolvedValueOnce(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', 12)), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(changesResponse('5001', 'Trondheim')), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify(boundary), { status: 200 }))
     render(<App createMap={() => map} />)
 
@@ -218,6 +254,10 @@ describe('kommunevalg', () => {
       if (url === '/api/municipalities/0301/account-overview') {
         return Promise.resolve(new Response(JSON.stringify(accountResponse('0301', 'Oslo', 20)), { status: 200 }))
       }
+      if (url.endsWith('/changes')) {
+        const municipality = url.includes('/0301/') ? municipalities[1] : municipalities[0]
+        return Promise.resolve(new Response(JSON.stringify(changesResponse(municipality.number, municipality.name)), { status: 200 }))
+      }
       const municipality = url.includes('/0301/') ? municipalities[1] : municipalities[0]
       return Promise.resolve(new Response(JSON.stringify({
         ...boundary,
@@ -239,6 +279,64 @@ describe('kommunevalg', () => {
     await vi.waitFor(() => expect(screen.getByRole('heading', { name: 'Oslo kommune' })).toBeInTheDocument())
     expect(screen.queryByText(/99.000/)).not.toBeInTheDocument()
     expect(screen.getByText(/20.000/)).toBeInTheDocument()
+  })
+
+  it('viser syntetiske endringer og sender de samme polygonene til kartet', async () => {
+    const map = mapMock()
+    const changes = changesResponse('5054', 'Indre Fosen', true)
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      const url = String(input)
+      if (url === '/api/municipalities') return Promise.resolve(new Response(JSON.stringify([{ number: '5054', name: 'Indre Fosen' }]), { status: 200 }))
+      if (url.endsWith('/account-overview')) return Promise.resolve(new Response(JSON.stringify(accountResponse('5054', 'Indre Fosen')), { status: 200 }))
+      if (url.endsWith('/changes')) return Promise.resolve(new Response(JSON.stringify(changes), { status: 200 }))
+      return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+    })
+    render(<App createMap={() => map} />)
+
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    await vi.waitFor(() => expect(input).toBeEnabled())
+    fireEvent.focus(input)
+    fireEvent.click(screen.getByRole('option', { name: 'Indre Fosen 5054' }))
+
+    expect(await screen.findByText('Natur → Bebygd')).toBeInTheDocument()
+    expect(screen.getByText('10 daa')).toBeInTheDocument()
+    expect(screen.getByText('Jordbruk → Bebygd')).toBeInTheDocument()
+    expect(screen.getByText('12 daa')).toBeInTheDocument()
+    expect(screen.getByText('Syntetiske testdata – brukes kun for å prøve ut endringsarkitekturen.')).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.showChanges).toHaveBeenCalledWith(changes.features))
+  })
+
+  it('ignorerer stale endringsrespons fra tidligere kommune', async () => {
+    let resolveChanges: ((response: Response) => void) | undefined
+    const staleChanges = new Promise<Response>((resolve) => { resolveChanges = resolve })
+    const municipalities = [{ number: '5054', name: 'Indre Fosen' }, { number: '0301', name: 'Oslo' }]
+    const map = mapMock()
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      const url = String(input)
+      if (url === '/api/municipalities') return Promise.resolve(new Response(JSON.stringify(municipalities), { status: 200 }))
+      if (url === '/api/municipalities/5054/changes') return staleChanges
+      if (url.endsWith('/changes')) return Promise.resolve(new Response(JSON.stringify(changesResponse('0301', 'Oslo')), { status: 200 }))
+      if (url.endsWith('/account-overview')) {
+        const municipality = url.includes('0301') ? municipalities[1] : municipalities[0]
+        return Promise.resolve(new Response(JSON.stringify(accountResponse(municipality.number, municipality.name)), { status: 200 }))
+      }
+      return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+    })
+    render(<App createMap={() => map} />)
+    const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
+    await vi.waitFor(() => expect(input).toBeEnabled())
+    fireEvent.focus(input)
+    fireEvent.click(screen.getByRole('option', { name: 'Indre Fosen 5054' }))
+    fireEvent.change(input, { target: { value: 'Oslo' } })
+    fireEvent.click(screen.getByRole('option', { name: 'Oslo 0301' }))
+    expect(await screen.findByRole('heading', { name: 'Oslo kommune' })).toBeInTheDocument()
+
+    resolveChanges?.(new Response(JSON.stringify(changesResponse('5054', 'Indre Fosen', true)), { status: 200 }))
+    await vi.waitFor(() => expect(map.showChanges).toHaveBeenLastCalledWith([]))
+    expect(map.showChanges).not.toHaveBeenCalledWith(expect.arrayContaining([
+      expect.objectContaining({ municipalityNumber: '5054' }),
+    ]))
+    expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
   })
 
   it('viser feil når kommunelisten ikke kan hentes', async () => {
@@ -307,5 +405,15 @@ describe('overordnet regnskapsoversikt', () => {
     expect(screen.getByText(/123.450/)).toHaveTextContent('123 450 dekar')
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
     expect(screen.getByText('XX')).toBeInTheDocument()
+  })
+})
+
+describe('generisk endringsmodell', () => {
+  it('har ingen leverandørspesifikke AR5-felter', () => {
+    const generic: ChangesData = changesResponse('5054', 'Indre Fosen', true) as ChangesData
+    expect(Object.keys(generic.features[0])).toEqual(expect.arrayContaining([
+      'changeId', 'municipalityNumber', 'geometry', 'geometryCrs', 'areaM2', 'period', 'source', 'transition',
+    ]))
+    expect(JSON.stringify(Object.keys(generic.features[0]))).not.toMatch(/ar5/i)
   })
 })

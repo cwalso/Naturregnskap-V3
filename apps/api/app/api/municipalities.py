@@ -7,8 +7,10 @@ from app.adapters.kartverket.municipalities import (
     MunicipalityUpstreamError,
 )
 from app.models.account import AccountOverview
+from app.models.change import ChangeCollection
 from app.models.municipality import Municipality, MunicipalityBoundary
 from app.services.account_balance import PreparedAccountBalanceProvider
+from app.services.changes import PreparedChangesProvider
 
 router = APIRouter(prefix="/municipalities", tags=["municipalities"])
 
@@ -29,6 +31,13 @@ def get_account_provider() -> PreparedAccountBalanceProvider:
 AccountProvider = Annotated[
     PreparedAccountBalanceProvider, Depends(get_account_provider)
 ]
+
+
+def get_changes_provider() -> PreparedChangesProvider:
+    return PreparedChangesProvider()
+
+
+ChangesProvider = Annotated[PreparedChangesProvider, Depends(get_changes_provider)]
 
 
 @router.get("", response_model=list[Municipality])
@@ -62,6 +71,22 @@ async def get_account_overview(
     provider: AccountProvider,
     municipality_number: Annotated[str, Path(pattern=r"^\d{4}$")],
 ) -> AccountOverview:
+    try:
+        municipality = await adapter.get_municipality(municipality_number)
+    except MunicipalityUpstreamError as error:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Kommunen er midlertidig utilgjengelig",
+        ) from error
+    return provider.get(municipality_number, municipality.name)
+
+
+@router.get("/{municipality_number}/changes", response_model=ChangeCollection)
+async def get_changes(
+    adapter: Adapter,
+    provider: ChangesProvider,
+    municipality_number: Annotated[str, Path(pattern=r"^\d{4}$")],
+) -> ChangeCollection:
     try:
         municipality = await adapter.get_municipality(municipality_number)
     except MunicipalityUpstreamError as error:

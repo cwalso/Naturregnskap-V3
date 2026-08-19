@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
+import { getChanges } from '../api/changes'
 import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { nationalLandCover2025 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
+import { Changes } from '../features/changes/Changes'
+import { unavailableChanges, type ChangesData } from '../features/changes/model'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 
@@ -18,6 +21,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const map = useRef<MunicipalityMap | null>(null)
   const boundaryRequest = useRef(0)
   const accountRequest = useRef(0)
+  const changesRequest = useRef(0)
+  const currentChangeFeatures = useRef<ChangesData['features']>([])
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
@@ -25,6 +30,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [accountLayerVisible, setAccountLayerVisible] = useState(true)
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [changesData, setChangesData] = useState<ChangesData | null>(null)
+  const [changesState, setChangesState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   useEffect(() => {
     if (mapElement.current) map.current = createMap(mapElement.current)
@@ -44,12 +51,17 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   async function selectMunicipality(municipality: Municipality | null) {
     const requestId = ++boundaryRequest.current
     const accountRequestId = ++accountRequest.current
+    const changesRequestId = ++changesRequest.current
     setSelectedMunicipality(municipality)
     setAccountData(null)
+    setChangesData(null)
+    currentChangeFeatures.current = []
     map.current?.clearBoundary()
-    if (!municipality) { setBoundaryState('idle'); setAccountState('idle'); return }
+    map.current?.clearChanges()
+    if (!municipality) { setBoundaryState('idle'); setAccountState('idle'); setChangesState('idle'); return }
     setBoundaryState('loading')
     setAccountState('loading')
+    setChangesState('loading')
     void getAccountOverview(municipality.number)
       .then((data) => {
         if (accountRequestId === accountRequest.current) { setAccountData(data); setAccountState('idle') }
@@ -60,10 +72,28 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           setAccountState('error')
         }
       })
+    void getChanges(municipality.number)
+      .then((data) => {
+        if (changesRequestId === changesRequest.current) {
+          setChangesData(data)
+          currentChangeFeatures.current = data.features
+          map.current?.showChanges(data.features)
+          setChangesState('idle')
+        }
+      })
+      .catch(() => {
+        if (changesRequestId === changesRequest.current) {
+          setChangesData(unavailableChanges(municipality.number, municipality.name))
+          currentChangeFeatures.current = []
+          map.current?.clearChanges()
+          setChangesState('error')
+        }
+      })
     try {
       const boundary = await getMunicipalityBoundary(municipality.number)
       if (requestId === boundaryRequest.current) {
         map.current?.showBoundary(boundary)
+        if (currentChangeFeatures.current.length) map.current?.showChanges(currentChangeFeatures.current)
         setBoundaryState('idle')
       }
     } catch {
@@ -122,7 +152,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         {selectedMunicipality ? (
           accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
             accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
-            <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
+            <div className="account-panel">
+              <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
+              {changesState === 'loading' ? <section className="changes"><p role="status">Laster endringsdata…</p></section> :
+                <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
+            </div>
         ) : (
           <section className="start-view__intro" aria-labelledby="start-title">
             <p className="start-view__eyebrow">Kommunale naturregnskap</p>

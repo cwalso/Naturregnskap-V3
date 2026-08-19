@@ -35,6 +35,13 @@ label { font-weight: 700; }
 .account-metric__description, .account-overview__notice { color: var(--color-text-muted); line-height: 1.45; }
 .account-metric__description { margin-bottom: 0; }
 .account-overview__notice { margin: 1.25rem 0 0; font-size: .9rem; }
+.changes { border-top: 1px solid var(--color-border); }
+.changes h2 { margin-top: 1.5rem; text-transform: uppercase; font-size: 1.1rem; letter-spacing: .06em; }
+.changes__warning { padding: .75rem; color: var(--color-text); background: var(--color-brand-surface); border-left: .3rem solid var(--color-accent); line-height: 1.45; }
+.changes__list { margin: 1rem 0 0; }
+.changes__list > div { padding: .55rem 0; border-bottom: 1px solid var(--color-border); }
+.changes__list dt { font-weight: 600; }
+.changes__list dd { margin: 0; font-variant-numeric: tabular-nums; }
 .layer-control { background: var(--color-surface-subtle); border-block: 1px solid var(--color-border); }
 .layer-control label { display: inline-flex; align-items: center; gap: .6rem; }
 .layer-control input { width: 1.2rem; height: 1.2rem; accent-color: var(--color-accent); }
