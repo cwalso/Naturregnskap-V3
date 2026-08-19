@@ -20,6 +20,9 @@ RELEVANT_FIELD_NAMES = {
     "arealdekkeniva1",
     "arealdekkeniva2",
     "arealdekkekode",
+    "okosystemtypeniva1",
+    "okosystemtypeniva2",
+    "okosystemtypeniva3",
     "SHAPE_Area",
     "geometry",
 }
@@ -70,6 +73,9 @@ def inspect_parquet(path: Path) -> dict[str, Any]:
                 "arealdekkeniva1",
                 "arealdekkeniva2",
                 "arealdekkekode",
+                "okosystemtypeniva1",
+                "okosystemtypeniva2",
+                "okosystemtypeniva3",
             }:
                 report["distinctValues"][name] = pc.unique(column).to_pylist()
     return report
@@ -138,7 +144,7 @@ def prepare_balance(
         source_file=input_path.name,
         source_schema_version=_schema_version(parquet),
         method_version=rules.version,
-        method_status="prototype",
+        method_status=rules.status,
         calculated_at=datetime.now(UTC).isoformat(),
         metrics=[
             PreparedMetric(id=id, area_m2=totals[id]) for id in ACCOUNT_CATEGORY_IDS

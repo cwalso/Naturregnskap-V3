@@ -24,13 +24,31 @@ kommunenavn eller særkommuner. Funksjonell dekning er derfor landsdekkende,
 mens datadekning følger hvilke kommuner som har en valid prepared-fil. `5054`
 er kun et dokumentert første eksempel, ikke en kodegren.
 
+Parquet-, prepared- og filesystem-konvensjonene er utelukkende detaljer i
+backend og offline preprocessing. Frontend kjenner bare det typed
+account-overview API-et og har ingen avhengighet til PyArrow, Parquet, JSON-filer
+eller lokale filbaner.
+
 ## Mapping-gate og metode
 
-Regelsettet `level0-v0.1-prototype` har status `prototype`. Bare eksplisitt
+Nivå-0-balansen bygges utelukkende fra **Arealdekke nivå 1** i feltet
+`arealdekkeniva1`. Arealdekke nivå 1 og Økosystemtype er separate
+klassifikasjoner: `okosystemtypeniva1/2/3` kan rapporteres av inspector, men
+brukes ikke i nivå-0-beregningen. Økosystemtype hører til et senere spor for
+«Naturen i dag».
+
+Regelsettet `level0-v0.1-prototype` har status `prototype`. Den konseptuelle
+mappingen er Bebygd og samferdsel → `built`, Jordbruk → `agriculture`, Skog,
+Snaumark, Myr, Snø/isbre og Ferskvann → `nature`, og Hav → `excluded`. Bare eksplisitt
 oppførte kildeverdier kan bli `nature`, `agriculture`, `built` eller
 `excluded`. En ukjent arealbærende klasse rapporteres og blokkerer skriving av
 prepared-resultatet; den blir aldri implisitt Natur. Resultatet rekonsilerer
 klassifisert, ekskludert og unmapped areal.
+
+De eksakte tekstverdiene er ennå ikke kontrollert mot den reelle Parquet-filen.
+Inspectorens distinct `arealdekkeniva1`-verdier og den konkrete mappingen må
+derfor verifiseres før første reelle prepared-resultat godtas. Det brukes ingen
+normalisering, fuzzy matching eller fallback for avvikende kildeverdier.
 
 Inspector må kjøres først på en reell fil. Arealfelt og m²-enhet må kontrolleres
 mot filens metadata/kildedokumentasjon og, når geometri og metrisk CRS finnes,

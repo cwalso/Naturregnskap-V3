@@ -21,16 +21,15 @@ GRUNNKART_LEVEL0_RULES = Level0Rules(
     status=METHOD_STATUS,
     source_field="arealdekkeniva1",
     mapping={
-        "Bebygd og opparbeidet areal": "built",
-        "Dyrket mark": "agriculture",
-        "Grasmark": "nature",
+        # Fail-safe prototype mapping for Arealdekke nivå 1. Exact values must
+        # be verified against the real Grunnkart Parquet before preparing data.
+        "Bebygd og samferdsel": "built",
+        "Jordbruk": "agriculture",
         "Skog": "nature",
-        "Hei og buskmark": "nature",
-        "Lite vegetert mark": "nature",
-        "Våtmark": "nature",
-        "Elver, bekker og kanaler": "nature",
-        "Innsjøer og vannmagasiner": "nature",
-        "Kyststrender, svaberg og dyner": "nature",
+        "Snaumark": "nature",
+        "Myr": "nature",
+        "Snø/isbre": "nature",
+        "Ferskvann": "nature",
         "Hav": "excluded",
     },
 )

@@ -13,7 +13,7 @@ from app.analysis.grunnkart_parquet import (
     prepare_balance,
 )
 from app.api.municipalities import get_account_provider, get_municipalities_adapter
-from app.domain.accounting_rules import ACCOUNT_CATEGORY_IDS
+from app.domain.accounting_rules import ACCOUNT_CATEGORY_IDS, GRUNNKART_LEVEL0_RULES
 from app.main import app
 from app.models.municipality import Municipality
 from app.services.account_balance import (
@@ -24,12 +24,17 @@ from app.services.account_balance import (
 
 
 def parquet(
-    path: Path, municipalities: list[str], classes: list[str], areas: list[float]
+    path: Path,
+    municipalities: list[str],
+    classes: list[str],
+    areas: list[float],
+    ecosystem_classes: list[str] | None = None,
 ) -> Path:
     table = pa.table(
         {
             "kommunenummer": municipalities,
             "arealdekkeniva1": classes,
+            "okosystemtypeniva1": ecosystem_classes or ["Skog"] * len(areas),
             "SHAPE_Area": areas,
             "geometry": [b"unused"] * len(areas),
         }
@@ -50,6 +55,7 @@ def test_inspector_reports_metadata_and_relevant_values(tmp_path: Path) -> None:
     assert report["rowGroups"] == 1
     assert report["distinctValues"]["kommunenummer"] == ["4204"]
     assert report["distinctValues"]["arealdekkeniva1"] == ["Skog"]
+    assert report["distinctValues"]["okosystemtypeniva1"] == ["Skog"]
     assert "SHAPE_Area" in report["areaFields"]
 
 
@@ -57,8 +63,9 @@ def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> 
     path = parquet(
         tmp_path / "source.parquet",
         ["4204"] * 4,
-        ["Skog", "Dyrket mark", "Bebygd og opparbeidet areal", "Hav"],
+        ["Skog", "Jordbruk", "Bebygd og samferdsel", "Hav"],
         [1_000_000, 200_000, 30_000, 5_000],
+        ["Bebygd og opparbeidet areal", "Dyrket mark", "Grasmark", "Hav"],
     )
     output = tmp_path / "prepared.json"
     result = prepare_balance(path, "4204", output, area_field="SHAPE_Area")
@@ -66,6 +73,7 @@ def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> 
     assert [metric.area_m2 for metric in result.metrics] == [1_000_000, 200_000, 30_000]
     assert result.reconciliation.excluded_area_m2 == 5_000
     assert result.method_version == "level0-v0.1-prototype"
+    assert result.method_status == GRUNNKART_LEVEL0_RULES.status
     assert json.loads(output.read_text())["municipalityNumber"] == "4204"
 
 
@@ -83,6 +91,18 @@ def test_unmapped_class_blocks_output(tmp_path: Path) -> None:
     with pytest.raises(PreparationError, match="Ukjente kildeklasser"):
         prepare_balance(path, "4204", output, area_field="SHAPE_Area")
     assert not output.exists()
+
+
+def test_ecosystem_type_is_not_used_for_level_zero(tmp_path: Path) -> None:
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"],
+        ["Ukjent arealdekke"],
+        [50],
+        ["Skog"],
+    )
+    with pytest.raises(PreparationError, match="Ukjente kildeklasser"):
+        prepare_balance(path, "4204", tmp_path / "out.json", area_field="SHAPE_Area")
 
 
 def test_provider_available_and_not_available(tmp_path: Path) -> None:
