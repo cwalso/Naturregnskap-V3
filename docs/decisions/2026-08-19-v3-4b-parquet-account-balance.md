@@ -37,22 +37,38 @@ klassifikasjoner: `okosystemtypeniva1/2/3` kan rapporteres av inspector, men
 brukes ikke i nivå-0-beregningen. Økosystemtype hører til et senere spor for
 «Naturen i dag».
 
-Regelsettet `level0-v0.1-prototype` har status `prototype`. Den konseptuelle
-mappingen er Bebygd og samferdsel → `built`, Jordbruk → `agriculture`, Skog,
-Snaumark, Myr, Snø/isbre og Ferskvann → `nature`, og Hav → `excluded`. Bare eksplisitt
-oppførte kildeverdier kan bli `nature`, `agriculture`, `built` eller
+Den faktiske `grunnkart_5054.parquet` er nå inspisert. Filen inneholder bare
+kommunenummer `5054`, geometri kodet som WKB/MultiPolygon i ETRS89 / UTM sone
+33N (EPSG:25833), og følgende maskinlesbare, case-sensitive kodeverdier
+(camelCase/lowercase) i `arealdekkeniva1`:
+
+- `bebygdSamferdsel`
+- `jordbruk`
+- `skog`
+- `snaumark`
+- `myr`
+- `ferskvann`
+- `hav`
+
+Regelsettet `level0-v0.1-prototype` har status `prototype` og mapper de
+verifiserte kildekodene slik: `bebygdSamferdsel` → `built`, `jordbruk` →
+`agriculture`, `skog`, `snaumark`, `myr` og `ferskvann` → `nature`, og `hav` →
+`excluded`. Bare eksplisitt oppførte kildeverdier kan bli `nature`,
+`agriculture`, `built` eller
 `excluded`. En ukjent arealbærende klasse rapporteres og blokkerer skriving av
 prepared-resultatet; den blir aldri implisitt Natur. Resultatet rekonsilerer
 klassifisert, ekskludert og unmapped areal.
 
-De eksakte tekstverdiene er ennå ikke kontrollert mot den reelle Parquet-filen.
-Inspectorens distinct `arealdekkeniva1`-verdier og den konkrete mappingen må
-derfor verifiseres før første reelle prepared-resultat godtas. Det brukes ingen
-normalisering, fuzzy matching eller fallback for avvikende kildeverdier.
+Mappingen er verifisert mot 5054-filen, men dette dokumenterer ikke alle mulige
+nasjonale Arealdekke nivå 1-verdier. En ny kildekode i en annen kommune skal
+fortsatt stoppe preparation og må verifiseres før regelsettet eventuelt utvides.
+Det brukes ingen normalisering, fuzzy matching eller fallback.
 
-Inspector må kjøres først på en reell fil. Arealfelt og m²-enhet må kontrolleres
-mot filens metadata/kildedokumentasjon og, når geometri og metrisk CRS finnes,
-mot et geometrisk utvalg før feltet oppgis til prepare-kommandoen. Prototypens
+I 5054-filen finnes `SHAPE_Area` som `double` uten nullverdier; geometry har
+heller ingen nullverdier, og kilde-CRS-et er metrisk EPSG:25833. Dette er ikke
+tilstrekkelig til å erklære `SHAPE_Area` endelig validert som polygonareal i m².
+Feltet må fortsatt kontrolleres mot et geometrisk utvalg før første reelle
+prepared-resultat godtas. Prototypens
 prepare-kommando beregner ikke areal fra WMS, BBOX, EPSG:4326 eller EPSG:3857.
 
 ## API og presentasjon

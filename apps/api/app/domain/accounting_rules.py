@@ -21,16 +21,15 @@ GRUNNKART_LEVEL0_RULES = Level0Rules(
     status=METHOD_STATUS,
     source_field="arealdekkeniva1",
     mapping={
-        # Fail-safe prototype mapping for Arealdekke nivå 1. Exact values must
-        # be verified against the real Grunnkart Parquet before preparing data.
-        "Bebygd og samferdsel": "built",
-        "Jordbruk": "agriculture",
-        "Skog": "nature",
-        "Snaumark": "nature",
-        "Myr": "nature",
-        "Snø/isbre": "nature",
-        "Ferskvann": "nature",
-        "Hav": "excluded",
+        # Exact, case-sensitive Arealdekke nivå 1 codes verified in the 5054
+        # Parquet. Any additional source code must pass the mapping gate first.
+        "bebygdSamferdsel": "built",
+        "jordbruk": "agriculture",
+        "skog": "nature",
+        "snaumark": "nature",
+        "myr": "nature",
+        "ferskvann": "nature",
+        "hav": "excluded",
     },
 )
 

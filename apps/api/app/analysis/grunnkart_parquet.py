@@ -6,6 +6,7 @@ from typing import Any
 
 import pyarrow.compute as pc
 import pyarrow.parquet as pq
+import pyarrow.types as patypes
 
 from app.domain.accounting_rules import (
     ACCOUNT_CATEGORY_IDS,
@@ -52,7 +53,10 @@ def inspect_parquet(path: Path) -> dict[str, Any]:
         "identifiedFields": relevant,
         "municipalityField": municipality_field,
         "areaFields": [
-            name for name in names if name == "SHAPE_Area" or "area" in name.lower()
+            field.name
+            for field in parquet.schema_arrow
+            if (field.name == "SHAPE_Area" or "area" in field.name.lower())
+            and _is_numeric(field.type)
         ],
         "geoParquetMetadata": _geo_metadata(parquet),
         "distinctValues": {},
@@ -192,3 +196,11 @@ def _metadata_null_counts(parquet: pq.ParquetFile) -> dict[str, int | None]:
             sum(values) if all(value is not None for value in values) else None
         )
     return counts
+
+
+def _is_numeric(data_type: Any) -> bool:
+    return (
+        patypes.is_integer(data_type)
+        or patypes.is_floating(data_type)
+        or patypes.is_decimal(data_type)
+    )

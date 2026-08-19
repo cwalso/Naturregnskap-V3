@@ -34,6 +34,8 @@ def parquet(
         {
             "kommunenummer": municipalities,
             "arealdekkeniva1": classes,
+            "arealdekkeniva2": ["ikke-et-arealfelt"] * len(areas),
+            "arealbruklandhovedklasse": ["tekst"] * len(areas),
             "okosystemtypeniva1": ecosystem_classes or ["Skog"] * len(areas),
             "SHAPE_Area": areas,
             "geometry": [b"unused"] * len(areas),
@@ -48,24 +50,44 @@ def test_paths_are_generic(tmp_path: Path) -> None:
     assert prepared_path("0301", tmp_path).name == "0301.json"
 
 
+def test_verified_level_zero_mapping_is_exact_and_case_sensitive() -> None:
+    assert GRUNNKART_LEVEL0_RULES.mapping == {
+        "bebygdSamferdsel": "built",
+        "jordbruk": "agriculture",
+        "skog": "nature",
+        "snaumark": "nature",
+        "myr": "nature",
+        "ferskvann": "nature",
+        "hav": "excluded",
+    }
+
+
 def test_inspector_reports_metadata_and_relevant_values(tmp_path: Path) -> None:
-    path = parquet(tmp_path / "source.parquet", ["4204"], ["Skog"], [10])
+    path = parquet(tmp_path / "source.parquet", ["4204"], ["skog"], [10])
     report = inspect_parquet(path)
     assert report["rowCount"] == 1
     assert report["rowGroups"] == 1
     assert report["distinctValues"]["kommunenummer"] == ["4204"]
-    assert report["distinctValues"]["arealdekkeniva1"] == ["Skog"]
+    assert report["distinctValues"]["arealdekkeniva1"] == ["skog"]
     assert report["distinctValues"]["okosystemtypeniva1"] == ["Skog"]
-    assert "SHAPE_Area" in report["areaFields"]
+    assert report["areaFields"] == ["SHAPE_Area"]
 
 
 def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> None:
     path = parquet(
         tmp_path / "source.parquet",
-        ["4204"] * 4,
-        ["Skog", "Jordbruk", "Bebygd og samferdsel", "Hav"],
-        [1_000_000, 200_000, 30_000, 5_000],
-        ["Bebygd og opparbeidet areal", "Dyrket mark", "Grasmark", "Hav"],
+        ["4204"] * 7,
+        [
+            "skog",
+            "snaumark",
+            "myr",
+            "ferskvann",
+            "jordbruk",
+            "bebygdSamferdsel",
+            "hav",
+        ],
+        [400_000, 300_000, 200_000, 100_000, 200_000, 30_000, 5_000],
+        ["Skog", "Snaumark", "Myr", "Ferskvann", "Åker", "By", "Hav"],
     )
     output = tmp_path / "prepared.json"
     result = prepare_balance(path, "4204", output, area_field="SHAPE_Area")
@@ -79,7 +101,7 @@ def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> 
 
 def test_prepare_rejects_multiple_municipalities(tmp_path: Path) -> None:
     path = parquet(
-        tmp_path / "source.parquet", ["4204", "0301"], ["Skog", "Skog"], [1, 1]
+        tmp_path / "source.parquet", ["4204", "0301"], ["skog", "skog"], [1, 1]
     )
     with pytest.raises(PreparationError, match="Forventet bare kommune"):
         prepare_balance(path, "4204", tmp_path / "out.json", area_field="SHAPE_Area")
@@ -106,7 +128,7 @@ def test_ecosystem_type_is_not_used_for_level_zero(tmp_path: Path) -> None:
 
 
 def test_provider_available_and_not_available(tmp_path: Path) -> None:
-    path = parquet(tmp_path / "source.parquet", ["4204"], ["Skog"], [2_000_000])
+    path = parquet(tmp_path / "source.parquet", ["4204"], ["skog"], [2_000_000])
     prepare_balance(
         path, "4204", prepared_path("4204", tmp_path), area_field="SHAPE_Area"
     )
@@ -126,8 +148,8 @@ def test_api_returns_missing_as_expected_state(tmp_path: Path) -> None:
             return Municipality(number=municipality_number, name="Testkommune")
 
     app.dependency_overrides[get_municipalities_adapter] = lambda: Adapter()
-    app.dependency_overrides[get_account_provider] = (
-        lambda: PreparedAccountBalanceProvider(tmp_path)
+    app.dependency_overrides[get_account_provider] = lambda: (
+        PreparedAccountBalanceProvider(tmp_path)
     )
     try:
         response = TestClient(app).get("/api/municipalities/4204/account-overview")
