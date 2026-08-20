@@ -99,3 +99,5 @@ ruff format --check .
 Instruksjonene i [`AGENTS.md`](AGENTS.md) og dokumentasjonen under [`docs/`](docs/)
 er permanent og førende kontekst for utviklingen. Endringer skal være avgrensede,
 reviewes før de tas inn og bevare de etablerte faglige domeneskillene.
+
+[Utviklingsplan for V3-prototypen](docs/utviklingsplan.md)
