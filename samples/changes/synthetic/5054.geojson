@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "fixtureType": "architecture_test",
+  "municipalityNumber": "5054",
+  "period": "synthetic-period-1",
+  "geometryCrs": "EPSG:25833",
+  "source": {
+    "dataset": "synthetic-change-fixture",
+    "version": "v1",
+    "purpose": "architecture_test"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "changeId": "synthetic-5054-001", "transition": { "fromLevel0": "nature", "toLevel0": "built" } },
+      "geometry": { "type": "Polygon", "coordinates": [[[257000, 7075000], [257100, 7075000], [257100, 7075100], [257000, 7075100], [257000, 7075000]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "changeId": "synthetic-5054-002", "transition": { "fromLevel0": "agriculture", "toLevel0": "built" } },
+      "geometry": { "type": "Polygon", "coordinates": [[[258000, 7076000], [258080, 7076000], [258080, 7076150], [258000, 7076150], [258000, 7076000]]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "changeId": "synthetic-5054-003", "transition": { "fromLevel0": "nature", "toLevel0": "agriculture" } },
+      "geometry": { "type": "Polygon", "coordinates": [[[259000, 7077000], [259050, 7077000], [259050, 7077120], [259000, 7077120], [259000, 7077000]]] }
+    }
+  ]
+}
