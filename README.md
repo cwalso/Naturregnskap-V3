@@ -14,6 +14,16 @@ profilheader med Miljødirektoratets offisielle logo og en permanent
 kart-tegnforklaring som følger aktive faglag. Dette er en tidlig
 profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
 
+## V3.6A
+
+V3.6A er en arkitektur-POC for polygonbaserte arealendringer. En generisk
+`ChangeFeature`-modell kobler geometri, areal, periode, overgang og proveniens,
+slik at kart og aggregert statistikk bygger på det samme forberedte
+feature-settet. Den versjonerte testen for kommune 5054 bruker utelukkende
+syntetiske data og dokumenterer arkitekturflyten, ikke reelle AR5-/SSB-data
+eller faktiske arealendringer. Manglende eller inkonsistente prepared-data
+rapporteres som `not_available`, ikke som et nullresultat.
+
 ## Arkitektur
 
 - `apps/web`: React, TypeScript i strict mode, Vite og OpenLayers. Kartmodulen
