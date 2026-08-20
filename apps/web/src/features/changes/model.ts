@@ -34,9 +34,16 @@ export interface ChangesData {
   readonly municipalityNumber: string
   readonly municipalityName: string
   readonly status: 'available' | 'not_available'
+  readonly generationId: string | null
   readonly period: string | null
   readonly source: ChangeSource | null
   readonly transitions: readonly ChangeArea[]
+}
+
+export interface ChangeFeaturesData {
+  readonly municipalityNumber: string
+  readonly status: 'available' | 'not_available'
+  readonly generationId: string | null
   readonly features: readonly ChangeFeature[]
 }
 
@@ -48,9 +55,9 @@ export function unavailableChanges(
     municipalityNumber,
     municipalityName,
     status: 'not_available',
+    generationId: null,
     period: null,
     source: null,
     transitions: [],
-    features: [],
   }
 }

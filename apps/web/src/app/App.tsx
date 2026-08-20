@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
-import { getChanges } from '../api/changes'
+import { getChangeFeatures, getChanges } from '../api/changes'
 import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
@@ -10,7 +10,7 @@ import { nationalLandCover2025 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import { Changes } from '../features/changes/Changes'
-import { unavailableChanges, type ChangesData } from '../features/changes/model'
+import { unavailableChanges, type ChangeFeature, type ChangesData } from '../features/changes/model'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 
@@ -22,7 +22,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const boundaryRequest = useRef(0)
   const accountRequest = useRef(0)
   const changesRequest = useRef(0)
-  const currentChangeFeatures = useRef<ChangesData['features']>([])
+  const changeFeaturesRequest = useRef(0)
+  const currentChangeFeatures = useRef<readonly ChangeFeature[]>([])
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
@@ -52,6 +53,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     const requestId = ++boundaryRequest.current
     const accountRequestId = ++accountRequest.current
     const changesRequestId = ++changesRequest.current
+    const changeFeaturesRequestId = ++changeFeaturesRequest.current
     setSelectedMunicipality(municipality)
     setAccountData(null)
     setChangesData(null)
@@ -74,12 +76,38 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
     void getChanges(municipality.number)
       .then((data) => {
-        if (changesRequestId === changesRequest.current) {
-          setChangesData(data)
-          currentChangeFeatures.current = data.features
-          map.current?.showChanges(data.features)
-          setChangesState('idle')
+        if (changesRequestId !== changesRequest.current) return
+
+        setChangesData(data)
+        setChangesState('idle')
+
+        if (data.status !== 'available' || !data.generationId) {
+          currentChangeFeatures.current = []
+          map.current?.clearChanges()
+          return
         }
+
+        void getChangeFeatures(municipality.number)
+          .then((featureData) => {
+            if (changeFeaturesRequestId !== changeFeaturesRequest.current) return
+
+            if (
+              featureData.status === 'available' &&
+              featureData.generationId === data.generationId
+            ) {
+              currentChangeFeatures.current = featureData.features
+              map.current?.showChanges(featureData.features)
+            } else {
+              currentChangeFeatures.current = []
+              map.current?.clearChanges()
+            }
+          })
+          .catch(() => {
+            if (changeFeaturesRequestId === changeFeaturesRequest.current) {
+              currentChangeFeatures.current = []
+              map.current?.clearChanges()
+            }
+          })
       })
       .catch(() => {
         if (changesRequestId === changesRequest.current) {

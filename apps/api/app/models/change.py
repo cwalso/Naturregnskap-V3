@@ -60,12 +60,19 @@ class PreparedChangeFeatures(CamelModel):
     features: list[ChangeFeature]
 
 
-class ChangeCollection(CamelModel):
+class ChangeSummary(CamelModel):
     municipality_number: str
     municipality_name: str
     status: Literal["available", "not_available"]
+    generation_id: str | None = None
     period: str | None = None
     source: ChangeSource | None = None
     provenance: ChangeProvenance | None = None
     transitions: list[ChangeArea] = Field(default_factory=list)
+
+
+class ChangeFeatureCollection(CamelModel):
+    municipality_number: str
+    status: Literal["available", "not_available"]
+    generation_id: str | None = None
     features: list[ChangeFeature] = Field(default_factory=list)

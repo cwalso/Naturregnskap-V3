@@ -84,11 +84,30 @@ def test_provider_rejects_mixed_preparation_generations(
     features_generation = json.loads(mixed_features.read_text())["generationId"]
     assert summary_generation != features_generation
 
-    result = PreparedChangesProvider(mixed).get("5054", "Indre Fosen")
+    result = PreparedChangesProvider(mixed).get_features("5054")
 
     assert result.status == "not_available"
-    assert result.transitions == []
     assert result.features == []
+
+
+def test_summary_remains_available_when_feature_file_is_missing(
+    tmp_path: Path,
+) -> None:
+    prepare(tmp_path)
+    _, features_path = prepared_change_paths("5054", tmp_path)
+    features_path.unlink()
+
+    provider = PreparedChangesProvider(tmp_path)
+
+    summary = provider.get_summary("5054", "Indre Fosen")
+    features = provider.get_features("5054")
+
+    assert summary.status == "available"
+    assert summary.generation_id is not None
+    assert sum(item.area_m2 for item in summary.transitions) == 28_000
+
+    assert features.status == "not_available"
+    assert features.features == []
 
 
 def test_provider_returns_available_and_missing_without_false_zero(
@@ -96,14 +115,23 @@ def test_provider_returns_available_and_missing_without_false_zero(
 ) -> None:
     prepare(tmp_path)
     provider = PreparedChangesProvider(tmp_path)
-    available = provider.get("5054", "Indre Fosen")
-    missing = provider.get("0301", "Oslo")
-    assert available.status == "available"
-    assert available.source and available.source.purpose == PURPOSE
-    assert len(available.features) == 3
-    assert missing.status == "not_available"
-    assert missing.transitions == []
-    assert missing.features == []
+
+    available_summary = provider.get_summary("5054", "Indre Fosen")
+    available_features = provider.get_features("5054")
+    missing_summary = provider.get_summary("0301", "Oslo")
+    missing_features = provider.get_features("0301")
+
+    assert available_summary.status == "available"
+    assert available_summary.source and available_summary.source.purpose == PURPOSE
+    assert available_summary.generation_id is not None
+    assert available_features.status == "available"
+    assert available_features.generation_id == available_summary.generation_id
+    assert len(available_features.features) == 3
+
+    assert missing_summary.status == "not_available"
+    assert missing_summary.transitions == []
+    assert missing_features.status == "not_available"
+    assert missing_features.features == []
 
 
 def test_api_change_model(tmp_path: Path) -> None:
@@ -117,16 +145,27 @@ def test_api_change_model(tmp_path: Path) -> None:
         tmp_path
     )
     try:
-        response = TestClient(app).get("/api/municipalities/5054/changes")
+        summary_response = TestClient(app).get("/api/municipalities/5054/changes")
+        features_response = TestClient(app).get(
+            "/api/municipalities/5054/changes/features"
+        )
     finally:
         app.dependency_overrides.clear()
-    assert response.status_code == 200
-    body = response.json()
-    assert body["status"] == "available"
-    assert body["source"] == {
+
+    assert summary_response.status_code == 200
+    summary_body = summary_response.json()
+    assert summary_body["status"] == "available"
+    assert summary_body["source"] == {
         "dataset": DATASET,
         "version": "v1",
         "purpose": PURPOSE,
     }
-    assert sum(item["areaM2"] for item in body["transitions"]) == 28_000
-    assert sum(item["areaM2"] for item in body["features"]) == 28_000
+    assert sum(item["areaM2"] for item in summary_body["transitions"]) == 28_000
+    assert "features" not in summary_body
+
+    assert features_response.status_code == 200
+    features_body = features_response.json()
+    assert features_body["status"] == "available"
+    assert features_body["generationId"] == summary_body["generationId"]
+    assert sum(item["areaM2"] for item in features_body["features"]) == 28_000
+    assert "transitions" not in features_body

@@ -25,7 +25,9 @@ samples/changes/synthetic/5054.geojson
   → .data/changes/prepared/{kommune}-summary.json
   + .data/changes/prepared/{kommune}-features.json
   → GET /api/municipalities/{kommune}/changes
-  → typed frontendmodell → tabell og OpenLayers
+      → aggregert endringsoversikt
+  → GET /api/municipalities/{kommune}/changes/features
+      → endringspolygoner til OpenLayers
 ```
 
 Fixturet klargjøres fra repo-roten med:
