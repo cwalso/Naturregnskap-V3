@@ -1,4 +1,6 @@
 import { AccountSummary } from './AccountSummary'
+import { AccountProvenance } from './AccountProvenance'
+import { getAccountProvenanceContent } from './content'
 import type { AccountOverviewData } from './model'
 
 interface AccountOverviewProps {
@@ -14,6 +16,7 @@ export function AccountOverview({ data }: AccountOverviewProps) {
         <p>Beholdning på overordnet nivå 0, basert på klargjort Grunnkart for arealanalyse.</p>
       </header>
       <AccountSummary metrics={data.metrics} />
+      <AccountProvenance content={getAccountProvenanceContent(data)} />
       {data.status === 'not_available' && <p className="account-overview__notice">Data er foreløpig ikke tilgjengelig for denne kommunen i prototypen.</p>}
     </section>
   )

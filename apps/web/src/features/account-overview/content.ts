@@ -1,4 +1,5 @@
 import type { AccountCategoryId } from './model'
+import type { AccountOverviewData } from './model'
 
 interface AccountCategoryContent {
   readonly label: string
@@ -18,4 +19,18 @@ export const accountCategoryContent: Record<AccountCategoryId, AccountCategoryCo
     label: 'Jordbruk',
     description: 'Areal som i regnskapsgrunnlaget er klassifisert som jordbruk.',
   },
+}
+
+export interface AccountProvenanceContent {
+  readonly sourceName: string
+  readonly referenceVersion: string
+  readonly methodVersion?: string
+}
+
+export function getAccountProvenanceContent(data: AccountOverviewData): AccountProvenanceContent {
+  return {
+    sourceName: 'Grunnkart for arealanalyse',
+    referenceVersion: data.sourceVersions?.[0] ?? data.period,
+    methodVersion: data.methodVersion ?? undefined,
+  }
 }
