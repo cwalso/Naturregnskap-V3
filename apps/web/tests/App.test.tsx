@@ -543,6 +543,42 @@ describe('overordnet regnskapsoversikt', () => {
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
     expect(screen.getByText('XX')).toBeInTheDocument()
   })
+
+  it('viser brukerrettet proveniens og skjuler tekniske metadata', () => {
+    const testData: AccountOverviewData & { generationId: string } = {
+      municipalityNumber: '5001',
+      municipalityName: 'Trondheim',
+      period: '2025',
+      status: 'available',
+      metrics: [
+        { id: 'nature', areaKm2: 123.45, sharePercent: null },
+        { id: 'agriculture', areaKm2: 2, sharePercent: null },
+        { id: 'built', areaKm2: 1, sharePercent: null },
+      ],
+      sourceVersions: ['2025'],
+      methodVersion: 'level0-v1',
+      generationId: 'technical-generation-id',
+    }
+
+    render(<AccountOverview data={testData} />)
+
+    expect(screen.getByText('Datagrunnlag:').closest('p')).toHaveTextContent('Datagrunnlag: Grunnkart for arealanalyse 2025')
+    const details = screen.getByText('Om datagrunnlaget', { selector: 'summary' }).closest('details')
+    expect(details).not.toHaveAttribute('open')
+
+    fireEvent.click(screen.getByText('Om datagrunnlaget', { selector: 'summary' }))
+
+    expect(details).toHaveAttribute('open')
+    expect(screen.getByRole('heading', { name: 'Om datagrunnlaget' })).toBeInTheDocument()
+    expect(screen.getByText('Kilde').nextElementSibling).toHaveTextContent('Grunnkart for arealanalyse')
+    expect(screen.getByText('Referanseversjon').nextElementSibling).toHaveTextContent('2025')
+    expect(screen.getByText(/En overordnet arealfordeling/)).toBeInTheDocument()
+    expect(screen.getByText(/Metodeversjon: level0-v1/)).toBeInTheDocument()
+    expect(screen.getByText(/heldekkende innenfor den geografiske avgrensningen/)).toBeInTheDocument()
+    expect(screen.getByText(/beskriver ikke i seg selv naturtilstand/)).toBeInTheDocument()
+    expect(screen.queryByText(/technical-generation-id/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/generationId/i)).not.toBeInTheDocument()
+  })
 })
 
 describe('generisk endringsmodell', () => {
