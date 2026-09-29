@@ -277,7 +277,7 @@ def _ring_area(points: list[tuple[float, float]]) -> float:
     signed = sum(
         x1 * y2 - x2 * y1
         for (x1, y1), (x2, y2) in zip(
-            translated,
+            translated[:-1],
             translated[1:],
             strict=True,
         )
