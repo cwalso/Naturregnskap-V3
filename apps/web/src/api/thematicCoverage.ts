@@ -12,6 +12,8 @@ export interface ThematicDatasetEvaluation {
 export interface ThematicCoverageResponse {
   readonly municipalityNumber: string
   readonly municipalityName: string
+  readonly methodVersion: 'thematic-intersection-v1'
+  readonly warnings: readonly string[]
   readonly results: readonly ThematicDatasetEvaluation[]
 }
 
@@ -41,6 +43,11 @@ function isCoverageResponse(value: unknown): value is ThematicCoverageResponse {
     || typeof value.municipalityNumber !== 'string'
     || !('municipalityName' in value)
     || typeof value.municipalityName !== 'string'
+    || !('methodVersion' in value)
+    || value.methodVersion !== 'thematic-intersection-v1'
+    || !('warnings' in value)
+    || !Array.isArray(value.warnings)
+    || !value.warnings.every((item) => typeof item === 'string')
     || !('results' in value)
     || !Array.isArray(value.results)
   ) return false
