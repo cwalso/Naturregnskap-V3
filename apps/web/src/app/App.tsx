@@ -338,39 +338,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   </button>
                 </section>
 
-                <section className="map-sidebar__feature-info" aria-labelledby="feature-info-title">
-                  <h3 id="feature-info-title">Objektinformasjon</h3>
-                  {mapFeatureInfo.status === 'idle' && (
-                    <p>
-                      {activeThematicCount > 0
-                        ? 'Klikk på et objekt i kartet for å se informasjon fra aktive temalag.'
-                        : 'Slå på et supplerende temalag og klikk deretter på et objekt i kartet.'}
-                    </p>
-                  )}
-                  {mapFeatureInfo.status === 'loading' && (
-                    <p role="status">Henter objektinformasjon…</p>
-                  )}
-                  {mapFeatureInfo.status === 'error' && (
-                    <p role="alert">{mapFeatureInfo.message}</p>
-                  )}
-                  {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
-                    <p>Ingen objektinformasjon ble funnet i de aktive temalagene på dette punktet.</p>
-                  )}
-                  {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.map((result) => (
-                    <article className="map-feature-card" key={result.datasetId}>
-                      <h4>{result.datasetTitle}</h4>
-                      <dl>
-                        {result.fields.map((field, index) => (
-                          <div key={`${result.datasetId}-${field.label}-${index}`}>
-                            <dt>{field.label}</dt>
-                            <dd>{field.value}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </article>
-                  ))}
-                </section>
-
                 {legend}
               </>
             ) : (
@@ -394,11 +361,75 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 </span>
               </div>
             )}
-            <div
-              ref={mapElement}
-              className="map"
-              aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
-            />
+            <div className="map-canvas">
+              <div
+                ref={mapElement}
+                className="map"
+                aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
+              />
+
+              {variant === 'explore' && mapFeatureInfo.status !== 'idle' && (
+                <>
+                  <span
+                    className="map-selection-marker"
+                    style={{ left: mapFeatureInfo.point.x, top: mapFeatureInfo.point.y }}
+                    aria-hidden="true"
+                  />
+                  <aside className="map-info-popup" role="dialog" aria-label="Objektinformasjon">
+                    <button
+                      type="button"
+                      className="map-info-popup__close"
+                      aria-label="Lukk objektinformasjon"
+                      onClick={() => setMapFeatureInfo({ status: 'idle', results: [] })}
+                    >
+                      ×
+                    </button>
+
+                    {mapFeatureInfo.status === 'loading' && (
+                      <>
+                        <p className="map-info-popup__eyebrow">Valgt punkt</p>
+                        <p role="status">Henter objektinformasjon…</p>
+                      </>
+                    )}
+
+                    {mapFeatureInfo.status === 'error' && (
+                      <>
+                        <p className="map-info-popup__eyebrow">Objektinformasjon</p>
+                        <p role="alert">{mapFeatureInfo.message}</p>
+                      </>
+                    )}
+
+                    {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
+                      <>
+                        <p className="map-info-popup__eyebrow">Valgt punkt</p>
+                        <p>Ingen objektinformasjon ble funnet i de aktive temalagene her.</p>
+                      </>
+                    )}
+
+                    {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.map((result) => (
+                      <article className="map-feature-card" key={result.datasetId}>
+                        <p className="map-info-popup__eyebrow">{result.datasetTitle}</p>
+                        <h4>{result.objectLabel}</h4>
+                        <dl>
+                          {result.fields.map((field, index) => (
+                            <div key={`${result.datasetId}-${field.label}-${index}`}>
+                              <dt>{field.label}</dt>
+                              <dd>
+                                {field.url ? (
+                                  <a href={field.url} target="_blank" rel="noreferrer">
+                                    {field.value}
+                                  </a>
+                                ) : field.value}
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </article>
+                    ))}
+                  </aside>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
