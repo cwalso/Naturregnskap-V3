@@ -129,3 +129,36 @@ python -m app.scripts.prepare_account_balance_gml \
 Andre kommando skal bare kjøres videre dersom inspeksjonen viser kommune 5001,
 forventede Arealdekke nivå 1-koder og metrisk CRS. Ukjente klasser stopper
 beregningen.
+
+
+## Metodisk presisjon kontra geometrisk presisjon
+
+Denne implementasjonen skiller mellom to typer nøyaktighet:
+
+1. **Geometrisk/beregningsmessig presisjon.** Areal kan beregnes direkte fra
+   metrisk kildegeometri eller et validert arealfelt. Denne delen er
+   deterministisk og kan rekonsileres ned på kildearealet.
+2. **Metodisk klassifikasjon.** Resultatet er bare så faglig presist som den
+   eksplisitte Level0-regelen. Regelsettet har derfor fortsatt status
+   `prototype` selv om selve summeringen er eksakt og reproducerbar.
+
+Gjeldende aksepterte V3-regel bygger Level0-beholdningen fra
+`arealdekkeniva1`, ikke `okosystemtypeniva1`. Økosystemtype er en separat
+klassifikasjon og brukes i sporet for mer detaljert informasjon om naturen.
+
+Før produksjonssetting må minst følgende vurderes eksplisitt:
+
+- Arealdekke nivå 1 `snaumark` omfatter på nivå 2 også
+  «Snaumark (konstruert)». Årsversjon 2025 kan blant annet kode bergverk som
+  konstruert snaumark. Gjeldende Level0-regel mapper hele nivå-1-klassen
+  `snaumark` til Natur.
+- Kildeklassen `jordbruk` omfatter mer enn det ordet «Dyrket mark» isolert
+  sett kan gi inntrykk av. «Dyrket mark» er i V3 en brukerrettet etikett for
+  den stabile domenekategorien `agriculture`, ikke en ny kildeklassifikasjon.
+- Hav er foreløpig eksplisitt ekskludert i beholdningsregelen, mens enkelte
+  arbeidsutkast for endringsanalyse grupperer hav under Natur. Dette må
+  harmoniseres før en metodeversjon kan omtales som endelig.
+
+Disse punktene skal ikke løses ved skjult omkoding. En endring i
+klassifikasjonsregelen skal gi ny metodeversjon og være synlig i tidsserier og
+sammenligninger.
