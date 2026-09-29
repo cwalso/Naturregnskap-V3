@@ -208,3 +208,38 @@
     width: min(100% - 1.25rem, 70rem);
   }
 }
+
+
+/* V3.10 – responsive overview/explore */
+@media (max-width: 62rem) {
+  .overview-context,
+  .nature-basis,
+  .theme-explorer,
+  .classification-note {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .theme-detail {
+    position: static;
+  }
+}
+
+@media (max-width: 44rem) {
+  .journey-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-card {
+    min-height: 12rem;
+  }
+
+  .overview-context__fact,
+  .nature-basis__status,
+  .classification-note {
+    padding: 1rem;
+  }
+}
