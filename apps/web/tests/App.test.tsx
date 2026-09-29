@@ -124,14 +124,14 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
     expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Tallgrunnlaget er ikke koblet til ennå' })).toBeInTheDocument()
-    expect(screen.getByText(/skal ikke forutsette stedfestede utbyggingspolygoner/)).toBeInTheDocument()
+    expect(screen.getByText('XX dekar')).toBeInTheDocument()
+    expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk naturen' }))
     expect(screen.getByRole('heading', { name: 'Utforsk naturen' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Temadata som kan gi mer kontekst' })).toBeInTheDocument()
-    expect(screen.getByText('Verdsatte naturtyper')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Tilstand og økosystemtjenester' })).toBeInTheDocument()
   })
 

@@ -3,11 +3,11 @@ interface ExploreNaturePageProps {
 }
 
 const supplementalThemes = [
-  'Verdsatte naturtyper',
-  'Verneområder',
-  'Villreinområder',
-  'Inngrepsfri natur',
-  'Bynatur',
+  { name: 'Verdsatte naturtyper', icon: '◫', description: 'Kartlagte og verdsatte naturtyper som supplerende innsikt.' },
+  { name: 'Verneområder', icon: '◆', description: 'Verneområder og relevante avgrensninger.' },
+  { name: 'Villreinområder', icon: '⌁', description: 'Villreinområder og relevante temadata.' },
+  { name: 'Inngrepsfri natur', icon: '◎', description: 'Inngrepsfri natur og utvikling i relevante soner.' },
+  { name: 'Bynatur', icon: '○', description: 'Supplerende data om natur i tettbygde og bynære områder.' },
 ] as const
 
 export function ExploreNaturePage({ municipalityName }: ExploreNaturePageProps) {
@@ -16,53 +16,59 @@ export function ExploreNaturePage({ municipalityName }: ExploreNaturePageProps) 
   return (
     <section className="content-page" aria-labelledby="explore-nature-title">
       <header className="content-page__intro">
-        <p className="content-page__eyebrow">Dagens natur</p>
+        <p className="content-page__eyebrow">Naturregnskap / Dagens natur</p>
         <h1 id="explore-nature-title">Utforsk naturen{place}</h1>
         <p>
-          Her skal regnskapsgrunnlaget kunne utforskes mer detaljert og suppleres
-          med andre naturdata. Det skal være tydelig hva som er del av selve
-          naturregnskapet, og hva som er supplerende innsikt.
+          Her skal du kunne gå fra den overordnede arealfordelingen til mer
+          detaljert kunnskap om naturen. Regnskapsgrunnlag og supplerende
+          temadata skal hele tiden være tydelig skilt.
         </p>
       </header>
 
       <section className="content-page__section" aria-labelledby="account-basis-title">
         <div className="section-heading">
-          <p className="section-heading__kicker">Regnskapsgrunnlag</p>
+          <span className="section-tag">Regnskapsgrunnlag</span>
           <h2 id="account-basis-title">Heldekkende informasjon om dagens natur</h2>
+          <p>
+            Første versjon bygger på et felles, heldekkende og etterprøvbart
+            arealgrunnlag. Mer detaljert naturinndeling må kunne kobles til dette
+            grunnlaget uten å svekke sammenlignbarhet og sporbarhet.
+          </p>
         </div>
-        <div className="info-card info-card--wide">
+
+        <article className="info-card info-card--wide">
           <span className="status-tag">Neste datautvidelse</span>
           <h3>Mer detaljert naturinndeling</h3>
           <p>
-            Dagens prototype viser Level0-kategoriene Natur, Jordbruk og Bebygd.
-            Videre detaljering skal bygge på et heldekkende og versjonert
-            grunnlag, med dokumentert kobling mellom klassifikasjoner.
+            Dagens prototype viser Natur, Jordbruk og Bebygd. Neste steg er å
+            kunne utforske naturen mer detaljert når et egnet heldekkende
+            datagrunnlag og kobling mellom klassifikasjoner er avklart.
           </p>
           <p className="info-card__note">
-            Naturkart og andre nye datakilder kan bidra til mer detaljert
-            naturinformasjon, men rollen i selve regnskapsgrunnlaget må avklares.
+            Naturkart er et relevant bidrag til mer detaljert naturinformasjon,
+            men rollen mot Grunnkart for arealanalyse og selve regnskapet må
+            være tydelig dokumentert.
           </p>
-        </div>
+        </article>
       </section>
 
       <section className="content-page__section" aria-labelledby="themes-title">
         <div className="section-heading">
-          <p className="section-heading__kicker">Supplerende innsikt</p>
-          <h2 id="themes-title">Temadata som kan gi mer kontekst</h2>
+          <span className="section-tag">Supplerende innsikt</span>
+          <h2 id="themes-title">Se nærmere på naturen</h2>
           <p>
-            Temalag kan være viktige i arealplanlegging, men er ikke automatisk
-            en del av det heldekkende regnskapsgrunnlaget.
+            Temadata kan gi viktig innsikt i arealplanlegging og naturforvaltning,
+            men inngår ikke nødvendigvis i selve regnskapsgrunnlaget.
           </p>
         </div>
+
         <div className="theme-grid">
           {supplementalThemes.map((theme) => (
-            <article className="theme-card" key={theme}>
+            <article className="theme-card" key={theme.name}>
+              <div className="theme-card__icon" aria-hidden="true">{theme.icon}</div>
+              <h3>{theme.name}</h3>
+              <p>{theme.description}</p>
               <span className="status-tag status-tag--muted">Ikke koblet til ennå</span>
-              <h3>{theme}</h3>
-              <p>
-                Datadekning, versjon og riktig bruk må beskrives når temaet
-                kobles til løsningen.
-              </p>
             </article>
           ))}
         </div>
@@ -74,7 +80,7 @@ export function ExploreNaturePage({ municipalityName }: ExploreNaturePageProps) 
         <p>
           Tilstand og økosystemtjenester er viktige deler av naturregnskap på
           sikt, men skal ikke framstilles som ferdige kommunale regnskapsdeler i
-          denne første versjonen.
+          første versjon. Datagrunnlag, metode og bruk må utvikles trinnvis.
         </p>
       </section>
     </section>

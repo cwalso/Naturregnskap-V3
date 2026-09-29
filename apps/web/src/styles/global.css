@@ -146,3 +146,216 @@ label { font-weight: 700; }
   background: var(--color-surface-subtle);
   border-top: 1px solid var(--color-border);
 }
+
+
+/* V3.9 designretning – basert på godkjent Naturtapet-skisse */
+body { font-size: 16px; }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 22%);
+}
+.site-header__product {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.site-header__logo-surface {
+  border-radius: 2px;
+}
+.site-header__actions a,
+.site-header__actions .site-header__action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.15rem;
+  padding: .42rem .68rem;
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-header-text);
+  font-size: .82rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.site-header__actions a:hover,
+.site-header__actions .site-header__action:hover {
+  background: rgb(255 255 255 / 8%);
+}
+.primary-navigation a {
+  font-size: .84rem;
+  font-weight: 500;
+  opacity: .94;
+}
+.primary-navigation a[aria-current='page'] {
+  border-bottom-color: #f0c85a;
+  font-weight: 700;
+  opacity: 1;
+}
+.start-view__eyebrow,
+.overview-intro__eyebrow,
+.content-page__eyebrow,
+.account-overview__eyebrow,
+.section-heading__kicker {
+  margin-bottom: .65rem;
+  color: var(--color-accent);
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.overview-intro h1,
+.content-page__intro h1,
+.start-view__intro h1 {
+  font-size: clamp(2rem, 4vw, 2.55rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+}
+.overview-intro > p:last-child,
+.content-page__intro > p:last-child,
+.start-view__intro > p:not(.start-view__eyebrow) {
+  font-size: 1.05rem;
+  color: #364241;
+}
+.account-overview {
+  border-top: 1px solid #edf0ef;
+}
+.account-overview h2,
+.map-workspace__header h2 {
+  font-size: clamp(1.5rem, 3vw, 1.85rem);
+}
+.account-metric {
+  border: 1px solid #e3e9e7;
+  box-shadow: var(--shadow-card);
+}
+.account-metric--nature {
+  background: #dfeceb;
+}
+.account-metric--agriculture {
+  background: #fbf8ef;
+}
+.account-metric--built {
+  background: #f3f5f4;
+}
+.account-metric h2 {
+  margin-top: .75rem;
+  font-size: .82rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.account-metric__value {
+  font-size: clamp(2.15rem, 4.2vw, 3.25rem);
+  font-weight: 500;
+}
+.account-provenance__details {
+  background: #f4f8f7;
+}
+.map-workspace__body {
+  border: 1px solid #e2e5df;
+  box-shadow: var(--shadow-card);
+}
+.map-sidebar {
+  background: #faf7ed;
+}
+.status-panel {
+  background: var(--color-warning-surface);
+  border: 1px solid var(--color-warning-border);
+  border-left-width: 1px;
+}
+.future-panel {
+  background: #fbfaf5;
+  border-left: 4px solid var(--color-accent);
+}
+.info-card,
+.theme-card {
+  border: 1px solid #e3e9e7;
+  border-top-width: 1px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+.info-card--soft {
+  background: var(--color-surface-subtle);
+  box-shadow: none;
+}
+.status-tag {
+  border-radius: 999px;
+  padding: .32rem .58rem;
+  background: #e4f0ef;
+  font-size: .72rem;
+}
+.prototype-note {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: .3rem .58rem;
+  border: 1px solid #ecd77b;
+  border-radius: 999px;
+  background: #fff3bf;
+  color: #654d14;
+  font-size: .72rem;
+  font-weight: 700;
+}
+.design-kpis {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: .65rem;
+}
+.design-kpi {
+  min-height: 9.25rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius-surface);
+}
+.design-kpi--historic { background: #dfeceb; }
+.design-kpi--context { background: #fbf0c9; }
+.design-kpi__label {
+  margin-bottom: .7rem;
+  font-size: .82rem;
+  font-weight: 700;
+}
+.design-kpi__value {
+  margin-bottom: .65rem;
+  font-size: clamp(2rem, 4vw, 2.35rem);
+  line-height: 1;
+  font-weight: 500;
+}
+.design-kpi__meta {
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+  font-size: .78rem;
+}
+.method-note {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  margin-top: .8rem;
+  padding: .8rem .9rem;
+  border: 1px solid var(--color-warning-border);
+  background: var(--color-warning-surface);
+  color: #465250;
+  font-size: .82rem;
+}
+.method-note__icon {
+  color: var(--color-plan-accent);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: .35rem .6rem;
+  background: #e4f0ef;
+  color: var(--color-accent);
+  font-size: .72rem;
+  font-weight: 700;
+}
+.theme-card__icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: .8rem;
+  border-radius: 50%;
+  background: #e4f0ef;
+  color: var(--color-accent);
+  font-weight: 700;
+}
