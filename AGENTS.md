@@ -12,7 +12,7 @@ Løsningen er et virkemiddel. Verdien ligger i et felles og etterprøvbart regns
 
 1. Regnskapsgrunnlag og supplerende temadata skal aldri blandes sammen uten eksplisitt metodisk beslutning.
 2. Første regnskapskjerne bygger på heldekkende data, Grunnkart for arealanalyse som beholdningsgrunnlag og SSBs utbyggingsregnskap som endringsgrunnlag.
-3. Overordnet nivå 0 i regnskapet er Bebygd, Jordbruk og Natur.
+3. Overordnet nivå 0 i fagmodellen er Bebygd, Jordbruk og Natur. I V3 er den brukerrettede etiketten for domenekategorien `agriculture` «Dyrket mark». Dette er en presentasjonsetikett; den endrer ikke kildekoden `jordbruk` eller fagmodellens stabile domene-ID.
 4. Økosystemtyper beskriver naturen i dag og er en annen klassifikasjon enn nivå 0. De to skal ikke forveksles.
 5. Temadata som inngrepsfri natur, verneområder, villreinområder og verdsatte naturtyper er supplerende kunnskapslag. Manglende treff skal ikke tolkes som fravær av naturverdi.
 6. Det skal ikke bygges tidsserier eller trendpåstander på detaljerte temadata uten uttrykkelig metodisk avklaring.
