@@ -40,7 +40,8 @@ skal ikke brukes som Level0-regnskapsgrunnlag eller blandes inn i arealberegning
 
 V3 har nå en egen analyseflyt for kommunespesifikk treffstatus. Kommunegrensen
 fra Kartverket brukes som spørringsgeometri mot Miljødirektoratets ArcGIS
-feature-lag. WMS-bildet brukes ikke til denne vurderingen.
+feature-lag. WMS-bildet brukes ikke til denne vurderingen. Metoden er versjonert
+som `thematic-intersection-v1`.
 
 Følgende statuser brukes:
 
@@ -97,3 +98,13 @@ WMS `GetFeatureInfo` garanterer ikke at objektgeometrien returneres. V3 skal
 derfor ikke late som det valgte polygonet er fremhevet når vi bare har
 attributter fra kartoppslaget. Eksakt fremheving av valgt polygon krever en
 vektorkilde eller annen kilde som returnerer geometri.
+
+
+## Versjonering av kilder
+
+Treffstatusen bruker i denne prototypen løpende feature-tjenester hos
+Miljødirektoratet. Resultatet er derfor ikke bundet til en låst kildeversjon og
+kan endre seg når kildedata oppdateres. API-responsen skal bære denne
+begrensningen som en eksplisitt advarsel. Før eventuell produksjonsbruk må det
+avklares hvordan kildeversjon, tidspunkt og historiske uttrekk skal låses og
+spores.
