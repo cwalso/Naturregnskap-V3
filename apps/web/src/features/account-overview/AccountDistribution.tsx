@@ -19,7 +19,24 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
       </div>
 
       {data.status === 'available' ? (
-        <div className="overview-distribution__metrics">
+        <>
+          {data.metrics.every((metric) => metric.sharePercent !== null) && (
+            <div
+              className="overview-distribution__bar"
+              role="img"
+              aria-label="Fordeling mellom Natur, Dyrket mark og Bebygd innenfor Level0-balansen"
+            >
+              {data.metrics.map((metric) => (
+                <span
+                  key={`bar-${metric.id}`}
+                  className={`overview-distribution__segment overview-distribution__segment--${metric.id}`}
+                  style={{ width: `${metric.sharePercent ?? 0}%` }}
+                  title={`${accountCategoryContent[metric.id].label}: ${metric.sharePercent?.toFixed(1)} %`}
+                />
+              ))}
+            </div>
+          )}
+          <div className="overview-distribution__metrics">
           {data.metrics.map((metric) => (
             <div className={`overview-distribution__metric overview-distribution__metric--${metric.id}`} key={metric.id}>
               <span className="overview-distribution__swatch" aria-hidden="true" />
@@ -33,7 +50,12 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
               </span>
             </div>
           ))}
-        </div>
+          </div>
+          <p className="overview-distribution__denominator">
+            Fordelingen gjelder arealet som inngår i de tre Level0-kategoriene.
+            Eventuelt ekskludert areal er ikke med i søylen.
+          </p>
+        </>
       ) : (
         <p className="overview-distribution__empty">
           Arealfordelingen vises når Level0-resultatet er klargjort for kommunen.
