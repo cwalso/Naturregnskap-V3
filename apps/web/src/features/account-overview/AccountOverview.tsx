@@ -19,9 +19,17 @@ export function AccountOverview({ data }: AccountOverviewProps) {
           regnskapsgrunnlag.
         </p>
       </header>
-      <AccountSummary metrics={data.metrics} />
+      {data.status === 'available' ? (
+        <AccountSummary metrics={data.metrics} />
+      ) : (
+        <div className="account-overview__unavailable" role="status">
+          <strong>Regnskapstall er ikke klargjort for {data.municipalityName} i prototypen ennå.</strong>
+          <span>
+            Vi viser ikke eksempelverdier eller nuller når et etterprøvbart Level0-resultat mangler.
+          </span>
+        </div>
+      )}
       <AccountProvenance content={getAccountProvenanceContent(data)} />
-      {data.status === 'not_available' && <p className="account-overview__notice">Data er foreløpig ikke tilgjengelig for denne kommunen i prototypen.</p>}
     </section>
   )
 }
