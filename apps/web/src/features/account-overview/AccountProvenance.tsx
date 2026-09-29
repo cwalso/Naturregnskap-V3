@@ -25,7 +25,7 @@ export function AccountProvenance({ content }: AccountProvenanceProps) {
             </div>
             <div>
               <dt>Hva viser regnskapet?</dt>
-              <dd>En overordnet arealfordeling for kommunen, klassifisert som Natur, Jordbruk og Bebygd.</dd>
+              <dd>En overordnet arealfordeling for kommunen, klassifisert som Natur, Dyrket mark og Bebygd.</dd>
             </div>
             <div>
               <dt>Metode</dt>
