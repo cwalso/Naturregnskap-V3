@@ -243,6 +243,42 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   ) {
     if (!selectedMunicipality) return null
 
+    if (variant === 'overview') {
+      return (
+        <section className="overview-map-card" aria-labelledby="overview-map-title">
+          <div className="overview-card__header">
+            <h2 id="overview-map-title">{title}</h2>
+            <p>{description}</p>
+          </div>
+
+          <div className="overview-map-card__map">
+            {mapRuntimeError && (
+              <div className="map-runtime-error" role="alert">
+                Kartet kunne ikke initialiseres: {mapRuntimeError}
+              </div>
+            )}
+            <div
+              ref={mapElement}
+              className="map"
+              aria-label={`Kart over ${selectedMunicipality.name}`}
+            />
+            <div className="overview-map-card__legend" aria-label="Kartgrunnlag">
+              <span className="overview-map-card__legend-swatch" aria-hidden="true" />
+              <span>Grunnkart for arealanalyse · 2025</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="overview-map-card__action"
+            onClick={() => navigate('utforsk-i-kart')}
+          >
+            Åpne full kartvisning <span aria-hidden="true">→</span>
+          </button>
+        </section>
+      )
+    }
+
     const layerToggle = (
       <label className={variant === 'explore' ? 'layer-toggle' : undefined}>
         <input
