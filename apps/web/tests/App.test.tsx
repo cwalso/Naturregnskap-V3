@@ -413,11 +413,12 @@ describe('Level0-regnskap', () => {
     expect(screen.getByText('Arealbasert naturregnskap · 2025')).toBeInTheDocument()
   })
 
-  it('viser not_available som XX og ikke som null', () => {
+  it('viser manglende Level0-data som en tydelig utilgjengelig-tilstand, ikke XX-kort', () => {
     const data = accountResponse('5001', 'Trondheim', null) as AccountOverviewData
     render(<AccountOverview data={data} />)
 
-    expect(screen.getAllByText('XX')).toHaveLength(3)
-    expect(screen.getByText(/Data er foreløpig ikke tilgjengelig/)).toBeInTheDocument()
+    expect(screen.queryByText('XX')).not.toBeInTheDocument()
+    expect(screen.getByText(/Regnskapstall er ikke klargjort for Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText(/Vi viser ikke eksempelverdier eller nuller/)).toBeInTheDocument()
   })
 })
