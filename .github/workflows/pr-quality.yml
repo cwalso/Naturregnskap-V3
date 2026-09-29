@@ -102,9 +102,26 @@ jobs:
                   print("ATOM_STATUS", response.status, "BYTES", len(body))
                   root = ET.fromstring(body)
                   ns = {"a": "http://www.w3.org/2005/Atom"}
-                  for link in root.findall(".//a:link", ns)[:80]:
-                      print("ATOM_LINK", link.attrib)
+                  entries = root.findall(".//a:entry", ns)
+                  print("ATOM_ENTRIES", len(entries))
+                  for entry in entries:
+                      title = (entry.findtext("a:title", default="", namespaces=ns) or "").strip()
+                      entry_id = (entry.findtext("a:id", default="", namespaces=ns) or "").strip()
+                      text_blob = (title + " " + entry_id).lower()
+                      if "trondheim" in text_blob or "5001" in text_blob:
+                          print("TRONDHEIM_ENTRY_TITLE", title)
+                          print("TRONDHEIM_ENTRY_ID", entry_id)
+                          for link in entry.findall("a:link", ns):
+                              print("TRONDHEIM_LINK", link.attrib)
+
+              for kind in ("area", "format", "projection"):
+                  url = f"https://nedlasting.geonorge.no/api/codelists/{kind}/{uuid}"
+                  print("CODELIST_URL", url)
+                  with urllib.request.urlopen(url, timeout=30) as response:
+                      body = response.read()
+                      print("CODELIST", kind, response.status, len(body))
+                      print(body[:20000].decode("utf-8", errors="replace"))
           except Exception as exc:
-              print("ATOM_ERROR", repr(exc))
+              print("ATOM_OR_CODELIST_ERROR", repr(exc))
           PY
 
