@@ -532,7 +532,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   const overview = selectedMunicipality ? (
         <OverviewPage
-          municipalityName={selectedMunicipality.name}
           onNavigate={navigate}
           accountContent={
             accountState === 'loading'
