@@ -143,7 +143,7 @@ def test_provider_available_and_not_available(tmp_path: Path) -> None:
     missing = provider.get("0301", "Oslo")
     assert available.status == "available"
     assert available.metrics[0].area_km2 == 2
-    assert available.metrics[0].share_percent is None
+    assert available.metrics[0].share_percent == 100
     assert available.classified_area_km2 == 2
     assert available.excluded_area_km2 == 0
     assert available.source_format == "geoparquet"
