@@ -30,6 +30,10 @@ class PreparedAccountBalance(CamelModel):
     period: Literal["2025"]
     dataset_version: str
     source_file: str
+    source_sha256: str | None = None
+    source_format: str | None = None
+    source_feature_count: int | None = Field(default=None, ge=0)
+    area_method: str | None = None
     geo_parquet_version: str | None = None
     method_version: str
     method_status: Literal["prototype"]
