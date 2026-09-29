@@ -31,6 +31,7 @@ function mapMock(): MunicipalityMap {
     setThematicLayerVisible: vi.fn(),
     setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
+    clearFeatureInfo: vi.fn(),
     fitToBoundary: vi.fn(),
     showChanges: vi.fn(),
     clearChanges: vi.fn(),
@@ -286,6 +287,22 @@ describe('sidestruktur og Oversikt', () => {
       'https://example.test/bymarka',
     )
     expect(document.querySelector('.map-selection-marker')).toHaveStyle({ left: '220px', top: '160px' })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Lukk objektinformasjon' }))
+    expect(map.clearFeatureInfo).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      featureInfoHandler?.({
+        status: 'ready',
+        point: { x: 220, y: 160 },
+        results: [{
+          datasetId: 'protected-areas',
+          datasetTitle: 'Naturvernområder',
+          objectLabel: 'Bymarka naturreservat',
+          fields: [{ label: 'Navn', value: 'Bymarka naturreservat' }],
+        }],
+      })
+    })
 
     await act(async () => {
       featureInfoHandler?.({
