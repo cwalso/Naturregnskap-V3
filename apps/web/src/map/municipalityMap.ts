@@ -93,17 +93,30 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     if (!dataset) return null
 
     const document = new DOMParser().parseFromString(html, 'text/html')
-    const rows = Array.from(document.querySelectorAll('tr'))
     const ignoredFields = /^(shape|shape_|objectid|fid|geometry|st_area|st_length)/i
     const fields: MapFeatureInfoField[] = []
 
-    for (const row of rows) {
-      const cells = Array.from(row.querySelectorAll('th, td'))
-      if (cells.length < 2) continue
-      const label = cells[0].textContent?.trim() ?? ''
-      const value = cells[1].textContent?.trim() ?? ''
-      if (!label || !value || ignoredFields.test(label)) continue
+    function addField(label: string, value: string) {
+      if (fields.length >= 8 || !label || !value || ignoredFields.test(label)) return
+      if (fields.some((field) => field.label === label && field.value === value)) return
       fields.push({ label, value })
+    }
+
+    for (const table of Array.from(document.querySelectorAll('table'))) {
+      const rows = Array.from(table.querySelectorAll('tr')).map((row) => (
+        Array.from(row.querySelectorAll('th, td'))
+          .map((cell) => cell.textContent?.trim() ?? '')
+          .filter(Boolean)
+      ))
+
+      if (rows.length >= 2 && rows[0].length > 2 && rows[0].length === rows[1].length) {
+        rows[0].forEach((label, index) => addField(label, rows[1][index] ?? ''))
+      } else {
+        rows.forEach((cells) => {
+          if (cells.length >= 2) addField(cells[0], cells[1])
+        })
+      }
+
       if (fields.length >= 8) break
     }
 
