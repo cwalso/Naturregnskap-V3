@@ -30,10 +30,10 @@ arkitekturavklaringer.
 | V3.5 – Proveniens og etterprøvbarhet | ✅ Ferdig | Gjøre kilde, metode, versjon/periode og viktige avgrensninger forståelige og nyttige for brukeren. | Brukerrettet proveniens er etablert for dagens Level0-regnskap. Kilde, referanseversjon eller regnskapsperiode, metode og viktige avgrensninger kan formidles i brukerflaten. Teknisk sporbarhet beholdes i backend uten å eksponeres unødvendig. Videre forbedring av metadata-kontrakten tas ved konkret behov. |
 | V3.6 – Generisk preparation-pipeline | 🔵 Planlagt | Gå fra én eksplisitt testkommune til kommuneuavhengig behandling, slik at samme arkitektur og metode virker for flere kommuner uten spesialkode. | Neste praktiske verifikasjon er å kjøre det eksisterende preparation-løpet på minst én ny kommune med reell GeoParquet. Videreføre batch/precompute og ikke lese stor Parquet per HTTP-request. |
 | V3.6A – Polygonbasert endringsarkitektur | ✅ Ferdig | Etablere en kildeuavhengig arkitektur for polygonbaserte endringer. | Generisk `ChangeFeature`-modell og eksplisitt syntetiske testpolygoner for 5054 er etablert; de er ikke observerte AR5-/SSB-endringer. Separate prepared summary/features bindes til samme preparation-run med `generationId`. `/changes` gir aggregert informasjon og `/changes/features` polygoner. Frontend avviser mismatch, håndterer stale responses og lar ikke polygonfeil gjøre aggregert oversikt utilgjengelig. |
-| V3.7 – Reelle endringsdata | 🔵 Planlagt | Koble den generiske endringsarkitekturen til reelle polygonbaserte endringsdata, med SSBs utbyggingsregnskap som planlagt hovedretning. | Avhenger av egnet og dokumentert datakilde. AR5 kan eventuelt brukes midlertidig som test-/referansekilde, men skal ikke bli et permanent premiss. Historikk skal ikke rekonstrueres mot dagens Grunnkart uten metodisk grunnlag; beholdning og endring er ulike dataproblemer. |
-| V3.8 – «Naturen i dag» | 🔵 Planlagt | Introdusere mer detaljert informasjon om dagens natur, som økosystemtyper, Naturkart eller andre relevante data. | Skal være supplerende innsikt, holdes adskilt fra Level0-regnskapsgrunnlaget og vise datadekning og manglende data eksplisitt. |
-| V3.9 – Supplerende temadata | 🔵 Planlagt | Innføre temalag som beriker forståelsen av arealer og endringer uten å blande temadata med regnskapsgrunnlaget. | Coverage-status bør kunne uttrykkes som `covered_hit`, `covered_no_hit`, `not_covered` og `not_evaluated`. |
-| V3.10 – Tematisk analyse av arealtap | 🔵 Planlagt | Analysere dokumenterte endringspolygoner sammen med relevante temadata. | Endringsgrunnlaget forteller hvor og hvor mye areal som er endret; temadata kan beskrive berørt natur eller naturverdier der data finnes. Manglende dekning skal være eksplisitt, og temadata skal ikke endre Level0-regnskapet. |
+| V3.7 – Dokumentert naturtap | ⚪ Under avklaring | Etablere historisk visning av dokumentert naturtap basert på statistikk og metodegrunnlag som faktisk er tilgjengelig på kommunenivå. | SSBs naturregnskapsstatistikk publiseres første gang 25. november 2026. Løsningen skal ikke forutsette at SSB leverer stedfestede utbyggingspolygoner. Aggregert statistikk og polygonbaserte endringsdata behandles som ulike dataproblemer. |
+| V3.8 – «Naturen i dag» | 🟡 Påbegynt | Introdusere mer detaljert informasjon om dagens natur og gjøre skillet mellom regnskapsgrunnlag og supplerende data tydelig for brukeren. | Brukerflaten «Utforsk naturen» er etablert med separat struktur for heldekkende regnskapsgrunnlag, supplerende temadata og framtidig videreutvikling. Reelle temadatasett er ennå ikke koblet til. |
+| V3.9 – Supplerende temadata | 🟡 Påbegynt | Innføre temalag som beriker forståelsen av arealer uten å blande temadata med regnskapsgrunnlaget. | Brukerflaten skiller nå eksplisitt mellom regnskapsgrunnlag og supplerende innsikt. Reelle temalag, datadekning og coverage-status (`covered_hit`, `covered_no_hit`, `not_covered`, `not_evaluated`) kobles til senere. |
+| V3.10 – Tematisk forståelse av naturtap | ⚪ Under avklaring | Vurdere om dokumentert naturtap kan beskrives med mer detaljert naturinformasjon der datagrunnlaget gir metodisk grunnlag for det. | Skal ikke bygge på en antakelse om at historisk naturtap er stedfestet. Dersom egnet naturklassifisering eller geometri finnes, kan supplerende temadata brukes, men manglende dekning skal være eksplisitt og temadata skal ikke endre Level0-regnskapet. |
 | V3.11 – Historikk og tidsserier | ⚪ Under avklaring | Vise dokumenterte endringer mellom låste og versjonerte perioder med sporbarhet mellom data-, metodeversjoner og publiserte resultater. | Planlagt retning, men periodegrunnlag og metode må avklares. Det skal ikke antas årlige tidsserier dersom datagrunnlaget ikke støtter det. |
 | V3.12 – Natur i områder avsatt til framtidig utbygging | ⚪ Under avklaring | Mulig videreutvikling for å vise hvilken natur som ligger i områder som i vedtatte planer er avsatt til framtidig utbygging. | Dette er beslutningsstøtte, ikke selve naturregnskapet, og er ikke garantert del av første versjon. Omfang, datagrunnlag og metode må avklares før eventuell implementering. Analysen skal ha natur som fokus og skal ikke presentere planreserve eller hvilke utbyggingsformål områdene er avsatt til. |
 
@@ -53,15 +53,24 @@ arkitekturavklaringer.
 11. Fremoverskuende visninger skal beskrive hvilken natur som ligger i områder
     som i vedtatte planer er avsatt til framtidig utbygging, ikke planreserve
     eller utbyggingsformål.
+12. Historisk naturtap skal presenteres på det geografiske og tematiske
+    detaljeringsnivået kildedata faktisk støtter. Aggregert statistikk skal ikke
+    framstilles som stedfestede endringspolygoner.
 
 ## Neste anbefalte steg
 
-1. **V3.6:** Gjøre preparation kommuneuavhengig i faktisk bruk for flere
-   kommuner.
-2. **V3.7:** Koble på reelt endringsgrunnlag når egnet kilde foreligger.
-3. **V3.8/V3.9:** Bygge ut «Naturen i dag» og supplerende temadata.
-4. **V3.10:** Gjennomføre tematisk analyse av dokumenterte endringspolygoner.
-5. **V3.11:** Etablere tidsserie/historikk når periodegrunnlag og metode er
-   avklart.
-6. **V3.12:** Først deretter vurdere visning av natur i områder som i vedtatte
-   planer er avsatt til framtidig utbygging.
+1. **Brukerflater:** Ferdigstille og teste Oversikt, Naturtapet, Utforsk naturen og Utforsk i kart som sammenhengende arbeidsflate.
+2. **V3.6:** Verifisere preparation-løpet på minst én ny kommune med reell GeoParquet.
+3. **V3.7:** Koble på SSB-/annet dokumentert naturtap når publisert datagrunnlag og kommunal metode er avklart. Ikke forutsett polygoner.
+4. **V3.8/V3.9:** Koble på mer detaljert heldekkende naturinformasjon og deretter supplerende temadata med eksplisitt datadekning.
+5. **V3.10/V3.11:** Vurdere tematisk naturtap og tidsserier først når datagrunnlaget støtter dette.
+6. **V3.12:** Deretter vurdere visning av natur i områder som i vedtatte planer er avsatt til framtidig utbygging.
+
+
+## Kilder for avgrensning per 29.09.2026
+
+- SSB, «Naturregnskap»: første publisering er varslet 25. november 2026, med tall for referanseåret 2024.
+- SSB, «Arealbruk og arealressurser»: statistikken beskriver bebygd areal etter bruksformål og ubebygde områder etter markslag, og er derfor en annen statistikk enn kommunalt naturregnskap.
+- Miljødirektoratet, «Naturregnskap»: beskriver utbredelse, tilstand og økosystemtjenester som ulike deler av naturregnskapet, og peker samtidig på at enklere naturregnskap kan lages med tilgjengelige data mens kunnskapsgrunnlaget utvikles.
+
+Kildene brukes som faglig ramme for prototypen. De innebærer ikke at alle nasjonale regnskapsdeler eller SSB-statistikker kan overføres direkte til kommunalt nivå uten metodeavklaring.
