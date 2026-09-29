@@ -3,7 +3,7 @@ import type { ChangesData } from './model'
 
 const labels: Record<AccountCategoryId, string> = {
   nature: 'Natur',
-  agriculture: 'Jordbruk',
+  agriculture: 'Dyrket mark',
   built: 'Bebygd',
 }
 
