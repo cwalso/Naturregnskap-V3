@@ -279,7 +279,7 @@ body { font-size: 16px; }
 .status-tag {
   border-radius: 999px;
   padding: .32rem .58rem;
-  background: #e4f0ef;
+  background: var(--color-level0-nature-surface);
   font-size: .72rem;
 }
 .prototype-note {
@@ -343,7 +343,7 @@ body { font-size: 16px; }
   align-items: center;
   border-radius: 999px;
   padding: .35rem .6rem;
-  background: #e4f0ef;
+  background: var(--color-level0-nature-surface);
   color: var(--color-accent);
   font-size: .72rem;
   font-weight: 700;
@@ -355,7 +355,7 @@ body { font-size: 16px; }
   height: 2rem;
   margin-bottom: .8rem;
   border-radius: 50%;
-  background: #e4f0ef;
+  background: var(--color-level0-nature-surface);
   color: var(--color-accent);
   font-weight: 700;
 }
@@ -1280,13 +1280,13 @@ body { font-size: 16px; }
 .account-metric--nature {
   min-height: 14.7rem;
   border-left: 4px solid var(--color-accent);
-  background: #e4f0ef;
+  background: var(--color-level0-nature-surface);
 }
 .account-metric--agriculture {
-  background: #fbf7e8;
+  background: var(--color-level0-agriculture-surface);
 }
 .account-metric--built {
-  background: #f4f5f5;
+  background: var(--color-level0-built-surface);
 }
 .account-metric__icon {
   grid-column: 1;
@@ -1410,10 +1410,10 @@ body { font-size: 16px; }
   background: var(--color-accent);
 }
 .overview-distribution__metric--agriculture .overview-distribution__swatch {
-  background: #d3aa21;
+  background: var(--color-level0-agriculture-accent);
 }
 .overview-distribution__metric--built .overview-distribution__swatch {
-  background: #9ca3a2;
+  background: var(--color-level0-built-accent);
 }
 .overview-distribution__source {
   display: flex;
