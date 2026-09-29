@@ -130,8 +130,8 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk naturen' }))
     expect(screen.getByRole('heading', { name: 'Utforsk naturen' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Temadata som kan gi mer kontekst' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Se nærmere på naturen' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Tilstand og økosystemtjenester' })).toBeInTheDocument()
   })
 
@@ -145,6 +145,29 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('banner')).toHaveTextContent('Naturregnskap for Trondheim')
     expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
+  })
+
+  it('lar brukeren gå fra Oversikt til de andre hovedflatene', async () => {
+    mockMunicipalityFlow()
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('button', { name: /Utforsk naturen/ }))
+    expect(screen.getByRole('heading', { name: 'Utforsk naturen i Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Utforsk naturen' })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('lar brukeren velge supplerende tema og viser avgrensning', () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
+    window.location.hash = '#utforsk-naturen'
+    render(<App createMap={() => mapMock()} />)
+
+    const reindeer = screen.getByRole('button', { name: /Villreinområder/ })
+    fireEvent.click(reindeer)
+
+    expect(reindeer).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('heading', { name: 'Villreinområder' })).toBeInTheDocument()
+    expect(screen.getByText(/geografisk relevant bare for enkelte kommuner/)).toBeInTheDocument()
   })
 
   it('viser kart som egen funksjonell visning og beholder kommunegrensen', async () => {
@@ -170,6 +193,8 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Utforsk flere deler av kunnskapsgrunnlaget' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Se Naturtapet/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Se arealfordelingen i kart' })).toBeInTheDocument()
     expect(screen.getByLabelText('Kart over Norge')).toBeInTheDocument()
     expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
