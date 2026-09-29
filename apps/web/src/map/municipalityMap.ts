@@ -58,6 +58,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
             TRANSPARENT: true,
           },
           ratio: 1,
+          attributions: dataset.attribution,
         }),
         visible: false,
       }),
