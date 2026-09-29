@@ -29,6 +29,7 @@ function mapMock(): MunicipalityMap {
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
     setThematicLayerVisible: vi.fn(),
+    setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
     fitToBoundary: vi.fn(),
     showChanges: vi.fn(),
@@ -245,6 +246,13 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: /Naturvernområder/ }))
     expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
+
+    const layerStatusHandler = vi.mocked(map.setThematicLayerStatusHandler).mock.calls.at(-1)?.[0]
+    expect(layerStatusHandler).toBeTypeOf('function')
+    await act(async () => {
+      layerStatusHandler?.('protected-areas', 'error')
+    })
+    expect(screen.getByText('Karttjenesten kunne ikke lastes')).toBeInTheDocument()
 
     const featureInfoHandler = vi.mocked(map.setFeatureInfoHandler).mock.calls.at(-1)?.[0]
     expect(featureInfoHandler).toBeTypeOf('function')
