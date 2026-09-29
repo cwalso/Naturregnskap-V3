@@ -916,3 +916,12 @@ body { font-size: 16px; }
   line-height: 1.35;
 }
 
+.layer-toggle__status {
+  margin-top: .3rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+.layer-toggle__status--error {
+  color: var(--color-error);
+}
+
