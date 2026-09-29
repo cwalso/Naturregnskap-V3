@@ -4,6 +4,7 @@ import type { SiteView } from '../components/SiteHeader'
 interface OverviewPageProps {
   readonly municipalityName: string
   readonly accountContent: ReactNode
+  readonly distributionContent: ReactNode
   readonly mapContent: ReactNode
   readonly onNavigate: (view: SiteView) => void
 }
@@ -37,21 +38,18 @@ const nextSteps: ReadonlyArray<{
 export function OverviewPage({
   municipalityName,
   accountContent,
+  distributionContent,
   mapContent,
   onNavigate,
 }: OverviewPageProps) {
   return (
     <div className="account-workspace">
-      <section className="overview-intro" aria-labelledby="overview-title">
-        <p className="overview-intro__eyebrow">Kommunale naturregnskap</p>
-        <h1 id="overview-title">Naturregnskap for {municipalityName}</h1>
-        <p>
-          Start her: Hvor mye av kommunens areal er natur, hvor mye er dyrket
-          mark, og hvor mye er bebygd?
-        </p>
-      </section>
-
       {accountContent}
+
+      <div className="overview-dashboard-grid">
+        {distributionContent}
+        {mapContent}
+      </div>
 
       <section className="overview-next" aria-labelledby="overview-next-title">
         <div className="section-heading">
@@ -80,7 +78,6 @@ export function OverviewPage({
         </div>
       </section>
 
-      {mapContent}
     </div>
   )
 }
