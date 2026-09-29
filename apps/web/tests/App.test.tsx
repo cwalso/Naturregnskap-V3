@@ -118,20 +118,21 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('img', { name: 'Miljødirektoratet' })).toHaveAttribute('src', agencyLogo)
   })
 
-  it('navigerer mellom de tre kommende visningene', () => {
+  it('viser faglig avgrensede flater for Naturtapet og Utforsk naturen', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
     render(<App createMap={() => mapMock()} />)
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
     expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
-    expect(screen.getByText(/dokumentert naturtap/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Tallgrunnlaget er ikke koblet til ennå' })).toBeInTheDocument()
+    expect(screen.getByText(/skal ikke forutsette stedfestede utbyggingspolygoner/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk naturen' }))
     expect(screen.getByRole('heading', { name: 'Utforsk naturen' })).toBeInTheDocument()
-    expect(screen.getByText(/supplerende natur- og temadata/)).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
-    expect(screen.getByRole('heading', { name: 'Utforsk i kart' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Temadata som kan gi mer kontekst' })).toBeInTheDocument()
+    expect(screen.getByText('Verdsatte naturtyper')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Tilstand og økosystemtjenester' })).toBeInTheDocument()
   })
 
   it('beholder valgt kommune ved navigasjon', async () => {
@@ -143,7 +144,21 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
 
     expect(screen.getByRole('banner')).toHaveTextContent('Naturregnskap for Trondheim')
-    expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
+  })
+
+  it('viser kart som egen funksjonell visning og beholder kommunegrensen', async () => {
+    const map = mapMock()
+    mockMunicipalityFlow()
+    render(<App createMap={() => map} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
+
+    expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Kartgrunnlag' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Kart over Norge')).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
   })
 
   it('viser Level0, proveniens og kart på Oversikt uten syntetiske endringer', async () => {

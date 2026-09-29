@@ -76,3 +76,73 @@ label { font-weight: 700; }
 .map-legend h3 { margin: .55rem 0 .4rem; font-size: .85rem; }
 .map-legend p { margin: .55rem 0 0; font-size: .85rem; }
 .map-legend__item img { display: block; max-width: 100%; height: auto; }
+
+
+.content-page__eyebrow, .section-heading__kicker {
+  color: var(--color-accent);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.content-page__intro h1 {
+  max-width: 48rem;
+  margin-bottom: 1rem;
+  font-size: clamp(2.15rem, 5vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+.content-page__intro > p:last-child, .section-heading > p:last-child {
+  max-width: 48rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.content-page__section > h2, .section-heading h2, .status-panel h2, .future-panel h2 {
+  margin-bottom: .75rem;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+.status-panel, .future-panel {
+  background: var(--color-forward-surface);
+  border-left: .3rem solid var(--color-accent);
+}
+.status-panel__label, .future-panel__label {
+  margin-bottom: .5rem;
+  color: var(--color-accent);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.status-panel p:last-child, .future-panel p:last-child, .info-card p, .theme-card p {
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+.info-card, .theme-card {
+  background: var(--color-surface-subtle);
+  border-top: 1px solid var(--color-border);
+}
+.info-card h2, .info-card h3, .theme-card h3 {
+  margin: .85rem 0 .65rem;
+}
+.info-card__note {
+  padding-top: .9rem;
+  border-top: 1px solid var(--color-border);
+}
+.status-tag {
+  display: inline-block;
+  padding: .25rem .5rem;
+  background: var(--color-brand-surface);
+  color: var(--color-accent);
+  font-size: .75rem;
+  font-weight: 700;
+}
+.status-tag--muted {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+.map-page__picker {
+  background: var(--color-surface-subtle);
+  border-top: 1px solid var(--color-border);
+}
