@@ -23,6 +23,7 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
+  fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
   clearChanges(): void
   destroy(): void
@@ -90,6 +91,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     clearBoundary() { boundarySource.clear() },
     setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
+    fitToBoundary() {
+      if (boundarySource.getFeatures().length === 0) return
+      view.fit(boundarySource.getExtent(), { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
+    },
     showChanges(features) {
       changesSource.clear()
       for (const feature of features) {
