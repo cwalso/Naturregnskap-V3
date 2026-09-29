@@ -158,7 +158,7 @@ export function ExploreNaturePage({ municipalityName, onOpenThematicLayer }: Exp
                 <dt>Status</dt>
                 {selectedDataset ? (
                   <dd>
-                    <strong>Koblet til kartvisningen.</strong> Kilde: {selectedDataset.publisher}.
+                    <strong>Koblet til kartvisningen.</strong> {selectedDataset.attribution}.
                     Dekning: {selectedDataset.coverage.label}. Treff
                     {municipalityName ? ` i ${municipalityName}` : ' i valgt kommune'} er ikke
                     automatisk evaluert i prototypen.
