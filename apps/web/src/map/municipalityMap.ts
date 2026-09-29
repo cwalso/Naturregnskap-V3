@@ -191,7 +191,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   async function identifyThematicFeatures(
     coordinate: number[],
     resolution: number,
-    point: MapFeatureInfoPoint,
   ) {
     const handler = featureInfoHandler
     if (!handler) return
@@ -206,7 +205,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }
 
     const requestId = ++featureInfoRequest
-    handler({ status: 'loading', results: [], point })
+    handler({ status: 'loading', results: [] })
 
     const responses = await Promise.allSettled(
       activeDatasets.map(async (dataset) => {
@@ -244,13 +243,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         status: 'partial',
         results,
         message: 'Noe objektinformasjon kunne ikke hentes fra ett eller flere aktive kartlag.',
-        point,
       })
       return
     }
 
     if (results.length > 0) {
-      handler({ status: 'ready', results, point })
+      handler({ status: 'ready', results })
       return
     }
 
@@ -264,7 +262,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       return
     }
 
-    handler({ status: 'ready', results: [], point })
+    handler({ status: 'ready', results: [] })
   }
 
   const boundarySource = new VectorSource()
@@ -310,11 +308,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   map.on('singleclick', (event) => {
     const resolution = view.getResolution()
     if (resolution === undefined) return
-    void identifyThematicFeatures(
-      event.coordinate,
-      resolution,
-      { x: event.pixel[0], y: event.pixel[1] },
-    )
+    void identifyThematicFeatures(event.coordinate, resolution)
   })
 
   map.on('movestart', () => {
