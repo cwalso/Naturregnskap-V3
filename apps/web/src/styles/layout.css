@@ -74,3 +74,137 @@
 @media (max-width: 40rem) {
   .insight-grid, .theme-grid { grid-template-columns: 1fr; }
 }
+
+
+/* V3.9 designretning */
+.site-header__bar,
+.primary-navigation__inner {
+  width: min(100% - 2rem, 77.5rem);
+}
+.account-workspace,
+.start-workspace,
+.content-page,
+.selected-municipality-picker,
+.start-municipality-picker {
+  width: min(100% - 2rem, 70rem);
+}
+.site-header__bar {
+  min-height: auto;
+  padding-block: .9rem .75rem;
+}
+.site-header__identity {
+  gap: .9rem;
+}
+.site-header__logo-surface {
+  padding: .4rem .55rem;
+}
+.site-header__logo {
+  width: 8.8rem;
+}
+.site-header__actions {
+  gap: .5rem;
+}
+.primary-navigation__inner {
+  gap: 1.7rem;
+}
+.primary-navigation a {
+  padding: .55rem 0 .72rem;
+}
+.selected-municipality-picker,
+.start-municipality-picker {
+  padding-block: 1rem;
+}
+.start-view__intro,
+.overview-intro {
+  width: min(100%, 50rem);
+  padding: 2.7rem 0 2.2rem;
+}
+.account-overview {
+  padding: 2.4rem 0 2.7rem;
+}
+.account-summary {
+  gap: .65rem;
+  margin-top: 1.8rem;
+}
+.account-metric--nature {
+  min-height: 18rem;
+}
+.account-metric {
+  min-height: 8.7rem;
+  padding: 1.4rem;
+}
+.map-workspace {
+  margin-top: 3rem;
+  padding-top: 2.4rem;
+}
+.map-workspace__header {
+  margin-bottom: 1.35rem;
+}
+.map-workspace__body {
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+  min-height: 30rem;
+}
+.map-frame,
+.map {
+  min-height: 30rem;
+}
+.map-sidebar {
+  padding: 1.15rem;
+}
+.content-page {
+  padding-block: 2.8rem 5rem;
+}
+.content-page__intro {
+  max-width: 50rem;
+  margin-bottom: 1.9rem;
+}
+.design-kpis {
+  margin: 1.8rem 0 .75rem;
+}
+.insight-grid {
+  gap: .75rem;
+  margin-bottom: 3rem;
+}
+.info-card,
+.theme-card {
+  padding: 1.35rem;
+}
+.content-page__section {
+  margin-top: 3.4rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid #edf0ef;
+}
+.section-heading {
+  margin-bottom: 1.25rem;
+}
+.theme-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .65rem;
+}
+.future-panel {
+  max-width: none;
+  margin-top: 3.5rem;
+  padding: 1.4rem 1.5rem;
+}
+
+@media (max-width: 70rem) {
+  .theme-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 52rem) {
+  .design-kpis { grid-template-columns: 1fr; }
+  .theme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 40rem) {
+  .theme-grid { grid-template-columns: 1fr; }
+  .site-header__bar,
+  .primary-navigation__inner,
+  .account-workspace,
+  .start-workspace,
+  .content-page,
+  .selected-municipality-picker,
+  .start-municipality-picker {
+    width: min(100% - 1.25rem, 70rem);
+  }
+}
