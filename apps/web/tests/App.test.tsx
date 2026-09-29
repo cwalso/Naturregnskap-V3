@@ -59,6 +59,8 @@ function thematicCoverageResponse() {
   return {
     municipalityNumber: '5001',
     municipalityName: 'Trondheim',
+    methodVersion: 'thematic-intersection-v1',
+    warnings: ['Treffstatus er beregnet mot løpende kildetjenester som ikke er låst til en dataversjon i prototypen.'],
     results: [
       {
         datasetId: 'protected-areas',
