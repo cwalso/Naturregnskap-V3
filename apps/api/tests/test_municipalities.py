@@ -1,5 +1,6 @@
 import json
 from urllib.parse import parse_qs
+
 import httpx
 from fastapi.testclient import TestClient
 
@@ -136,7 +137,10 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
                 "datasetId": "protected-areas",
                 "status": "hit",
                 "featureCount": 2,
-                "note": "Ett eller flere registrerte objekter i kilden krysser kommunegrensen.",
+                "note": (
+                    "Ett eller flere registrerte objekter i kilden "
+                    "krysser kommunegrensen."
+                ),
             },
             {
                 "datasetId": "wild-reindeer-areas",
