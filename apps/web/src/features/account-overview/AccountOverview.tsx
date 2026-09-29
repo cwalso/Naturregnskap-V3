@@ -1,6 +1,4 @@
 import { AccountSummary } from './AccountSummary'
-import { AccountProvenance } from './AccountProvenance'
-import { getAccountProvenanceContent } from './content'
 import type { AccountOverviewData } from './model'
 
 interface AccountOverviewProps {
@@ -29,7 +27,6 @@ export function AccountOverview({ data }: AccountOverviewProps) {
           </span>
         </div>
       )}
-      <AccountProvenance content={getAccountProvenanceContent(data)} />
     </section>
   )
 }
