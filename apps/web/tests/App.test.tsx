@@ -98,6 +98,7 @@ describe('grunnkonfigurasjon', () => {
     expect(wildReindeerAreas).toMatchObject({
       category: 'thematic',
       themeId: 'reindeer',
+      attribution: 'Kilde: Villreinbasen, Miljødirektoratet',
       coverage: { scope: 'regional', municipalityEvaluation: 'not_evaluated' },
     })
   })
@@ -224,6 +225,9 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
     await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
+
+    fireEvent.click(screen.getByRole('checkbox', { name: /Naturvernområder/ }))
+    expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
 
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
