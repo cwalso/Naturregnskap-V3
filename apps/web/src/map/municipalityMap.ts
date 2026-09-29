@@ -183,7 +183,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     return {
       datasetId,
       datasetTitle: dataset.title,
-      objectLabel: labelField?.value ?? dataset.title,
+      objectLabel: labelField?.value ?? fields[0]?.value ?? dataset.title,
       fields,
     }
   }
@@ -215,7 +215,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           coordinate,
           resolution,
           view.getProjection(),
-          { INFO_FORMAT: 'text/html', FEATURE_COUNT: 5 },
+          { INFO_FORMAT: 'text/html', FEATURE_COUNT: 1 },
         )
         if (!url) return null
         const response = await fetch(url)
