@@ -59,7 +59,7 @@ arkitekturavklaringer.
 
 ## Neste anbefalte steg
 
-1. **Brukerflater:** Oversikt er gjort til inngang for videre utforsking, og Utforsk naturen har interaktiv temastruktur. Neste designsteg er å løfte kartutforskingen og koble reelle datasett til temaene uten å svekke skillet mellom regnskap og supplerende innsikt.
+1. **Brukerflater:** Oversikt, Utforsk naturen og Utforsk i kart er løftet inn i samme designretning. Kartflaten skiller nå eksplisitt mellom heldekkende regnskapsgrunnlag og supplerende temadata, og har egen kartkontroll for å gå tilbake til kommuneutsnittet. Neste steg er å koble reelle temadatasett til brukerflatene uten å svekke dette skillet.
 2. **V3.6:** Verifisere preparation-løpet på minst én ny kommune med reell GeoParquet.
 3. **V3.7:** Koble på SSB-/annet dokumentert naturtap når publisert datagrunnlag og kommunal metode er avklart. Ikke forutsett polygoner.
 4. **V3.8/V3.9:** Koble på mer detaljert heldekkende naturinformasjon og deretter supplerende temadata med eksplisitt datadekning.
