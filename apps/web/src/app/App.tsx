@@ -401,6 +401,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                       </>
                     )}
 
+                    {mapFeatureInfo.status === 'partial' && (
+                      <p className="map-info-popup__warning" role="status">{mapFeatureInfo.message}</p>
+                    )}
+
                     {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
                       <>
                         <p className="map-info-popup__eyebrow">Valgt punkt</p>
@@ -408,7 +412,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                       </>
                     )}
 
-                    {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.map((result) => (
+                    {(mapFeatureInfo.status === 'ready' || mapFeatureInfo.status === 'partial')
+                      && mapFeatureInfo.results.map((result) => (
                       <article className="map-feature-card" key={result.datasetId}>
                         <p className="map-info-popup__eyebrow">{result.datasetTitle}</p>
                         <h4>{result.objectLabel}</h4>
