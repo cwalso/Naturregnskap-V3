@@ -46,7 +46,7 @@ class PreparedAccountBalance(CamelModel):
 class AccountOverviewMetric(CamelModel):
     id: AccountCategory
     area_km2: float | None
-    share_percent: None = None
+    share_percent: float | None = Field(default=None, ge=0, le=100)
 
 
 class AccountOverview(CamelModel):
