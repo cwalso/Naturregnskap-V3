@@ -37,12 +37,18 @@ export type MapFeatureInfoState =
   | { readonly status: 'error'; readonly results: readonly MapFeatureInfoResult[]; readonly message: string }
 
 export type MapFeatureInfoHandler = (state: MapFeatureInfoState) => void
+export type ThematicLayerLoadStatus = 'idle' | 'loading' | 'ready' | 'error'
+export type ThematicLayerStatusHandler = (
+  datasetId: ThematicDatasetId,
+  status: ThematicLayerLoadStatus,
+) => void
 
 export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
+  setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
   fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
@@ -86,7 +92,23 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   )
 
   let featureInfoHandler: MapFeatureInfoHandler | null = null
+  let thematicLayerStatusHandler: ThematicLayerStatusHandler | null = null
   let featureInfoRequest = 0
+  const thematicLayerStatuses = Object.fromEntries(
+    thematicDatasets.map((dataset) => [dataset.id, 'idle']),
+  ) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
+
+  function setThematicLayerStatus(datasetId: ThematicDatasetId, status: ThematicLayerLoadStatus) {
+    thematicLayerStatuses[datasetId] = status
+    thematicLayerStatusHandler?.(datasetId, status)
+  }
+
+  for (const dataset of thematicDatasets) {
+    const source = thematicLayers.get(dataset.id)?.getSource()
+    source?.on('imageloadstart', () => setThematicLayerStatus(dataset.id, 'loading'))
+    source?.on('imageloadend', () => setThematicLayerStatus(dataset.id, 'ready'))
+    source?.on('imageloaderror', () => setThematicLayerStatus(dataset.id, 'error'))
+  }
 
   function parseFeatureInfo(html: string, datasetId: ThematicDatasetId): MapFeatureInfoResult | null {
     const dataset = thematicDatasets.find((item) => item.id === datasetId)
@@ -240,7 +262,16 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
     setThematicLayerVisible(datasetId, visible) {
       thematicLayers.get(datasetId)?.setVisible(visible)
+      if (!visible) setThematicLayerStatus(datasetId, 'idle')
       featureInfoHandler?.({ status: 'idle', results: [] })
+    },
+    setThematicLayerStatusHandler(handler) {
+      thematicLayerStatusHandler = handler
+      if (handler) {
+        for (const dataset of thematicDatasets) {
+          handler(dataset.id, thematicLayerStatuses[dataset.id])
+        }
+      }
     },
     setFeatureInfoHandler(handler) {
       featureInfoHandler = handler
@@ -268,6 +299,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     destroy() {
       featureInfoRequest += 1
       featureInfoHandler = null
+      thematicLayerStatusHandler = null
       map.setTarget(undefined)
     },
   }
