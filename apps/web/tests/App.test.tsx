@@ -385,13 +385,13 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    expect(await screen.findByRole('heading', { name: 'Overordnet arealfordeling' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Hvor mye natur har Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Utforsk flere deler av kunnskapsgrunnlaget' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Se Naturtapet/ })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Se arealfordelingen i kart' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Se arealgrunnlaget i kart' })).toBeInTheDocument()
     expect(screen.getByLabelText('Kart over Norge')).toBeInTheDocument()
     expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
 
@@ -407,7 +407,10 @@ describe('Level0-regnskap', () => {
     render(<AccountOverview data={data} />)
 
     expect(screen.getByText(/12.000/)).toHaveTextContent('12 000 dekar')
+    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Arealregnskap 2025/)).not.toBeInTheDocument()
+    expect(screen.getByText('Arealbasert naturregnskap · 2025')).toBeInTheDocument()
   })
 
   it('viser not_available som XX og ikke som null', () => {
