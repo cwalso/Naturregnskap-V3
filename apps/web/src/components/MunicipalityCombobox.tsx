@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
 
 import type { Municipality } from '../api/municipalities'
 
@@ -6,6 +6,7 @@ interface MunicipalityComboboxProps {
   municipalities: Municipality[]
   disabled?: boolean
   placeholder?: string
+  selectedMunicipality?: Municipality | null
   onSelect(municipality: Municipality | null): void
 }
 
@@ -15,6 +16,7 @@ export function MunicipalityCombobox({
   municipalities,
   disabled = false,
   placeholder = 'Søk etter kommune',
+  selectedMunicipality = null,
   onSelect,
 }: MunicipalityComboboxProps) {
   const inputId = useId()
@@ -23,6 +25,10 @@ export function MunicipalityCombobox({
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
+
+  useEffect(() => {
+    if (selectedMunicipality) setQuery(selectedMunicipality.name)
+  }, [selectedMunicipality])
 
   const normalizedQuery = query.trim().toLocaleLowerCase('nb')
   const matches = municipalities
