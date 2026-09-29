@@ -259,6 +259,17 @@ describe('sidestruktur og Oversikt', () => {
 
     const featureInfoHandler = vi.mocked(map.setFeatureInfoHandler).mock.calls.at(-1)?.[0]
     expect(featureInfoHandler).toBeTypeOf('function')
+
+    await act(async () => {
+      featureInfoHandler?.({ status: 'loading', results: [] })
+    })
+    expect(screen.queryByRole('dialog', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
+
+    await act(async () => {
+      featureInfoHandler?.({ status: 'idle', results: [] })
+    })
+    expect(screen.queryByRole('dialog', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
+
     await act(async () => {
       featureInfoHandler?.({
         status: 'ready',
