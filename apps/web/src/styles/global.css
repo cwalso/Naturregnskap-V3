@@ -981,3 +981,12 @@ body { font-size: 16px; }
   color: var(--color-error);
 }
 
+.map-info-popup__warning {
+  margin: 0 2rem .65rem 0;
+  padding: .5rem .6rem;
+  background: var(--color-warning-surface);
+  border: 1px solid var(--color-warning-border);
+  color: var(--color-text);
+  font-size: .72rem;
+  line-height: 1.4;
+}
