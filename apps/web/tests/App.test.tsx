@@ -196,7 +196,7 @@ describe('sidestruktur og Oversikt', () => {
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
-    expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
     expect(screen.getByText('XX dekar')).toBeInTheDocument()
     expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
 
@@ -243,7 +243,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(reindeer).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('heading', { name: 'Villreinområder' })).toBeInTheDocument()
     expect(screen.getByText(/Dekning: Sør-Norge/)).toBeInTheDocument()
-    expect(screen.getByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
+    expect(await screen.findByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
     expect(screen.getByText(/regional dekning/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /Vis villreinområder i kart/ }))
@@ -260,14 +260,14 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
 
-    const protectedTheme = screen.getByRole('button', { name: /Verneområder/ })
-    expect(protectedTheme).toHaveTextContent('Treff i kommunen')
+    const protectedTheme = await screen.findByRole('button', { name: /Verneområder/ })
+    await vi.waitFor(() => expect(protectedTheme).toHaveTextContent('Treff i kommunen'))
 
     fireEvent.click(protectedTheme)
     expect(screen.getByText(/Treff registrert i Trondheim/)).toBeInTheDocument()
 
     const reindeerTheme = screen.getByRole('button', { name: /Villreinområder/ })
-    expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff')
+    await vi.waitFor(() => expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff'))
   })
 
   it('viser kart som egen arbeidsflate og beholder kommunegrensen', async () => {
