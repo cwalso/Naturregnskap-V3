@@ -55,6 +55,10 @@ class ThematicCoverageService:
         return ThematicCoverageResponse(
             municipality_number=boundary.properties.number,
             municipality_name=boundary.properties.name,
+            warnings=[
+                "Treffstatus er beregnet mot løpende kildetjenester som ikke "
+                "er låst til en dataversjon i prototypen."
+            ],
             results=list(results),
         )
 
