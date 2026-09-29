@@ -17,6 +17,7 @@ import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactor
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 import { ExploreNaturePage } from '../pages/ExploreNaturePage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
+import { OverviewPage } from '../pages/OverviewPage'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
 
@@ -192,30 +193,35 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
         {municipalityPicker}
       </div>
-      <div className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
-        {selectedMunicipality ? (
-          <>
-            <section className="overview-intro" aria-labelledby="overview-title">
-              <p className="overview-intro__eyebrow">Oversikt</p>
-              <h1 id="overview-title">Naturregnskap for {selectedMunicipality.name}</h1>
-              <p>Her får du en overordnet oversikt over hvordan kommunens areal fordeler seg mellom natur, jordbruksareal og bebygd areal.</p>
-            </section>
-            {accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
-              accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
-              <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />}
-            {mapWorkspace(
-              'Se arealfordelingen i kart',
-              'Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.',
-            )}
-          </>
-        ) : (
+      {selectedMunicipality ? (
+        <OverviewPage
+          municipalityName={selectedMunicipality.name}
+          onNavigate={navigate}
+          accountContent={
+            accountState === 'loading'
+              ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section>
+              : accountState === 'error'
+                ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section>
+                : <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
+          }
+          mapContent={mapWorkspace(
+            'Se arealfordelingen i kart',
+            'Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.',
+          )}
+        />
+      ) : (
+        <div className="start-workspace">
           <section className="start-view__intro" aria-labelledby="start-title">
             <p className="start-view__eyebrow">Kommunale naturregnskap</p>
             <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
-            <p>Søk etter kommunen du vil utforske. Du får en overordnet arealoversikt basert på felles regnskapsgrunnlag.</p>
+            <p>
+              Søk etter kommunen du vil utforske. Du får en overordnet
+              arealoversikt basert på felles regnskapsgrunnlag og kan gå videre
+              til naturtap, supplerende naturdata og kart.
+            </p>
           </section>
-        )}
-      </div>
+        </div>
+      )}
     </>
   )
 
