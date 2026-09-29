@@ -22,6 +22,8 @@ import {
 } from '../datasets/registry'
 import { AccountDistribution } from '../features/account-overview/AccountDistribution'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
+import { AccountProvenance } from '../features/account-overview/AccountProvenance'
+import { getAccountProvenanceContent } from '../features/account-overview/content'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import {
   createMunicipalityMap,
@@ -558,6 +560,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             'Hvor ligger arealene?',
             'Se det heldekkende grunnlaget geografisk. Kartet viser et mer detaljert nivå enn de tre hovedkategoriene.',
           )}
+          provenanceContent={
+            <AccountProvenance
+              content={getAccountProvenanceContent(
+                accountData ?? createUnavailableAccountOverview(
+                  selectedMunicipality.number,
+                  selectedMunicipality.name,
+                ),
+              )}
+            />
+          }
         />
       ) : (
         <div className="start-workspace">
