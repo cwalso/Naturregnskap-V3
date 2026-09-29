@@ -988,3 +988,14 @@ body { font-size: 16px; }
   font-size: .78rem;
   line-height: 1.4;
 }
+
+/* V3.12 – kommunespesifikk temadatastatus */
+.layer-toggle__coverage {
+  margin-top: .35rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+.layer-toggle__coverage--hit {
+  color: var(--color-accent);
+}
+
