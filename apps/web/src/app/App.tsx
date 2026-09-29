@@ -381,7 +381,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
             />
 
-            {variant === 'explore' && mapFeatureInfo.status !== 'idle' && (
+            {variant === 'explore'
+              && mapFeatureInfo.status !== 'idle'
+              && mapFeatureInfo.status !== 'loading'
+              && (
               <aside className="map-info-popup" role="dialog" aria-label="Objektinformasjon">
                 <button
                   type="button"
@@ -392,13 +395,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   ×
                 </button>
 
-                {mapFeatureInfo.status === 'loading' && (
-                  <>
-                    <p className="map-info-popup__eyebrow">Valgt objekt</p>
-                    <p role="status">Henter objektinformasjon…</p>
-                  </>
-                )}
-
                 {mapFeatureInfo.status === 'error' && (
                   <>
                     <p className="map-info-popup__eyebrow">Objektinformasjon</p>
@@ -408,13 +404,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
                 {mapFeatureInfo.status === 'partial' && (
                   <p className="map-info-popup__warning" role="status">{mapFeatureInfo.message}</p>
-                )}
-
-                {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
-                  <>
-                    <p className="map-info-popup__eyebrow">Valgt punkt</p>
-                    <p>Ingen objektinformasjon ble funnet i de aktive temalagene her.</p>
-                  </>
                 )}
 
                 {(mapFeatureInfo.status === 'ready' || mapFeatureInfo.status === 'partial')
