@@ -97,6 +97,11 @@ def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> 
     assert result.reconciliation.excluded_area_m2 == 5_000
     assert result.method_version == "level0-v0.2-prototype"
     assert result.method_status == GRUNNKART_LEVEL0_RULES.status
+    assert result.source_format == "geoparquet"
+    assert result.source_feature_count == 7
+    assert result.area_method == "source-field:SHAPE_Area"
+    assert result.source_sha256 is not None
+    assert len(result.source_sha256) == 64
     assert json.loads(output.read_text())["municipalityNumber"] == "4204"
 
 
@@ -139,6 +144,12 @@ def test_provider_available_and_not_available(tmp_path: Path) -> None:
     assert available.status == "available"
     assert available.metrics[0].area_km2 == 2
     assert available.metrics[0].share_percent is None
+    assert available.classified_area_km2 == 2
+    assert available.excluded_area_km2 == 0
+    assert available.source_format == "geoparquet"
+    assert available.source_feature_count == 1
+    assert available.area_method == "source-field:SHAPE_Area"
+    assert available.source_sha256 is not None
     assert missing.status == "not_available"
     assert all(metric.area_km2 is None for metric in missing.metrics)
 
