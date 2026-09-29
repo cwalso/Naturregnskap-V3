@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
@@ -29,6 +29,7 @@ function mapMock(): MunicipalityMap {
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
     setThematicLayerVisible: vi.fn(),
+    setFeatureInfoHandler: vi.fn(),
     fitToBoundary: vi.fn(),
     showChanges: vi.fn(),
     clearChanges: vi.fn(),
@@ -113,6 +114,22 @@ describe('grunnkonfigurasjon', () => {
 })
 
 describe('kommunevalg', () => {
+  it('velger eneste treff med Enter', () => {
+    const onSelect = vi.fn()
+    render(<MunicipalityCombobox municipalities={[
+      { number: '0301', name: 'Oslo' },
+      { number: '5001', name: 'Trondheim' },
+    ]} onSelect={onSelect} />)
+
+    const input = screen.getByRole('combobox', { name: 'Velg kommune' })
+    fireEvent.focus(input)
+    fireEvent.change(input, { target: { value: 'trond' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+
+    expect(input).toHaveValue('Trondheim')
+    expect(onSelect).toHaveBeenLastCalledWith({ number: '5001', name: 'Trondheim' })
+  })
+
   it('filtrerer og velger kommune', () => {
     const onSelect = vi.fn()
     render(<MunicipalityCombobox municipalities={[
@@ -228,6 +245,25 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('checkbox', { name: /Naturvernområder/ }))
     expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
+
+    const featureInfoHandler = vi.mocked(map.setFeatureInfoHandler).mock.calls.at(-1)?.[0]
+    expect(featureInfoHandler).toBeTypeOf('function')
+    await act(async () => {
+      featureInfoHandler?.({
+        status: 'ready',
+        results: [{
+          datasetId: 'protected-areas',
+          datasetTitle: 'Naturvernområder',
+          fields: [
+            { label: 'Navn', value: 'Bymarka naturreservat' },
+            { label: 'Verneform', value: 'Naturreservat' },
+          ],
+        }],
+      })
+    })
+    expect(screen.getByRole('heading', { name: 'Objektinformasjon' })).toBeInTheDocument()
+    expect(screen.getByText('Bymarka naturreservat')).toBeInTheDocument()
+    expect(screen.getByText('Naturreservat')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
