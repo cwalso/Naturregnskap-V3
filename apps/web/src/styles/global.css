@@ -1,11 +1,20 @@
 * { box-sizing: border-box; }
 :root { font-family: var(--font-body); color: var(--color-text); background: var(--color-page-background); }
-body { margin: 0; background: var(--color-page-background); }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--color-page-background); line-height: 1.5; }
 button, input { font: inherit; }
 h1, h2, h3, p { margin-top: 0; }
-.site-header { color: var(--color-accent); background: var(--color-brand-surface); }
-.site-header__product p { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); font-weight: 600; }
-.site-header__status, .start-view__eyebrow, .account-overview__eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.site-header { color: var(--color-header-text); background: var(--color-header-background); }
+.site-header__logo-surface { background: var(--color-surface); }
+.site-header__product { margin: 0; font-size: clamp(1.25rem, 2.5vw, 1.8rem); font-weight: 600; line-height: 1.2; }
+.site-header a { color: inherit; font-weight: 600; text-decoration-thickness: .08em; text-underline-offset: .25em; }
+.site-header a:hover { text-decoration-thickness: .14em; }
+.site-header a:focus-visible, .primary-navigation a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.primary-navigation { border-top: 1px solid rgb(255 255 255 / 28%); }
+.primary-navigation a { text-decoration: none; }
+.primary-navigation a[aria-current='page'] { border-bottom-color: var(--color-header-text); }
+.start-view__eyebrow, .account-overview__eyebrow { color: var(--color-accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.start-view__intro h1 { max-width: 46rem; margin-bottom: 1rem; font-size: clamp(2.15rem, 5vw, 4rem); line-height: 1.08; letter-spacing: -.025em; }
 .start-view__intro > p:not(.start-view__eyebrow), .account-overview__header > p:last-child { max-width: 43rem; color: var(--color-text-muted); line-height: 1.55; }
 .selected-municipality-picker, .start-municipality-picker, .account-overview, .map-legend { background: var(--color-surface); }
 label { font-weight: 700; }
@@ -27,7 +36,7 @@ label { font-weight: 700; }
 [role='status'] { margin: .65rem 0 0; }
 .account-overview { border-top: 1px solid var(--color-border); }
 .account-overview h1 { margin-bottom: .75rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
-.account-metric { background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-left: .3rem solid var(--color-accent); border-radius: var(--radius-surface); }
+.account-metric { background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
 .account-metric--nature { display: flex; flex-direction: column; justify-content: center; background: var(--color-brand-surface); }
 .account-metric h2 { margin-bottom: .5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
 .account-metric__value { margin: 0; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -49,7 +58,7 @@ label { font-weight: 700; }
 .account-provenance__details dd { color: var(--color-text-muted); line-height: 1.5; }
 .changes { border-top: 1px solid var(--color-border); }
 .changes h2 { margin-top: 1.5rem; text-transform: uppercase; font-size: 1.1rem; letter-spacing: .06em; }
-.changes__warning { padding: .75rem; color: var(--color-text); background: var(--color-brand-surface); border-left: .3rem solid var(--color-accent); line-height: 1.45; }
+.changes__warning { padding: .75rem; color: var(--color-text); background: var(--color-forward-surface); border-left: .3rem solid var(--color-accent); line-height: 1.45; }
 .changes__list { margin: 1rem 0 0; }
 .changes__list > div { padding: .55rem 0; border-bottom: 1px solid var(--color-border); }
 .changes__list dt { font-weight: 600; }

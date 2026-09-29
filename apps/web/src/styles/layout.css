@@ -1,13 +1,19 @@
 .app-shell { min-height: 100vh; }
-.site-header { display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); padding: .8rem clamp(1rem, 3vw, 2.5rem); }
-.site-header__logo { display: block; width: clamp(10.5rem, 18vw, 13rem); height: auto; flex: 0 0 auto; }
-.site-header__product { display: grid; gap: .15rem; }
+.site-header__bar, .primary-navigation__inner, .selected-municipality-picker,
+.start-municipality-picker, .account-workspace, .start-workspace { width: min(100% - 2rem, 90rem); margin-inline: auto; }
+.site-header__bar { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-height: 6.25rem; padding-block: 1rem; }
+.site-header__identity { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); }
+.site-header__logo-surface { display: flex; align-items: center; flex: 0 0 auto; padding: .65rem .8rem; }
+.site-header__logo { display: block; width: clamp(9rem, 15vw, 11.5rem); height: auto; }
+.site-header__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem 1.5rem; }
+.primary-navigation__inner { display: flex; gap: clamp(1.25rem, 4vw, 3.25rem); overflow-x: auto; }
+.primary-navigation a { flex: 0 0 auto; padding: 1rem 0 .85rem; border-bottom: .25rem solid transparent; }
 .start-workspace { display: grid; grid-template-rows: auto minmax(28rem, 1fr); min-height: calc(100vh - 10rem); }
-.start-view__intro { width: min(100%, 55rem); padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 5vw, 5rem); }
+.start-view__intro { width: min(100%, 55rem); padding: clamp(3rem, 7vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem); }
 .municipality-picker { width: min(100%, 25rem); margin-top: 1.5rem; position: relative; z-index: 3; }
-.selected-municipality-picker, .start-municipality-picker { padding: .75rem clamp(1rem, 3vw, 2.5rem); }
+.selected-municipality-picker, .start-municipality-picker { padding-block: 1.25rem; }
 .selected-municipality-picker .municipality-picker, .start-municipality-picker .municipality-picker { margin: 0; }
-.account-workspace { display: grid; grid-template-columns: minmax(20rem, 2fr) minmax(30rem, 3fr); min-height: calc(100vh - 11.5rem); }
+.account-workspace { display: grid; grid-template-columns: minmax(20rem, 2fr) minmax(30rem, 3fr); gap: clamp(1.5rem, 3vw, 3rem); min-height: calc(100vh - 11.5rem); padding-bottom: 3rem; }
 .account-overview { padding: clamp(1.5rem, 3vw, 3rem); }
 .account-panel { min-width: 0; background: var(--color-surface); }
 .changes { padding: 0 clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 3vw, 3rem); }
@@ -26,8 +32,11 @@
   .account-workspace .map-workspace { order: 2; min-height: 32rem; }
 }
 @media (max-width: 40rem) {
-  .site-header { align-items: flex-start; flex-direction: column; gap: .5rem; padding-block: .7rem; }
-  .site-header__logo { width: 10.5rem; }
+  .site-header__bar { align-items: flex-start; flex-direction: column; gap: 1rem; }
+  .site-header__identity { align-items: flex-start; flex-direction: column; gap: .75rem; }
+  .site-header__actions { justify-content: flex-start; }
+  .site-header__logo { width: 9rem; }
+  .start-view__intro { padding-top: 2.5rem; }
   .account-summary { grid-template-columns: 1fr; }
   .account-metric--nature { grid-column: auto; }
 }

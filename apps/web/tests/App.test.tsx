@@ -503,15 +503,21 @@ describe('kommunevalg', () => {
     expect(legend).toHaveTextContent('Arealdekke nivå 1 (2025)')
   })
 
-  it('viser lokal offisiell logo, produktnavn og prototype-status i lys profilheader', () => {
+  it('viser produktheaderen, lokal offisiell logo og hovednavigasjonen', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
     render(<App createMap={() => mapMock()} />)
 
     const header = screen.getByRole('banner')
     const logo = screen.getByRole('img', { name: 'Miljødirektoratet' })
     expect(header).toHaveClass('site-header')
-    expect(header).toHaveTextContent('Kommunale naturregnskap')
-    expect(header).toHaveTextContent('Prototype')
+    expect(header).toHaveTextContent('Naturregnskap for din kommune')
+    expect(screen.getByRole('link', { name: 'Bytt kommune' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Hjelp og veileder' })).toBeInTheDocument()
+    const navigation = screen.getByRole('navigation', { name: 'Hovednavigasjon' })
+    expect(navigation).toHaveTextContent('Oversikt')
+    expect(navigation).toHaveTextContent('Naturtapet')
+    expect(navigation).toHaveTextContent('Utforsk naturen')
+    expect(navigation).toHaveTextContent('Utforsk i kart')
     expect(logo).toHaveAttribute('src', agencyLogo)
     expect(logo.getAttribute('src')).not.toMatch(/^https?:/)
   })

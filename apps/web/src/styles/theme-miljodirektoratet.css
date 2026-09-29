@@ -10,6 +10,9 @@
   --color-focus: #d86018;
   --color-error: #a52020;
   --color-brand-surface: #e5eeee;
+  --color-header-background: #005e5d;
+  --color-header-text: #fff;
+  --color-forward-surface: #f5f1e5;
   --font-body: "Open Sans", Arial, sans-serif;
   --radius-control: 0;
   --radius-surface: .125rem;
