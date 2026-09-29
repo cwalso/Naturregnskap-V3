@@ -1,5 +1,5 @@
 import GeoJSON from 'ol/format/GeoJSON'
-import Map from 'ol/Map'
+import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -81,7 +81,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }),
   })
   const view = new View({ center: [1_050_000, 9_100_000], zoom: 4, projection: defaultBasemap.projection })
-  const map = new Map({
+  const map = new OlMap({
     target,
     view,
     layers: [
