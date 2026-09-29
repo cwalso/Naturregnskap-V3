@@ -830,3 +830,39 @@ body { font-size: 16px; }
   color: var(--color-text-muted);
 }
 
+/* V3.11 – reelle supplerende temadata */
+.thematic-layer-list {
+  display: grid;
+  gap: .55rem;
+}
+.layer-toggle--thematic {
+  padding: .7rem .75rem;
+}
+.theme-detail dd strong {
+  color: var(--color-text);
+}
+.theme-detail dd a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-underline-offset: .2em;
+}
+.theme-detail__map-action {
+  display: block;
+  margin-top: .8rem;
+  padding: .55rem .7rem;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-control);
+  font-size: .76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.theme-detail__map-action:hover {
+  background: var(--color-brand-surface);
+}
+.theme-detail__map-action:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
