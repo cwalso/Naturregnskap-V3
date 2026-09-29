@@ -13,6 +13,7 @@ import {
 } from '../api/thematicCoverage'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
+import { ServiceSidebar } from '../components/ServiceSidebar'
 import { SiteHeader, type SiteView } from '../components/SiteHeader'
 import {
   nationalLandCover2025,
@@ -497,12 +498,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     )
   }
 
-  const overview = (
-    <>
-      <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
-        {municipalityPicker}
-      </div>
-      {selectedMunicipality ? (
+  const overview = selectedMunicipality ? (
         <OverviewPage
           municipalityName={selectedMunicipality.name}
           onNavigate={navigate}
@@ -520,6 +516,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         />
       ) : (
         <div className="start-workspace">
+          <div className="start-municipality-picker">{municipalityPicker}</div>
           <section className="start-view__intro" aria-labelledby="start-title">
             <p className="start-view__eyebrow">Kommunale naturregnskap</p>
             <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
@@ -530,9 +527,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             </p>
           </section>
         </div>
-      )}
-    </>
-  )
+      )
 
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
@@ -579,27 +574,42 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
+  const activeContent = (
+    <>
+      {activeView === 'oversikt' && overview}
+      {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality?.name} />}
+      {activeView === 'utforsk-naturen' && (
+        <ExploreNaturePage
+          municipalityName={selectedMunicipality?.name}
+          thematicCoverage={thematicCoverage}
+          thematicCoverageState={thematicCoverageState}
+          onOpenThematicLayer={openThematicLayerInMap}
+        />
+      )}
+      {activeView === 'utforsk-i-kart' && mapView}
+    </>
+  )
+
   return (
     <div className="app-shell">
-      <SiteHeader
-        municipalityName={selectedMunicipality?.name}
-        activeView={activeView}
-        onNavigate={navigate}
-        onChangeMunicipality={changeMunicipality}
-      />
-      <main id="main-content">
-        {activeView === 'oversikt' && overview}
-        {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality?.name} />}
-        {activeView === 'utforsk-naturen' && (
-          <ExploreNaturePage
-            municipalityName={selectedMunicipality?.name}
-            thematicCoverage={thematicCoverage}
-            thematicCoverageState={thematicCoverageState}
-            onOpenThematicLayer={openThematicLayerInMap}
+      <SiteHeader />
+      {selectedMunicipality ? (
+        <div className="service-layout">
+          <ServiceSidebar
+            activeView={activeView}
+            municipalityName={selectedMunicipality.name}
+            municipalityPicker={municipalityPicker}
+            onNavigate={navigate}
           />
-        )}
-        {activeView === 'utforsk-i-kart' && mapView}
-      </main>
+          <main id="main-content" className="service-main">
+            {activeContent}
+          </main>
+        </div>
+      ) : (
+        <main id="main-content">
+          {overview}
+        </main>
+      )}
     </div>
   )
 }
