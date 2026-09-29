@@ -74,13 +74,22 @@ class PreparedAccountBalanceProvider:
                     "kommune."
                 ],
             )
-        areas = {metric.id: metric.area_m2 / 1_000_000 for metric in prepared.metrics}
+        areas_m2 = {metric.id: metric.area_m2 for metric in prepared.metrics}
+        classified_area_m2 = prepared.reconciliation.classified_area_m2
         return AccountOverview(
             municipality_number=municipality_number,
             municipality_name=municipality_name,
             status="available",
             metrics=[
-                AccountOverviewMetric(id=id, area_km2=areas[id])
+                AccountOverviewMetric(
+                    id=id,
+                    area_km2=areas_m2[id] / 1_000_000,
+                    share_percent=(
+                        areas_m2[id] / classified_area_m2 * 100
+                        if classified_area_m2 > 0
+                        else None
+                    ),
+                )
                 for id in ACCOUNT_CATEGORY_IDS
             ],
             method_version=prepared.method_version,
