@@ -514,8 +514,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 : <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
           }
           mapContent={mapWorkspace(
-            'Se arealfordelingen i kart',
-            'Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.',
+            'Se arealgrunnlaget i kart',
+            'Se det heldekkende grunnlaget som ligger bak arealfordelingen. Kartet viser et mer detaljert nivå enn de tre hovedkategoriene.',
           )}
         />
       ) : (
