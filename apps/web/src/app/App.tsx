@@ -376,7 +376,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                     Lagene gir supplerende innsikt og inngår ikke i selve
                     regnskapsgrunnlaget. Treffstatus vurderes romlig mot
                     kommunegrensen via kildens feature-tjeneste. WMS-laget brukes
-                    fortsatt bare til kartvisning.
+                    fortsatt bare til kartvisning. I prototypen brukes løpende
+                    kildetjenester, ikke en låst dataversjon.
                   </p>
                   <button
                     type="button"
