@@ -7,6 +7,10 @@ import {
   type MunicipalityBoundary,
 } from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
+import {
+  getThematicCoverage,
+  type ThematicCoverageResponse,
+} from '../api/thematicCoverage'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { SiteHeader, type SiteView } from '../components/SiteHeader'
@@ -50,6 +54,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const map = useRef<MunicipalityMap | null>(null)
   const boundaryRequest = useRef(0)
   const accountRequest = useRef(0)
+  const thematicRequest = useRef(0)
   const [activeView, setActiveView] = useState<SiteView>(() => viewFromHash())
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
@@ -62,6 +67,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [thematicCoverage, setThematicCoverage] = useState<ThematicCoverageResponse | null>(null)
+  const [thematicCoverageState, setThematicCoverageState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [thematicLayerStatus, setThematicLayerStatus] = useState<
     Record<ThematicDatasetId, ThematicLayerLoadStatus>
   >(initialThematicLayerStatus)
@@ -139,19 +146,23 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   async function selectMunicipality(municipality: Municipality | null) {
     const requestId = ++boundaryRequest.current
     const accountRequestId = ++accountRequest.current
+    const thematicRequestId = ++thematicRequest.current
     setSelectedMunicipality(municipality)
     setAccountData(null)
+    setThematicCoverage(null)
     setBoundaryData(null)
     map.current?.clearBoundary()
 
     if (!municipality) {
       setBoundaryState('idle')
       setAccountState('idle')
+      setThematicCoverageState('idle')
       return
     }
 
     setBoundaryState('loading')
     setAccountState('loading')
+    setThematicCoverageState('loading')
 
     void getAccountOverview(municipality.number)
       .then((data) => {
@@ -164,6 +175,20 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         if (accountRequestId === accountRequest.current) {
           setAccountData(createUnavailableAccountOverview(municipality.number, municipality.name))
           setAccountState('error')
+        }
+      })
+
+    void getThematicCoverage(municipality.number)
+      .then((data) => {
+        if (thematicRequestId === thematicRequest.current) {
+          setThematicCoverage(data)
+          setThematicCoverageState('idle')
+        }
+      })
+      .catch(() => {
+        if (thematicRequestId === thematicRequest.current) {
+          setThematicCoverage(null)
+          setThematicCoverageState('error')
         }
       })
 
@@ -299,33 +324,60 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   </div>
 
                   <div className="thematic-layer-list">
-                    {thematicDatasets.map((dataset) => (
-                      <label className="layer-toggle layer-toggle--thematic" key={dataset.id}>
-                        <input
-                          type="checkbox"
-                          checked={thematicLayerVisibility[dataset.id]}
-                          onChange={(event) => setThematicLayer(dataset.id, event.target.checked)}
-                        />
-                        <span>
-                          <strong>{dataset.title}</strong>
-                          <small>{dataset.coverage.label} · supplerende temadata</small>
-                          {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'loading' && (
-                            <small className="layer-toggle__status">Laster kartlag…</small>
-                          )}
-                          {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'error' && (
-                            <small className="layer-toggle__status layer-toggle__status--error">
-                              Karttjenesten kunne ikke lastes
-                            </small>
-                          )}
-                        </span>
-                      </label>
-                    ))}
+                    {thematicDatasets.map((dataset) => {
+                      const evaluation = thematicCoverage?.results.find(
+                        (item) => item.datasetId === dataset.id,
+                      )
+                      const evaluationText = thematicCoverageState === 'loading'
+                        ? 'Vurderer treff…'
+                        : thematicCoverageState === 'error'
+                          ? 'Treffstatus utilgjengelig'
+                          : evaluation?.status === 'hit'
+                            ? 'Treff i kommunen'
+                            : evaluation?.status === 'no_hit'
+                              ? 'Ingen registrerte treff'
+                              : evaluation?.status === 'unavailable'
+                                ? 'Kilden kunne ikke vurderes'
+                                : null
+                      return (
+                        <label className="layer-toggle layer-toggle--thematic" key={dataset.id}>
+                          <input
+                            type="checkbox"
+                            checked={thematicLayerVisibility[dataset.id]}
+                            onChange={(event) => setThematicLayer(dataset.id, event.target.checked)}
+                          />
+                          <span>
+                            <strong>{dataset.title}</strong>
+                            <small>{dataset.coverage.label} · supplerende temadata</small>
+                            {evaluationText && (
+                              <small className={
+                                evaluation?.status === 'hit'
+                                  ? 'layer-toggle__coverage layer-toggle__coverage--hit'
+                                  : 'layer-toggle__coverage'
+                              }>
+                                {evaluationText}
+                              </small>
+                            )}
+                            {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'loading' && (
+                              <small className="layer-toggle__status">Laster kartlag…</small>
+                            )}
+                            {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'error' && (
+                              <small className="layer-toggle__status layer-toggle__status--error">
+                                Karttjenesten kunne ikke lastes
+                              </small>
+                            )}
+                          </span>
+                        </label>
+                      )
+                    })}
                   </div>
 
                   <p className="map-sidebar__explanation">
                     Lagene gir supplerende innsikt og inngår ikke i selve
-                    regnskapsgrunnlaget. Om valgt kommune faktisk har registrerte
-                    treff er foreløpig ikke maskinelt evaluert.
+                    regnskapsgrunnlaget. Treffstatus vurderes romlig mot
+                    kommunegrensen via kildens feature-tjeneste. WMS-laget brukes
+                    fortsatt bare til kartvisning. I prototypen brukes løpende
+                    kildetjenester, ikke en låst dataversjon.
                   </p>
                   <button
                     type="button"
@@ -513,8 +565,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               <strong>Grunnkart for arealanalyse · 2025</strong>
             </div>
             <div>
-              <span>Visningen brukes til</span>
-              <strong>Utforsking og forståelse</strong>
+              <span>Supplerende temadata</span>
+              <strong>Treffstatus vurderes mot kommunegrensen</strong>
             </div>
           </section>
           {mapWorkspace(
@@ -541,6 +593,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         {activeView === 'utforsk-naturen' && (
           <ExploreNaturePage
             municipalityName={selectedMunicipality?.name}
+            thematicCoverage={thematicCoverage}
+            thematicCoverageState={thematicCoverageState}
             onOpenThematicLayer={openThematicLayerInMap}
           />
         )}
