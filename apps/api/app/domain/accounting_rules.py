@@ -4,7 +4,7 @@ from typing import Literal
 AccountCategory = Literal["nature", "agriculture", "built"]
 RuleTarget = AccountCategory | Literal["excluded"]
 
-METHOD_VERSION = "level0-v0.1-prototype"
+METHOD_VERSION = "level0-v0.2-prototype"
 METHOD_STATUS = "prototype"
 
 
@@ -21,13 +21,16 @@ GRUNNKART_LEVEL0_RULES = Level0Rules(
     status=METHOD_STATUS,
     source_field="arealdekkeniva1",
     mapping={
-        # Exact, case-sensitive Arealdekke nivå 1 codes verified in the 5054
-        # Parquet. Any additional source code must pass the mapping gate first.
+        # Exact, case-sensitive Arealdekke nivå 1 codes. The 5054 Parquet
+        # verified all codes except snoIsbre; snoIsbre is verified against the
+        # official 2025 presentation rules. Unknown source codes still block
+        # preparation.
         "bebygdSamferdsel": "built",
         "jordbruk": "agriculture",
         "skog": "nature",
         "snaumark": "nature",
         "myr": "nature",
+        "snoIsbre": "nature",
         "ferskvann": "nature",
         "hav": "excluded",
     },
