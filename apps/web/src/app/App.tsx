@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
+import {
+  getMunicipalities,
+  getMunicipalityBoundary,
+  type Municipality,
+  type MunicipalityBoundary,
+} from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
@@ -10,6 +15,8 @@ import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
+import { ExploreNaturePage } from '../pages/ExploreNaturePage'
+import { NaturtapetPage } from '../pages/NaturtapetPage'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
 
@@ -27,11 +34,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [activeView, setActiveView] = useState<SiteView>(() => viewFromHash())
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
+  const [boundaryData, setBoundaryData] = useState<MunicipalityBoundary | null>(null)
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
   const [boundaryState, setBoundaryState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [accountLayerVisible, setAccountLayerVisible] = useState(true)
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
+
+  const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
   useEffect(() => {
     const onHashChange = () => setActiveView(viewFromHash())
@@ -40,17 +50,21 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [])
 
   useEffect(() => {
-    if (activeView !== 'oversikt' || !selectedMunicipality || !mapElement.current) {
+    if (!showsMap || !selectedMunicipality || !mapElement.current) {
       map.current?.destroy()
       map.current = null
       return
     }
+
     map.current = createMap(mapElement.current)
+    map.current.setAccountLayerVisible(accountLayerVisible)
+    if (boundaryData) map.current.showBoundary(boundaryData)
+
     return () => {
       map.current?.destroy()
       map.current = null
     }
-  }, [activeView, createMap, selectedMunicipality])
+  }, [accountLayerVisible, boundaryData, createMap, selectedMunicipality, showsMap])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -73,6 +87,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     const accountRequestId = ++accountRequest.current
     setSelectedMunicipality(municipality)
     setAccountData(null)
+    setBoundaryData(null)
     map.current?.clearBoundary()
 
     if (!municipality) {
@@ -101,7 +116,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     try {
       const boundary = await getMunicipalityBoundary(municipality.number)
       if (requestId === boundaryRequest.current) {
-        map.current?.showBoundary(boundary)
+        setBoundaryData(boundary)
         setBoundaryState('idle')
       }
     } catch {
@@ -130,36 +145,47 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
-  const mapWorkspace = selectedMunicipality ? (
-    <section className="map-workspace" aria-labelledby="map-workspace-title">
-      <div className="map-workspace__header">
-        <p className="map-workspace__eyebrow">Kart</p>
-        <h2 id="map-workspace-title">Se arealfordelingen i kart</h2>
-        <p>Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.</p>
-      </div>
-      <div className="map-workspace__body">
-        <div className="map-sidebar">
-          <div className="layer-control" aria-label="Kartlag">
-            <h3>Kartlag</h3>
-            <label><input type="checkbox" checked={accountLayerVisible} onChange={(event) => {
-              const visible = event.target.checked
-              setAccountLayerVisible(visible)
-              map.current?.setAccountLayerVisible(visible)
-            }} />{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</label>
+  function mapWorkspace(title: string, description: string) {
+    if (!selectedMunicipality) return null
+
+    return (
+      <section className="map-workspace" aria-labelledby="map-workspace-title">
+        <div className="map-workspace__header">
+          <p className="map-workspace__eyebrow">Kart</p>
+          <h2 id="map-workspace-title">{title}</h2>
+          <p>{description}</p>
+        </div>
+        <div className="map-workspace__body">
+          <div className="map-sidebar">
+            <div className="layer-control" aria-label="Kartlag">
+              <h3>Kartlag</h3>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={accountLayerVisible}
+                  onChange={(event) => {
+                    const visible = event.target.checked
+                    setAccountLayerVisible(visible)
+                    map.current?.setAccountLayerVisible(visible)
+                  }}
+                />
+                {nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})
+              </label>
+            </div>
+            <MapLegend items={[{
+              id: nationalLandCover2025.id,
+              title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
+              visible: accountLayerVisible,
+              imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
+            }]} />
           </div>
-          <MapLegend items={[{
-            id: nationalLandCover2025.id,
-            title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
-            visible: accountLayerVisible,
-            imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
-          }]} />
+          <div className="map-frame">
+            <div ref={mapElement} className="map" aria-label="Kart over Norge" />
+          </div>
         </div>
-        <div className="map-frame">
-          <div ref={mapElement} className="map" aria-label="Kart over Norge" />
-        </div>
-      </div>
-    </section>
-  ) : null
+      </section>
+    )
+  }
 
   const overview = (
     <>
@@ -177,7 +203,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             {accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
               accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
               <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />}
-            {mapWorkspace}
+            {mapWorkspace(
+              'Se arealfordelingen i kart',
+              'Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.',
+            )}
           </>
         ) : (
           <section className="start-view__intro" aria-labelledby="start-title">
@@ -190,20 +219,30 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </>
   )
 
-  const placeholders: Record<Exclude<SiteView, 'oversikt'>, { title: string; text: string }> = {
-    naturtapet: {
-      title: 'Naturtapet',
-      text: 'Denne siden skal vise dokumentert naturtap basert på tilgjengelig statistikk og metodegrunnlag. Innholdet er under utvikling.',
-    },
-    'utforsk-naturen': {
-      title: 'Utforsk naturen',
-      text: 'Denne siden skal samle supplerende natur- og temadata. Slike data kan gi viktig innsikt, men er ikke det samme som selve regnskapsgrunnlaget.',
-    },
-    'utforsk-i-kart': {
-      title: 'Utforsk i kart',
-      text: 'Denne siden skal gi en mer selvstendig inngang til kartutforsking. Avansert analyse og scenariofunksjoner inngår ikke i denne versjonen.',
-    },
-  }
+  const mapView = (
+    <section className="content-page map-page" aria-labelledby="explore-map-title">
+      <header className="content-page__intro">
+        <p className="content-page__eyebrow">Kartutforsking</p>
+        <h1 id="explore-map-title">
+          Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
+        </h1>
+        <p>
+          Her kan du utforske det heldekkende kartgrunnlaget som brukes i
+          naturregnskapet. Kartet er en visning av datagrunnlaget, ikke et eget
+          beregningsgrunnlag i nettleseren.
+        </p>
+      </header>
+      {!selectedMunicipality ? (
+        <div className="map-page__picker">
+          <p>Velg kommune for å avgrense kartet.</p>
+          {municipalityPicker}
+        </div>
+      ) : mapWorkspace(
+        'Kartgrunnlag',
+        'Grunnkart for arealanalyse vises for valgt kommune. Flere faglag kan kobles på senere med tydelig skille mellom regnskapsgrunnlag og supplerende temalag.',
+      )}
+    </section>
+  )
 
   return (
     <div className="app-shell">
@@ -214,13 +253,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         onChangeMunicipality={changeMunicipality}
       />
       <main id="main-content">
-        {activeView === 'oversikt' ? overview : (
-          <section className="placeholder-view" aria-labelledby="placeholder-title">
-            <p className="placeholder-view__eyebrow">Under utvikling</p>
-            <h1 id="placeholder-title">{placeholders[activeView].title}</h1>
-            <p>{placeholders[activeView].text}</p>
-          </section>
-        )}
+        {activeView === 'oversikt' && overview}
+        {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality?.name} />}
+        {activeView === 'utforsk-naturen' && <ExploreNaturePage municipalityName={selectedMunicipality?.name} />}
+        {activeView === 'utforsk-i-kart' && mapView}
       </main>
     </div>
   )
