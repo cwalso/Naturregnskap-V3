@@ -36,7 +36,7 @@ export type ThematicThemeId = 'protected' | 'reindeer'
 export interface ThematicCoverage {
   readonly scope: 'nationwide' | 'regional'
   readonly label: string
-  readonly municipalityEvaluation: 'not_evaluated'
+  readonly municipalityEvaluation: 'spatial_query'
   readonly note: string
 }
 
@@ -47,7 +47,10 @@ export interface ThematicDatasetDefinition extends DatasetBase {
   readonly sourceStatus: 'connected'
   readonly attribution: string
   readonly coverage: ThematicCoverage
-  readonly analysisSource: null
+  readonly analysisSource: {
+    readonly type: 'municipality-thematic-coverage-api'
+    readonly datasetId: ThematicDatasetId
+  }
 }
 
 export type DatasetDefinition = AccountDatasetDefinition | ThematicDatasetDefinition
@@ -98,8 +101,8 @@ export const protectedAreas = {
   coverage: {
     scope: 'nationwide',
     label: 'Norge, Svalbard og Jan Mayen',
-    municipalityEvaluation: 'not_evaluated',
-    note: 'Datasettet har nasjonal dekning, men prototypen evaluerer foreløpig ikke automatisk om valgt kommune har registrerte verneområder.',
+    municipalityEvaluation: 'spatial_query',
+    note: 'Treff vurderes romlig mot valgt kommune via Miljødirektoratets feature-tjeneste. WMS brukes fortsatt bare til kartvisning.',
   },
   visualSource: {
     type: 'wms',
@@ -113,7 +116,10 @@ export const protectedAreas = {
       sldVersion: '1.1.0',
     },
   },
-  analysisSource: null,
+  analysisSource: {
+    type: 'municipality-thematic-coverage-api',
+    datasetId: 'protected-areas',
+  },
 } as const satisfies ThematicDatasetDefinition
 
 export const wildReindeerAreas = {
@@ -131,8 +137,8 @@ export const wildReindeerAreas = {
   coverage: {
     scope: 'regional',
     label: 'Sør-Norge',
-    municipalityEvaluation: 'not_evaluated',
-    note: 'Datasettet gjelder Sør-Norge. Prototypen evaluerer foreløpig ikke automatisk om valgt kommune ligger innenfor relevant villreinområde eller har registrerte treff.',
+    municipalityEvaluation: 'spatial_query',
+    note: 'Treff vurderes romlig mot valgt kommune via Miljødirektoratets feature-tjeneste. Datasettet er regionalt, så null treff skal ikke tolkes som en generell vurdering av villreinrelevans.',
   },
   visualSource: {
     type: 'wms',
@@ -146,7 +152,10 @@ export const wildReindeerAreas = {
       sldVersion: '1.1.0',
     },
   },
-  analysisSource: null,
+  analysisSource: {
+    type: 'municipality-thematic-coverage-api',
+    datasetId: 'wild-reindeer-areas',
+  },
 } as const satisfies ThematicDatasetDefinition
 
 export const thematicDatasets = [protectedAreas, wildReindeerAreas] as const
