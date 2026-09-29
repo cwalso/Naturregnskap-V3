@@ -22,19 +22,31 @@ register(proj4)
 export interface MapFeatureInfoField {
   readonly label: string
   readonly value: string
+  readonly url?: string
 }
 
 export interface MapFeatureInfoResult {
   readonly datasetId: ThematicDatasetId
   readonly datasetTitle: string
+  readonly objectLabel: string
   readonly fields: readonly MapFeatureInfoField[]
+}
+
+export interface MapFeatureInfoPoint {
+  readonly x: number
+  readonly y: number
 }
 
 export type MapFeatureInfoState =
   | { readonly status: 'idle'; readonly results: readonly MapFeatureInfoResult[] }
-  | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[] }
-  | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[] }
-  | { readonly status: 'error'; readonly results: readonly MapFeatureInfoResult[]; readonly message: string }
+  | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
+  | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
+  | {
+      readonly status: 'error'
+      readonly results: readonly MapFeatureInfoResult[]
+      readonly message: string
+      readonly point: MapFeatureInfoPoint
+    }
 
 export type MapFeatureInfoHandler = (state: MapFeatureInfoState) => void
 export type ThematicLayerLoadStatus = 'idle' | 'loading' | 'ready' | 'error'
@@ -118,24 +130,48 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     const ignoredFields = /^(shape|shape_|objectid|fid|geometry|st_area|st_length)/i
     const fields: MapFeatureInfoField[] = []
 
-    function addField(label: string, value: string) {
+    function safeHttpUrl(value: string | null): string | undefined {
+      if (!value) return undefined
+      try {
+        const parsed = new URL(value)
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : undefined
+      } catch {
+        return undefined
+      }
+    }
+
+    function addField(label: string, value: string, href?: string) {
       if (fields.length >= 8 || !label || !value || ignoredFields.test(label)) return
       if (fields.some((field) => field.label === label && field.value === value)) return
-      fields.push({ label, value })
+      fields.push({
+        label,
+        value,
+        url: safeHttpUrl(href) ?? safeHttpUrl(value),
+      })
     }
 
     for (const table of Array.from(document.querySelectorAll('table'))) {
       const rows = Array.from(table.querySelectorAll('tr')).map((row) => (
         Array.from(row.querySelectorAll('th, td'))
-          .map((cell) => cell.textContent?.trim() ?? '')
-          .filter(Boolean)
       ))
 
       if (rows.length >= 2 && rows[0].length > 2 && rows[0].length === rows[1].length) {
-        rows[0].forEach((label, index) => addField(label, rows[1][index] ?? ''))
+        rows[0].forEach((headerCell, index) => {
+          const valueCell = rows[1][index]
+          addField(
+            headerCell.textContent?.trim() ?? '',
+            valueCell?.textContent?.trim() ?? '',
+            valueCell?.querySelector('a[href]')?.getAttribute('href') ?? undefined,
+          )
+        })
       } else {
         rows.forEach((cells) => {
-          if (cells.length >= 2) addField(cells[0], cells[1])
+          if (cells.length < 2) return
+          addField(
+            cells[0].textContent?.trim() ?? '',
+            cells[1].textContent?.trim() ?? '',
+            cells[1].querySelector('a[href]')?.getAttribute('href') ?? undefined,
+          )
         })
       }
 
@@ -143,14 +179,20 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }
 
     if (fields.length === 0) return null
+    const labelField = fields.find((field) => /^(navn|name|områdenavn|omraadenavn|lokalitet)/i.test(field.label))
     return {
       datasetId,
       datasetTitle: dataset.title,
+      objectLabel: labelField?.value ?? dataset.title,
       fields,
     }
   }
 
-  async function identifyThematicFeatures(coordinate: number[], resolution: number) {
+  async function identifyThematicFeatures(
+    coordinate: number[],
+    resolution: number,
+    point: MapFeatureInfoPoint,
+  ) {
     const handler = featureInfoHandler
     if (!handler) return
 
@@ -159,12 +201,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     )
 
     if (activeDatasets.length === 0) {
-      handler({ status: 'ready', results: [] })
+      handler({ status: 'idle', results: [] })
       return
     }
 
     const requestId = ++featureInfoRequest
-    handler({ status: 'loading', results: [] })
+    handler({ status: 'loading', results: [], point })
 
     const responses = await Promise.allSettled(
       activeDatasets.map(async (dataset) => {
@@ -190,7 +232,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       .filter((result): result is MapFeatureInfoResult => result !== null)
 
     if (results.length > 0) {
-      handler({ status: 'ready', results })
+      handler({ status: 'ready', results, point })
       return
     }
 
@@ -200,11 +242,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         status: 'error',
         results: [],
         message: 'Kunne ikke hente objektinformasjon fra ett eller flere aktive kartlag.',
+        point,
       })
       return
     }
 
-    handler({ status: 'ready', results: [] })
+    handler({ status: 'ready', results: [], point })
   }
 
   const boundarySource = new VectorSource()
@@ -244,7 +287,16 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   map.on('singleclick', (event) => {
     const resolution = view.getResolution()
     if (resolution === undefined) return
-    void identifyThematicFeatures(event.coordinate, resolution)
+    void identifyThematicFeatures(
+      event.coordinate,
+      resolution,
+      { x: event.pixel[0], y: event.pixel[1] },
+    )
+  })
+
+  map.on('movestart', () => {
+    featureInfoRequest += 1
+    featureInfoHandler?.({ status: 'idle', results: [] })
   })
 
   return {
