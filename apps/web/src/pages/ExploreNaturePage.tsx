@@ -122,7 +122,7 @@ export function ExploreNaturePage({
           <span className="status-tag">Neste datautvidelse</span>
           <strong>Mer detaljert naturinndeling</strong>
           <p>
-            Dagens prototype viser Natur, Jordbruk og Bebygd. Neste detaljnivå
+            Dagens prototype viser Natur, Dyrket mark og Bebygd. Neste detaljnivå
             kobles inn når heldekkende datagrunnlag og klassifikasjon er avklart.
           </p>
         </aside>
