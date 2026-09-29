@@ -9,7 +9,10 @@ from app.analysis.grunnkart_gml import (
 )
 
 
-def write_gml(path: Path, features: list[tuple[str, str, list[tuple[float, float]]]]) -> None:
+def write_gml(
+    path: Path,
+    features: list[tuple[str, str, list[tuple[float, float]]]],
+) -> None:
     members = []
     for index, (municipality, source_class, points) in enumerate(features):
         coordinates = " ".join(f"{x} {y}" for x, y in points)
