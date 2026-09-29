@@ -265,9 +265,22 @@ def _ring_area(points: list[tuple[float, float]]) -> float:
         raise GmlPreparationError("Polygonring har færre enn tre punkter")
     if points[0] != points[-1]:
         points = [*points, points[0]]
+
+    # Translate coordinates close to zero before the shoelace sum. This keeps
+    # floating-point cancellation small for UTM coordinates with large
+    # eastings/northings without changing the polygon area.
+    origin_x, origin_y = points[0]
+    translated = [
+        (x - origin_x, y - origin_y)
+        for x, y in points
+    ]
     signed = sum(
         x1 * y2 - x2 * y1
-        for (x1, y1), (x2, y2) in zip(points, points[1:], strict=True)
+        for (x1, y1), (x2, y2) in zip(
+            translated,
+            translated[1:],
+            strict=True,
+        )
     )
     return abs(signed) / 2
 
