@@ -57,3 +57,54 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest -q
+
+  grunnkart-probe:
+    name: Probe Grunnkart download
+    if: github.head_ref == 'feature/v3-overview-story'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe Geonorge capabilities and Atom feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          UUID="28c28e3a-d88f-4a34-8c60-5efe6d56a44d"
+          python - <<'PY'
+          import json
+          import urllib.request
+          import urllib.error
+          import xml.etree.ElementTree as ET
+
+          uuid = "28c28e3a-d88f-4a34-8c60-5efe6d56a44d"
+          urls = [
+              f"https://nedlasting.geonorge.no/api/v3/capabilities/{uuid}",
+              f"https://nedlasting.geonorge.no/api/capabilities/{uuid}",
+          ]
+          for url in urls:
+              print(f"CAPABILITIES_URL={url}")
+              try:
+                  with urllib.request.urlopen(url, timeout=30) as response:
+                      body = response.read()
+                      print("STATUS", response.status, "BYTES", len(body))
+                      try:
+                          data = json.loads(body)
+                          print(json.dumps(data, ensure_ascii=False, indent=2)[:30000])
+                      except Exception:
+                          print(body[:30000].decode("utf-8", errors="replace"))
+                  break
+              except Exception as exc:
+                  print("ERROR", repr(exc))
+
+          atom = "https://nedlasting.geonorge.no/geonorge/ATOM-feeds/GrunnkartArealanalyse_AtomFeedGML.xml"
+          print(f"ATOM_URL={atom}")
+          try:
+              with urllib.request.urlopen(atom, timeout=30) as response:
+                  body = response.read()
+                  print("ATOM_STATUS", response.status, "BYTES", len(body))
+                  root = ET.fromstring(body)
+                  ns = {"a": "http://www.w3.org/2005/Atom"}
+                  for link in root.findall(".//a:link", ns)[:80]:
+                      print("ATOM_LINK", link.attrib)
+          except Exception as exc:
+              print("ATOM_ERROR", repr(exc))
+          PY
+
