@@ -58,4 +58,10 @@ class AccountOverview(CamelModel):
     method_version: str | None = None
     method_status: str | None = None
     source_versions: list[str] = Field(default_factory=list)
+    source_sha256: str | None = None
+    source_format: str | None = None
+    source_feature_count: int | None = Field(default=None, ge=0)
+    area_method: str | None = None
+    classified_area_km2: float | None = Field(default=None, ge=0)
+    excluded_area_km2: float | None = Field(default=None, ge=0)
     warnings: list[str] = Field(default_factory=list)
