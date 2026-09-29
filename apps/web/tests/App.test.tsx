@@ -22,6 +22,7 @@ function mapMock(): MunicipalityMap {
     showBoundary: vi.fn(),
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
+    fitToBoundary: vi.fn(),
     showChanges: vi.fn(),
     clearChanges: vi.fn(),
     destroy: vi.fn(),
@@ -170,18 +171,28 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText(/geografisk relevant bare for enkelte kommuner/)).toBeInTheDocument()
   })
 
-  it('viser kart som egen funksjonell visning og beholder kommunegrensen', async () => {
+  it('viser kart som egen arbeidsflate og beholder kommunegrensen', async () => {
     const map = mapMock()
+    const createMap = vi.fn(() => map)
     mockMunicipalityFlow()
-    render(<App createMap={() => map} />)
+    render(<App createMap={createMap} />)
     await chooseTrondheim()
+    await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(1))
 
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
 
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Kartgrunnlag' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Kart over Norge')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Aktivt kartlag' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Flere faglag' })).toBeInTheDocument()
+    expect(screen.getByText('Heldekkende')).toBeInTheDocument()
+    expect(screen.getByText('Ikke koblet til')).toBeInTheDocument()
+    expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
+    await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
+    expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
   })
 
   it('viser Level0, proveniens og kart på Oversikt uten syntetiske endringer', async () => {
