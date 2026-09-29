@@ -79,6 +79,20 @@ jobs:
               f"https://nedlasting.geonorge.no/api/v3/capabilities/{uuid}",
               f"https://nedlasting.geonorge.no/api/capabilities/{uuid}",
           ]
+          wfs_urls = [
+              "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WFS&request=GetCapabilities",
+              "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetCapabilities",
+          ]
+          for wfs_url in wfs_urls:
+              print("WFS_PROBE_URL", wfs_url)
+              try:
+                  with urllib.request.urlopen(wfs_url, timeout=30) as response:
+                      body = response.read()
+                      print("WFS_STATUS", response.status, "BYTES", len(body))
+                      print(body[:12000].decode("utf-8", errors="replace"))
+              except Exception as exc:
+                  print("WFS_ERROR", repr(exc))
+
           for url in urls:
               print(f"CAPABILITIES_URL={url}")
               try:
