@@ -100,7 +100,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   useEffect(() => {
     map.current?.setAccountLayerVisible(accountLayerVisible)
     for (const dataset of thematicDatasets) {
-      map.current?.setThematicLayerVisible(dataset.id, thematicLayerVisibility[dataset.id])
+      map.current?.setThematicLayerVisible(
+        dataset.id,
+        activeView === 'utforsk-i-kart' && thematicLayerVisibility[dataset.id],
+      )
     }
   }, [accountLayerVisible, activeView, selectedMunicipality, thematicLayerVisibility])
 
@@ -178,7 +181,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
     setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
     setMapFeatureInfo({ status: 'idle', results: [] })
-    map.current?.setThematicLayerVisible(datasetId, visible)
   }
 
   function openThematicLayerInMap(datasetId: ThematicDatasetId) {
