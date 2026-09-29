@@ -217,7 +217,14 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           { INFO_FORMAT: 'text/html', FEATURE_COUNT: 1 },
         )
         if (!url) return null
-        const response = await fetch(url)
+        const controller = new AbortController()
+        const timeout = window.setTimeout(() => controller.abort(), 5000)
+        let response: Response
+        try {
+          response = await fetch(url, { signal: controller.signal })
+        } finally {
+          window.clearTimeout(timeout)
+        }
         if (!response.ok) throw new Error(`GetFeatureInfo feilet med HTTP ${response.status}`)
         const body = await response.text()
         if (/(serviceexception|exceptionreport|<ows:exception|<exception)/i.test(body)) {
@@ -225,7 +232,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         }
         const parsed = parseFeatureInfo(body, dataset.id)
         if (parsed) return parsed
-        if (!body.trim() || /(no features?|no results?|ingen treff)/i.test(body)) return null
+        if (
+          !body.trim()
+          || /(no features?|no results?|ingen treff)/i.test(body)
+          || (/getfeatureinfo results/i.test(body) && !/<table/i.test(body))
+        ) return null
         throw new Error('GetFeatureInfo returnerte et ukjent svarformat')
       }),
     )
