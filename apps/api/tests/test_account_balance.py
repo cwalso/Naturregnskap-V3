@@ -57,6 +57,7 @@ def test_verified_level_zero_mapping_is_exact_and_case_sensitive() -> None:
         "skog": "nature",
         "snaumark": "nature",
         "myr": "nature",
+        "snoIsbre": "nature",
         "ferskvann": "nature",
         "hav": "excluded",
     }
@@ -94,7 +95,7 @@ def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> 
     assert [metric.id for metric in result.metrics] == list(ACCOUNT_CATEGORY_IDS)
     assert [metric.area_m2 for metric in result.metrics] == [1_000_000, 200_000, 30_000]
     assert result.reconciliation.excluded_area_m2 == 5_000
-    assert result.method_version == "level0-v0.1-prototype"
+    assert result.method_version == "level0-v0.2-prototype"
     assert result.method_status == GRUNNKART_LEVEL0_RULES.status
     assert json.loads(output.read_text())["municipalityNumber"] == "4204"
 
