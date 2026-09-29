@@ -45,6 +45,7 @@ export interface ThematicDatasetDefinition extends DatasetBase {
   readonly category: 'thematic'
   readonly themeId: ThematicThemeId
   readonly sourceStatus: 'connected'
+  readonly attribution: string
   readonly coverage: ThematicCoverage
   readonly analysisSource: null
 }
@@ -93,6 +94,7 @@ export const protectedAreas = {
   serviceProvider: 'Miljødirektoratet',
   metadataUrl: 'https://kartkatalog.miljodirektoratet.no/Dataset/Details/0',
   sourceStatus: 'connected',
+  attribution: 'Kilde: Miljødirektoratet',
   coverage: {
     scope: 'nationwide',
     label: 'Norge, Svalbard og Jan Mayen',
@@ -125,6 +127,7 @@ export const wildReindeerAreas = {
   serviceProvider: 'Miljødirektoratet',
   metadataUrl: 'https://kartkatalog.miljodirektoratet.no/Dataset/Details/25',
   sourceStatus: 'connected',
+  attribution: 'Kilde: Villreinbasen, Miljødirektoratet',
   coverage: {
     scope: 'regional',
     label: 'Sør-Norge',
