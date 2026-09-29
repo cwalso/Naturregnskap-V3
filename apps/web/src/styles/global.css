@@ -974,3 +974,17 @@ body { font-size: 16px; }
   font-size: .72rem;
   line-height: 1.4;
 }
+
+.map-runtime-error {
+  position: absolute;
+  z-index: 6;
+  top: 3.2rem;
+  left: .8rem;
+  right: .8rem;
+  padding: .65rem .75rem;
+  background: var(--color-warning-surface);
+  border: 1px solid var(--color-warning-border);
+  color: var(--color-text);
+  font-size: .78rem;
+  line-height: 1.4;
+}
