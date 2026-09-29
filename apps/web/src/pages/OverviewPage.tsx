@@ -6,6 +6,7 @@ interface OverviewPageProps {
   readonly accountContent: ReactNode
   readonly distributionContent: ReactNode
   readonly mapContent: ReactNode
+  readonly provenanceContent: ReactNode
   readonly onNavigate: (view: SiteView) => void
 }
 
@@ -40,6 +41,7 @@ export function OverviewPage({
   accountContent,
   distributionContent,
   mapContent,
+  provenanceContent,
   onNavigate,
 }: OverviewPageProps) {
   return (
@@ -49,6 +51,10 @@ export function OverviewPage({
       <div className="overview-dashboard-grid">
         {distributionContent}
         {mapContent}
+      </div>
+
+      <div className="overview-provenance">
+        {provenanceContent}
       </div>
 
       <section className="overview-next" aria-labelledby="overview-next-title">
