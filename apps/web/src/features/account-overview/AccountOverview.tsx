@@ -12,9 +12,10 @@ export function AccountOverview({ data }: AccountOverviewProps) {
         <p className="account-overview__eyebrow">Arealbasert naturregnskap · {data.period}</p>
         <h2 id="account-overview-title">Hvor mye natur har {data.municipalityName}?</h2>
         <p>
-          Kommunens areal er her gruppert i tre overordnede kategorier:
-          Natur, Dyrket mark og Bebygd. Tallene bygger på samme heldekkende
-          regnskapsgrunnlag.
+          Arealet som inngår i Level0-balansen er gruppert i tre overordnede
+          kategorier: Natur, Dyrket mark og Bebygd. Tallene bygger på samme
+          heldekkende regnskapsgrunnlag. Areal som eventuelt holdes utenfor
+          balansen dokumenteres under datagrunnlaget.
         </p>
       </header>
       {data.status === 'available' ? (
