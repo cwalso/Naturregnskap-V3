@@ -201,7 +201,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
-    expect(screen.getByRole('heading', { name: 'Utforsk naturen' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Utforsk naturen i Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Se nærmere på naturen' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
