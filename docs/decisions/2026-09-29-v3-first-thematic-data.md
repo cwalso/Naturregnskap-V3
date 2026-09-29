@@ -72,3 +72,16 @@ treffanalyse.
 tema som fortsatt bare er planlagte innganger. «Utforsk i kart» kan vise de to
 reelle temalagene, samtidig som skillet mot heldekkende regnskapsgrunnlag
 bevares.
+
+
+## Kartinteraksjon
+
+Aktive temalag kan identifiseres ved klikk i kartet gjennom WMS
+`GetFeatureInfo`. Dette er et kartoppslag for å vise objektattributter fra
+kildetjenesten, ikke en analyse av kommunen og ikke en del av
+regnskapsberegningen.
+
+Teknisk tilgjengelighet skal skilles fra faglig fravær. WMS-kildenes
+`imageloadstart`, `imageloadend` og `imageloaderror` brukes derfor til å
+vise om kartlaget laster, er tilgjengelig eller har teknisk feil. En teknisk
+feil skal ikke kunne tolkes som at datasettet er kontrollert og ikke har treff.
