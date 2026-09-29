@@ -42,6 +42,12 @@ export type MapFeatureInfoState =
   | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
   | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
   | {
+      readonly status: 'partial'
+      readonly results: readonly MapFeatureInfoResult[]
+      readonly message: string
+      readonly point: MapFeatureInfoPoint
+    }
+  | {
       readonly status: 'error'
       readonly results: readonly MapFeatureInfoResult[]
       readonly message: string
@@ -231,12 +237,22 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       .map((result) => result.value)
       .filter((result): result is MapFeatureInfoResult => result !== null)
 
+    const hasError = responses.some((result) => result.status === 'rejected')
+    if (results.length > 0 && hasError) {
+      handler({
+        status: 'partial',
+        results,
+        message: 'Noe objektinformasjon kunne ikke hentes fra ett eller flere aktive kartlag.',
+        point,
+      })
+      return
+    }
+
     if (results.length > 0) {
       handler({ status: 'ready', results, point })
       return
     }
 
-    const hasError = responses.some((result) => result.status === 'rejected')
     if (hasError) {
       handler({
         status: 'error',
@@ -313,6 +329,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     clearBoundary() { boundarySource.clear() },
     setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
     setThematicLayerVisible(datasetId, visible) {
+      featureInfoRequest += 1
       thematicLayers.get(datasetId)?.setVisible(visible)
       if (!visible) setThematicLayerStatus(datasetId, 'idle')
       featureInfoHandler?.({ status: 'idle', results: [] })
