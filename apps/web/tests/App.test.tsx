@@ -55,6 +55,27 @@ function accountResponse(number: string, name: string, areaKm2: number | null = 
   }
 }
 
+function thematicCoverageResponse() {
+  return {
+    municipalityNumber: '5001',
+    municipalityName: 'Trondheim',
+    results: [
+      {
+        datasetId: 'protected-areas',
+        status: 'hit',
+        featureCount: 2,
+        note: 'Ett eller flere registrerte objekter i kilden krysser kommunegrensen.',
+      },
+      {
+        datasetId: 'wild-reindeer-areas',
+        status: 'no_hit',
+        featureCount: 0,
+        note: 'Spørringen fant ingen registrerte objekter som krysser kommunegrensen. Datasettet har regional dekning, så statusen skal ikke tolkes som en generell vurdering av temaet.',
+      },
+    ],
+  }
+}
+
 function mockMunicipalityFlow(areaKm2: number | null = 12) {
   vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
     const url = String(input)
@@ -63,6 +84,9 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     }
     if (url.endsWith('/account-overview')) {
       return Promise.resolve(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', areaKm2)), { status: 200 }))
+    }
+    if (url.endsWith('/thematic-coverage')) {
+      return Promise.resolve(new Response(JSON.stringify(thematicCoverageResponse()), { status: 200 }))
     }
     return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
   })
@@ -96,13 +120,13 @@ describe('grunnkonfigurasjon', () => {
     expect(protectedAreas).toMatchObject({
       category: 'thematic',
       themeId: 'protected',
-      coverage: { scope: 'nationwide', municipalityEvaluation: 'not_evaluated' },
+      coverage: { scope: 'nationwide', municipalityEvaluation: 'spatial_query' },
     })
     expect(wildReindeerAreas).toMatchObject({
       category: 'thematic',
       themeId: 'reindeer',
       attribution: 'Kilde: Villreinbasen, Miljødirektoratet',
-      coverage: { scope: 'regional', municipalityEvaluation: 'not_evaluated' },
+      coverage: { scope: 'regional', municipalityEvaluation: 'spatial_query' },
     })
   })
 
@@ -214,13 +238,31 @@ describe('sidestruktur og Oversikt', () => {
     expect(reindeer).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('heading', { name: 'Villreinområder' })).toBeInTheDocument()
     expect(screen.getByText(/Dekning: Sør-Norge/)).toBeInTheDocument()
-    expect(screen.getByText(/Trondheim.*ikke.*automatisk evaluert/)).toBeInTheDocument()
+    expect(screen.getByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText(/regional dekning/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /Vis villreinområder i kart/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
     await vi.waitFor(() => {
       expect(map.setThematicLayerVisible).toHaveBeenCalledWith('wild-reindeer-areas', true)
     })
+  })
+
+  it('viser kommunespesifikk treffstatus for supplerende temadata', async () => {
+    mockMunicipalityFlow()
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Utforsk naturen' }))
+
+    const protectedTheme = screen.getByRole('button', { name: /Verneområder/ })
+    expect(protectedTheme).toHaveTextContent('Treff i kommunen')
+
+    fireEvent.click(protectedTheme)
+    expect(screen.getByText(/Treff registrert i Trondheim/)).toBeInTheDocument()
+
+    const reindeerTheme = screen.getByRole('button', { name: /Villreinområder/ })
+    expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff')
   })
 
   it('viser kart som egen arbeidsflate og beholder kommunegrensen', async () => {
