@@ -564,8 +564,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               <strong>Grunnkart for arealanalyse · 2025</strong>
             </div>
             <div>
-              <span>Visningen brukes til</span>
-              <strong>Utforsking og forståelse</strong>
+              <span>Supplerende temadata</span>
+              <strong>Treffstatus vurderes mot kommunegrensen</strong>
             </div>
           </section>
           {mapWorkspace(
