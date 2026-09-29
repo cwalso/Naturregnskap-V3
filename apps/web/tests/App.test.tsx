@@ -487,6 +487,9 @@ describe('kommunevalg', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([]), { status: 200 }))
     render(<App createMap={() => map} />)
 
+    expect(screen.getByRole('region', { name: 'Kartgrunnlag' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Kartgrunnlag' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Kart over Norge')).toBeInTheDocument()
     const layerControl = screen.getByRole('checkbox', { name: 'Arealdekke nivå 1 (2025)' })
     expect(layerControl).toBeChecked()
     const legend = screen.getByRole('complementary', { name: 'Tegnforklaring' })

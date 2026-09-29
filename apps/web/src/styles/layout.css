@@ -8,28 +8,40 @@
 .site-header__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem 1.5rem; }
 .primary-navigation__inner { display: flex; gap: clamp(1.25rem, 4vw, 3.25rem); overflow-x: auto; }
 .primary-navigation a { flex: 0 0 auto; padding: 1rem 0 .85rem; border-bottom: .25rem solid transparent; }
-.start-workspace { display: grid; grid-template-rows: auto minmax(28rem, 1fr); min-height: calc(100vh - 10rem); }
+.start-workspace { min-height: calc(100vh - 10rem); padding-bottom: clamp(3rem, 6vw, 6rem); }
 .start-view__intro { width: min(100%, 55rem); padding: clamp(3rem, 7vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem); }
 .municipality-picker { width: min(100%, 25rem); margin-top: 1.5rem; position: relative; z-index: 3; }
 .selected-municipality-picker, .start-municipality-picker { padding-block: 1.25rem; }
 .selected-municipality-picker .municipality-picker, .start-municipality-picker .municipality-picker { margin: 0; }
-.account-workspace { display: grid; grid-template-columns: minmax(20rem, 2fr) minmax(30rem, 3fr); gap: clamp(1.5rem, 3vw, 3rem); min-height: calc(100vh - 11.5rem); padding-bottom: 3rem; }
-.account-overview { padding: clamp(1.5rem, 3vw, 3rem); }
+.account-workspace { min-height: calc(100vh - 11.5rem); padding-bottom: clamp(3rem, 6vw, 6rem); }
+.account-overview { padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem); }
+.account-overview__header { max-width: 46rem; }
 .account-panel { min-width: 0; background: var(--color-surface); }
-.changes { padding: 0 clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 3vw, 3rem); }
+.changes { padding: 0 clamp(1.5rem, 5vw, 5rem) clamp(2.5rem, 5vw, 5rem); }
 .changes__list > div { display: flex; justify-content: space-between; gap: 1rem; }
-.account-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-.account-metric--nature { grid-column: 1 / -1; min-height: 11rem; }
-.account-metric { padding: 1.25rem 1.5rem; }
-.map-workspace { display: grid; grid-template-rows: auto minmax(28rem, 1fr); min-width: 0; }
-.layer-control { padding: .8rem 1rem; }
-.map-frame { position: relative; min-height: 28rem; }
-.map { width: 100%; height: 100%; min-height: 28rem; }
-.map-legend { position: absolute; top: 1rem; right: 1rem; width: min(14rem, calc(100% - 2rem)); max-height: calc(100% - 4rem); padding: .75rem; overflow: auto; z-index: 1; }
-@media (max-width: 52rem) {
-  .account-workspace { grid-template-columns: 1fr; }
-  .account-panel { order: 1; }
-  .account-workspace .map-workspace { order: 2; min-height: 32rem; }
+.account-summary { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 1fr); grid-template-rows: 1fr 1fr; gap: 1rem; margin-top: clamp(2rem, 4vw, 3.5rem); }
+.account-metric--nature { grid-row: 1 / 3; min-height: 20rem; }
+.account-metric { min-height: 9.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); }
+.map-workspace { min-width: 0; margin-top: clamp(3rem, 7vw, 7rem); }
+.map-workspace__header { max-width: 42rem; margin-bottom: 2rem; }
+.map-workspace__body { display: grid; grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr); min-height: 36rem; border-block: 1px solid var(--color-border); }
+.map-sidebar { padding: 1.5rem; background: var(--color-surface-subtle); border-right: 1px solid var(--color-border); }
+.layer-control { padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
+.map-frame { min-width: 0; min-height: 36rem; }
+.map { width: 100%; height: 100%; min-height: 36rem; }
+.map-legend { margin-top: 1.5rem; }
+@media (max-width: 60rem) {
+  .map-workspace__body { grid-template-columns: 1fr; }
+  .map-sidebar { display: grid; grid-template-columns: minmax(14rem, 1fr) minmax(14rem, 1fr); gap: 1.5rem; border-right: 0; border-bottom: 1px solid var(--color-border); }
+  .layer-control { padding: 0; border: 0; }
+  .map-legend { margin-top: 0; }
+  .map-frame, .map { min-height: 30rem; }
+}
+@media (max-width: 46rem) {
+  .account-summary { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .account-metric--nature { grid-row: auto; min-height: 14rem; }
+  .map-sidebar { grid-template-columns: 1fr; }
+  .map-legend { margin-top: 1rem; }
 }
 @media (max-width: 40rem) {
   .site-header__bar { align-items: flex-start; flex-direction: column; gap: 1rem; }
@@ -37,6 +49,4 @@
   .site-header__actions { justify-content: flex-start; }
   .site-header__logo { width: 9rem; }
   .start-view__intro { padding-top: 2.5rem; }
-  .account-summary { grid-template-columns: 1fr; }
-  .account-metric--nature { grid-column: auto; }
 }

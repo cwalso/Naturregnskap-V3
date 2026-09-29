@@ -145,21 +145,31 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   const mapWorkspace = (
     <section id="map-workspace" className="map-workspace" aria-label="Kartgrunnlag">
-      <div className="layer-control" aria-label="Kartlag">
-        <label><input type="checkbox" checked={accountLayerVisible} onChange={(event) => {
-          const visible = event.target.checked
-          setAccountLayerVisible(visible)
-          map.current?.setAccountLayerVisible(visible)
-        }} />{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</label>
+      <div className="map-workspace__header">
+        <p className="map-workspace__eyebrow">Kart</p>
+        <h2>Kartgrunnlag</h2>
+        <p>Se arealdekket og den valgte kommunen i kartet.</p>
       </div>
-      <div className="map-frame">
-        <div ref={mapElement} className="map" aria-label="Kart over Norge" />
-        <MapLegend items={[{
-          id: nationalLandCover2025.id,
-          title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
-          visible: accountLayerVisible,
-          imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
-        }]} />
+      <div className="map-workspace__body">
+        <div className="map-sidebar">
+          <div className="layer-control" aria-label="Kartlag">
+            <h3>Kartlag</h3>
+            <label><input type="checkbox" checked={accountLayerVisible} onChange={(event) => {
+              const visible = event.target.checked
+              setAccountLayerVisible(visible)
+              map.current?.setAccountLayerVisible(visible)
+            }} />{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</label>
+          </div>
+          <MapLegend items={[{
+            id: nationalLandCover2025.id,
+            title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
+            visible: accountLayerVisible,
+            imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
+          }]} />
+        </div>
+        <div className="map-frame">
+          <div ref={mapElement} className="map" aria-label="Kart over Norge" />
+        </div>
       </div>
     </section>
   )

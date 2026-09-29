@@ -35,22 +35,22 @@ label { font-weight: 700; }
 [role='alert'] { color: var(--color-error); margin: .65rem 0 0; font-weight: 600; }
 [role='status'] { margin: .65rem 0 0; }
 .account-overview { border-top: 1px solid var(--color-border); }
-.account-overview h1 { margin-bottom: .75rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
-.account-metric { background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
+.account-overview h1 { margin-bottom: .75rem; font-size: clamp(2.25rem, 5vw, 3.75rem); line-height: 1.08; letter-spacing: -.025em; }
+.account-metric { background: var(--color-surface-subtle); border-radius: var(--radius-surface); }
 .account-metric--nature { display: flex; flex-direction: column; justify-content: center; background: var(--color-brand-surface); }
-.account-metric h2 { margin-bottom: .5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
-.account-metric__value { margin: 0; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; font-variant-numeric: tabular-nums; }
-.account-metric__value span { font-size: 1rem; }
+.account-metric h2 { order: 2; margin: .8rem 0 .4rem; color: var(--color-text); font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
+.account-metric__value { order: 1; margin: 0; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.account-metric__value span { font-size: 1rem; font-weight: 400; }
 .account-metric__description, .account-overview__notice { color: var(--color-text-muted); line-height: 1.45; }
-.account-metric__description { margin-bottom: 0; }
+.account-metric__description { order: 3; max-width: 30rem; margin-bottom: 0; }
 .account-overview__notice { margin: 1.25rem 0 0; font-size: .9rem; }
-.account-provenance { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+.account-provenance { margin-top: clamp(2rem, 4vw, 3.5rem); padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
 .account-provenance__summary { display: inline; margin: 0; line-height: 1.5; }
 .account-provenance details { display: inline; }
 .account-provenance summary { display: inline; margin-left: .35rem; color: var(--color-accent); font-weight: 600; text-decoration: underline; cursor: pointer; }
 .account-provenance summary::before { content: '· '; color: var(--color-text-muted); text-decoration: none; }
 .account-provenance summary:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
-.account-provenance__details { margin-top: 1rem; padding: 1rem; background: var(--color-surface-subtle); border-left: .3rem solid var(--color-accent); }
+.account-provenance__details { max-width: 50rem; margin-top: 1.5rem; padding: 1.5rem; background: var(--color-surface-subtle); border-left: .3rem solid var(--color-accent); }
 .account-provenance__details h2 { margin-bottom: 1rem; font-size: 1.1rem; }
 .account-provenance__details dl, .account-provenance__details dd { margin: 0; }
 .account-provenance__details dl { display: grid; gap: 1rem; }
@@ -63,10 +63,13 @@ label { font-weight: 700; }
 .changes__list > div { padding: .55rem 0; border-bottom: 1px solid var(--color-border); }
 .changes__list dt { font-weight: 600; }
 .changes__list dd { margin: 0; font-variant-numeric: tabular-nums; }
-.layer-control { background: var(--color-surface-subtle); border-block: 1px solid var(--color-border); }
+.map-workspace__eyebrow { margin-bottom: .5rem; color: var(--color-accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.map-workspace__header h2 { margin-bottom: .65rem; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; }
+.map-workspace__header > p:last-child { margin-bottom: 0; color: var(--color-text-muted); }
+.layer-control h3 { margin-bottom: 1rem; font-size: 1rem; }
 .layer-control label { display: inline-flex; align-items: center; gap: .6rem; }
 .layer-control input { width: 1.2rem; height: 1.2rem; accent-color: var(--color-accent); }
-.map-legend { color: var(--color-text); border: 1px solid var(--color-border); box-shadow: var(--shadow-floating); }
+.map-legend { color: var(--color-text); }
 .map-legend h2 { margin: 0; color: var(--color-accent); font-size: 1rem; }
 .map-legend h3 { margin: .55rem 0 .4rem; font-size: .85rem; }
 .map-legend p { margin: .55rem 0 0; font-size: .85rem; }
