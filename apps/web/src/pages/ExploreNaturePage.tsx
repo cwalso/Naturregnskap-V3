@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+import type {
+  ThematicCoverageResponse,
+  ThematicDatasetEvaluation,
+} from '../api/thematicCoverage'
 import {
   thematicDatasets,
   type ThematicDatasetId,
@@ -7,6 +11,8 @@ import {
 
 interface ExploreNaturePageProps {
   readonly municipalityName?: string
+  readonly thematicCoverage?: ThematicCoverageResponse | null
+  readonly thematicCoverageState?: 'idle' | 'loading' | 'error'
   readonly onOpenThematicLayer?: (datasetId: ThematicDatasetId) => void
 }
 
@@ -64,11 +70,31 @@ const supplementalThemes: readonly ThemeDefinition[] = [
   },
 ] as const
 
-export function ExploreNaturePage({ municipalityName, onOpenThematicLayer }: ExploreNaturePageProps) {
+function evaluationLabel(
+  evaluation: ThematicDatasetEvaluation | undefined,
+  state: 'idle' | 'loading' | 'error',
+): string {
+  if (state === 'loading') return 'Vurderer…'
+  if (state === 'error') return 'Kunne ikke vurderes'
+  if (!evaluation) return 'Koblet til kart'
+  if (evaluation.status === 'hit') return 'Treff i kommunen'
+  if (evaluation.status === 'no_hit') return 'Ingen registrerte treff'
+  return 'Kunne ikke vurderes'
+}
+
+export function ExploreNaturePage({
+  municipalityName,
+  thematicCoverage,
+  thematicCoverageState = 'idle',
+  onOpenThematicLayer,
+}: ExploreNaturePageProps) {
   const place = municipalityName ? ` i ${municipalityName}` : ''
   const [selectedThemeId, setSelectedThemeId] = useState<ThemeId>('valued')
   const selectedTheme = supplementalThemes.find((theme) => theme.id === selectedThemeId) ?? supplementalThemes[0]
   const selectedDataset = thematicDatasets.find((dataset) => dataset.themeId === selectedTheme.id)
+  const selectedEvaluation = selectedDataset
+    ? thematicCoverage?.results.find((item) => item.datasetId === selectedDataset.id)
+    : undefined
 
   return (
     <section className="content-page" aria-labelledby="explore-nature-title">
@@ -118,6 +144,12 @@ export function ExploreNaturePage({ municipalityName, onOpenThematicLayer }: Exp
             {supplementalThemes.map((theme) => {
               const isSelected = theme.id === selectedTheme.id
               const dataset = thematicDatasets.find((item) => item.themeId === theme.id)
+              const evaluation = dataset
+                ? thematicCoverage?.results.find((item) => item.datasetId === dataset.id)
+                : undefined
+              const statusLabel = dataset
+                ? evaluationLabel(evaluation, municipalityName ? thematicCoverageState : 'idle')
+                : 'Ikke koblet til ennå'
               return (
                 <button
                   type="button"
@@ -129,8 +161,14 @@ export function ExploreNaturePage({ municipalityName, onOpenThematicLayer }: Exp
                   <div className="theme-card__icon" aria-hidden="true">{theme.icon}</div>
                   <strong>{theme.name}</strong>
                   <span>{theme.description}</span>
-                  <span className={dataset ? 'status-tag' : 'status-tag status-tag--muted'}>
-                    {dataset ? 'Koblet til kart' : 'Ikke koblet til ennå'}
+                  <span
+                    className={
+                      dataset && evaluation?.status === 'hit'
+                        ? 'status-tag'
+                        : 'status-tag status-tag--muted'
+                    }
+                  >
+                    {statusLabel}
                   </span>
                 </button>
               )
@@ -158,10 +196,42 @@ export function ExploreNaturePage({ municipalityName, onOpenThematicLayer }: Exp
                 <dt>Status</dt>
                 {selectedDataset ? (
                   <dd>
-                    <strong>Koblet til kartvisningen.</strong> {selectedDataset.attribution}.
-                    Dekning: {selectedDataset.coverage.label}. Treff
-                    {municipalityName ? ` i ${municipalityName}` : ' i valgt kommune'} er ikke
-                    automatisk evaluert i prototypen.
+                    {!municipalityName ? (
+                      <>
+                        <strong>Koblet til kartvisningen.</strong> Velg kommune for å vurdere
+                        registrerte treff mot kommunegrensen.
+                      </>
+                    ) : thematicCoverageState === 'loading' ? (
+                      <>
+                        <strong>Vurderer registrerte treff.</strong> Kommunegrensen kontrolleres
+                        mot kildens feature-lag.
+                      </>
+                    ) : thematicCoverageState === 'error' ? (
+                      <>
+                        <strong>Treffstatus kunne ikke hentes nå.</strong> Dette skal ikke tolkes
+                        som at kommunen mangler registrerte objekter.
+                      </>
+                    ) : selectedEvaluation?.status === 'hit' ? (
+                      <>
+                        <strong>Treff registrert i {municipalityName}.</strong>{' '}
+                        {selectedEvaluation.note}
+                      </>
+                    ) : selectedEvaluation?.status === 'no_hit' ? (
+                      <>
+                        <strong>Ingen registrerte treff i {municipalityName}.</strong>{' '}
+                        {selectedEvaluation.note}
+                      </>
+                    ) : selectedEvaluation?.status === 'unavailable' ? (
+                      <>
+                        <strong>Kunne ikke vurderes nå.</strong> {selectedEvaluation.note}
+                      </>
+                    ) : (
+                      <>
+                        <strong>Koblet til kartvisningen.</strong> Treffstatus er foreløpig
+                        ikke tilgjengelig.
+                      </>
+                    )}
+                    {' '}{selectedDataset.attribution}. Dekning: {selectedDataset.coverage.label}.
                   </dd>
                 ) : (
                   <dd>Datakilde, dekning, versjon og presentasjon er ikke koblet til prototypen ennå.</dd>
