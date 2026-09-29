@@ -867,10 +867,6 @@ body { font-size: 16px; }
 }
 
 /* V3.11 – objektinformasjon i kart */
-.map-canvas {
-  position: relative;
-  overflow: hidden;
-}
 .map-info-popup {
   position: absolute;
   z-index: 5;
@@ -920,18 +916,6 @@ body { font-size: 16px; }
   color: var(--color-text-muted);
   font-size: .76rem;
   line-height: 1.5;
-}
-.map-selection-marker {
-  position: absolute;
-  z-index: 4;
-  width: 1.15rem;
-  height: 1.15rem;
-  border: 3px solid var(--color-surface);
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
 }
 .map-feature-card + .map-feature-card {
   margin-top: .85rem;
