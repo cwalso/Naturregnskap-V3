@@ -241,7 +241,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       ...thematicDatasets.map((dataset) => ({
         id: dataset.id,
         title: dataset.visualSource.title,
-        visible: thematicLayerVisibility[dataset.id],
+        visible: variant === 'explore' && thematicLayerVisibility[dataset.id],
         imageUrl: buildWmsLegendUrl(dataset.visualSource),
       })),
     ]
@@ -382,7 +382,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                       type="button"
                       className="map-info-popup__close"
                       aria-label="Lukk objektinformasjon"
-                      onClick={() => setMapFeatureInfo({ status: 'idle', results: [] })}
+                      onClick={() => map.current?.clearFeatureInfo()}
                     >
                       ×
                     </button>
