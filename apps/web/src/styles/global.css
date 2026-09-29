@@ -867,30 +867,80 @@ body { font-size: 16px; }
 }
 
 /* V3.11 – objektinformasjon i kart */
-.map-sidebar__feature-info {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--color-border);
+.map-canvas {
+  position: relative;
+  min-height: inherit;
 }
-.map-sidebar__feature-info > h3 {
-  margin-bottom: .65rem;
-  font-size: .96rem;
+.map-info-popup {
+  position: absolute;
+  z-index: 5;
+  top: .8rem;
+  right: .8rem;
+  width: min(20rem, calc(100% - 1.6rem));
+  max-height: calc(100% - 1.6rem);
+  overflow: auto;
+  padding: .85rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-floating);
 }
-.map-sidebar__feature-info > p {
+.map-info-popup__close {
+  position: absolute;
+  top: .4rem;
+  right: .45rem;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.map-info-popup__close:hover {
+  background: var(--color-surface-subtle);
+}
+.map-info-popup__close:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.map-info-popup__eyebrow {
+  margin: 0 2rem .3rem 0;
+  color: var(--color-accent);
+  font-size: .68rem;
+  font-weight: 700;
+}
+.map-info-popup > p {
   margin-bottom: 0;
   color: var(--color-text-muted);
   font-size: .76rem;
   line-height: 1.5;
 }
-.map-feature-card {
-  margin-top: .75rem;
-  padding: .75rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+.map-selection-marker {
+  position: absolute;
+  z-index: 4;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.map-feature-card + .map-feature-card {
+  margin-top: .85rem;
+  padding-top: .85rem;
+  border-top: 1px solid var(--color-border);
 }
 .map-feature-card h4 {
-  margin: 0 0 .55rem;
-  font-size: .8rem;
+  margin: 0 2rem .55rem 0;
+  font-size: .92rem;
 }
 .map-feature-card dl,
 .map-feature-card dd {
@@ -914,6 +964,12 @@ body { font-size: 16px; }
   overflow-wrap: anywhere;
   font-size: .75rem;
   line-height: 1.35;
+}
+.map-feature-card a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .18em;
 }
 
 .layer-toggle__status {
