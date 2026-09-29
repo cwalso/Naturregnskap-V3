@@ -65,23 +65,25 @@ class MiljodirektoratetThematicAdapter:
             raise ThematicUpstreamError("Negativt antall fra temadatatjenesten")
         return count
 
-    @staticmethod
-    def _to_esri_polygon(geometry: dict[str, Any]) -> dict[str, Any]:
+    @classmethod
+    def _to_esri_polygon(cls, geometry: dict[str, Any]) -> dict[str, Any]:
         geometry_type = geometry.get("type")
         coordinates = geometry.get("coordinates")
 
         if geometry_type == "Polygon" and isinstance(coordinates, list):
-            rings = coordinates
+            polygons = [coordinates]
         elif geometry_type == "MultiPolygon" and isinstance(coordinates, list):
-            rings = [
-                ring
-                for polygon in coordinates
-                if isinstance(polygon, list)
-                for ring in polygon
-                if isinstance(ring, list)
-            ]
+            polygons = [polygon for polygon in coordinates if isinstance(polygon, list)]
         else:
             raise ThematicUpstreamError("Kommunegeometrien er ikke et polygon")
+
+        rings: list[list[list[float]]] = []
+        for polygon in polygons:
+            for index, ring in enumerate(polygon):
+                if not isinstance(ring, list):
+                    continue
+                normalized = cls._normalize_ring(ring, clockwise=index == 0)
+                rings.append(normalized)
 
         if not rings:
             raise ThematicUpstreamError("Kommunegeometrien mangler ringer")
@@ -90,3 +92,30 @@ class MiljodirektoratetThematicAdapter:
             "rings": rings,
             "spatialReference": {"wkid": 4326},
         }
+
+    @staticmethod
+    def _normalize_ring(
+        ring: list[Any],
+        *,
+        clockwise: bool,
+    ) -> list[list[float]]:
+        try:
+            points = [[float(point[0]), float(point[1])] for point in ring]
+        except (IndexError, TypeError, ValueError) as error:
+            raise ThematicUpstreamError("Ugyldig ring i kommunegeometrien") from error
+
+        if len(points) < 3:
+            raise ThematicUpstreamError("For få punkter i kommunegeometrien")
+        if points[0] != points[-1]:
+            points.append(points[0].copy())
+
+        signed_area = sum(
+            points[index][0] * points[index + 1][1]
+            - points[index + 1][0] * points[index][1]
+            for index in range(len(points) - 1)
+        ) / 2
+        is_clockwise = signed_area < 0
+
+        if is_clockwise != clockwise:
+            points.reverse()
+        return points
