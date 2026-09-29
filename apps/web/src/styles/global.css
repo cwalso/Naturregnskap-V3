@@ -1545,3 +1545,34 @@ body { font-size: 16px; }
   margin-top: .3rem;
 }
 
+.overview-distribution__bar {
+  display: flex;
+  width: 100%;
+  height: 3.25rem;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: .45rem;
+}
+.overview-distribution__segment {
+  display: block;
+  min-width: 0;
+  height: 100%;
+}
+.overview-distribution__segment--nature {
+  background: var(--color-accent-mid);
+}
+.overview-distribution__segment--agriculture {
+  background: var(--color-level0-agriculture-accent);
+}
+.overview-distribution__segment--built {
+  background: var(--color-level0-built-accent);
+}
+.overview-distribution__denominator {
+  margin: .7rem 0 0;
+  color: var(--color-text-muted);
+  font-size: .7rem;
+  line-height: 1.45;
+}
+
