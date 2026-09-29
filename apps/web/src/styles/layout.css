@@ -264,3 +264,19 @@
   }
 }
 
+/* V3.13 – Oversikt som første kapittel */
+.account-summary {
+  grid-template-columns: minmax(0, 1.65fr) minmax(15rem, .85fr);
+}
+.account-metric--nature {
+  min-height: 19rem;
+}
+@media (max-width: 46rem) {
+  .account-summary {
+    grid-template-columns: 1fr;
+  }
+  .account-metric--nature {
+    min-height: 13rem;
+  }
+}
+
