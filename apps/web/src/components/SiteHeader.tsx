@@ -1,17 +1,27 @@
 import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 
+export type SiteView = 'oversikt' | 'naturtapet' | 'utforsk-naturen' | 'utforsk-i-kart'
+
 interface SiteHeaderProps {
   readonly municipalityName?: string
+  readonly activeView: SiteView
+  readonly onNavigate(view: SiteView): void
+  readonly onChangeMunicipality(): void
 }
 
-const navigationItems = [
-  { label: 'Oversikt', href: '#main-content', current: true },
-  { label: 'Naturtapet', href: '#account-content', current: false },
-  { label: 'Utforsk naturen', href: '#account-content', current: false },
-  { label: 'Utforsk i kart', href: '#map-workspace', current: false },
-] as const
+const navigationItems: ReadonlyArray<{ label: string; view: SiteView }> = [
+  { label: 'Oversikt', view: 'oversikt' },
+  { label: 'Naturtapet', view: 'naturtapet' },
+  { label: 'Utforsk naturen', view: 'utforsk-naturen' },
+  { label: 'Utforsk i kart', view: 'utforsk-i-kart' },
+]
 
-export function SiteHeader({ municipalityName }: SiteHeaderProps) {
+export function SiteHeader({
+  municipalityName,
+  activeView,
+  onNavigate,
+  onChangeMunicipality,
+}: SiteHeaderProps) {
   const productName = municipalityName
     ? `Naturregnskap for ${municipalityName}`
     : 'Naturregnskap for din kommune'
@@ -26,7 +36,7 @@ export function SiteHeader({ municipalityName }: SiteHeaderProps) {
           <p className="site-header__product">{productName}</p>
         </div>
         <div className="site-header__actions" aria-label="Tjenestehandlinger">
-          <a href="#municipality-picker">Bytt kommune</a>
+          <button type="button" className="site-header__action" onClick={onChangeMunicipality}>Bytt kommune</button>
           <a href="#help">Hjelp og veileder</a>
         </div>
       </div>
@@ -34,9 +44,13 @@ export function SiteHeader({ municipalityName }: SiteHeaderProps) {
         <div className="primary-navigation__inner">
           {navigationItems.map((item) => (
             <a
-              key={item.label}
-              href={item.href}
-              aria-current={item.current ? 'page' : undefined}
+              key={item.view}
+              href={`#${item.view}`}
+              aria-current={activeView === item.view ? 'page' : undefined}
+              onClick={(event) => {
+                event.preventDefault()
+                onNavigate(item.view)
+              }}
             >
               {item.label}
             </a>
