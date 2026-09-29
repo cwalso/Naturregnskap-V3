@@ -24,7 +24,7 @@ arkitekturavklaringer.
 | V3.2.1 – Codespaces/browser-preview | ✅ Ferdig | Nettleserbasert utviklingspreview med frontend og API i GitHub Codespaces. | Preview-flyt og utviklingsoppsett er etablert. |
 | V3.2.2 – Grunnleggende UX/design | ✅ Ferdig | Grunnleggende kommunevelger, layout, semantiske designtokens og visuelt profilgrunnlag. | Et første, ikke profilgodkjent UX- og designgrunnlag er etablert. |
 | V3.2.3 – Profilheader og tegnforklaring | ✅ Ferdig | Profilheader med offisiell logo og permanent tegnforklaring for aktive faglag. | Header og tegnforklaring er etablert; framtidige lag må få validert legendekilde. |
-| V3.3 – Overordnet regnskapsoversikt | ✅ Ferdig | Level0-kategoriene Natur, Jordbruk og Bebygd, eksplisitt `XX`/`not_available` ved manglende data og utskiftbar presentasjonsarkitektur. | Typed presentasjonsflyt er etablert uten beregninger i UI-komponentene. |
+| V3.3 – Overordnet regnskapsoversikt | ✅ Ferdig | Level0-kategoriene Natur, Dyrket mark og Bebygd, eksplisitt `XX`/`not_available` ved manglende data og utskiftbar presentasjonsarkitektur. | Oversikt er nå første kapittel i brukerreisen og svarer først på hvor mye areal kommunen har i de tre Level0-kategoriene. Natur gis størst visuell vekt. Prosent er fortsatt utsatt fordi nevneren ikke er metodisk avklart. |
 | V3.4 – Research gate for Grunnkart 2025 | ✅ Ferdig | Kontrollere faktisk datagrunnlag og stenge implementering inntil analysekilden var inspisert. | Historisk research gate er gjennomført og senere erstattet av den operative beslutningen i V3.4B. |
 | V3.4B – Kommunevis Parquet → prepared data → API | ✅ Ferdig | Faktisk GeoParquet for Indre Fosen (5054), offline beregning, prepared resultat og `/account-overview`-API. | Tung regnskapsberegning skjer ikke i nettleseren eller per HTTP-request. Grunnkart-WMS brukes fortsatt bare til visualisering. |
 | V3.5 – Proveniens og etterprøvbarhet | ✅ Ferdig | Gjøre kilde, metode, versjon/periode og viktige avgrensninger forståelige og nyttige for brukeren. | Brukerrettet proveniens er etablert for dagens Level0-regnskap. Kilde, referanseversjon eller regnskapsperiode, metode og viktige avgrensninger kan formidles i brukerflaten. Teknisk sporbarhet beholdes i backend uten å eksponeres unødvendig. Videre forbedring av metadata-kontrakten tas ved konkret behov. |
@@ -59,7 +59,7 @@ arkitekturavklaringer.
 
 ## Neste anbefalte steg
 
-1. **Brukerflater:** Oversikt, Utforsk naturen og Utforsk i kart er løftet inn i samme designretning. Naturvernområder og Villreinområder har nå kommunespesifikk treffstatus basert på polygonspørring mot feature-tjenestene, mens WMS fortsatt kun brukes til visning. Neste steg er å utvide samme mønster til flere prioriterte temadata og eventuelt etablere eksplisitt dekningsgeometri der kilden krever skille mellom null treff og manglende geografisk dekning.
+1. **Brukerflater:** Oversikt er prioritert som første kapittel i brukerreisen: beholdningen på Level0 vises før metodeforklaring og videre temadata. Neste brukeropplevelsessteg er å gjøre overgangen fra «hvor mye natur har vi?» til «hva slags natur har vi?» like tydelig, uten å blande heldekkende regnskapsgrunnlag og supplerende temadata.
 2. **V3.6:** Verifisere preparation-løpet på minst én ny kommune med reell GeoParquet.
 3. **V3.7:** Koble på SSB-/annet dokumentert naturtap når publisert datagrunnlag og kommunal metode er avklart. Ikke forutsett polygoner.
 4. **V3.8/V3.9:** Koble på mer detaljert heldekkende naturinformasjon og deretter supplerende temadata med eksplisitt datadekning.
