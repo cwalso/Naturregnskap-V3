@@ -86,5 +86,15 @@ class PreparedAccountBalanceProvider:
             method_version=prepared.method_version,
             method_status=prepared.method_status,
             source_versions=[prepared.dataset_version],
+            source_sha256=prepared.source_sha256,
+            source_format=prepared.source_format,
+            source_feature_count=prepared.source_feature_count,
+            area_method=prepared.area_method,
+            classified_area_km2=(
+                prepared.reconciliation.classified_area_m2 / 1_000_000
+            ),
+            excluded_area_km2=(
+                prepared.reconciliation.excluded_area_m2 / 1_000_000
+            ),
             warnings=prepared.warnings,
         )
