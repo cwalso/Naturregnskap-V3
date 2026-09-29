@@ -96,3 +96,36 @@ Så snart en autorisert Trondheim-fil er tilgjengelig, er kjeden:
 
 Dette skal være en datatilgangsgate, ikke en grunn til å erstatte Grunnkart
 med en annen statistikkilde.
+
+
+## Sporbarhet i hvert beregnet resultat
+
+Hvert prepared Level0-resultat lagrer nå:
+
+- SHA-256 av den eksakte kildefilen
+- kildeformat
+- antall kildeobjekter
+- eksplisitt arealmetode
+- metodeversjon
+- beregningstidspunkt
+- klassifisert, ekskludert og umappet areal
+
+Dette gjør at et publisert tall kan knyttes tilbake til både dataversjon, fysisk
+kildefil og beregningsmåte. UI-et viser de viktigste opplysningene under
+«Om datagrunnlaget».
+
+## Kjøring når Trondheim-filen er tilgjengelig
+
+For en GML-leveranse i EPSG:25832:
+
+```bash
+cd apps/api
+python -m app.scripts.inspect_grunnkart_gml /sti/til/trondheim_5001.gml
+python -m app.scripts.prepare_account_balance_gml \
+  --municipality 5001 \
+  --input /sti/til/trondheim_5001.gml
+```
+
+Andre kommando skal bare kjøres videre dersom inspeksjonen viser kommune 5001,
+forventede Arealdekke nivå 1-koder og metrisk CRS. Ukjente klasser stopper
+beregningen.
