@@ -69,6 +69,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     status: 'idle',
     results: [],
   })
+  const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -85,11 +86,17 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       return
     }
 
-    map.current = createMap(mapElement.current)
-    map.current.setFeatureInfoHandler(setMapFeatureInfo)
-    map.current.setThematicLayerStatusHandler((datasetId, status) => {
-      setThematicLayerStatus((current) => ({ ...current, [datasetId]: status }))
-    })
+    try {
+      setMapRuntimeError(null)
+      map.current = createMap(mapElement.current)
+      map.current.setFeatureInfoHandler(setMapFeatureInfo)
+      map.current.setThematicLayerStatusHandler((datasetId, status) => {
+        setThematicLayerStatus((current) => ({ ...current, [datasetId]: status }))
+      })
+    } catch (error) {
+      map.current = null
+      setMapRuntimeError(error instanceof Error ? error.message : 'Ukjent feil ved initialisering av kartet')
+    }
 
     return () => {
       map.current?.destroy()
@@ -361,6 +368,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   {accountLayerVisible ? 'Regnskapsgrunnlag vises' : 'Regnskapsgrunnlag er skjult'}
                   {activeThematicCount > 0 ? ` · ${activeThematicCount} supplerende lag aktive` : ''}
                 </span>
+              </div>
+            )}
+            {mapRuntimeError && (
+              <div className="map-runtime-error" role="alert">
+                Kartet kunne ikke initialiseres: {mapRuntimeError}
               </div>
             )}
             <div
