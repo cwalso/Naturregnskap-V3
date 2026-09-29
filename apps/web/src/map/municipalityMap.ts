@@ -19,11 +19,31 @@ import { defaultBasemap } from './basemaps'
 proj4.defs('EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
 
+export interface MapFeatureInfoField {
+  readonly label: string
+  readonly value: string
+}
+
+export interface MapFeatureInfoResult {
+  readonly datasetId: ThematicDatasetId
+  readonly datasetTitle: string
+  readonly fields: readonly MapFeatureInfoField[]
+}
+
+export type MapFeatureInfoState =
+  | { readonly status: 'idle'; readonly results: readonly MapFeatureInfoResult[] }
+  | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[] }
+  | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[] }
+  | { readonly status: 'error'; readonly results: readonly MapFeatureInfoResult[]; readonly message: string }
+
+export type MapFeatureInfoHandler = (state: MapFeatureInfoState) => void
+
 export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
+  setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
   fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
   clearChanges(): void
@@ -65,6 +85,93 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     ]),
   )
 
+  let featureInfoHandler: MapFeatureInfoHandler | null = null
+  let featureInfoRequest = 0
+
+  function parseFeatureInfo(html: string, datasetId: ThematicDatasetId): MapFeatureInfoResult | null {
+    const dataset = thematicDatasets.find((item) => item.id === datasetId)
+    if (!dataset) return null
+
+    const document = new DOMParser().parseFromString(html, 'text/html')
+    const rows = Array.from(document.querySelectorAll('tr'))
+    const ignoredFields = /^(shape|shape_|objectid|fid|geometry|st_area|st_length)/i
+    const fields: MapFeatureInfoField[] = []
+
+    for (const row of rows) {
+      const cells = Array.from(row.querySelectorAll('th, td'))
+      if (cells.length < 2) continue
+      const label = cells[0].textContent?.trim() ?? ''
+      const value = cells[1].textContent?.trim() ?? ''
+      if (!label || !value || ignoredFields.test(label)) continue
+      fields.push({ label, value })
+      if (fields.length >= 8) break
+    }
+
+    if (fields.length === 0) return null
+    return {
+      datasetId,
+      datasetTitle: dataset.title,
+      fields,
+    }
+  }
+
+  async function identifyThematicFeatures(coordinate: number[], resolution: number) {
+    const handler = featureInfoHandler
+    if (!handler) return
+
+    const activeDatasets = thematicDatasets.filter(
+      (dataset) => thematicLayers.get(dataset.id)?.getVisible(),
+    )
+
+    if (activeDatasets.length === 0) {
+      handler({ status: 'ready', results: [] })
+      return
+    }
+
+    const requestId = ++featureInfoRequest
+    handler({ status: 'loading', results: [] })
+
+    const responses = await Promise.allSettled(
+      activeDatasets.map(async (dataset) => {
+        const source = thematicLayers.get(dataset.id)?.getSource()
+        const url = source?.getFeatureInfoUrl(
+          coordinate,
+          resolution,
+          view.getProjection(),
+          { INFO_FORMAT: 'text/html', FEATURE_COUNT: 5 },
+        )
+        if (!url) return null
+        const response = await fetch(url)
+        if (!response.ok) throw new Error(`GetFeatureInfo feilet med HTTP ${response.status}`)
+        return parseFeatureInfo(await response.text(), dataset.id)
+      }),
+    )
+
+    if (requestId !== featureInfoRequest || handler !== featureInfoHandler) return
+
+    const results = responses
+      .filter((result): result is PromiseFulfilledResult<MapFeatureInfoResult | null> => result.status === 'fulfilled')
+      .map((result) => result.value)
+      .filter((result): result is MapFeatureInfoResult => result !== null)
+
+    if (results.length > 0) {
+      handler({ status: 'ready', results })
+      return
+    }
+
+    const hasError = responses.some((result) => result.status === 'rejected')
+    if (hasError) {
+      handler({
+        status: 'error',
+        results: [],
+        message: 'Kunne ikke hente objektinformasjon fra ett eller flere aktive kartlag.',
+      })
+      return
+    }
+
+    handler({ status: 'ready', results: [] })
+  }
+
   const boundarySource = new VectorSource()
   const boundaryLayer = new VectorLayer({
     source: boundarySource,
@@ -99,6 +206,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     ],
   })
 
+  map.on('singleclick', (event) => {
+    const resolution = view.getResolution()
+    if (resolution === undefined) return
+    void identifyThematicFeatures(event.coordinate, resolution)
+  })
+
   return {
     showBoundary(boundary) {
       boundarySource.clear()
@@ -114,6 +227,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
     setThematicLayerVisible(datasetId, visible) {
       thematicLayers.get(datasetId)?.setVisible(visible)
+      featureInfoHandler?.({ status: 'idle', results: [] })
+    },
+    setFeatureInfoHandler(handler) {
+      featureInfoHandler = handler
+      handler?.({ status: 'idle', results: [] })
     },
     fitToBoundary() {
       if (boundarySource.getFeatures().length === 0) return
@@ -134,6 +252,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       }
     },
     clearChanges() { changesSource.clear() },
-    destroy() { map.setTarget(undefined) },
+    destroy() {
+      featureInfoRequest += 1
+      featureInfoHandler = null
+      map.setTarget(undefined)
+    },
   }
 }
