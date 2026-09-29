@@ -363,80 +363,71 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 </span>
               </div>
             )}
-            <div className="map-canvas">
-              <div
-                ref={mapElement}
-                className="map"
-                aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
-              />
+            <div
+              ref={mapElement}
+              className="map"
+              aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
+            />
 
-              {variant === 'explore' && mapFeatureInfo.status !== 'idle' && (
-                <>
-                  <span
-                    className="map-selection-marker"
-                    style={{ left: mapFeatureInfo.point.x, top: mapFeatureInfo.point.y }}
-                    aria-hidden="true"
-                  />
-                  <aside className="map-info-popup" role="dialog" aria-label="Objektinformasjon">
-                    <button
-                      type="button"
-                      className="map-info-popup__close"
-                      aria-label="Lukk objektinformasjon"
-                      onClick={() => map.current?.clearFeatureInfo()}
-                    >
-                      ×
-                    </button>
+            {variant === 'explore' && mapFeatureInfo.status !== 'idle' && (
+              <aside className="map-info-popup" role="dialog" aria-label="Objektinformasjon">
+                <button
+                  type="button"
+                  className="map-info-popup__close"
+                  aria-label="Lukk objektinformasjon"
+                  onClick={() => map.current?.clearFeatureInfo()}
+                >
+                  ×
+                </button>
 
-                    {mapFeatureInfo.status === 'loading' && (
-                      <>
-                        <p className="map-info-popup__eyebrow">Valgt punkt</p>
-                        <p role="status">Henter objektinformasjon…</p>
-                      </>
-                    )}
+                {mapFeatureInfo.status === 'loading' && (
+                  <>
+                    <p className="map-info-popup__eyebrow">Valgt objekt</p>
+                    <p role="status">Henter objektinformasjon…</p>
+                  </>
+                )}
 
-                    {mapFeatureInfo.status === 'error' && (
-                      <>
-                        <p className="map-info-popup__eyebrow">Objektinformasjon</p>
-                        <p role="alert">{mapFeatureInfo.message}</p>
-                      </>
-                    )}
+                {mapFeatureInfo.status === 'error' && (
+                  <>
+                    <p className="map-info-popup__eyebrow">Objektinformasjon</p>
+                    <p role="alert">{mapFeatureInfo.message}</p>
+                  </>
+                )}
 
-                    {mapFeatureInfo.status === 'partial' && (
-                      <p className="map-info-popup__warning" role="status">{mapFeatureInfo.message}</p>
-                    )}
+                {mapFeatureInfo.status === 'partial' && (
+                  <p className="map-info-popup__warning" role="status">{mapFeatureInfo.message}</p>
+                )}
 
-                    {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
-                      <>
-                        <p className="map-info-popup__eyebrow">Valgt punkt</p>
-                        <p>Ingen objektinformasjon ble funnet i de aktive temalagene her.</p>
-                      </>
-                    )}
+                {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
+                  <>
+                    <p className="map-info-popup__eyebrow">Valgt punkt</p>
+                    <p>Ingen objektinformasjon ble funnet i de aktive temalagene her.</p>
+                  </>
+                )}
 
-                    {(mapFeatureInfo.status === 'ready' || mapFeatureInfo.status === 'partial')
-                      && mapFeatureInfo.results.map((result) => (
-                      <article className="map-feature-card" key={result.datasetId}>
-                        <p className="map-info-popup__eyebrow">{result.datasetTitle}</p>
-                        <h4>{result.objectLabel}</h4>
-                        <dl>
-                          {result.fields.map((field, index) => (
-                            <div key={`${result.datasetId}-${field.label}-${index}`}>
-                              <dt>{field.label}</dt>
-                              <dd>
-                                {field.url ? (
-                                  <a href={field.url} target="_blank" rel="noreferrer">
-                                    {field.value}
-                                  </a>
-                                ) : field.value}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </article>
-                    ))}
-                  </aside>
-                </>
-              )}
-            </div>
+                {(mapFeatureInfo.status === 'ready' || mapFeatureInfo.status === 'partial')
+                  && mapFeatureInfo.results.map((result) => (
+                  <article className="map-feature-card" key={result.datasetId}>
+                    <p className="map-info-popup__eyebrow">{result.datasetTitle}</p>
+                    <h4>{result.objectLabel}</h4>
+                    <dl>
+                      {result.fields.map((field, index) => (
+                        <div key={`${result.datasetId}-${field.label}-${index}`}>
+                          <dt>{field.label}</dt>
+                          <dd>
+                            {field.url ? (
+                              <a href={field.url} target="_blank" rel="noreferrer">
+                                {field.value}
+                              </a>
+                            ) : field.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </article>
+                ))}
+              </aside>
+            )}
           </div>
         </div>
 
