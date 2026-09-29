@@ -208,3 +208,59 @@
     width: min(100% - 1.25rem, 70rem);
   }
 }
+
+/* V3 kartopplevelse – layout */
+.content-page.map-page {
+  width: min(100% - 2rem, 77.5rem);
+}
+.map-workspace--explore .map-workspace__body {
+  grid-template-columns: minmax(18rem, 20rem) minmax(0, 1fr);
+  min-height: 38rem;
+}
+.map-workspace--explore .map-frame,
+.map-workspace--explore .map {
+  min-height: 38rem;
+}
+
+@media (max-width: 60rem) {
+  .map-page__facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .map-page__facts > div:last-child {
+    grid-column: 1 / -1;
+  }
+  .map-workspace--explore .map-sidebar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .map-workspace--explore .map-frame,
+  .map-workspace--explore .map {
+    min-height: 32rem;
+  }
+}
+
+@media (max-width: 46rem) {
+  .map-page__facts,
+  .map-workspace--explore .map-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .map-page__facts > div:last-child {
+    grid-column: auto;
+  }
+  .map-workspace__method {
+    display: block;
+  }
+  .map-workspace__method strong,
+  .map-workspace__method span {
+    display: block;
+  }
+  .map-workspace__method span {
+    margin-top: .3rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .content-page.map-page {
+    width: min(100% - 1.25rem, 77.5rem);
+  }
+}
+
