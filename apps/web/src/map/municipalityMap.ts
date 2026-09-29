@@ -257,12 +257,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         status: 'error',
         results: [],
         message: 'Kunne ikke hente objektinformasjon fra ett eller flere aktive kartlag.',
-        point,
       })
       return
     }
 
-    handler({ status: 'ready', results: [] })
+    handler({ status: 'idle', results: [] })
   }
 
   const boundarySource = new VectorSource()
