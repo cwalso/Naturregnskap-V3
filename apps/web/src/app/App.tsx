@@ -597,7 +597,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         <div className="service-layout">
           <ServiceSidebar
             activeView={activeView}
-            municipalityName={selectedMunicipality.name}
             municipalityPicker={municipalityPicker}
             onNavigate={navigate}
           />
