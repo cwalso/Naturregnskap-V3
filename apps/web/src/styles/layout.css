@@ -1,6 +1,6 @@
 .app-shell { min-height: 100vh; }
 .site-header__bar, .primary-navigation__inner, .selected-municipality-picker,
-.start-municipality-picker, .account-workspace, .start-workspace, .placeholder-view { width: min(100% - 2rem, 90rem); margin-inline: auto; }
+.start-municipality-picker, .account-workspace, .start-workspace, .placeholder-view, .content-page { width: min(100% - 2rem, 90rem); margin-inline: auto; }
 .site-header__bar { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-height: 6.25rem; padding-block: 1rem; }
 .site-header__identity { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); }
 .site-header__logo-surface { display: flex; align-items: center; flex: 0 0 auto; padding: .65rem .8rem; }
@@ -50,4 +50,27 @@
   .site-header__actions { justify-content: flex-start; }
   .site-header__logo { width: 9rem; }
   .start-view__intro { padding-top: 2.5rem; }
+}
+
+
+.content-page { padding-block: clamp(3rem, 6vw, 6rem); }
+.content-page__intro { max-width: 58rem; margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.status-panel, .future-panel { max-width: 58rem; padding: clamp(1.25rem, 3vw, 2rem); margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.insight-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
+.info-card, .theme-card { padding: clamp(1.25rem, 2.5vw, 2rem); }
+.info-card--wide { max-width: 58rem; }
+.content-page__section { margin-top: clamp(3rem, 6vw, 5rem); }
+.section-heading { max-width: 58rem; margin-bottom: 1.5rem; }
+.theme-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.future-panel { margin-top: clamp(3rem, 6vw, 5rem); margin-bottom: 0; }
+.map-page .map-workspace { margin-top: 0; }
+.map-page__picker { max-width: 32rem; padding: 1.5rem; }
+.map-page__picker .municipality-picker { margin-top: 1rem; }
+
+@media (max-width: 60rem) {
+  .insight-grid, .theme-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 40rem) {
+  .insight-grid, .theme-grid { grid-template-columns: 1fr; }
 }
