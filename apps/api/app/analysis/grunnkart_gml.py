@@ -1,9 +1,9 @@
-import json
 import xml.etree.ElementTree as ET
 from collections import Counter
+from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from app.domain.accounting_rules import (
     ACCOUNT_CATEGORY_IDS,
