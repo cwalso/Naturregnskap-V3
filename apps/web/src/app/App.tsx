@@ -17,7 +17,12 @@ import {
 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
-import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
+import {
+  createMunicipalityMap,
+  type MapFeatureInfoState,
+  type MunicipalityMap,
+  type MunicipalityMapFactory,
+} from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 import { ExploreNaturePage } from '../pages/ExploreNaturePage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
@@ -52,6 +57,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [mapFeatureInfo, setMapFeatureInfo] = useState<MapFeatureInfoState>({
+    status: 'idle',
+    results: [],
+  })
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -69,6 +78,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
 
     map.current = createMap(mapElement.current)
+    map.current.setFeatureInfoHandler(setMapFeatureInfo)
 
     return () => {
       map.current?.destroy()
@@ -156,6 +166,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
     setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
+    setMapFeatureInfo({ status: 'idle', results: [] })
     map.current?.setThematicLayerVisible(datasetId, visible)
   }
 
@@ -306,6 +317,39 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   >
                     Tilpass kartet til kommunen
                   </button>
+                </section>
+
+                <section className="map-sidebar__feature-info" aria-labelledby="feature-info-title">
+                  <h3 id="feature-info-title">Objektinformasjon</h3>
+                  {mapFeatureInfo.status === 'idle' && (
+                    <p>
+                      {activeThematicCount > 0
+                        ? 'Klikk på et objekt i kartet for å se informasjon fra aktive temalag.'
+                        : 'Slå på et supplerende temalag og klikk deretter på et objekt i kartet.'}
+                    </p>
+                  )}
+                  {mapFeatureInfo.status === 'loading' && (
+                    <p role="status">Henter objektinformasjon…</p>
+                  )}
+                  {mapFeatureInfo.status === 'error' && (
+                    <p role="alert">{mapFeatureInfo.message}</p>
+                  )}
+                  {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.length === 0 && (
+                    <p>Ingen objektinformasjon ble funnet i de aktive temalagene på dette punktet.</p>
+                  )}
+                  {mapFeatureInfo.status === 'ready' && mapFeatureInfo.results.map((result) => (
+                    <article className="map-feature-card" key={result.datasetId}>
+                      <h4>{result.datasetTitle}</h4>
+                      <dl>
+                        {result.fields.map((field, index) => (
+                          <div key={`${result.datasetId}-${field.label}-${index}`}>
+                            <dt>{field.label}</dt>
+                            <dd>{field.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </article>
+                  ))}
                 </section>
 
                 {legend}
