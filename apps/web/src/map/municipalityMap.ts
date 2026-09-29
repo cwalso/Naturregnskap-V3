@@ -32,26 +32,19 @@ export interface MapFeatureInfoResult {
   readonly fields: readonly MapFeatureInfoField[]
 }
 
-export interface MapFeatureInfoPoint {
-  readonly x: number
-  readonly y: number
-}
-
 export type MapFeatureInfoState =
   | { readonly status: 'idle'; readonly results: readonly MapFeatureInfoResult[] }
-  | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
-  | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[]; readonly point: MapFeatureInfoPoint }
+  | { readonly status: 'loading'; readonly results: readonly MapFeatureInfoResult[] }
+  | { readonly status: 'ready'; readonly results: readonly MapFeatureInfoResult[] }
   | {
       readonly status: 'partial'
       readonly results: readonly MapFeatureInfoResult[]
       readonly message: string
-      readonly point: MapFeatureInfoPoint
     }
   | {
       readonly status: 'error'
       readonly results: readonly MapFeatureInfoResult[]
       readonly message: string
-      readonly point: MapFeatureInfoPoint
     }
 
 export type MapFeatureInfoHandler = (state: MapFeatureInfoState) => void
