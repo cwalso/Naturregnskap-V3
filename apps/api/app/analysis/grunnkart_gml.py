@@ -1,3 +1,4 @@
+import hashlib
 import xml.etree.ElementTree as ET
 from collections import Counter
 from collections.abc import Iterable
@@ -115,6 +116,10 @@ def prepare_balance_from_gml(
         period="2025",
         dataset_version=dataset_version,
         source_file=input_path.name,
+        source_sha256=_sha256(input_path),
+        source_format="gml",
+        source_feature_count=feature_count,
+        area_method="geometry:shoelace:metric-crs",
         geo_parquet_version=None,
         method_version=rules.version,
         method_status=rules.status,
@@ -287,3 +292,11 @@ def _ring_area(points: list[tuple[float, float]]) -> float:
 
 def _local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
