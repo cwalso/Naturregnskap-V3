@@ -142,9 +142,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [])
 
   function navigate(view: SiteView) {
+    setActiveView(view)
     const hash = `#${view}`
-    if (window.location.hash === hash) setActiveView(view)
-    else window.location.hash = hash
+    if (window.location.hash !== hash) window.location.hash = hash
   }
 
   async function selectMunicipality(municipality: Municipality | null) {
@@ -223,6 +223,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         municipalities={municipalities}
         disabled={listState !== 'ready'}
         placeholder={listState === 'loading' ? 'Laster kommuner…' : 'Søk etter kommune'}
+        selectedMunicipality={selectedMunicipality}
         onSelect={(municipality) => void selectMunicipality(municipality)}
       />
       {listState === 'error' && <p role="alert">Kunne ikke hente kommunelisten. Prøv igjen senere.</p>}
