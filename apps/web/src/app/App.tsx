@@ -146,44 +146,144 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
-  function mapWorkspace(title: string, description: string) {
+  function mapWorkspace(
+    title: string,
+    description: string,
+    variant: 'overview' | 'explore' = 'overview',
+  ) {
     if (!selectedMunicipality) return null
 
+    const layerToggle = (
+      <label className={variant === 'explore' ? 'layer-toggle' : undefined}>
+        <input
+          type="checkbox"
+          checked={accountLayerVisible}
+          onChange={(event) => {
+            const visible = event.target.checked
+            setAccountLayerVisible(visible)
+            map.current?.setAccountLayerVisible(visible)
+          }}
+        />
+        {variant === 'explore' ? (
+          <span>
+            <strong>{nationalLandCover2025.title}</strong>
+            <small>{nationalLandCover2025.visualSource.title} · {nationalLandCover2025.version}</small>
+          </span>
+        ) : (
+          <>{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</>
+        )}
+      </label>
+    )
+
+    const legend = (
+      <MapLegend items={[{
+        id: nationalLandCover2025.id,
+        title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
+        visible: accountLayerVisible,
+        imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
+      }]} />
+    )
+
     return (
-      <section className="map-workspace" aria-labelledby="map-workspace-title">
+      <section
+        className={`map-workspace ${variant === 'explore' ? 'map-workspace--explore' : ''}`}
+        aria-labelledby="map-workspace-title"
+      >
         <div className="map-workspace__header">
           <p className="map-workspace__eyebrow">Kart</p>
           <h2 id="map-workspace-title">{title}</h2>
           <p>{description}</p>
         </div>
+
         <div className="map-workspace__body">
           <div className="map-sidebar">
-            <div className="layer-control" aria-label="Kartlag">
-              <h3>Kartlag</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={accountLayerVisible}
-                  onChange={(event) => {
-                    const visible = event.target.checked
-                    setAccountLayerVisible(visible)
-                    map.current?.setAccountLayerVisible(visible)
-                  }}
-                />
-                {nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})
-              </label>
-            </div>
-            <MapLegend items={[{
-              id: nationalLandCover2025.id,
-              title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
-              visible: accountLayerVisible,
-              imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
-            }]} />
+            {variant === 'explore' ? (
+              <>
+                <section className="map-sidebar__section" aria-labelledby="account-layers-title">
+                  <div className="map-sidebar__section-heading">
+                    <div>
+                      <p className="map-sidebar__eyebrow">Regnskapsgrunnlag</p>
+                      <h3 id="account-layers-title">Aktivt kartlag</h3>
+                    </div>
+                    <span className="status-tag">Heldekkende</span>
+                  </div>
+                  {layerToggle}
+                  <p className="map-sidebar__explanation">
+                    Grunnkart for arealanalyse er sentralt heldekkende datagrunnlag.
+                    Karttjenesten her brukes til visualisering, ikke til å beregne arealtall.
+                  </p>
+                </section>
+
+                <section className="map-sidebar__section map-sidebar__section--supplementary" aria-labelledby="thematic-layers-title">
+                  <div className="map-sidebar__section-heading">
+                    <div>
+                      <p className="map-sidebar__eyebrow">Supplerende temadata</p>
+                      <h3 id="thematic-layers-title">Flere faglag</h3>
+                    </div>
+                    <span className="status-tag status-tag--muted">Ikke koblet til</span>
+                  </div>
+                  <p>
+                    Temalag kan gi mer innsikt om naturen, men skal holdes adskilt
+                    fra selve regnskapsgrunnlaget. Reelle lag kobles på etter
+                    kilde- og metodeavklaring.
+                  </p>
+                  <button
+                    type="button"
+                    className="map-sidebar__link"
+                    onClick={() => navigate('utforsk-naturen')}
+                  >
+                    Se temadata som vurderes <span aria-hidden="true">→</span>
+                  </button>
+                </section>
+
+                <section className="map-sidebar__tools" aria-labelledby="map-tools-title">
+                  <h3 id="map-tools-title">Kartverktøy</h3>
+                  <button
+                    type="button"
+                    className="map-tool-button"
+                    onClick={() => map.current?.fitToBoundary()}
+                  >
+                    Tilpass kartet til kommunen
+                  </button>
+                </section>
+
+                {legend}
+              </>
+            ) : (
+              <>
+                <div className="layer-control" aria-label="Kartlag">
+                  <h3>Kartlag</h3>
+                  {layerToggle}
+                </div>
+                {legend}
+              </>
+            )}
           </div>
+
           <div className="map-frame">
-            <div ref={mapElement} className="map" aria-label="Kart over Norge" />
+            {variant === 'explore' && (
+              <div className="map-frame__context" aria-live="polite">
+                <span><strong>{selectedMunicipality.name}</strong></span>
+                <span>{accountLayerVisible ? 'Regnskapsgrunnlag vises' : 'Regnskapsgrunnlag er skjult'}</span>
+              </div>
+            )}
+            <div
+              ref={mapElement}
+              className="map"
+              aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
+            />
           </div>
         </div>
+
+        {variant === 'explore' && (
+          <div className="map-workspace__method">
+            <strong>Kartet er en visning av datagrunnlaget.</strong>
+            <span>
+              Arealtall og framtidige analyser skal bygge på godkjente data og
+              dokumentert metode, ikke beregnes fra kartbildet i nettleseren.
+            </span>
+          </div>
+        )}
       </section>
     )
   }
@@ -227,25 +327,45 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
-      <header className="content-page__intro">
+      <header className="content-page__intro map-page__intro">
         <p className="content-page__eyebrow">Kartutforsking</p>
         <h1 id="explore-map-title">
           Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
         </h1>
         <p>
-          Her kan du utforske det heldekkende kartgrunnlaget som brukes i
-          naturregnskapet. Kartet er en visning av datagrunnlaget, ikke et eget
-          beregningsgrunnlag i nettleseren.
+          Utforsk kartgrunnlaget for naturregnskapet. Regnskapsgrunnlag og
+          supplerende temadata holdes tydelig adskilt, slik at det er klart hva
+          som inngår i selve regnskapet og hva som gir ekstra kontekst.
         </p>
       </header>
+
       {!selectedMunicipality ? (
         <div className="map-page__picker">
           <p>Velg kommune for å avgrense kartet.</p>
           {municipalityPicker}
         </div>
-      ) : mapWorkspace(
-        'Kartgrunnlag',
-        'Grunnkart for arealanalyse vises for valgt kommune. Flere faglag kan kobles på senere med tydelig skille mellom regnskapsgrunnlag og supplerende temalag.',
+      ) : (
+        <>
+          <section className="map-page__facts" aria-label="Om kartvisningen">
+            <div>
+              <span>Valgt kommune</span>
+              <strong>{selectedMunicipality.name}</strong>
+            </div>
+            <div>
+              <span>Regnskapsgrunnlag</span>
+              <strong>Grunnkart for arealanalyse · 2025</strong>
+            </div>
+            <div>
+              <span>Visningen brukes til</span>
+              <strong>Utforsking og forståelse</strong>
+            </div>
+          </section>
+          {mapWorkspace(
+            'Kartgrunnlag',
+            'Slå det heldekkende grunnlaget av og på, les tegnforklaringen og utforsk kommunen. Supplerende faglag kobles på separat når datakilde og metodisk rolle er avklart.',
+            'explore',
+          )}
+        </>
       )}
     </section>
   )
