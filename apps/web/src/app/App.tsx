@@ -65,7 +65,17 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       map.current?.destroy()
       map.current = null
     }
-  }, [accountLayerVisible, boundaryData, createMap, selectedMunicipality, showsMap])
+  }, [activeView, createMap, selectedMunicipality, showsMap])
+
+  useEffect(() => {
+    map.current?.setAccountLayerVisible(accountLayerVisible)
+  }, [accountLayerVisible])
+
+  useEffect(() => {
+    if (!map.current) return
+    if (boundaryData) map.current.showBoundary(boundaryData)
+    else map.current.clearBoundary()
+  }, [boundaryData])
 
   useEffect(() => {
     const controller = new AbortController()
