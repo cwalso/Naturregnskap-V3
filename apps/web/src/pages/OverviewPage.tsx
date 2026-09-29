@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import type { SiteView } from '../components/SiteHeader'
 
 interface OverviewPageProps {
-  readonly municipalityName: string
   readonly accountContent: ReactNode
   readonly distributionContent: ReactNode
   readonly mapContent: ReactNode
@@ -37,7 +36,6 @@ const nextSteps: ReadonlyArray<{
 ]
 
 export function OverviewPage({
-  municipalityName,
   accountContent,
   distributionContent,
   mapContent,
