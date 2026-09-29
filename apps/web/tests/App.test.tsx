@@ -245,7 +245,9 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
 
     fireEvent.click(screen.getByRole('checkbox', { name: /Naturvernområder/ }))
-    expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
+    await vi.waitFor(() => {
+      expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
+    })
 
     const layerStatusHandler = vi.mocked(map.setThematicLayerStatusHandler).mock.calls.at(-1)?.[0]
     expect(layerStatusHandler).toBeTypeOf('function')
@@ -285,6 +287,28 @@ describe('sidestruktur og Oversikt', () => {
     )
     expect(document.querySelector('.map-selection-marker')).toHaveStyle({ left: '220px', top: '160px' })
 
+    await act(async () => {
+      featureInfoHandler?.({
+        status: 'partial',
+        point: { x: 220, y: 160 },
+        message: 'Noe objektinformasjon kunne ikke hentes fra ett eller flere aktive kartlag.',
+        results: [{
+          datasetId: 'protected-areas',
+          datasetTitle: 'Naturvernområder',
+          objectLabel: 'Bymarka naturreservat',
+          fields: [{ label: 'Navn', value: 'Bymarka naturreservat' }],
+        }],
+      })
+    })
+    expect(screen.getByText(/Noe objektinformasjon kunne ikke hentes/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Bymarka naturreservat' })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Oversikt' }))
+    await vi.waitFor(() => {
+      expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', false)
+    })
+
+    fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
   })
