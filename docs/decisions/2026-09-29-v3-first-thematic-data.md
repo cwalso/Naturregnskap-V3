@@ -85,3 +85,14 @@ Teknisk tilgjengelighet skal skilles fra faglig fravær. WMS-kildenes
 `imageloadstart`, `imageloadend` og `imageloaderror` brukes derfor til å
 vise om kartlaget laster, er tilgjengelig eller har teknisk feil. En teknisk
 feil skal ikke kunne tolkes som at datasettet er kontrollert og ikke har treff.
+
+
+Objektinformasjon presenteres som en liten boks over kartet, mens klikkpunktet
+markeres visuelt. Objektnavn hentes fra relevante attributter når tjenesten
+returnerer dette. URL-er fra WMS-responsen gjøres klikkbare bare når de bruker
+`http` eller `https`.
+
+WMS `GetFeatureInfo` garanterer ikke at objektgeometrien returneres. V3 skal
+derfor ikke late som det valgte polygonet er markert når vi bare har et
+klikkpunkt og attributter. Eksakt fremheving av valgt polygon krever en
+vektorkilde eller annen kilde som returnerer geometri.
