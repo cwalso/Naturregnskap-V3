@@ -26,4 +26,6 @@ class ThematicDatasetEvaluation(CamelModel):
 class ThematicCoverageResponse(CamelModel):
     municipality_number: str = Field(pattern=r"^\d{4}$")
     municipality_name: str
+    method_version: Literal["thematic-intersection-v1"] = "thematic-intersection-v1"
+    warnings: list[str] = Field(default_factory=list)
     results: list[ThematicDatasetEvaluation]
