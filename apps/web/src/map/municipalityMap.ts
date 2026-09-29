@@ -179,7 +179,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }
 
     if (fields.length === 0) return null
-    const labelField = fields.find((field) => /^(navn|name|områdenavn|omraadenavn|lokalitet)/i.test(field.label))
+    const labelField = fields.find((field) => /(navn|name|område|omrade|lokalitet)/i.test(field.label))
     return {
       datasetId,
       datasetTitle: dataset.title,
