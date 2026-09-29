@@ -5,8 +5,8 @@ export type SiteView = 'oversikt' | 'naturtapet' | 'utforsk-naturen' | 'utforsk-
 interface SiteHeaderProps {
   readonly municipalityName?: string
   readonly activeView: SiteView
-  readonly onNavigate(view: SiteView): void
-  readonly onChangeMunicipality(): void
+  readonly onNavigate: (view: SiteView) => void
+  readonly onChangeMunicipality: () => void
 }
 
 const navigationItems: ReadonlyArray<{ label: string; view: SiteView }> = [
