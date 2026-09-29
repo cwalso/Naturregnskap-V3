@@ -93,6 +93,11 @@ def test_prepare_gml_level0_uses_all_2025_level1_classes(tmp_path: Path) -> None
     assert result.reconciliation.excluded_area_m2 == 100.0
     assert result.reconciliation.unmapped_area_m2 == 0
     assert result.method_version == "level0-v0.2-prototype"
+    assert result.source_format == "gml"
+    assert result.source_feature_count == 8
+    assert result.area_method == "geometry:shoelace:metric-crs"
+    assert result.source_sha256 is not None
+    assert len(result.source_sha256) == 64
     assert output.exists()
 
 
