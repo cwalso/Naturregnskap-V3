@@ -25,6 +25,13 @@ export interface AccountProvenanceContent {
   readonly sourceName: string
   readonly referenceVersion: string
   readonly methodVersion?: string
+  readonly sourceSha256?: string
+  readonly sourceFormat?: string
+  readonly sourceFeatureCount?: number
+  readonly areaMethod?: string
+  readonly classifiedAreaKm2?: number
+  readonly excludedAreaKm2?: number
+  readonly warnings: readonly string[]
 }
 
 export function getAccountProvenanceContent(data: AccountOverviewData): AccountProvenanceContent {
@@ -32,5 +39,12 @@ export function getAccountProvenanceContent(data: AccountOverviewData): AccountP
     sourceName: 'Grunnkart for arealanalyse',
     referenceVersion: data.sourceVersions?.[0] ?? data.period,
     methodVersion: data.methodVersion ?? undefined,
+    sourceSha256: data.sourceSha256 ?? undefined,
+    sourceFormat: data.sourceFormat ?? undefined,
+    sourceFeatureCount: data.sourceFeatureCount ?? undefined,
+    areaMethod: data.areaMethod ?? undefined,
+    classifiedAreaKm2: data.classifiedAreaKm2 ?? undefined,
+    excludedAreaKm2: data.excludedAreaKm2 ?? undefined,
+    warnings: data.warnings ?? [],
   }
 }
