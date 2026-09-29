@@ -24,7 +24,9 @@ def resolve_distribution(
 
     matches: list[dict[str, str]] = []
     for entry in root.findall(".//a:entry", ATOM_NS):
-        title = (entry.findtext("a:title", default="", namespaces=ATOM_NS) or "").strip()
+        title = (
+            entry.findtext("a:title", default="", namespaces=ATOM_NS) or ""
+        ).strip()
         if municipality_number not in title:
             continue
         for link in entry.findall("a:link", ATOM_NS):
