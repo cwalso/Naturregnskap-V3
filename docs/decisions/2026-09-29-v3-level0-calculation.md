@@ -162,3 +162,21 @@ Før produksjonssetting må minst følgende vurderes eksplisitt:
 Disse punktene skal ikke løses ved skjult omkoding. En endring i
 klassifikasjonsregelen skal gi ny metodeversjon og være synlig i tidsserier og
 sammenligninger.
+
+
+## Fordelingssøyle og nevner
+
+Den godkjente Oversikt-designen viser en proporsjonal fordelingssøyle. V3
+definerer nå denne eksplisitt som **fordelingen innenfor den klassifiserte
+Level0-balansen**:
+
+```text
+andel kategori = areal kategori / (Natur + Jordbruk + Bebygd)
+```
+
+Ekskludert og umappet areal inngår ikke i nevneren. Dette er derfor ikke en
+påstand om prosentandel av hele kommunegeometrien. UI-et skal forklare
+nevneren, og ekskludert areal skal være synlig i proveniensen.
+
+Andelen beregnes i backend fra samme prepared resultat som arealtallene.
+Presentasjonskomponentene gjør ingen egen faglig beregning.
