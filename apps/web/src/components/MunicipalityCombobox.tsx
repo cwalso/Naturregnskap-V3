@@ -96,7 +96,6 @@ export function MunicipalityCombobox({
             setQuery(event.target.value)
             setActiveIndex(-1)
             setIsOpen(true)
-            onSelect(null)
           }}
           onKeyDown={handleKeyDown}
         />
