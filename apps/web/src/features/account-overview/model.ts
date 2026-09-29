@@ -17,6 +17,12 @@ export interface AccountOverviewData {
   readonly methodVersion?: string | null
   readonly methodStatus?: string | null
   readonly sourceVersions?: readonly string[]
+  readonly sourceSha256?: string | null
+  readonly sourceFormat?: string | null
+  readonly sourceFeatureCount?: number | null
+  readonly areaMethod?: string | null
+  readonly classifiedAreaKm2?: number | null
+  readonly excludedAreaKm2?: number | null
   readonly warnings?: readonly string[]
 }
 
