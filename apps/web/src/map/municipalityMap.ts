@@ -13,7 +13,7 @@ import proj4 from 'proj4'
 
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
-import { nationalLandCover2025 } from '../datasets/registry'
+import { nationalLandCover2025, thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
 import { defaultBasemap } from './basemaps'
 
 proj4.defs('EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
@@ -23,6 +23,7 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
+  setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
   clearChanges(): void
@@ -45,6 +46,24 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }),
     visible: true,
   })
+  const thematicLayers = new Map<ThematicDatasetId, ImageLayer<ImageWMS>>(
+    thematicDatasets.map((dataset) => [
+      dataset.id,
+      new ImageLayer({
+        source: new ImageWMS({
+          url: dataset.visualSource.endpoint,
+          params: {
+            LAYERS: dataset.visualSource.layer,
+            VERSION: dataset.visualSource.version,
+            TRANSPARENT: true,
+          },
+          ratio: 1,
+        }),
+        visible: false,
+      }),
+    ]),
+  )
+
   const boundarySource = new VectorSource()
   const boundaryLayer = new VectorLayer({
     source: boundarySource,
@@ -73,6 +92,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         }),
       }),
       accountLayer,
+      ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
       boundaryLayer,
     ],
@@ -91,6 +111,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     clearBoundary() { boundarySource.clear() },
     setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
+    setThematicLayerVisible(datasetId, visible) {
+      thematicLayers.get(datasetId)?.setVisible(visible)
+    },
     fitToBoundary() {
       if (boundarySource.getFeatures().length === 0) return
       view.fit(boundarySource.getExtent(), { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
