@@ -61,9 +61,16 @@ export function MunicipalityCombobox({
       optionsRef.current[nextIndex]?.scrollIntoView?.({ block: 'nearest' })
       return
     }
-    if (event.key === 'Enter' && isOpen && activeIndex >= 0) {
-      event.preventDefault()
-      choose(matches[activeIndex])
+    if (event.key === 'Enter' && isOpen) {
+      if (activeIndex >= 0) {
+        event.preventDefault()
+        choose(matches[activeIndex])
+        return
+      }
+      if (matches.length === 1) {
+        event.preventDefault()
+        choose(matches[0])
+      }
     }
   }
 
