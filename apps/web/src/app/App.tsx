@@ -207,13 +207,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
   }
 
-  function changeMunicipality() {
-    navigate('oversikt')
-    window.setTimeout(() => {
-      document.querySelector<HTMLInputElement>('#municipality-picker input')?.focus()
-    }, 0)
-  }
-
   function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
     setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
     setMapFeatureInfo({ status: 'idle', results: [] })
