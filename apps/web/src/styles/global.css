@@ -999,3 +999,75 @@ body { font-size: 16px; }
   color: var(--color-accent);
 }
 
+/* V3.13 – Oversikt som første kapittel */
+.overview-intro {
+  padding-bottom: 1rem;
+}
+.overview-intro > p:last-child {
+  max-width: 40rem;
+  margin-bottom: 0;
+}
+.overview-intro + .account-overview {
+  padding-top: .75rem;
+  border-top: 0;
+}
+.account-overview__header {
+  max-width: 52rem;
+}
+.account-overview__header h2 {
+  margin-bottom: .7rem;
+  font-size: clamp(1.8rem, 3.7vw, 2.35rem);
+}
+.account-overview__header > p:last-child {
+  max-width: 48rem;
+  font-size: .96rem;
+}
+.account-metric {
+  position: relative;
+  overflow: hidden;
+}
+.account-metric h2 {
+  order: 1;
+  margin: 0 0 .55rem;
+  color: var(--color-text);
+  font-size: .9rem;
+  font-weight: 700;
+}
+.account-metric__value {
+  order: 2;
+}
+.account-metric__description {
+  order: 3;
+  margin-top: .8rem;
+}
+.account-metric--nature {
+  justify-content: flex-start;
+  border-left: 4px solid var(--color-accent);
+}
+.account-metric--nature h2 {
+  color: var(--color-accent);
+  font-size: 1rem;
+}
+.account-metric--nature .account-metric__value {
+  font-size: clamp(3rem, 6vw, 4.65rem);
+}
+.account-metric--agriculture {
+  background: #fbf6e5;
+}
+.account-metric--built {
+  background: #f2f4f3;
+}
+.overview-next {
+  margin-top: 3rem;
+}
+.journey-card {
+  min-height: 12.5rem;
+  padding-bottom: 2.8rem;
+}
+.journey-card__eyebrow {
+  margin-bottom: .55rem;
+}
+.journey-card strong {
+  font-size: 1.2rem;
+}
+
