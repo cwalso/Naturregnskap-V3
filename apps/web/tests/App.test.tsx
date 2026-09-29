@@ -40,18 +40,37 @@ function mapMock(): MunicipalityMap {
 }
 
 function accountResponse(number: string, name: string, areaKm2: number | null = 12) {
+  const classifiedKm2 = areaKm2 === null ? null : areaKm2 + 3
   return {
     municipalityNumber: number,
     municipalityName: name,
     period: '2025',
     status: areaKm2 === null ? 'not_available' : 'available',
     metrics: [
-      { id: 'nature', areaKm2, sharePercent: null },
-      { id: 'agriculture', areaKm2: areaKm2 === null ? null : 2, sharePercent: null },
-      { id: 'built', areaKm2: areaKm2 === null ? null : 1, sharePercent: null },
+      {
+        id: 'nature',
+        areaKm2,
+        sharePercent: classifiedKm2 === null ? null : areaKm2 / classifiedKm2 * 100,
+      },
+      {
+        id: 'agriculture',
+        areaKm2: areaKm2 === null ? null : 2,
+        sharePercent: classifiedKm2 === null ? null : 2 / classifiedKm2 * 100,
+      },
+      {
+        id: 'built',
+        areaKm2: areaKm2 === null ? null : 1,
+        sharePercent: classifiedKm2 === null ? null : 1 / classifiedKm2 * 100,
+      },
     ],
     sourceVersions: ['2025'],
-    methodVersion: 'level0-v1',
+    methodVersion: 'level0-v0.2-prototype',
+    sourceFormat: 'geoparquet',
+    sourceFeatureCount: areaKm2 === null ? null : 1234,
+    areaMethod: 'source-field:SHAPE_Area',
+    classifiedAreaKm2: classifiedKm2,
+    excludedAreaKm2: areaKm2 === null ? null : 0.5,
+    warnings: areaKm2 === null ? [] : ['Hav er eksplisitt ekskludert fra Level0-balansen i prototype-regelsettet.'],
   }
 }
 
@@ -392,6 +411,9 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
+    expect(screen.getByRole('img', {
+      name: 'Fordeling mellom Natur, Dyrket mark og Bebygd innenfor Level0-balansen',
+    })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hvor ligger arealene?' })).toBeInTheDocument()
