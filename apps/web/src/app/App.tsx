@@ -21,6 +21,7 @@ import {
   createMunicipalityMap,
   type MapFeatureInfoState,
   type MunicipalityMap,
+  type ThematicLayerLoadStatus,
   type MunicipalityMapFactory,
 } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
@@ -33,6 +34,10 @@ interface AppProps { createMap?: MunicipalityMapFactory }
 const initialThematicLayerVisibility = Object.fromEntries(
   thematicDatasets.map((dataset) => [dataset.id, false]),
 ) as Record<ThematicDatasetId, boolean>
+
+const initialThematicLayerStatus = Object.fromEntries(
+  thematicDatasets.map((dataset) => [dataset.id, 'idle']),
+) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
 
 function viewFromHash(): SiteView {
   const value = window.location.hash.replace(/^#/, '')
@@ -57,6 +62,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [thematicLayerStatus, setThematicLayerStatus] = useState<
+    Record<ThematicDatasetId, ThematicLayerLoadStatus>
+  >(initialThematicLayerStatus)
   const [mapFeatureInfo, setMapFeatureInfo] = useState<MapFeatureInfoState>({
     status: 'idle',
     results: [],
@@ -79,6 +87,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     map.current = createMap(mapElement.current)
     map.current.setFeatureInfoHandler(setMapFeatureInfo)
+    map.current.setThematicLayerStatusHandler((datasetId, status) => {
+      setThematicLayerStatus((current) => ({ ...current, [datasetId]: status }))
+    })
 
     return () => {
       map.current?.destroy()
@@ -289,6 +300,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                         <span>
                           <strong>{dataset.title}</strong>
                           <small>{dataset.coverage.label} · supplerende temadata</small>
+                          {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'loading' && (
+                            <small className="layer-toggle__status">Laster kartlag…</small>
+                          )}
+                          {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'error' && (
+                            <small className="layer-toggle__status layer-toggle__status--error">
+                              Karttjenesten kunne ikke lastes
+                            </small>
+                          )}
                         </span>
                       </label>
                     ))}
