@@ -280,3 +280,108 @@
   }
 }
 
+/* V3.14 – dashboard layout */
+.service-layout {
+  display: grid;
+  grid-template-columns: 15.75rem minmax(0, 1fr);
+  min-height: calc(100vh - 4.25rem);
+}
+.service-sidebar {
+  position: sticky;
+  top: 4.25rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4.25rem);
+  overflow-y: auto;
+}
+.account-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+}
+.account-metric--nature {
+  grid-row: auto;
+}
+.overview-dashboard-grid {
+  grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
+}
+
+@media (max-width: 72rem) {
+  .service-layout {
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+  }
+  .site-header__utilities {
+    gap: .9rem;
+  }
+  .account-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+  .account-metric--nature {
+    grid-column: 1 / -1;
+  }
+  .overview-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 52rem) {
+  .site-header__utilities {
+    display: none;
+  }
+  .service-layout {
+    display: block;
+  }
+  .service-sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .service-sidebar__navigation {
+    display: flex;
+    gap: .35rem;
+    padding: .2rem .75rem .75rem;
+    overflow-x: auto;
+  }
+  .service-sidebar__navigation a {
+    flex: 0 0 auto;
+    min-height: 2.6rem;
+    padding: .55rem .7rem;
+  }
+  .service-sidebar__footer {
+    display: none;
+  }
+  .service-main .account-workspace,
+  .service-main .content-page {
+    padding-inline: 1rem;
+  }
+  .account-summary {
+    grid-template-columns: 1fr;
+  }
+  .account-metric--nature {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 38rem) {
+  .site-header__bar {
+    padding-inline: .8rem;
+  }
+  .site-header__logo {
+    width: 8.6rem;
+  }
+  .site-header__divider {
+    display: none;
+  }
+  .site-header__product {
+    font-size: .88rem;
+  }
+  .overview-distribution__metrics {
+    grid-template-columns: 1fr;
+  }
+  .overview-distribution__metric + .overview-distribution__metric {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
