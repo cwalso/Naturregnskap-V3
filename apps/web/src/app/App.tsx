@@ -58,8 +58,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
 
     map.current = createMap(mapElement.current)
-    map.current.setAccountLayerVisible(accountLayerVisible)
-    if (boundaryData) map.current.showBoundary(boundaryData)
 
     return () => {
       map.current?.destroy()
