@@ -126,6 +126,11 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
     assert response.json() == {
         "municipalityNumber": "5001",
         "municipalityName": "Trondheim",
+        "methodVersion": "thematic-intersection-v1",
+        "warnings": [
+            "Treffstatus er beregnet mot løpende kildetjenester som ikke er "
+            "låst til en dataversjon i prototypen."
+        ],
         "results": [
             {
                 "datasetId": "protected-areas",
