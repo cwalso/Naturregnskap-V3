@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react'
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
 import { getChangeFeatures, getChanges } from '../api/changes'
-import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
+import { SiteHeader } from '../components/SiteHeader'
 import { nationalLandCover2025 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
@@ -130,7 +130,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   const municipalityPicker = (
-    <section className="municipality-picker" aria-label="Kommunevalg">
+    <section id="municipality-picker" className="municipality-picker" aria-label="Kommunevalg">
       <MunicipalityCombobox
         municipalities={municipalities}
         disabled={listState !== 'ready'}
@@ -144,57 +144,63 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
 
   const mapWorkspace = (
-    <section className="map-workspace" aria-label="Kartgrunnlag">
-      <div className="layer-control" aria-label="Kartlag">
-        <label><input type="checkbox" checked={accountLayerVisible} onChange={(event) => {
-          const visible = event.target.checked
-          setAccountLayerVisible(visible)
-          map.current?.setAccountLayerVisible(visible)
-        }} />{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</label>
+    <section id="map-workspace" className="map-workspace" aria-label="Kartgrunnlag">
+      <div className="map-workspace__header">
+        <p className="map-workspace__eyebrow">Kart</p>
+        <h2>Kartgrunnlag</h2>
+        <p>Se arealdekket og den valgte kommunen i kartet.</p>
       </div>
-      <div className="map-frame">
-        <div ref={mapElement} className="map" aria-label="Kart over Norge" />
-        <MapLegend items={[{
-          id: nationalLandCover2025.id,
-          title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
-          visible: accountLayerVisible,
-          imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
-        }]} />
+      <div className="map-workspace__body">
+        <div className="map-sidebar">
+          <div className="layer-control" aria-label="Kartlag">
+            <h3>Kartlag</h3>
+            <label><input type="checkbox" checked={accountLayerVisible} onChange={(event) => {
+              const visible = event.target.checked
+              setAccountLayerVisible(visible)
+              map.current?.setAccountLayerVisible(visible)
+            }} />{nationalLandCover2025.visualSource.title} ({nationalLandCover2025.version})</label>
+          </div>
+          <MapLegend items={[{
+            id: nationalLandCover2025.id,
+            title: `${nationalLandCover2025.visualSource.title} (${nationalLandCover2025.version})`,
+            visible: accountLayerVisible,
+            imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
+          }]} />
+        </div>
+        <div className="map-frame">
+          <div ref={mapElement} className="map" aria-label="Kart over Norge" />
+        </div>
       </div>
     </section>
   )
 
   return (
-    <main className="app-shell">
-      <header className="site-header">
-        <img className="site-header__logo" src={agencyLogo} alt="Miljødirektoratet" />
-        <div className="site-header__product">
-          <span className="site-header__status">Prototype</span>
-          <p>Kommunale naturregnskap</p>
+    <div className="app-shell">
+      <SiteHeader municipalityName={selectedMunicipality?.name} />
+      <main id="main-content">
+        <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
+          {municipalityPicker}
         </div>
-      </header>
-      <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
-        {municipalityPicker}
-      </div>
-      <div className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
-        {selectedMunicipality ? (
-          accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
-            accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
-            <div className="account-panel">
-              <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
-              {changesState === 'loading' ? <section className="changes"><p role="status">Laster endringsdata…</p></section> :
-                changesState === 'error' ? <section className="changes"><p role="alert">Kunne ikke hente endringsdata. Prøv igjen senere.</p></section> :
-                  <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
-            </div>
-        ) : (
-          <section className="start-view__intro" aria-labelledby="start-title">
-            <p className="start-view__eyebrow">Kommunale naturregnskap</p>
-            <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
-            <p>Søk etter kommunen du vil utforske. Du får en overordnet arealoversikt og kartet samlet på én flate.</p>
-          </section>
-        )}
-        {mapWorkspace}
-      </div>
-    </main>
+        <div id="account-content" className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
+          {selectedMunicipality ? (
+            accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
+              accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
+              <div className="account-panel">
+                <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
+                {changesState === 'loading' ? <section className="changes"><p role="status">Laster endringsdata…</p></section> :
+                  changesState === 'error' ? <section className="changes"><p role="alert">Kunne ikke hente endringsdata. Prøv igjen senere.</p></section> :
+                    <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
+              </div>
+          ) : (
+            <section className="start-view__intro" aria-labelledby="start-title">
+              <p className="start-view__eyebrow">Kommunale naturregnskap</p>
+              <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
+              <p>Søk etter kommunen du vil utforske. Du får en overordnet arealoversikt og kartet samlet på én flate.</p>
+            </section>
+          )}
+          {mapWorkspace}
+        </div>
+      </main>
+    </div>
   )
 }

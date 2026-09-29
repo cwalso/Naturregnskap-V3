@@ -9,3 +9,6 @@
 @property --color-focus { syntax: "<color>"; inherits: true; initial-value: #000; }
 @property --color-error { syntax: "<color>"; inherits: true; initial-value: #a00; }
 @property --color-brand-surface { syntax: "<color>"; inherits: true; initial-value: #f5f5f5; }
+@property --color-header-background { syntax: "<color>"; inherits: true; initial-value: #222; }
+@property --color-header-text { syntax: "<color>"; inherits: true; initial-value: #fff; }
+@property --color-forward-surface { syntax: "<color>"; inherits: true; initial-value: #faf7ed; }
