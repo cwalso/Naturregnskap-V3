@@ -2,28 +2,29 @@ import { useEffect, useRef, useState } from 'react'
 
 import { getMunicipalities, getMunicipalityBoundary, type Municipality } from '../api/municipalities'
 import { getAccountOverview } from '../api/accountOverview'
-import { getChangeFeatures, getChanges } from '../api/changes'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
-import { SiteHeader } from '../components/SiteHeader'
+import { SiteHeader, type SiteView } from '../components/SiteHeader'
 import { nationalLandCover2025 } from '../datasets/registry'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
-import { Changes } from '../features/changes/Changes'
-import { unavailableChanges, type ChangeFeature, type ChangesData } from '../features/changes/model'
 import { createMunicipalityMap, type MunicipalityMap, type MunicipalityMapFactory } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
+
+function viewFromHash(): SiteView {
+  const value = window.location.hash.replace(/^#/, '')
+  if (value === 'naturtapet' || value === 'utforsk-naturen' || value === 'utforsk-i-kart') return value
+  return 'oversikt'
+}
 
 export function App({ createMap = createMunicipalityMap }: AppProps) {
   const mapElement = useRef<HTMLDivElement>(null)
   const map = useRef<MunicipalityMap | null>(null)
   const boundaryRequest = useRef(0)
   const accountRequest = useRef(0)
-  const changesRequest = useRef(0)
-  const changeFeaturesRequest = useRef(0)
-  const currentChangeFeatures = useRef<readonly ChangeFeature[]>([])
+  const [activeView, setActiveView] = useState<SiteView>(() => viewFromHash())
   const [municipalities, setMunicipalities] = useState<Municipality[]>([])
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null)
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
@@ -31,13 +32,25 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [accountLayerVisible, setAccountLayerVisible] = useState(true)
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
-  const [changesData, setChangesData] = useState<ChangesData | null>(null)
-  const [changesState, setChangesState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   useEffect(() => {
-    if (mapElement.current) map.current = createMap(mapElement.current)
-    return () => { map.current?.destroy(); map.current = null }
-  }, [createMap])
+    const onHashChange = () => setActiveView(viewFromHash())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  useEffect(() => {
+    if (activeView !== 'oversikt' || !selectedMunicipality || !mapElement.current) {
+      map.current?.destroy()
+      map.current = null
+      return
+    }
+    map.current = createMap(mapElement.current)
+    return () => {
+      map.current?.destroy()
+      map.current = null
+    }
+  }, [activeView, createMap, selectedMunicipality])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -49,24 +62,34 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => controller.abort()
   }, [])
 
+  function navigate(view: SiteView) {
+    const hash = `#${view}`
+    if (window.location.hash === hash) setActiveView(view)
+    else window.location.hash = hash
+  }
+
   async function selectMunicipality(municipality: Municipality | null) {
     const requestId = ++boundaryRequest.current
     const accountRequestId = ++accountRequest.current
-    const changesRequestId = ++changesRequest.current
-    const changeFeaturesRequestId = ++changeFeaturesRequest.current
     setSelectedMunicipality(municipality)
     setAccountData(null)
-    setChangesData(null)
-    currentChangeFeatures.current = []
     map.current?.clearBoundary()
-    map.current?.clearChanges()
-    if (!municipality) { setBoundaryState('idle'); setAccountState('idle'); setChangesState('idle'); return }
+
+    if (!municipality) {
+      setBoundaryState('idle')
+      setAccountState('idle')
+      return
+    }
+
     setBoundaryState('loading')
     setAccountState('loading')
-    setChangesState('loading')
+
     void getAccountOverview(municipality.number)
       .then((data) => {
-        if (accountRequestId === accountRequest.current) { setAccountData(data); setAccountState('idle') }
+        if (accountRequestId === accountRequest.current) {
+          setAccountData(data)
+          setAccountState('idle')
+        }
       })
       .catch(() => {
         if (accountRequestId === accountRequest.current) {
@@ -74,59 +97,23 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           setAccountState('error')
         }
       })
-    void getChanges(municipality.number)
-      .then((data) => {
-        if (changesRequestId !== changesRequest.current) return
 
-        setChangesData(data)
-        setChangesState('idle')
-
-        if (data.status !== 'available' || !data.generationId) {
-          currentChangeFeatures.current = []
-          map.current?.clearChanges()
-          return
-        }
-
-        void getChangeFeatures(municipality.number)
-          .then((featureData) => {
-            if (changeFeaturesRequestId !== changeFeaturesRequest.current) return
-
-            if (
-              featureData.status === 'available' &&
-              featureData.generationId === data.generationId
-            ) {
-              currentChangeFeatures.current = featureData.features
-              map.current?.showChanges(featureData.features)
-            } else {
-              currentChangeFeatures.current = []
-              map.current?.clearChanges()
-            }
-          })
-          .catch(() => {
-            if (changeFeaturesRequestId === changeFeaturesRequest.current) {
-              currentChangeFeatures.current = []
-              map.current?.clearChanges()
-            }
-          })
-      })
-      .catch(() => {
-        if (changesRequestId === changesRequest.current) {
-          setChangesData(unavailableChanges(municipality.number, municipality.name))
-          currentChangeFeatures.current = []
-          map.current?.clearChanges()
-          setChangesState('error')
-        }
-      })
     try {
       const boundary = await getMunicipalityBoundary(municipality.number)
       if (requestId === boundaryRequest.current) {
         map.current?.showBoundary(boundary)
-        if (currentChangeFeatures.current.length) map.current?.showChanges(currentChangeFeatures.current)
         setBoundaryState('idle')
       }
     } catch {
       if (requestId === boundaryRequest.current) setBoundaryState('error')
     }
+  }
+
+  function changeMunicipality() {
+    navigate('oversikt')
+    window.setTimeout(() => {
+      document.querySelector<HTMLInputElement>('#municipality-picker input')?.focus()
+    }, 0)
   }
 
   const municipalityPicker = (
@@ -143,12 +130,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
-  const mapWorkspace = (
-    <section id="map-workspace" className="map-workspace" aria-label="Kartgrunnlag">
+  const mapWorkspace = selectedMunicipality ? (
+    <section className="map-workspace" aria-labelledby="map-workspace-title">
       <div className="map-workspace__header">
         <p className="map-workspace__eyebrow">Kart</p>
-        <h2>Kartgrunnlag</h2>
-        <p>Se arealdekket og den valgte kommunen i kartet.</p>
+        <h2 id="map-workspace-title">Se arealfordelingen i kart</h2>
+        <p>Se det heldekkende arealgrunnlaget og den valgte kommunen i kartet.</p>
       </div>
       <div className="map-workspace__body">
         <div className="map-sidebar">
@@ -172,34 +159,68 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       </div>
     </section>
+  ) : null
+
+  const overview = (
+    <>
+      <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
+        {municipalityPicker}
+      </div>
+      <div className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
+        {selectedMunicipality ? (
+          <>
+            <section className="overview-intro" aria-labelledby="overview-title">
+              <p className="overview-intro__eyebrow">Oversikt</p>
+              <h1 id="overview-title">Naturregnskap for {selectedMunicipality.name}</h1>
+              <p>Her får du en overordnet oversikt over hvordan kommunens areal fordeler seg mellom natur, jordbruksareal og bebygd areal.</p>
+            </section>
+            {accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
+              accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
+              <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />}
+            {mapWorkspace}
+          </>
+        ) : (
+          <section className="start-view__intro" aria-labelledby="start-title">
+            <p className="start-view__eyebrow">Kommunale naturregnskap</p>
+            <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
+            <p>Søk etter kommunen du vil utforske. Du får en overordnet arealoversikt basert på felles regnskapsgrunnlag.</p>
+          </section>
+        )}
+      </div>
+    </>
   )
+
+  const placeholders: Record<Exclude<SiteView, 'oversikt'>, { title: string; text: string }> = {
+    naturtapet: {
+      title: 'Naturtapet',
+      text: 'Denne siden skal vise dokumentert naturtap basert på tilgjengelig statistikk og metodegrunnlag. Innholdet er under utvikling.',
+    },
+    'utforsk-naturen': {
+      title: 'Utforsk naturen',
+      text: 'Denne siden skal samle supplerende natur- og temadata. Slike data kan gi viktig innsikt, men er ikke det samme som selve regnskapsgrunnlaget.',
+    },
+    'utforsk-i-kart': {
+      title: 'Utforsk i kart',
+      text: 'Denne siden skal gi en mer selvstendig inngang til kartutforsking. Avansert analyse og scenariofunksjoner inngår ikke i denne versjonen.',
+    },
+  }
 
   return (
     <div className="app-shell">
-      <SiteHeader municipalityName={selectedMunicipality?.name} />
+      <SiteHeader
+        municipalityName={selectedMunicipality?.name}
+        activeView={activeView}
+        onNavigate={navigate}
+        onChangeMunicipality={changeMunicipality}
+      />
       <main id="main-content">
-        <div className={selectedMunicipality ? 'selected-municipality-picker' : 'start-municipality-picker'}>
-          {municipalityPicker}
-        </div>
-        <div id="account-content" className={selectedMunicipality ? 'account-workspace' : 'start-workspace'}>
-          {selectedMunicipality ? (
-            accountState === 'loading' ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section> :
-              accountState === 'error' ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section> :
-              <div className="account-panel">
-                <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
-                {changesState === 'loading' ? <section className="changes"><p role="status">Laster endringsdata…</p></section> :
-                  changesState === 'error' ? <section className="changes"><p role="alert">Kunne ikke hente endringsdata. Prøv igjen senere.</p></section> :
-                    <Changes data={changesData ?? unavailableChanges(selectedMunicipality.number, selectedMunicipality.name)} />}
-              </div>
-          ) : (
-            <section className="start-view__intro" aria-labelledby="start-title">
-              <p className="start-view__eyebrow">Kommunale naturregnskap</p>
-              <h1 id="start-title">Velg kommune for å se naturregnskapet</h1>
-              <p>Søk etter kommunen du vil utforske. Du får en overordnet arealoversikt og kartet samlet på én flate.</p>
-            </section>
-          )}
-          {mapWorkspace}
-        </div>
+        {activeView === 'oversikt' ? overview : (
+          <section className="placeholder-view" aria-labelledby="placeholder-title">
+            <p className="placeholder-view__eyebrow">Under utvikling</p>
+            <h1 id="placeholder-title">{placeholders[activeView].title}</h1>
+            <p>{placeholders[activeView].text}</p>
+          </section>
+        )}
       </main>
     </div>
   )
