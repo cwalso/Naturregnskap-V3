@@ -11,9 +11,9 @@ export function AccountOverview({ data }: AccountOverviewProps) {
   return (
     <section className="account-overview" aria-labelledby="account-overview-title">
       <header className="account-overview__header">
-        <p className="account-overview__eyebrow">Arealbalanse {data.period}</p>
-        <h1 id="account-overview-title">{data.municipalityName} kommune</h1>
-        <p>Beholdning på overordnet nivå 0, basert på klargjort Grunnkart for arealanalyse.</p>
+        <p className="account-overview__eyebrow">Arealregnskap {data.period}</p>
+        <h2 id="account-overview-title">Overordnet arealfordeling</h2>
+        <p>Fordelingen viser natur, jordbruksareal og bebygd areal på et overordnet nivå, basert på heldekkende regnskapsgrunnlag.</p>
       </header>
       <AccountSummary metrics={data.metrics} />
       <AccountProvenance content={getAccountProvenanceContent(data)} />
