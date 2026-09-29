@@ -11,9 +11,13 @@ export function AccountOverview({ data }: AccountOverviewProps) {
   return (
     <section className="account-overview" aria-labelledby="account-overview-title">
       <header className="account-overview__header">
-        <p className="account-overview__eyebrow">Arealregnskap {data.period}</p>
-        <h2 id="account-overview-title">Overordnet arealfordeling</h2>
-        <p>Fordelingen viser natur, jordbruksareal og bebygd areal på et overordnet nivå, basert på heldekkende regnskapsgrunnlag.</p>
+        <p className="account-overview__eyebrow">Arealbasert naturregnskap · {data.period}</p>
+        <h2 id="account-overview-title">Hvor mye natur har {data.municipalityName}?</h2>
+        <p>
+          Kommunens areal er her gruppert i tre overordnede kategorier:
+          Natur, Dyrket mark og Bebygd. Tallene bygger på samme heldekkende
+          regnskapsgrunnlag.
+        </p>
       </header>
       <AccountSummary metrics={data.metrics} />
       <AccountProvenance content={getAccountProvenanceContent(data)} />
