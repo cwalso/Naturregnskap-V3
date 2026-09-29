@@ -299,12 +299,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     ],
   })
 
-  const resizeObserver = typeof ResizeObserver !== 'undefined'
-    ? new ResizeObserver(() => map.updateSize())
-    : null
-  resizeObserver?.observe(target)
-  window.requestAnimationFrame?.(() => map.updateSize())
-
   map.on('singleclick', (event) => {
     const resolution = view.getResolution()
     if (resolution === undefined) return
@@ -374,7 +368,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       featureInfoRequest += 1
       featureInfoHandler = null
       thematicLayerStatusHandler = null
-      resizeObserver?.disconnect()
       map.setTarget(undefined)
     },
   }
