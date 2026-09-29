@@ -262,7 +262,6 @@ describe('sidestruktur og Oversikt', () => {
     await act(async () => {
       featureInfoHandler?.({
         status: 'ready',
-        point: { x: 220, y: 160 },
         results: [{
           datasetId: 'protected-areas',
           datasetTitle: 'Naturvernområder',
@@ -286,15 +285,12 @@ describe('sidestruktur og Oversikt', () => {
       'href',
       'https://example.test/bymarka',
     )
-    expect(document.querySelector('.map-selection-marker')).toHaveStyle({ left: '220px', top: '160px' })
-
     fireEvent.click(screen.getByRole('button', { name: 'Lukk objektinformasjon' }))
     expect(map.clearFeatureInfo).toHaveBeenCalledTimes(1)
 
     await act(async () => {
       featureInfoHandler?.({
         status: 'ready',
-        point: { x: 220, y: 160 },
         results: [{
           datasetId: 'protected-areas',
           datasetTitle: 'Naturvernområder',
@@ -307,7 +303,6 @@ describe('sidestruktur og Oversikt', () => {
     await act(async () => {
       featureInfoHandler?.({
         status: 'partial',
-        point: { x: 220, y: 160 },
         message: 'Noe objektinformasjon kunne ikke hentes fra ett eller flere aktive kartlag.',
         results: [{
           datasetId: 'protected-areas',
