@@ -68,6 +68,7 @@ export interface MunicipalityMap {
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
+  clearFeatureInfo(): void
   fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
   clearChanges(): void
@@ -226,7 +227,14 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         if (!url) return null
         const response = await fetch(url)
         if (!response.ok) throw new Error(`GetFeatureInfo feilet med HTTP ${response.status}`)
-        return parseFeatureInfo(await response.text(), dataset.id)
+        const body = await response.text()
+        if (/(serviceexception|exceptionreport|<ows:exception|<exception)/i.test(body)) {
+          throw new Error('GetFeatureInfo returnerte en OGC-feilmelding')
+        }
+        const parsed = parseFeatureInfo(body, dataset.id)
+        if (parsed) return parsed
+        if (!body.trim() || /(no features?|no results?|ingen treff)/i.test(body)) return null
+        throw new Error('GetFeatureInfo returnerte et ukjent svarformat')
       }),
     )
 
@@ -351,6 +359,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     setFeatureInfoHandler(handler) {
       featureInfoHandler = handler
       handler?.({ status: 'idle', results: [] })
+    },
+    clearFeatureInfo() {
+      featureInfoRequest += 1
+      featureInfoHandler?.({ status: 'idle', results: [] })
     },
     fitToBoundary() {
       if (boundarySource.getFeatures().length === 0) return
