@@ -259,19 +259,31 @@ describe('sidestruktur og Oversikt', () => {
     await act(async () => {
       featureInfoHandler?.({
         status: 'ready',
+        point: { x: 220, y: 160 },
         results: [{
           datasetId: 'protected-areas',
           datasetTitle: 'Naturvernområder',
+          objectLabel: 'Bymarka naturreservat',
           fields: [
             { label: 'Navn', value: 'Bymarka naturreservat' },
             { label: 'Verneform', value: 'Naturreservat' },
+            {
+              label: 'Faktaark',
+              value: 'https://example.test/bymarka',
+              url: 'https://example.test/bymarka',
+            },
           ],
         }],
       })
     })
-    expect(screen.getByRole('heading', { name: 'Objektinformasjon' })).toBeInTheDocument()
-    expect(screen.getByText('Bymarka naturreservat')).toBeInTheDocument()
+    expect(screen.getByRole('dialog', { name: 'Objektinformasjon' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Bymarka naturreservat' })).toBeInTheDocument()
     expect(screen.getByText('Naturreservat')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'https://example.test/bymarka' })).toHaveAttribute(
+      'href',
+      'https://example.test/bymarka',
+    )
+    expect(document.querySelector('.map-selection-marker')).toHaveStyle({ left: '220px', top: '160px' })
 
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
