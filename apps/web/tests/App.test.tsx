@@ -409,7 +409,7 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(await screen.findByRole('heading', { name: 'Hvor mye natur har Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Arealfordeling i Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
@@ -433,7 +433,7 @@ describe('Level0-regnskap', () => {
     render(<AccountOverview data={data} />)
 
     expect(screen.getByText(/12.000/)).toHaveTextContent('12 000 dekar')
-    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
     expect(screen.queryByText(/Arealregnskap 2025/)).not.toBeInTheDocument()
     expect(screen.getByText('Arealbasert naturregnskap · 2025')).toBeInTheDocument()
