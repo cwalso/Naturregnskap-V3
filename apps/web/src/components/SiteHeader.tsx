@@ -13,11 +13,6 @@ export function SiteHeader() {
           <span className="site-header__divider" aria-hidden="true" />
           <p className="site-header__product">Kommunalt naturregnskap</p>
         </div>
-        <nav className="site-header__utilities" aria-label="Tjenestelenker">
-          <a href="#about">Om kommunale naturregnskap</a>
-          <a href="#method">Metode og datagrunnlag</a>
-          <a href="#help">Hjelp</a>
-        </nav>
       </div>
     </header>
   )
