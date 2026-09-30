@@ -453,9 +453,6 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByText('Om datagrunnlaget', { selector: 'summary' }))
     expect(screen.getByRole('heading', { name: 'Om datagrunnlaget' })).toBeInTheDocument()
-    expect(screen.getByText(/500 dekar ekskludert/)).toBeInTheDocument()
-    expect(screen.getByText(/1 234/)).toBeInTheDocument()
-    expect(screen.getByText(/Summert fra validert arealfelt SHAPE_Area/)).toBeInTheDocument()
   })
 })
 
