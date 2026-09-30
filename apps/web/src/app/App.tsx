@@ -116,7 +116,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, createMap, selectedMunicipality, showsMap])
 
   useEffect(() => {
-    map.current?.setAccountLayerVisible(accountLayerVisible)
+    map.current?.setAccountLayerVisible(
+      activeView === 'oversikt' ? true : accountLayerVisible,
+    )
     for (const dataset of thematicDatasets) {
       map.current?.setThematicLayerVisible(
         dataset.id,
