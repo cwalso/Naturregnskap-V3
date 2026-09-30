@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 
-from app.domain.accounting_rules import ACCOUNT_CATEGORY_IDS
+from app.domain.accounting_rules import (
+    ACCOUNT_CATEGORY_IDS,
+    GRUNNKART_LEVEL0_RULES,
+)
 from app.models.account import (
     AccountOverview,
     AccountOverviewMetric,
@@ -59,6 +62,7 @@ class PreparedAccountBalanceProvider:
         prepared = PreparedAccountBalance.model_validate_json(path.read_text())
         if (
             prepared.municipality_number != municipality_number
+            or prepared.method_version != GRUNNKART_LEVEL0_RULES.version
             or prepared.reconciliation.unmapped_area_m2 > 1e-6
         ):
             return AccountOverview(
@@ -70,8 +74,10 @@ class PreparedAccountBalanceProvider:
                     for id in ACCOUNT_CATEGORY_IDS
                 ],
                 warnings=[
-                    "Prepared-resultatet er ufullstendig eller gjelder en annen "
-                    "kommune."
+                    (
+                        "Prepared-resultatet er ufullstendig, gjelder en annen "
+                        "kommune eller er beregnet med en utgått metodeversjon."
+                    )
                 ],
             )
         areas_m2 = {metric.id: metric.area_m2 for metric in prepared.metrics}
