@@ -90,11 +90,9 @@ class PreparedAccountBalanceProvider:
                 AccountOverviewMetric(
                     id=id,
                     area_km2=areas_m2[id] / 1_000_000,
-                    share_percent=(
-                        areas_m2[id] / classified_area_m2 * 100
-                        if classified_area_m2 > 0
-                        else None
-                    ),
+                    # Prosent/andel publiseres ikke før nevneren er metodisk
+                    # bekreftet. Feltet beholdes i kontrakten for senere bruk.
+                    share_percent=None,
                 )
                 for id in ACCOUNT_CATEGORY_IDS
             ],
