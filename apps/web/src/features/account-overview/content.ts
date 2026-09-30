@@ -16,8 +16,8 @@ export const accountCategoryContent: Record<AccountCategoryId, AccountCategoryCo
     description: 'Bebygd og opparbeidet areal i det overordnede regnskapsgrunnlaget.',
   },
   agriculture: {
-    label: 'Dyrket mark',
-    description: 'Areal som i det overordnede regnskapsgrunnlaget er klassifisert som dyrket mark.',
+    label: 'Jordbruk',
+    description: 'Dyrket mark og grasmark i det overordnede regnskapsgrunnlaget.',
   },
 }
 
