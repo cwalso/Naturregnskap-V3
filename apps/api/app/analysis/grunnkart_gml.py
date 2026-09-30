@@ -21,7 +21,11 @@ class GmlPreparationError(ValueError):
 SUPPORTED_METRIC_EPSG = {"25832", "25833"}
 
 
-def inspect_gml(path: Path) -> dict[str, Any]:
+def inspect_gml(
+    path: Path,
+    *,
+    rules: Level0Rules = GRUNNKART_LEVEL0_RULES,
+) -> dict[str, Any]:
     feature_count = 0
     municipalities: Counter[str] = Counter()
     classes: Counter[str] = Counter()
@@ -30,7 +34,7 @@ def inspect_gml(path: Path) -> dict[str, Any]:
     for feature in _iter_features(path):
         feature_count += 1
         municipality = _descendant_text(feature, "kommunenummer")
-        source_class = _descendant_text(feature, "arealdekkeniva1")
+        source_class = _descendant_text(feature, rules.source_field)
         if municipality:
             municipalities[municipality] += 1
         if source_class:
@@ -44,7 +48,8 @@ def inspect_gml(path: Path) -> dict[str, Any]:
         "fileSizeBytes": path.stat().st_size,
         "featureCount": feature_count,
         "municipalities": dict(sorted(municipalities.items())),
-        "arealdekkeNiva1": dict(sorted(classes.items())),
+        "sourceField": rules.source_field,
+        "sourceClasses": dict(sorted(classes.items())),
         "crs": dict(sorted(crs_values.items())),
     }
 
@@ -98,7 +103,7 @@ def prepare_balance_from_gml(
             f"{key}: {value:.2f} m²" for key, value in sorted(unmapped.items())
         )
         raise GmlPreparationError(
-            f"Ukjente Arealdekke nivå 1-klasser blokkerer resultatet: {details}"
+            f"Ukjente {rules.source_field}-klasser blokkerer resultatet: {details}"
         )
 
     classified_area = sum(totals[id] for id in ACCOUNT_CATEGORY_IDS)
@@ -134,7 +139,7 @@ def prepare_balance_from_gml(
         ),
         warnings=[
             "Areal er beregnet direkte fra GML-geometri i metrisk ETRS89 / UTM.",
-            "Hav er eksplisitt ekskludert fra Level0-balansen i prototype-regelsettet.",
+            "Hav er eksplisitt ekskludert fra regnskapsområdet i gjeldende arbeidsretning (land + ferskvann).",
         ],
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
