@@ -81,7 +81,6 @@ class PreparedAccountBalanceProvider:
                 ],
             )
         areas_m2 = {metric.id: metric.area_m2 for metric in prepared.metrics}
-        classified_area_m2 = prepared.reconciliation.classified_area_m2
         return AccountOverview(
             municipality_number=municipality_number,
             municipality_name=municipality_name,
