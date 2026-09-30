@@ -47,9 +47,6 @@ export function ServiceSidebar({
         ))}
       </nav>
 
-      <div className="service-sidebar__footer">
-        <a href="#method">Metode og datagrunnlag</a>
-      </div>
     </aside>
   )
 }
