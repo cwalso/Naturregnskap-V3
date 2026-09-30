@@ -136,7 +136,8 @@ jobs:
           })
 
           await page.goto('http://127.0.0.1:5173/#oversikt', {
-            waitUntil: 'networkidle',
+            waitUntil: 'domcontentloaded',
+            timeout: 15000,
           })
           const input = page.getByRole('combobox', { name: 'Velg kommune' })
           await input.click()
