@@ -17,6 +17,14 @@ function isAccountOverview(value: unknown): value is AccountOverviewData {
       if (typeof metric !== 'object' || metric === null) return false
       const item = metric as Record<string, unknown>
       return accountCategoryIds.includes(item.id as typeof accountCategoryIds[number]) &&
-        (typeof item.areaKm2 === 'number' || item.areaKm2 === null) && item.sharePercent === null
+        (typeof item.areaKm2 === 'number' || item.areaKm2 === null) &&
+        (
+          item.sharePercent === null ||
+          (
+            typeof item.sharePercent === 'number' &&
+            item.sharePercent >= 0 &&
+            item.sharePercent <= 100
+          )
+        )
     })
 }
