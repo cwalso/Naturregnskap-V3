@@ -46,7 +46,7 @@ jobs:
             deviceScaleFactor: 1,
           })
 
-          await page.route('**/api/**', async route => {
+          await page.route('http://127.0.0.1:5173/api/**', async route => {
             const url = new URL(route.request().url())
             const path = url.pathname
             const json = body => route.fulfill({
