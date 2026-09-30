@@ -19,6 +19,11 @@
   --color-warning-border: #e2b272;
   --color-plan-surface: #fbf0c9;
   --color-plan-accent: #8a6b17;
+  --color-level0-nature-surface: #e4f0ef;
+  --color-level0-agriculture-surface: #fbf7e8;
+  --color-level0-agriculture-accent: #d3aa21;
+  --color-level0-built-surface: #f4f5f5;
+  --color-level0-built-accent: #9ca3a2;
   --shadow-floating: 0 4px 18px rgb(21 61 60 / 12%);
   --shadow-card: 0 2px 8px rgb(21 61 60 / 8%);
   --radius-control: 3px;
