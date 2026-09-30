@@ -1,13 +1,20 @@
 # Kommunale naturregnskap V3
 
 V3 er en modulær prototype for et felles, etterprøvbart grunnlag for kommunale
-naturregnskap og framtidig analyse- og beslutningsstøtte. Dette repoet inneholder
-det tekniske fundamentet og en første kartflyt. Brukeren kan søke etter og velge
-en norsk kommune, se kommunegrensen og få kartet tilpasset kommunen. Nasjonalt
-grunnkart for arealanalyse, årsversjon 2025, kan visualiseres som kartlaget
-«Arealdekke nivå 1» via WMS. WMS er bare en `visualSource`, ikke et
-analysegrunnlag; naturregnskap, arealberegninger og GIS-analyser er ikke
-implementert.
+naturregnskap og framtidig analyse- og beslutningsstøtte. Brukeren kan søke etter
+og velge kommune, se en overordnet Oversikt og utforske kart og supplerende
+temadata.
+
+Første regnskapskjerne er et arealbasert utbredelsesregnskap. Nasjonalt
+grunnkart for arealanalyse, årsversjon 2025, brukes som heldekkende
+regnskapsgrunnlag. Level0-balansen aggregerer Grunnkartets
+`okosystemtypeniva1` til Natur, Jordbruk og Bebygd etter et eksplisitt,
+versjonert regelsett. Brukerflaten følger godkjent designbaseline og presenterer
+domenekategorien `agriculture` som «Dyrket mark», med forklaring om at
+kategorien omfatter dyrket mark og grasmark.
+
+WMS brukes fortsatt bare som `visualSource`. Autoritative arealtall beregnes
+fra eksplisitt godkjente kommunevise kildefiler, ikke fra kartbilder.
 
 Brukerflaten bruker Kartverkets gråtonekart som standard bakgrunnskart, en lys
 profilheader med Miljødirektoratets offisielle logo og en permanent
@@ -19,9 +26,11 @@ profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
 - `apps/web`: React, TypeScript i strict mode, Vite og OpenLayers. Kartmodulen
   viser Kartverkets gråtonebakgrunn, Grunnkartets WMS-lag og en valgt
   kommunegrense. Et lite dataset registry holder metadata og kildekonfigurasjon.
-- `apps/api`: FastAPI og Pydantic. API-et tilbyr helsesjekk og egne endepunkter
-  for kommuneliste og kommunegrense. Kartverkets Administrative enheter API er
-  skjult bak en adapter.
+- `apps/api`: FastAPI og Pydantic. API-et tilbyr kommuneliste,
+  kommunegrense, Level0-oversikt og egne endepunkter for videre analyse.
+  Kommunevise Grunnkart-filer forhåndsprosesseres til sporbare prepared-resultater
+  med metodeversjon, kildehash og rekonsiliering. Kartverkets Administrative
+  enheter API er skjult bak en adapter.
 
 Frontend bruker samme `/api`-sti i utvikling og ved senere integrasjon. Vites
 utviklingsserver videresender lokale kall til FastAPI på port 8000.
@@ -54,9 +63,12 @@ API-et er da tilgjengelig på `http://localhost:8000`, og helsesjekken på
 `http://localhost:8000/api/health`.
 
 Kommunedata er tilgjengelig via `GET /api/municipalities` og
-`GET /api/municipalities/{municipality_number}/boundary`. Backend må kjøre for
-at kommunevelgeren skal fungere. Bakgrunnskartet lastes direkte fra Kartverket
-som en ren visualiseringskilde.
+`GET /api/municipalities/{municipality_number}/boundary`.
+Level0-beholdningen leses via
+`GET /api/municipalities/{municipality_number}/account-overview`.
+Backend må kjøre for at kommunevelger og regnskapsdata skal fungere.
+Bakgrunnskart og Grunnkart-WMS lastes som visualiseringskilder; regnskapstall
+kommer fra den separate analyse-/prepareringskjeden.
 
 ## Browser-preview med GitHub Codespaces
 
