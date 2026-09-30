@@ -50,17 +50,17 @@ function accountResponse(number: string, name: string, areaKm2: number | null = 
       {
         id: 'nature',
         areaKm2,
-        sharePercent: classifiedKm2 === null ? null : areaKm2 / classifiedKm2 * 100,
+        sharePercent: null,
       },
       {
         id: 'agriculture',
         areaKm2: areaKm2 === null ? null : 2,
-        sharePercent: classifiedKm2 === null ? null : 2 / classifiedKm2 * 100,
+        sharePercent: null,
       },
       {
         id: 'built',
         areaKm2: areaKm2 === null ? null : 1,
-        sharePercent: classifiedKm2 === null ? null : 1 / classifiedKm2 * 100,
+        sharePercent: null,
       },
     ],
     sourceVersions: ['2025'],
@@ -411,9 +411,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
-    expect(screen.getByRole('img', {
-      name: 'Fordeling mellom Natur, Dyrket mark og Bebygd innenfor Level0-balansen',
-    })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Arealfordeling i Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hvor ligger arealene?' })).toBeInTheDocument()
