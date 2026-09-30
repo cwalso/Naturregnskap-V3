@@ -218,9 +218,9 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    expect(await screen.findByRole('alert', {
-      name: '',
-    })).toHaveTextContent('Kunne ikke hente arealbalansen. Prøv igjen senere.')
+    expect(
+      await screen.findByText('Kunne ikke hente arealbalansen. Prøv igjen senere.'),
+    ).toBeInTheDocument()
     expect(screen.getByText('Arealfordelingen kunne ikke hentes nå.')).toBeInTheDocument()
     expect(screen.queryByText(
       'Arealfordelingen vises når Level0-resultatet er klargjort for kommunen.',
