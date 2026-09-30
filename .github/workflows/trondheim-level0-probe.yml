@@ -1,0 +1,72 @@
+name: Trondheim Level0 data probe
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    if: github.head_ref == 'feature/v3-overview-story'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe official Grunnkart download endpoints
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p probe
+          curl -L --retry 2 --max-time 60             -D probe/atom.headers             -o probe/atom.xml             "https://nedlasting.geonorge.no/geonorge/ATOM-feeds/GrunnkartArealanalyse_AtomFeedGML.xml" || true
+          curl -L --retry 2 --max-time 60             -D probe/capabilities-v3.headers             -o probe/capabilities-v3.json             "https://nedlasting.geonorge.no/api/v3/capabilities/28c28e3a-d88f-4a34-8c60-5efe6d56a44d" || true
+          curl -L --retry 2 --max-time 60             -D probe/capabilities.headers             -o probe/capabilities.json             "https://nedlasting.geonorge.no/api/capabilities/28c28e3a-d88f-4a34-8c60-5efe6d56a44d" || true
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+          import xml.etree.ElementTree as ET
+
+          report = {}
+          for name in ("atom.xml", "capabilities-v3.json", "capabilities.json"):
+              path = Path("probe") / name
+              report[name] = {
+                  "exists": path.exists(),
+                  "bytes": path.stat().st_size if path.exists() else 0,
+                  "preview": path.read_text(errors="replace")[:3000] if path.exists() else "",
+              }
+
+          atom = Path("probe/atom.xml")
+          links = []
+          if atom.exists() and atom.stat().st_size:
+              try:
+                  root = ET.fromstring(atom.read_bytes())
+                  for element in root.iter():
+                      href = element.attrib.get("href")
+                      text = (element.text or "").strip()
+                      if href:
+                          links.append({"href": href, "text": text})
+              except Exception as exc:
+                  report["atom_parse_error"] = repr(exc)
+          report["atom_links"] = links[:500]
+          report["trondheim_links"] = [
+              link for link in links
+              if re.search(r"(5001|Trondheim)", link["href"] + " " + link["text"], re.I)
+          ]
+          Path("probe/report.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2)
+          )
+          print(json.dumps({
+              "atom_bytes": report["atom.xml"]["bytes"],
+              "cap_v3_bytes": report["capabilities-v3.json"]["bytes"],
+              "cap_bytes": report["capabilities.json"]["bytes"],
+              "link_count": len(links),
+              "trondheim_links": report["trondheim_links"][:20],
+          }, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload probe result
+        uses: actions/upload-artifact@v4
+        with:
+          name: trondheim-level0-probe
+          path: probe/
+          retention-days: 3
