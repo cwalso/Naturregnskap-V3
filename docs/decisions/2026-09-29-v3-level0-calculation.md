@@ -50,8 +50,9 @@ Metodeversjon: `level0-v0.3-prototype`.
 | `hav` | Ekskludert fra gjeldende regnskapsområde |
 
 Arbeidsretningen for første versjon er land og ferskvann, ikke sjø. Hav er
-derfor ekskludert fra både Level0-totalen og andelsnevneren. Dette er fortsatt
-et metodisk avklaringspunkt som må bekreftes før metoden kan fastsettes.
+derfor eksplisitt skilt ut fra den klassifiserte Level0-balansen i prototypen.
+Endelig regnskapsområde og prosentnevner er fortsatt metodiske avklaringspunkter
+som må bekreftes før metoden kan fastsettes.
 
 Ukjente kildeklasser blokkerer beregningen. De blir aldri implisitt lagt til
 Natur.
@@ -65,12 +66,15 @@ Natur_m²     = sum areal for alle kildeobjekter mappet til Natur
 Jordbruk_m²  = sum areal for alle kildeobjekter mappet til Jordbruk
 Bebygd_m²    = sum areal for alle kildeobjekter mappet til Bebygd
 
-regnskapsområde_m² = Natur_m² + Jordbruk_m² + Bebygd_m²
-
-andel(kategori) = kategori_m² / regnskapsområde_m² * 100
+klassifisert_level0_m² = Natur_m² + Jordbruk_m² + Bebygd_m²
 ```
 
 Arealene presenteres i dekar i frontend, der 1 dekar = 1 000 m².
+
+Prosentandeler publiseres ikke i gjeldende prototype. Metodeutkastet sier at
+andel skal beregnes, men prosentnevneren er eksplisitt markert som et
+avklaringspunkt. API-kontrakten beholder derfor feltet for andel, men verdien er
+`null` inntil nevneren er metodisk bekreftet.
 
 ## Rekonsiliering
 
