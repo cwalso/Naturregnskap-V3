@@ -194,6 +194,39 @@ describe('kommunevalg', () => {
 })
 
 describe('sidestruktur og Oversikt', () => {
+  it('skiller teknisk feil fra manglende klargjorte regnskapstall', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      const url = String(input)
+      if (url === '/api/municipalities') {
+        return Promise.resolve(new Response(
+          JSON.stringify([{ number: '5001', name: 'Trondheim' }]),
+          { status: 200 },
+        ))
+      }
+      if (url.endsWith('/account-overview')) {
+        return Promise.resolve(new Response(null, { status: 503 }))
+      }
+      if (url.endsWith('/thematic-coverage')) {
+        return Promise.resolve(new Response(
+          JSON.stringify(thematicCoverageResponse()),
+          { status: 200 },
+        ))
+      }
+      return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+    })
+
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+
+    expect(await screen.findByRole('alert', {
+      name: '',
+    })).toHaveTextContent('Kunne ikke hente arealbalansen. Prøv igjen senere.')
+    expect(screen.getByText('Arealfordelingen kunne ikke hentes nå.')).toBeInTheDocument()
+    expect(screen.queryByText(
+      'Arealfordelingen vises når Level0-resultatet er klargjort for kommunen.',
+    )).not.toBeInTheDocument()
+  })
+
   it('viser dashboardnavigasjon etter kommunevalg og Oversikt som standard', async () => {
     mockMunicipalityFlow()
     render(<App createMap={() => mapMock()} />)
