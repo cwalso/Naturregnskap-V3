@@ -21,6 +21,13 @@ jobs:
           curl -L --retry 2 --max-time 60             -D probe/atom.headers             -o probe/atom.xml             "https://nedlasting.geonorge.no/geonorge/ATOM-feeds/GrunnkartArealanalyse_AtomFeedGML.xml" || true
           curl -L --retry 2 --max-time 60             -D probe/capabilities-v3.headers             -o probe/capabilities-v3.json             "https://nedlasting.geonorge.no/api/v3/capabilities/28c28e3a-d88f-4a34-8c60-5efe6d56a44d" || true
           curl -L --retry 2 --max-time 60             -D probe/capabilities.headers             -o probe/capabilities.json             "https://nedlasting.geonorge.no/api/capabilities/28c28e3a-d88f-4a34-8c60-5efe6d56a44d" || true
+          curl -L --retry 2 --max-time 180 \
+            -D probe/trondheim.headers \
+            -o probe/trondheim.gml \
+            "https://nedlasting.geonorge.no/api/download/file//28c28e3a-d88f-4a34-8c60-5efe6d56a44d/D28646C0-EFE9-4ABF-A608-5787AF80F893" || true
+          file probe/trondheim.gml || true
+          ls -lh probe/trondheim.gml || true
+
           python - <<'PY'
           from pathlib import Path
           import json
@@ -49,6 +56,47 @@ jobs:
               except Exception as exc:
                   report["atom_parse_error"] = repr(exc)
           report["atom_links"] = links[:500]
+          trondheim = Path("probe/trondheim.gml")
+          report["trondheim_gml"] = {
+              "exists": trondheim.exists(),
+              "bytes": trondheim.stat().st_size if trondheim.exists() else 0,
+              "preview": trondheim.read_text(errors="replace")[:5000] if trondheim.exists() else "",
+          }
+
+          def local_name(tag):
+              return tag.rsplit("}", 1)[-1] if "}" in tag else tag
+
+          samples = []
+          distinct = {}
+          if trondheim.exists() and trondheim.stat().st_size:
+              try:
+                  for _, element in ET.iterparse(trondheim, events=("end",)):
+                      lname = local_name(element.tag)
+                      if lname.lower() in {"grunnkartflate", "featuremember", "member"}:
+                          values = {}
+                          for child in element.iter():
+                              name = local_name(child.tag)
+                              text = (child.text or "").strip()
+                              if text and name in {
+                                  "kommunenummer",
+                                  "arealdekkeniva1",
+                                  "arealdekkeniva2",
+                                  "arealdekkekode",
+                                  "SHAPE_Area",
+                                  "shape_area",
+                              }:
+                                  values[name] = text
+                                  distinct.setdefault(name, set()).add(text)
+                          if values and len(samples) < 10:
+                              samples.append(values)
+                          element.clear()
+              except Exception as exc:
+                  report["trondheim_parse_error"] = repr(exc)
+          report["trondheim_samples"] = samples
+          report["trondheim_distinct"] = {
+              key: sorted(values)[:100] for key, values in distinct.items()
+          }
+
           report["trondheim_links"] = [
               link for link in links
               if re.search(r"(5001|Trondheim)", link["href"] + " " + link["text"], re.I)
@@ -61,6 +109,9 @@ jobs:
               "cap_v3_bytes": report["capabilities-v3.json"]["bytes"],
               "cap_bytes": report["capabilities.json"]["bytes"],
               "link_count": len(links),
+              "trondheim_gml_bytes": report["trondheim_gml"]["bytes"],
+              "trondheim_samples": report["trondheim_samples"],
+              "trondheim_distinct": report["trondheim_distinct"],
               "trondheim_links": report["trondheim_links"][:20],
           }, ensure_ascii=False, indent=2))
           PY
