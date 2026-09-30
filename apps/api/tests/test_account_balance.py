@@ -224,6 +224,37 @@ def test_provider_available_and_not_available(tmp_path: Path) -> None:
     assert all(metric.area_km2 is None for metric in missing.metrics)
 
 
+def test_provider_rejects_prepared_balance_from_superseded_method(
+    tmp_path: Path,
+) -> None:
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"],
+        ["unused"],
+        [2_000_000],
+        ["skog"],
+    )
+    prepared = prepare_balance(
+        path,
+        "4204",
+        prepared_path("4204", tmp_path),
+        area_field="SHAPE_Area",
+    )
+    payload = prepared.model_dump(by_alias=True)
+    payload["methodVersion"] = "level0-v0.1-prototype"
+    prepared_path("4204", tmp_path).write_text(json.dumps(payload))
+
+    result = PreparedAccountBalanceProvider(tmp_path).get(
+        "4204",
+        "Kristiansand",
+    )
+
+    assert result.status == "not_available"
+    assert all(metric.area_km2 is None for metric in result.metrics)
+    assert result.warnings
+    assert "utgått metodeversjon" in result.warnings[0]
+
+
 def test_api_returns_missing_as_expected_state(tmp_path: Path) -> None:
     class Adapter(KartverketMunicipalitiesAdapter):
         async def get_municipality(self, municipality_number: str) -> Municipality:
