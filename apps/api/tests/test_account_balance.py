@@ -168,7 +168,7 @@ def test_arealdekke_is_not_used_for_level_zero(tmp_path: Path) -> None:
     assert result.metrics[0].area_m2 == 50
 
 
-def test_level0_shares_use_land_and_freshwater_balance_as_denominator(
+def test_level0_tracks_classified_and_excluded_area_without_publishing_shares(
     tmp_path: Path,
 ) -> None:
     path = parquet(
@@ -185,16 +185,9 @@ def test_level0_shares_use_land_and_freshwater_balance_as_denominator(
         area_field="SHAPE_Area",
     )
     result = PreparedAccountBalanceProvider(tmp_path).get("4204", "Kristiansand")
-    shares = {metric.id: metric.share_percent for metric in result.metrics}
-
-    assert shares == {
-        "nature": 60.0,
-        "agriculture": 20.0,
-        "built": 20.0,
-    }
+    assert all(metric.share_percent is None for metric in result.metrics)
     assert result.classified_area_km2 == 1.0
     assert result.excluded_area_km2 == 0.25
-    assert sum(value for value in shares.values() if value is not None) == 100.0
 
 
 def test_provider_available_and_not_available(tmp_path: Path) -> None:
@@ -213,7 +206,7 @@ def test_provider_available_and_not_available(tmp_path: Path) -> None:
     missing = provider.get("0301", "Oslo")
     assert available.status == "available"
     assert available.metrics[0].area_km2 == 2
-    assert available.metrics[0].share_percent == 100
+    assert available.metrics[0].share_percent is None
     assert available.classified_area_km2 == 2
     assert available.excluded_area_km2 == 0
     assert available.source_format == "geoparquet"
