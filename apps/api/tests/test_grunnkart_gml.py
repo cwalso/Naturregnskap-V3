@@ -113,6 +113,48 @@ def test_prepare_gml_blocks_unknown_level1_class(tmp_path: Path) -> None:
         prepare_balance_from_gml(source, "5001", tmp_path / "result.json")
 
 
+def test_prepare_gml_subtracts_polygon_holes(tmp_path: Path) -> None:
+    source = tmp_path / "5001.gml"
+    source.write_text(
+        """<?xml version="1.0" encoding="UTF-8"?>
+        <gml:FeatureCollection
+          xmlns:gml="http://www.opengis.net/gml/3.2"
+          xmlns:ga="https://example.test/grunnkart">
+          <gml:featureMember>
+            <ga:GrunnkartFlate gml:id="f1">
+              <ga:kommunenummer>5001</ga:kommunenummer>
+              <ga:okosystemtypeniva1>skog</ga:okosystemtypeniva1>
+              <ga:område>
+                <gml:Polygon srsName="urn:ogc:def:crs:EPSG::25832">
+                  <gml:exterior>
+                    <gml:LinearRing>
+                      <gml:posList>0 0 10 0 10 10 0 10 0 0</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                  <gml:interior>
+                    <gml:LinearRing>
+                      <gml:posList>2 2 4 2 4 4 2 4 2 2</gml:posList>
+                    </gml:LinearRing>
+                  </gml:interior>
+                </gml:Polygon>
+              </ga:område>
+            </ga:GrunnkartFlate>
+          </gml:featureMember>
+        </gml:FeatureCollection>
+        """
+    )
+
+    result = prepare_balance_from_gml(
+        source,
+        "5001",
+        tmp_path / "result.json",
+    )
+
+    metrics = {metric.id: metric.area_m2 for metric in result.metrics}
+    assert metrics["nature"] == 96.0
+    assert result.reconciliation.classified_area_m2 == 96.0
+
+
 def test_prepare_gml_rejects_non_metric_crs(tmp_path: Path) -> None:
     source = tmp_path / "5001.gml"
     source.write_text(
