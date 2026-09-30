@@ -1,182 +1,173 @@
 # Beslutning: Level0-beregning for beholdning i Oversikt
 
-**Dato:** 2026-09-29  
-**Status:** Implementert som prototype, datatilgang for Trondheim gjenstår
+**Dato:** 2026-09-30  
+**Status:** Implementert som prototype, autorisert Trondheim-kildefil gjenstår
 
 ## Formål
 
-Oversikt skal først vise kommunens beholdning på nivå 0:
+Oversikt skal først vise kommunens beholdning på Nivå 0:
 
 - Natur
-- Dyrket mark / jordbruk
+- Jordbruk
 - Bebygd
 
-Dette er beholdningen. Historiske endringer behandles senere som overganger
-mellom de samme hovedklassene og skal ikke brukes til å konstruere dagens
-beholdning.
+Dette er beholdningen i det arealbaserte naturregnskapet. Historiske endringer
+behandles separat som overganger mellom de samme hovedklassene og skal ikke
+brukes til å konstruere dagens beholdning.
 
-## Kilde og klassifikasjon
+## Metodegrunnlag
 
-Beholdningen beregnes fra årsversjon 2025 av Nasjonalt grunnkart for
-arealanalyse.
+Metodeutkast 0.2 sier at kjerneregnskapet føres på Nivå 0 med tre kategorier,
+og definerer:
 
-Beregningen bruker **Arealdekke nivå 1**, ikke økosystemtype. Årsversjon 2025
-har åtte maskinlesbare nivå-1-klasser:
+- Bebygd = bebygd og opparbeidet areal
+- Jordbruk = dyrket mark og grasmark
+- Natur = øvrige klasser
 
-| Arealdekke nivå 1 | Kodeverdi | Level0 |
-| --- | --- | --- |
-| Bebygd og samferdsel | `bebygdSamferdsel` | Bebygd |
-| Jordbruk | `jordbruk` | Dyrket mark / jordbruk |
-| Skog | `skog` | Natur |
-| Snaumark | `snaumark` | Natur |
-| Myr | `myr` | Natur |
-| Snø og isbre | `snoIsbre` | Natur |
-| Ferskvann | `ferskvann` | Natur |
-| Hav | `hav` | Ekskludert i gjeldende prototype |
+Koblingen mellom Grunnkart og Nivå 0 skal være entydig, dokumentert og
+versjonert.
 
-`snoIsbre` er lagt til etter kontroll mot de offisielle
-presentasjonsreglene for årsversjon 2025. Ukjente kodeverdier blokkerer
-resultatet; de blir aldri automatisk klassifisert som Natur.
+Den eldre prototypekoblingen fra `arealdekkeniva1` er derfor erstattet av
+`okosystemtypeniva1`, fordi den verifiserte Grunnkart-klassifikasjonen her
+svarer direkte til definisjonene i metodeutkastet.
 
-## Arealberegning
+## Versjonert Level0-regel
 
-Det er implementert to kontrollerte innganger:
+Metodeversjon: `level0-v0.3-prototype`.
 
-1. Kommunevis Parquet, der et validert metrisk arealfelt summeres.
-2. Kommunevis GML, der areal beregnes direkte fra polygongeometrien.
+| Grunnkart `okosystemtypeniva1` | Nivå 0 |
+| --- | --- |
+| `bebygdOpparbeidetAreal` | Bebygd |
+| `dyrketmark` | Jordbruk |
+| `grasmark` | Jordbruk |
+| `skog` | Natur |
+| `heiBuskmark` | Natur |
+| `liteVegetertMark` | Natur |
+| `vatmark` | Natur |
+| `elverBekkerKanaler` | Natur |
+| `innsjoerVannmagasiner` | Natur |
+| `kyststrenderSvabergDyner` | Natur |
+| `hav` | Ekskludert fra gjeldende regnskapsområde |
 
-GML-beregningen:
+Arbeidsretningen for første versjon er land og ferskvann, ikke sjø. Hav er
+derfor ekskludert fra både Level0-totalen og andelsnevneren. Dette er fortsatt
+et metodisk avklaringspunkt som må bekreftes før metoden kan fastsettes.
 
-- krever kommuneleveranse i ETRS89 / UTM 32 eller 33
-- leser `GrunnkartFlate`
-- krever `kommunenummer` og `arealdekkeniva1`
-- beregner areal fra ytterringer minus eventuelle hull
-- summerer alle polygoner/MultiSurface-deler
-- avviser geografisk CRS som EPSG:4258 for arealberegning
-- stopper på ukjente klasser
-- stopper dersom kommuneleveransen inneholder en annen kommune
-- rekonsilerer geometriberegnet kildeareal mot klassifisert + ekskludert areal
+Ukjente kildeklasser blokkerer beregningen. De blir aldri implisitt lagt til
+Natur.
 
-Ingen arealtall beregnes fra WMS, kartpiksler, skjermbilde, BBOX i Web
-Mercator eller en prosentvis antakelse.
+## Beregning
 
-## Nøyaktighet
-
-For Parquet-sporet er `SHAPE_Area` tidligere kontrollert mot direkte
-geometriberegning i et utvalg på 1 000 polygoner i den reelle 5054-filen.
-Avviket lå på ordinært flyttallsnivå.
-
-GML-sporet beregner areal direkte i metrisk UTM-geometri med dobbel
-flyttallspresisjon. Dette fjerner usikkerheten som ville oppstått ved å måle
-et rendret kartbilde. Den praktiske nøyaktigheten begrenses derfor primært av
-selve Grunnkart-geometrien og klassifikasjonen, ikke av beregningsmetoden.
-
-## Trondheim 5001
-
-Geonorges offentlige Atom-feed er kontrollert maskinelt og inneholder en egen
-GML-leveranse for kommune 5001 Trondheim, blant annet i EPSG:25832.
-
-Nedlastings-API-et oppgir samtidig
-`accessConstraintRequiredRole = nd.filnedlasting`. Anonym nedlasting av den
-identifiserte Trondheim-filen gir HTTP 403 i GitHub Actions. Det er derfor
-ikke lagt inn eller publisert Trondheim-tall uten kildefilen.
-
-Så snart en autorisert Trondheim-fil er tilgjengelig, er kjeden:
+For hver kommune beregnes:
 
 ```text
-5001 GML (EPSG:25832)
-  -> inspect_grunnkart_gml
-  -> mapping gate
-  -> geometrisk arealberegning
-  -> rekonsiliering
-  -> prepared/5001.json
-  -> FastAPI account-overview
-  -> Oversikt
+Natur_m²     = sum areal for alle kildeobjekter mappet til Natur
+Jordbruk_m²  = sum areal for alle kildeobjekter mappet til Jordbruk
+Bebygd_m²    = sum areal for alle kildeobjekter mappet til Bebygd
+
+regnskapsområde_m² = Natur_m² + Jordbruk_m² + Bebygd_m²
+
+andel(kategori) = kategori_m² / regnskapsområde_m² * 100
 ```
 
-Dette skal være en datatilgangsgate, ikke en grunn til å erstatte Grunnkart
-med en annen statistikkilde.
+Arealene presenteres i dekar i frontend, der 1 dekar = 1 000 m².
 
+## Rekonsiliering
 
-## Sporbarhet i hvert beregnet resultat
+Før et resultat kan publiseres skal følgende stemme:
 
-Hvert prepared Level0-resultat lagrer nå:
+```text
+geometriberegnet kildeareal
+  = klassifisert Level0-areal
+  + eksplisitt ekskludert areal
+  + umappet areal
+```
 
-- SHA-256 av den eksakte kildefilen
+`umapped_area_m2` skal være null. En ukjent klasse stopper preparation.
+
+Dette skiller mellom:
+
+- arealet som faktisk inngår i regnskapsområdet
+- eksplisitt ekskludert hav
+- eventuelle feil eller nye klasser som må avklares
+
+## Arealnøyaktighet
+
+Det finnes to kontrollerte beregningsspor:
+
+1. Kommunevis GeoParquet med validert metrisk `SHAPE_Area`.
+2. Kommunevis GML der areal beregnes direkte fra polygongeometrien.
+
+Parquet-sporet er tidligere kontrollert på 1 000 reelle polygoner i EPSG:25833.
+Avviket mellom `SHAPE_Area` og direkte geometriberegning var på
+flyttallsnivå.
+
+GML-sporet:
+
+- krever metrisk ETRS89 / UTM 32 eller 33
+- leser alle `GrunnkartFlate`
+- beregner ytterringer minus polygonhull
+- summerer alle polygon-/MultiSurface-deler
+- avviser geografisk CRS som EPSG:4258 som arealberegningsgrunnlag
+- rekonsilerer hele kildearealet før prepared-resultat skrives
+
+Det beregnes aldri regnskapsareal fra WMS, kartpiksler, skjermbilder eller
+Web Mercator-BBOX.
+
+## Hva «nøyaktig» betyr
+
+Den **beregningsmessige** delen er deterministisk og reproduserbar ned på
+kildegeometrien, med bare ordinær flyttallsavrunding.
+
+Den **faglige** nøyaktigheten er ikke det samme. Resultatet arver usikkerhet i:
+
+- Grunnkartets geometri
+- klassifikasjonen av det enkelte arealet
+- kildeversjonen
+- den vedtatte koblingsregelen til Nivå 0
+- geografisk avgrensning av regnskapsområdet
+
+Regelsettet har derfor fortsatt status `prototype`. En senere metodeendring
+skal gi ny metodeversjon, ikke skjult omkoding av eksisterende tall.
+
+## Sporbarhet
+
+Hvert prepared resultat lagrer:
+
+- kommunenummer og periode
+- Grunnkart-versjon
+- fysisk kildefil
+- SHA-256 av kildefilen
 - kildeformat
 - antall kildeobjekter
-- eksplisitt arealmetode
-- metodeversjon
+- arealmetode
+- metodeversjon og metodestatus
 - beregningstidspunkt
 - klassifisert, ekskludert og umappet areal
 
-Dette gjør at et publisert tall kan knyttes tilbake til både dataversjon, fysisk
-kildefil og beregningsmåte. UI-et viser de viktigste opplysningene under
-«Om datagrunnlaget».
+## Trondheim 5001
 
-## Kjøring når Trondheim-filen er tilgjengelig
+Geonorges Atom-feed inneholder en egen GML-leveranse for Trondheim i
+EPSG:25832. Den identifiserte filen krever Norge digitalt-rollen
+`nd.filnedlasting`. Anonym nedlasting i GitHub Actions gir HTTP 403.
 
-For en GML-leveranse i EPSG:25832:
+NIBIOs publiserte WMS er kontrollert, men WFS er ikke aktivert. WMS skal uansett
+ikke brukes som analysegrunnlag.
 
-```bash
-cd apps/api
-python -m app.scripts.inspect_grunnkart_gml /sti/til/trondheim_5001.gml
-python -m app.scripts.prepare_account_balance_gml \
-  --municipality 5001 \
-  --input /sti/til/trondheim_5001.gml
-```
-
-Andre kommando skal bare kjøres videre dersom inspeksjonen viser kommune 5001,
-forventede Arealdekke nivå 1-koder og metrisk CRS. Ukjente klasser stopper
-beregningen.
-
-
-## Metodisk presisjon kontra geometrisk presisjon
-
-Denne implementasjonen skiller mellom to typer nøyaktighet:
-
-1. **Geometrisk/beregningsmessig presisjon.** Areal kan beregnes direkte fra
-   metrisk kildegeometri eller et validert arealfelt. Denne delen er
-   deterministisk og kan rekonsileres ned på kildearealet.
-2. **Metodisk klassifikasjon.** Resultatet er bare så faglig presist som den
-   eksplisitte Level0-regelen. Regelsettet har derfor fortsatt status
-   `prototype` selv om selve summeringen er eksakt og reproducerbar.
-
-Gjeldende aksepterte V3-regel bygger Level0-beholdningen fra
-`arealdekkeniva1`, ikke `okosystemtypeniva1`. Økosystemtype er en separat
-klassifikasjon og brukes i sporet for mer detaljert informasjon om naturen.
-
-Før produksjonssetting må minst følgende vurderes eksplisitt:
-
-- Arealdekke nivå 1 `snaumark` omfatter på nivå 2 også
-  «Snaumark (konstruert)». Årsversjon 2025 kan blant annet kode bergverk som
-  konstruert snaumark. Gjeldende Level0-regel mapper hele nivå-1-klassen
-  `snaumark` til Natur.
-- Kildeklassen `jordbruk` omfatter mer enn det ordet «Dyrket mark» isolert
-  sett kan gi inntrykk av. «Dyrket mark» er i V3 en brukerrettet etikett for
-  den stabile domenekategorien `agriculture`, ikke en ny kildeklassifikasjon.
-- Hav er foreløpig eksplisitt ekskludert i beholdningsregelen, mens enkelte
-  arbeidsutkast for endringsanalyse grupperer hav under Natur. Dette må
-  harmoniseres før en metodeversjon kan omtales som endelig.
-
-Disse punktene skal ikke løses ved skjult omkoding. En endring i
-klassifikasjonsregelen skal gi ny metodeversjon og være synlig i tidsserier og
-sammenligninger.
-
-
-## Fordelingssøyle og nevner
-
-Den godkjente Oversikt-designen viser en proporsjonal fordelingssøyle. V3
-definerer nå denne eksplisitt som **fordelingen innenfor den klassifiserte
-Level0-balansen**:
+Beregningen er derfor implementert, men Trondheim-tall publiseres ikke før en
+autorisert 5001-kildefil er tilgjengelig. Når den foreligger er kjeden:
 
 ```text
-andel kategori = areal kategori / (Natur + Jordbruk + Bebygd)
+5001 GML/GeoParquet
+  -> inspect
+  -> kontroll av sourceField og alle kildeklasser
+  -> Level0 mapping v0.3
+  -> metrisk arealberegning
+  -> rekonsiliering
+  -> prepared/5001.json
+  -> FastAPI
+  -> Oversikt
 ```
 
-Ekskludert og umappet areal inngår ikke i nevneren. Dette er derfor ikke en
-påstand om prosentandel av hele kommunegeometrien. UI-et skal forklare
-nevneren, og ekskludert areal skal være synlig i proveniensen.
-
-Andelen beregnes i backend fra samme prepared resultat som arealtallene.
-Presentasjonskomponentene gjør ingen egen faglig beregning.
+Dette er en datatilgangsgate, ikke en grunn til å erstatte Grunnkart med en
+annen statistikkilde.
