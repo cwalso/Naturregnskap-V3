@@ -20,22 +20,6 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
 
       {data.status === 'available' ? (
         <>
-          {data.metrics.every((metric) => metric.sharePercent !== null) && (
-            <div
-              className="overview-distribution__bar"
-              role="img"
-              aria-label="Fordeling mellom Natur, Jordbruk og Bebygd innenfor Level0-balansen"
-            >
-              {data.metrics.map((metric) => (
-                <span
-                  key={`bar-${metric.id}`}
-                  className={`overview-distribution__segment overview-distribution__segment--${metric.id}`}
-                  style={{ width: `${metric.sharePercent ?? 0}%` }}
-                  title={`${accountCategoryContent[metric.id].label}: ${metric.sharePercent?.toFixed(1)} %`}
-                />
-              ))}
-            </div>
-          )}
           <div className="overview-distribution__metrics">
           {data.metrics.map((metric) => (
             <div className={`overview-distribution__metric overview-distribution__metric--${metric.id}`} key={metric.id}>
@@ -52,8 +36,7 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
           ))}
           </div>
           <p className="overview-distribution__denominator">
-            Fordelingen gjelder arealet som inngår i de tre Level0-kategoriene.
-            Eventuelt ekskludert areal er ikke med i søylen.
+            Prosentvis fordeling vises ikke før prosentnevneren er metodisk avklart.
           </p>
         </>
       ) : (
