@@ -24,7 +24,7 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
             <div
               className="overview-distribution__bar"
               role="img"
-              aria-label="Fordeling mellom Natur, Dyrket mark og Bebygd innenfor Level0-balansen"
+              aria-label="Fordeling mellom Natur, Jordbruk og Bebygd innenfor Level0-balansen"
             >
               {data.metrics.map((metric) => (
                 <span
