@@ -28,6 +28,15 @@ jobs:
           file probe/trondheim.gml || true
           ls -lh probe/trondheim.gml || true
 
+          curl -L --retry 1 --max-time 60 \
+            -D probe/wfs.headers \
+            -o probe/wfs.xml \
+            "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetCapabilities" || true
+          curl -L --retry 1 --max-time 60 \
+            -D probe/wms.headers \
+            -o probe/wms.xml \
+            "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities" || true
+
           python - <<'PY'
           from pathlib import Path
           import json
@@ -35,7 +44,13 @@ jobs:
           import xml.etree.ElementTree as ET
 
           report = {}
-          for name in ("atom.xml", "capabilities-v3.json", "capabilities.json"):
+          for name in (
+              "atom.xml",
+              "capabilities-v3.json",
+              "capabilities.json",
+              "wfs.xml",
+              "wms.xml",
+          ):
               path = Path("probe") / name
               report[name] = {
                   "exists": path.exists(),
@@ -110,6 +125,9 @@ jobs:
               "cap_bytes": report["capabilities.json"]["bytes"],
               "link_count": len(links),
               "trondheim_gml_bytes": report["trondheim_gml"]["bytes"],
+              "wfs_bytes": report["wfs.xml"]["bytes"],
+              "wfs_preview": report["wfs.xml"]["preview"][:1000],
+              "wms_bytes": report["wms.xml"]["bytes"],
               "trondheim_samples": report["trondheim_samples"],
               "trondheim_distinct": report["trondheim_distinct"],
               "trondheim_links": report["trondheim_links"][:20],
