@@ -4,7 +4,7 @@ from typing import Literal
 AccountCategory = Literal["nature", "agriculture", "built"]
 RuleTarget = AccountCategory | Literal["excluded"]
 
-METHOD_VERSION = "level0-v0.2-prototype"
+METHOD_VERSION = "level0-v0.3-prototype"
 METHOD_STATUS = "prototype"
 
 
@@ -19,19 +19,23 @@ class Level0Rules:
 GRUNNKART_LEVEL0_RULES = Level0Rules(
     version=METHOD_VERSION,
     status=METHOD_STATUS,
-    source_field="arealdekkeniva1",
+    source_field="okosystemtypeniva1",
     mapping={
-        # Exact, case-sensitive Arealdekke nivå 1 codes. The 5054 Parquet
-        # verified all codes except snoIsbre; snoIsbre is verified against the
-        # official 2025 presentation rules. Unknown source codes still block
-        # preparation.
-        "bebygdSamferdsel": "built",
-        "jordbruk": "agriculture",
+        # Exact, case-sensitive values verified in the real Grunnkart 2025
+        # schema. The mapping follows the current methodology draft:
+        # Bebygd = bebygd/opparbeidet, Jordbruk = dyrket mark + grasmark,
+        # Natur = remaining non-marine ecosystem classes.
+        "bebygdOpparbeidetAreal": "built",
+        "dyrketmark": "agriculture",
+        "grasmark": "agriculture",
         "skog": "nature",
-        "snaumark": "nature",
-        "myr": "nature",
-        "snoIsbre": "nature",
-        "ferskvann": "nature",
+        "heiBuskmark": "nature",
+        "liteVegetertMark": "nature",
+        "vatmark": "nature",
+        "elverBekkerKanaler": "nature",
+        "innsjoerVannmagasiner": "nature",
+        "kyststrenderSvabergDyner": "nature",
+        # Working direction for version 1 is land + freshwater, not sea.
         "hav": "excluded",
     },
 )
