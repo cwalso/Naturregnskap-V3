@@ -11,10 +11,10 @@ Besluttet for V3-prototypen.
 Oversikt er første kapittel i brukerreisen og skal først svare på det mest
 grunnleggende spørsmålet:
 
-> Hvor mye av kommunen er Natur, Dyrket mark og Bebygd?
+> Hvor mye av kommunen er Natur, Jordbruk og Bebygd?
 
 Level0-beholdningen vises derfor umiddelbart etter introduksjonen. Natur gis
-størst visuell vekt, mens Dyrket mark og Bebygd vises som de to øvrige
+størst visuell vekt, mens Jordbruk og Bebygd vises som de to øvrige
 hovedkategoriene.
 
 Den tidligere forklaringsflaten om regnskapsgrunnlag før tallene tas bort fra
@@ -24,11 +24,11 @@ tallene gjennom proveniensinformasjonen.
 ## Begreper
 
 Den stabile domenekategorien er fortsatt `agriculture`. Den brukerrettede
-etiketten endres fra «Jordbruk» til «Dyrket mark».
+etiketten endres fra «Jordbruk» til «Jordbruk».
 
 Dette bygger på prototype-mappingen der kildekoden `jordbruk` i Grunnkart for
 arealanalyse er mappet til `agriculture`, og på beslutningsgrunnlaget for
-Level0 som beskriver den brukerrettede kategorien som «Dyrket mark».
+Level0 som beskriver den brukerrettede kategorien som «Jordbruk».
 
 «Arealregnskap 2025» skal ikke brukes som overskrift for denne visningen.
 Visningen omtales som «Arealbasert naturregnskap · 2025» for å unngå å blande
@@ -41,7 +41,7 @@ Oversikten skal:
 - vise absolutte arealtall i dekar
 - ikke vise prosent eller relative søyler før prosentnevneren er metodisk avklart
 - bruke Natur som hovedkort
-- vise Dyrket mark og Bebygd som likeverdige øvrige Level0-kategorier
+- vise Jordbruk og Bebygd som likeverdige øvrige Level0-kategorier
 - føre brukeren videre med spørsmål som «Hva har gått tapt?» og «Hva slags natur har vi?»
 
 Kartet på Oversikt omtales som «arealgrunnlaget i kart». Kart-WMS-et viser et
