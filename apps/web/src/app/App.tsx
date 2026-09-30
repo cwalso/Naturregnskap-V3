@@ -544,26 +544,40 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 : <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
           }
           distributionContent={
-            <AccountDistribution
-              data={accountData ?? createUnavailableAccountOverview(
-                selectedMunicipality.number,
-                selectedMunicipality.name,
-              )}
-            />
+            accountState === 'loading'
+              ? <section className="overview-distribution"><p role="status">Laster arealfordeling…</p></section>
+              : accountState === 'error'
+                ? (
+                  <section className="overview-distribution">
+                    <p role="alert">Arealfordelingen kunne ikke hentes nå.</p>
+                  </section>
+                )
+                : (
+                  <AccountDistribution
+                    data={accountData ?? createUnavailableAccountOverview(
+                      selectedMunicipality.number,
+                      selectedMunicipality.name,
+                    )}
+                  />
+                )
           }
           mapContent={mapWorkspace(
             'Hvor ligger arealene?',
             'Se det heldekkende grunnlaget geografisk. Kartet viser et mer detaljert nivå enn de tre hovedkategoriene.',
           )}
           provenanceContent={
-            <AccountProvenance
-              content={getAccountProvenanceContent(
-                accountData ?? createUnavailableAccountOverview(
-                  selectedMunicipality.number,
-                  selectedMunicipality.name,
-                ),
-              )}
-            />
+            accountState === 'idle'
+              ? (
+                <AccountProvenance
+                  content={getAccountProvenanceContent(
+                    accountData ?? createUnavailableAccountOverview(
+                      selectedMunicipality.number,
+                      selectedMunicipality.name,
+                    ),
+                  )}
+                />
+              )
+              : null
           }
         />
       ) : (
