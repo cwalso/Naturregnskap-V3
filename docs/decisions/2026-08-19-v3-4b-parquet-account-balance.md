@@ -1,7 +1,7 @@
 # V3.4B: Kommunevis Parquet til prepared nivå-0-balanse
 
 **Dato:** 2026-08-19  
-**Status:** Akseptert for prototype
+**Status:** Historisk prototypebeslutning. Level0-koblingen er erstattet av `level0-v0.3-prototype`; se `2026-09-29-v3-level0-calculation.md`.
 
 ## Beslutning
 
@@ -31,11 +31,10 @@ eller lokale filbaner.
 
 ## Mapping-gate og metode
 
-Nivå-0-balansen bygges utelukkende fra **Arealdekke nivå 1** i feltet
-`arealdekkeniva1`. Arealdekke nivå 1 og Økosystemtype er separate
-klassifikasjoner: `okosystemtypeniva1/2/3` kan rapporteres av inspector, men
-brukes ikke i nivå-0-beregningen. Økosystemtype hører til et senere spor for
-«Naturen i dag».
+Denne delen beskriver den tidligere `level0-v0.1-prototype`. Etter at
+metodeutkast 0.2 ble lagt til grunn, brukes `okosystemtypeniva1` i
+`level0-v0.3-prototype`. Den gamle Arealdekke-mappingen beholdes her kun som
+historikk og skal ikke brukes til nye prepared-resultater.
 
 Den faktiske `grunnkart_5054.parquet` er nå inspisert. Filen inneholder bare
 kommunenummer `5054`, geometri kodet som WKB/MultiPolygon i ETRS89 / UTM sone
