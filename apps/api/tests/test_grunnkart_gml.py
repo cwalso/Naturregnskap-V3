@@ -21,7 +21,7 @@ def write_gml(
             <gml:featureMember>
               <ga:GrunnkartFlate gml:id="f{index}">
                 <ga:kommunenummer>{municipality}</ga:kommunenummer>
-                <ga:arealdekkeniva1>{source_class}</ga:arealdekkeniva1>
+                <ga:okosystemtypeniva1>{source_class}</ga:okosystemtypeniva1>
                 <ga:område>
                   <gml:Polygon srsName="urn:ogc:def:crs:EPSG::25832">
                     <gml:exterior>
@@ -60,13 +60,16 @@ def test_prepare_gml_level0_uses_all_2025_level1_classes(tmp_path: Path) -> None
     source = tmp_path / "5001.gml"
     output = tmp_path / "5001.json"
     classes = [
-        "bebygdSamferdsel",
-        "jordbruk",
+        "bebygdOpparbeidetAreal",
+        "dyrketmark",
+        "grasmark",
         "skog",
-        "snaumark",
-        "myr",
-        "snoIsbre",
-        "ferskvann",
+        "heiBuskmark",
+        "liteVegetertMark",
+        "vatmark",
+        "elverBekkerKanaler",
+        "innsjoerVannmagasiner",
+        "kyststrenderSvabergDyner",
         "hav",
     ]
     write_gml(
@@ -78,23 +81,24 @@ def test_prepare_gml_level0_uses_all_2025_level1_classes(tmp_path: Path) -> None
     )
 
     report = inspect_gml(source)
-    assert report["featureCount"] == 8
-    assert set(report["arealdekkeNiva1"]) == set(classes)
+    assert report["featureCount"] == 11
+    assert report["sourceField"] == "okosystemtypeniva1"
+    assert set(report["sourceClasses"]) == set(classes)
 
     result = prepare_balance_from_gml(source, "5001", output)
     metrics = {metric.id: metric.area_m2 for metric in result.metrics}
 
     assert metrics == {
-        "nature": 500.0,
-        "agriculture": 100.0,
+        "nature": 700.0,
+        "agriculture": 200.0,
         "built": 100.0,
     }
-    assert result.reconciliation.classified_area_m2 == 700.0
+    assert result.reconciliation.classified_area_m2 == 1000.0
     assert result.reconciliation.excluded_area_m2 == 100.0
     assert result.reconciliation.unmapped_area_m2 == 0
-    assert result.method_version == "level0-v0.2-prototype"
+    assert result.method_version == "level0-v0.3-prototype"
     assert result.source_format == "gml"
-    assert result.source_feature_count == 8
+    assert result.source_feature_count == 11
     assert result.area_method == "geometry:shoelace:metric-crs"
     assert result.source_sha256 is not None
     assert len(result.source_sha256) == 64
@@ -105,7 +109,7 @@ def test_prepare_gml_blocks_unknown_level1_class(tmp_path: Path) -> None:
     source = tmp_path / "5001.gml"
     write_gml(source, [("5001", "nyUkjentKlasse", square(0, 0, 10))])
 
-    with pytest.raises(GmlPreparationError, match="Ukjente Arealdekke nivå 1-klasser"):
+    with pytest.raises(GmlPreparationError, match="Ukjente okosystemtypeniva1-klasser"):
         prepare_balance_from_gml(source, "5001", tmp_path / "result.json")
 
 
@@ -119,7 +123,7 @@ def test_prepare_gml_rejects_non_metric_crs(tmp_path: Path) -> None:
           <gml:featureMember>
             <ga:GrunnkartFlate gml:id="f1">
               <ga:kommunenummer>5001</ga:kommunenummer>
-              <ga:arealdekkeniva1>skog</ga:arealdekkeniva1>
+              <ga:okosystemtypeniva1>skog</ga:okosystemtypeniva1>
               <ga:område>
                 <gml:Polygon srsName="urn:ogc:def:crs:EPSG::4258">
                   <gml:exterior>
