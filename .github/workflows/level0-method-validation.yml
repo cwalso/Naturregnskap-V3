@@ -1,0 +1,39 @@
+name: Level0 method validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  level0:
+    if: github.head_ref == 'feature/v3-level0-method-engine'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            apps/api/requirements.txt
+            apps/api/requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - name: Lint Level0 implementation
+        run: >
+          ruff check
+          app/domain/accounting_rules.py
+          app/analysis/grunnkart_parquet.py
+          app/analysis/grunnkart_gml.py
+          app/scripts/prepare_account_balance_gml.py
+          app/services/account_balance.py
+          app/models/account.py
+          tests/test_account_balance.py
+          tests/test_grunnkart_gml.py
+      - name: Test Level0 calculation paths
+        run: pytest -q tests/test_account_balance.py tests/test_grunnkart_gml.py
