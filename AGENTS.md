@@ -12,13 +12,13 @@ Løsningen er et virkemiddel. Verdien ligger i et felles og etterprøvbart regns
 
 1. Regnskapsgrunnlag og supplerende temadata skal aldri blandes sammen uten eksplisitt metodisk beslutning.
 2. Første regnskapskjerne bygger på heldekkende data, Grunnkart for arealanalyse som beholdningsgrunnlag og SSBs utbyggingsregnskap som endringsgrunnlag.
-3. Overordnet nivå 0 i fagmodellen er Bebygd, Jordbruk og Natur. I V3 er den brukerrettede etiketten for domenekategorien `agriculture` «Dyrket mark». Dette er en presentasjonsetikett; den endrer ikke kildekoden `jordbruk` eller fagmodellens stabile domene-ID.
-4. Økosystemtyper beskriver naturen i dag og er en annen klassifikasjon enn nivå 0. De to skal ikke forveksles.
+3. Overordnet nivå 0 i fagmodellen er Bebygd, Jordbruk og Natur. Den stabile domene-ID-en `agriculture` presenteres brukerrettet som «Jordbruk», med forklaring om at kategorien omfatter dyrket mark og grasmark.
+4. Nivå 0 beregnes i gjeldende metodeutkast ved en eksplisitt og versjonert aggregering av `okosystemtypeniva1` i Grunnkart: bebygd/opparbeidet -> Bebygd, dyrket mark + grasmark -> Jordbruk, øvrige ikke-marine klasser -> Natur. Detaljerte økosystemtyper kan samtidig brukes til mer detaljert beskrivelse av naturen, men skal ikke forveksles med den aggregerte Nivå 0-presentasjonen.
 5. Temadata som inngrepsfri natur, verneområder, villreinområder og verdsatte naturtyper er supplerende kunnskapslag. Manglende treff skal ikke tolkes som fravær av naturverdi.
 6. Det skal ikke bygges tidsserier eller trendpåstander på detaljerte temadata uten uttrykkelig metodisk avklaring.
 7. Tilstand og økosystemtjenester er ikke del av V1-regnskapskjernen.
 8. Fremtidige analyser er analyse- og beslutningsstøtte, ikke selve naturregnskapet.
-9. Vedtatt planreserve og forslag til ny KPA skal kunne analyseres etter samme grunnprinsipp som historisk nedbygging, et areallag legges over samme heldekkende grunnlag og relevante temadata.
+9. Framoverskuende arealanalyser skal bygge på samme heldekkende grunnlag og relevante temadata, men inngår ikke i selve regnskapsbalansen. Begreper, datakilder og avgrensning skal være metodisk avklart før funksjonalitet implementeres.
 10. Fremtidig arealberegning er en arealmessig analyse, ikke automatisk en naturfaglig konsekvensvurdering.
 
 ## 3. Arkitekturregler
