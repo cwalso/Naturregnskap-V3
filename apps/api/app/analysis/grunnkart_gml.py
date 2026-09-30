@@ -139,7 +139,10 @@ def prepare_balance_from_gml(
         ),
         warnings=[
             "Areal er beregnet direkte fra GML-geometri i metrisk ETRS89 / UTM.",
-            "Hav er eksplisitt ekskludert fra regnskapsområdet i gjeldende arbeidsretning (land + ferskvann).",
+            (
+                "Hav er eksplisitt ekskludert fra regnskapsområdet i "
+                "gjeldende arbeidsretning (land + ferskvann)."
+            ),
         ],
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
