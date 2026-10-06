@@ -340,6 +340,7 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(valuedTheme)
     expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
     expect(screen.getAllByText(/ikke heldekkende/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/ikke er låst til en dataversjon/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /Bynatur/ })).not.toBeInTheDocument()
 
     const inonTheme = screen.getByRole('button', { name: /Inngrepsfri natur/ })
