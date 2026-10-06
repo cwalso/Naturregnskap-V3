@@ -177,7 +177,7 @@ function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 }
 
 function setTileImage(tile: ImageTile, src: string, revoke = false) {
-  const image = tile.getImage()
+  const image = tile.getImage() as HTMLImageElement
   if (revoke) {
     image.addEventListener('load', () => URL.revokeObjectURL(src), { once: true })
   }
