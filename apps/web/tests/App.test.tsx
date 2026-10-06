@@ -276,9 +276,9 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
-    expect(screen.getByRole('heading', { name: 'Utforsk naturen i Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Se nærmere på naturen' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Supplerende kunnskap om naturen' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Tilstand og økosystemtjenester' })).toBeInTheDocument()
   })
@@ -301,7 +301,7 @@ describe('sidestruktur og Oversikt', () => {
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('button', { name: /Hva slags natur har vi/ }))
-    expect(screen.getByRole('heading', { name: 'Utforsk naturen i Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Hva slags natur har vi?' })).toHaveAttribute('aria-current', 'page')
   })
 
@@ -337,6 +337,11 @@ describe('sidestruktur og Oversikt', () => {
 
     const valuedTheme = await screen.findByRole('button', { name: /Verdsatte naturtyper/ })
     await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
+    fireEvent.click(valuedTheme)
+    expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
+    expect(screen.getAllByText(/ikke heldekkende/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/ikke er låst til en dataversjon/)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Bynatur/ })).not.toBeInTheDocument()
 
     const inonTheme = screen.getByRole('button', { name: /Inngrepsfri natur/ })
     expect(inonTheme).toHaveTextContent('Kartlag tilgjengelig')
@@ -345,7 +350,7 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(protectedTheme).toHaveTextContent('Treff i kommunen'))
 
     fireEvent.click(protectedTheme)
-    expect(screen.getByText(/Treff registrert i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText(/2 registrerte objekter i Trondheim/)).toBeInTheDocument()
 
     const reindeerTheme = screen.getByRole('button', { name: /Villreinområder/ })
     await vi.waitFor(() => expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff'))
