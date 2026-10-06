@@ -16,6 +16,20 @@ const PLAN_SOURCE_TILE_SIZE = 256
 const MAX_CONCURRENT_REQUESTS = 4
 const NATURE_CLASS = 2
 const AGRICULTURE_CLASS = 1
+const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
+const IMAGE_CACHE_LIMIT = 120
+
+const natureTypeDefinitions = [
+  { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0] },
+  { id: 'hei-buskmark', label: 'Hei og buskmark', sourceValue: 'heiBuskmark', color: [0, 255, 0] },
+  { id: 'lite-vegetert-mark', label: 'Lite vegetert mark', sourceValue: 'liteVegetertMark', color: [0, 0, 255] },
+  { id: 'vatmark', label: 'Våtmark', sourceValue: 'vatmark', color: [255, 0, 255] },
+  { id: 'kyst', label: 'Kyststrender, svaberg og dyner', sourceValue: 'kyststrenderSvabergDyner', color: [0, 255, 255] },
+] as const
+
+const imageBlobCache = new Map<string, Promise<Blob>>()
+const plannedDevelopmentCache = new Map<string, PlannedDevelopmentResult>()
+const natureBreakdownCache = new Map<string, PlannedNatureBreakdown>()
 
 export const PLAN_PIXEL_METERS = ACCOUNT_RESOLUTIONS[PLAN_ANALYSIS_ZOOM] / 2
 
@@ -43,6 +57,28 @@ export interface PlannedDevelopmentOverlayGrid {
   readonly height: number
   readonly extent: readonly [number, number, number, number]
   readonly cleaned: Uint8Array
+}
+
+export type PlannedNatureTypeId = typeof natureTypeDefinitions[number]['id']
+
+export interface PlannedNatureTypeMetric {
+  readonly id: PlannedNatureTypeId
+  readonly label: string
+  readonly areaKm2: number
+  readonly sharePercent: number
+}
+
+export interface PlannedNatureBreakdown {
+  readonly municipalityNumber: string
+  readonly status: 'available'
+  readonly source: 'NIBIO Grunnkart for arealanalyse'
+  readonly level: 'okosystemtypeniva1'
+  readonly methodVersion: 'planned-nature-types-v1'
+  readonly tileCount: number
+  readonly pixelMeters: number
+  readonly classifiedAreaKm2: number
+  readonly unclassifiedAreaKm2: number
+  readonly metrics: readonly PlannedNatureTypeMetric[]
 }
 
 export interface PlannedDevelopmentAnalysis {
@@ -84,6 +120,9 @@ export async function calculatePlannedDevelopment(
   municipalityNumber: string,
   signal?: AbortSignal,
 ): Promise<PlannedDevelopmentResult> {
+  const cached = plannedDevelopmentCache.get(municipalityNumber)
+  if (cached) return cached
+
   const raster = await loadOverviewRaster(municipalityNumber)
   if (!raster) {
     return {
@@ -156,7 +195,7 @@ export async function calculatePlannedDevelopment(
       maxY,
     ])
 
-    return {
+    const result: PlannedDevelopmentAnalysis = {
       municipalityNumber,
       status: 'available',
       natureKm2: cleaned.nature * pixelAreaKm2,
@@ -186,6 +225,8 @@ export async function calculatePlannedDevelopment(
         cleaned: cleaned.cleaned,
       },
     }
+    plannedDevelopmentCache.set(municipalityNumber, result)
+    return result
   } finally {
     overviewBitmap.close()
   }
@@ -206,6 +247,208 @@ export function buildPlanTileUrl(tileCoord: number[]): string {
     transparent: 'true',
     filter: PLAN_FILTER,
   })
+}
+
+export function loadPlanTileBlobByUrl(url: string, signal?: AbortSignal): Promise<Blob> {
+  return loadCachedImageBlob(url, signal)
+}
+
+const NATURE_TYPE_STYLE = (() => {
+  const rules = natureTypeDefinitions.map(({ sourceValue, color }) => {
+    const hex = '#' + color.map((value) => value.toString(16).padStart(2, '0')).join('')
+    return `<Rule><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>${sourceValue}</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><PolygonSymbolizer><Fill><CssParameter name="fill">${hex}</CssParameter></Fill></PolygonSymbolizer></Rule>`
+  }).join('')
+
+  return `<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>${rules}</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`
+})()
+
+export function buildNatureTypeTileUrl(tileCoord: number[]): string {
+  return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: 'okosystemtype',
+    styles: '',
+    crs: ACCOUNT_CRS,
+    bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
+    width: String(PLAN_TILE_PIXELS),
+    height: String(PLAN_TILE_PIXELS),
+    format: 'image/png; mode=8bit',
+    transparent: 'true',
+    sld_body: NATURE_TYPE_STYLE,
+  })
+}
+
+export async function calculatePlannedNatureBreakdown(
+  analysis: PlannedDevelopmentAnalysis,
+  signal?: AbortSignal,
+): Promise<PlannedNatureBreakdown> {
+  const cached = natureBreakdownCache.get(analysis.municipalityNumber)
+  if (cached) return cached
+
+  const overlay = analysis.overlay
+  const tiles = overlayTilesWithNature(overlay)
+  const partial = await mapWithConcurrency(
+    tiles,
+    MAX_CONCURRENT_REQUESTS,
+    (tileCoord) => countNatureTypesInTile(tileCoord, overlay, signal),
+  )
+
+  const counts = new Array<number>(natureTypeDefinitions.length).fill(0)
+  let unclassified = 0
+  for (const item of partial) {
+    item.counts.forEach((count, index) => { counts[index] += count })
+    unclassified += item.unclassified
+  }
+
+  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+  const plannedNaturePixels = Math.round(analysis.natureKm2 / pixelAreaKm2)
+  const metrics = natureTypeDefinitions
+    .map((definition, index) => ({
+      id: definition.id,
+      label: definition.label,
+      areaKm2: counts[index] * pixelAreaKm2,
+      sharePercent: plannedNaturePixels > 0 ? counts[index] / plannedNaturePixels * 100 : 0,
+    }))
+    .filter((metric) => metric.areaKm2 > 0)
+    .sort((a, b) => b.areaKm2 - a.areaKm2)
+
+  const result: PlannedNatureBreakdown = {
+    municipalityNumber: analysis.municipalityNumber,
+    status: 'available',
+    source: 'NIBIO Grunnkart for arealanalyse',
+    level: 'okosystemtypeniva1',
+    methodVersion: 'planned-nature-types-v1',
+    tileCount: tiles.length,
+    pixelMeters: PLAN_PIXEL_METERS,
+    classifiedAreaKm2: counts.reduce((sum, count) => sum + count, 0) * pixelAreaKm2,
+    unclassifiedAreaKm2: unclassified * pixelAreaKm2,
+    metrics,
+  }
+  natureBreakdownCache.set(analysis.municipalityNumber, result)
+  return result
+}
+
+async function loadCachedImageBlob(url: string, signal?: AbortSignal): Promise<Blob> {
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+  let promise = imageBlobCache.get(url)
+  if (!promise) {
+    promise = fetch(url)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Karttjenesten feilet med HTTP ${response.status}`)
+        const contentType = response.headers.get('content-type') ?? ''
+        if (contentType && !contentType.startsWith('image/')) {
+          throw new Error('Karttjenesten returnerte ikke et bilde')
+        }
+        return response.blob()
+      })
+      .catch((error) => {
+        imageBlobCache.delete(url)
+        throw error
+      })
+    imageBlobCache.set(url, promise)
+    if (imageBlobCache.size > IMAGE_CACHE_LIMIT) {
+      const oldest = imageBlobCache.keys().next().value
+      if (oldest) imageBlobCache.delete(oldest)
+    }
+  }
+
+  const blob = await promise
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+  return blob
+}
+
+function overlayTilesWithNature(
+  overlay: PlannedDevelopmentOverlayGrid,
+): [number, number, number][] {
+  const minTileX = overlay.cx0 / PLAN_TILE_PIXELS
+  const minTileY = overlay.cy0 / PLAN_TILE_PIXELS
+  const tileColumns = overlay.width / PLAN_TILE_PIXELS
+  const tileRows = overlay.height / PLAN_TILE_PIXELS
+  const result: [number, number, number][] = []
+
+  for (let row = 0; row < tileRows; row += 1) {
+    for (let column = 0; column < tileColumns; column += 1) {
+      const startX = column * PLAN_TILE_PIXELS
+      const startY = row * PLAN_TILE_PIXELS
+      let hasNature = false
+
+      for (let y = 0; y < PLAN_TILE_PIXELS && !hasNature; y += 1) {
+        const start = (startY + y) * overlay.width + startX
+        for (let x = 0; x < PLAN_TILE_PIXELS; x += 1) {
+          if (overlay.cleaned[start + x] === 1) {
+            hasNature = true
+            break
+          }
+        }
+      }
+
+      if (hasNature) {
+        result.push([
+          overlay.zoom,
+          minTileX + column,
+          minTileY + row,
+        ])
+      }
+    }
+  }
+  return result
+}
+
+async function countNatureTypesInTile(
+  tileCoord: [number, number, number],
+  overlay: PlannedDevelopmentOverlayGrid,
+  signal?: AbortSignal,
+): Promise<{ counts: number[]; unclassified: number }> {
+  const blob = await loadCachedImageBlob(buildNatureTypeTileUrl(tileCoord), signal)
+  const bitmap = await createImageBitmap(blob)
+
+  try {
+    const canvas = createTileCanvas()
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    if (!context) throw new Error('Kunne ikke lese naturfordelingen i nettleseren')
+    context.drawImage(bitmap, 0, 0)
+    const pixels = context.getImageData(0, 0, PLAN_TILE_PIXELS, PLAN_TILE_PIXELS).data
+
+    const counts = new Array<number>(natureTypeDefinitions.length).fill(0)
+    let unclassified = 0
+    const tileOffsetX = tileCoord[1] * PLAN_TILE_PIXELS - overlay.cx0
+    const tileOffsetY = tileCoord[2] * PLAN_TILE_PIXELS - overlay.cy0
+
+    for (let y = 0; y < PLAN_TILE_PIXELS; y += 1) {
+      const globalRow = (tileOffsetY + y) * overlay.width
+      for (let x = 0; x < PLAN_TILE_PIXELS; x += 1) {
+        const globalIndex = globalRow + tileOffsetX + x
+        if (overlay.cleaned[globalIndex] !== 1) continue
+
+        const rgba = 4 * (y * PLAN_TILE_PIXELS + x)
+        if (pixels[rgba + 3] < 100) {
+          unclassified += 1
+          continue
+        }
+        counts[classifyNatureTypePixel(pixels[rgba], pixels[rgba + 1], pixels[rgba + 2])] += 1
+      }
+    }
+
+    return { counts, unclassified }
+  } finally {
+    bitmap.close()
+  }
+}
+
+export function classifyNatureTypePixel(red: number, green: number, blue: number): number {
+  let best = 0
+  let bestDistance = Number.POSITIVE_INFINITY
+  natureTypeDefinitions.forEach((definition, index) => {
+    const [r, g, b] = definition.color
+    const distance = (red - r) ** 2 + (green - g) ** 2 + (blue - b) ** 2
+    if (distance < bestDistance) {
+      best = index
+      bestDistance = distance
+    }
+  })
+  return best
 }
 
 const RAW_ACCOUNT_STYLE = (() => {
@@ -377,12 +620,9 @@ async function analyseTile(
     PLAN_TILE_PIXELS,
   ).data
 
-  const response = await fetch(buildPlanTileUrl(tileCoord), { signal })
-  if (!response.ok) {
-    throw new Error(`DiBK kommuneplan feilet med HTTP ${response.status}`)
-  }
-
-  const planBitmap = await createImageBitmap(await response.blob())
+  const planBitmap = await createImageBitmap(
+    await loadPlanTileBlobByUrl(buildPlanTileUrl(tileCoord), signal),
+  )
   let plan: Uint8ClampedArray
   try {
     const planCanvas = createTileCanvas()

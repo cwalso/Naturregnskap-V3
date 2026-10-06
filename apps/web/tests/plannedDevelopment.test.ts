@@ -1,11 +1,18 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
   PLAN_PIXEL_METERS,
+  buildNatureTypeTileUrl,
   buildPlanTileUrl,
+  classifyNatureTypePixel,
   getPlanTileCoordinates,
+  loadPlanTileBlobByUrl,
   removeNarrowPlanStrips,
 } from '../src/map/plannedDevelopment'
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 describe('DiBK planned development prototype', () => {
   it('uses the same DiBK WMS filter as Publicdemorepo', () => {
@@ -61,4 +68,44 @@ describe('DiBK planned development prototype', () => {
     expect(result.cleaned[2 * width + 5]).toBe(1)
     expect(result.cleaned[2 * width + 7]).toBe(0)
   })
+
+  it('requests separate Grunnkart ecosystem types for the planned-nature breakdown', () => {
+    const url = new URL(buildNatureTypeTileUrl([9, 253, 184]))
+    const style = url.searchParams.get('sld_body') ?? ''
+
+    expect(url.origin + url.pathname).toBe(
+      'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse',
+    )
+    expect(url.searchParams.get('layers')).toBe('okosystemtype')
+    expect(style).toContain('<ogc:Literal>skog</ogc:Literal>')
+    expect(style).toContain('<ogc:Literal>heiBuskmark</ogc:Literal>')
+    expect(style).toContain('<ogc:Literal>liteVegetertMark</ogc:Literal>')
+    expect(style).toContain('<ogc:Literal>vatmark</ogc:Literal>')
+    expect(style).toContain('<ogc:Literal>kyststrenderSvabergDyner</ogc:Literal>')
+  })
+
+  it('classifies the five pure ecosystem colors deterministically', () => {
+    expect(classifyNatureTypePixel(255, 0, 0)).toBe(0)
+    expect(classifyNatureTypePixel(0, 255, 0)).toBe(1)
+    expect(classifyNatureTypePixel(0, 0, 255)).toBe(2)
+    expect(classifyNatureTypePixel(255, 0, 255)).toBe(3)
+    expect(classifyNatureTypePixel(0, 255, 255)).toBe(4)
+  })
+
+  it('reuses identical DiBK image requests within the browser session', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(new Blob(['plan'], { type: 'image/png' }), {
+        status: 200,
+        headers: { 'content-type': 'image/png' },
+      }),
+    )
+    const url = 'https://nap.ft.dibk.no/services/wms/kommuneplaner/?cache-test=5001'
+
+    await loadPlanTileBlobByUrl(url)
+    await loadPlanTileBlobByUrl(url)
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1)
+  })
+
+
 })
