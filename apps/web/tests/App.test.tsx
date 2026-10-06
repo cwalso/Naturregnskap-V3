@@ -48,6 +48,7 @@ function mapMock(): MunicipalityMap {
     setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
     clearFeatureInfo: vi.fn(),
+    refreshSize: vi.fn(),
     fitToBoundary: vi.fn(),
     showChanges: vi.fn(),
     clearChanges: vi.fn(),
@@ -368,8 +369,10 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('navigation', { name: 'Hurtignavigasjon i kartvisningen' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Kart' })).toHaveAttribute('href', '#map-canvas-region')
-    expect(screen.getByRole('link', { name: 'Analyse' })).toHaveAttribute('href', '#map-analysis-panel')
+    expect(screen.getByRole('button', { name: 'Kart' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Analyse' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Kart' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Analyse' })).not.toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Kartlag' })).not.toBeInTheDocument()
     expect(screen.queryByRole('checkbox', { name: /Naturvernområder/ })).not.toBeInTheDocument()
 
