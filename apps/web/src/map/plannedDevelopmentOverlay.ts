@@ -2,7 +2,6 @@ import ImageTile from 'ol/ImageTile'
 
 import { classifyAccountPixel } from './accountOverviewRaster'
 import {
-  buildPlanTileUrl,
   buildRawAccountPlanTileUrl,
   isPlannedDevelopmentCellKept,
   PLAN_ANALYSIS_ZOOM,
