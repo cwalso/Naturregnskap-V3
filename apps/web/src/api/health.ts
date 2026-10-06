@@ -1,9 +1,11 @@
+import { buildApiUrl } from './url'
+
 export interface HealthResponse {
   status: 'ok'
 }
 
 export async function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
-  const response = await fetch('/api/health', { signal })
+  const response = await fetch(buildApiUrl('/api/health'), { signal })
 
   if (!response.ok) {
     throw new Error(`Helsesjekken feilet med HTTP ${response.status}`)

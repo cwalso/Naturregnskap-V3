@@ -1,7 +1,8 @@
 import { accountCategoryIds, type AccountOverviewData } from '../features/account-overview/model'
+import { buildApiUrl } from './url'
 
 export async function getAccountOverview(number: string, signal?: AbortSignal): Promise<AccountOverviewData> {
-  const response = await fetch(`/api/municipalities/${number}/account-overview`, { signal })
+  const response = await fetch(buildApiUrl(`/api/municipalities/${number}/account-overview`), { signal })
   if (!response.ok) throw new Error(`Forespørselen feilet med HTTP ${response.status}`)
   const data: unknown = await response.json()
   if (!isAccountOverview(data)) throw new Error('Arealbalansen returnerte et ugyldig svar')

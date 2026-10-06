@@ -1,3 +1,5 @@
+import { buildApiUrl } from './url'
+
 export interface Municipality {
   number: string
   name: string
@@ -23,7 +25,7 @@ async function requestJson(url: string, signal?: AbortSignal): Promise<unknown> 
 }
 
 export async function getMunicipalities(signal?: AbortSignal): Promise<Municipality[]> {
-  const data = await requestJson('/api/municipalities', signal)
+  const data = await requestJson(buildApiUrl('/api/municipalities'), signal)
   if (!Array.isArray(data) || !data.every(isMunicipality)) {
     throw new Error('Kommunelisten returnerte et ugyldig svar')
   }
@@ -34,7 +36,7 @@ export async function getMunicipalityBoundary(
   number: string,
   signal?: AbortSignal,
 ): Promise<MunicipalityBoundary> {
-  const data = await requestJson(`/api/municipalities/${number}/boundary`, signal)
+  const data = await requestJson(buildApiUrl(`/api/municipalities/${number}/boundary`), signal)
   if (!isBoundary(data)) {
     throw new Error('Kommunegrensen returnerte et ugyldig svar')
   }

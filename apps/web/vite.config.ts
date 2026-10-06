@@ -2,7 +2,6 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  base: '/Naturregnskap-V3/',
   plugins: [react()],
   server: {
     proxy: {

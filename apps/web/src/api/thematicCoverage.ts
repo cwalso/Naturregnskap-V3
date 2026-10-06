@@ -1,4 +1,5 @@
 import { thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
+import { buildApiUrl } from './url'
 
 export type ThematicEvaluationStatus = 'hit' | 'no_hit' | 'unavailable'
 
@@ -22,7 +23,7 @@ export async function getThematicCoverage(
   signal?: AbortSignal,
 ): Promise<ThematicCoverageResponse> {
   const response = await fetch(
-    `/api/municipalities/${municipalityNumber}/thematic-coverage`,
+    buildApiUrl(`/api/municipalities/${municipalityNumber}/thematic-coverage`),
     { signal },
   )
   if (!response.ok) {
