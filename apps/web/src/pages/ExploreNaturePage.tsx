@@ -248,6 +248,44 @@ export function ExploreNaturePage({
                   <dd>Datakilde, dekning, versjon og presentasjon er ikke koblet til prototypen ennå.</dd>
                 )}
               </div>
+              {selectedEvaluation?.mappingCoverage && (
+                <div>
+                  <dt>Kartleggingsdekning</dt>
+                  <dd>
+                    {selectedEvaluation.mappingCoverage.status === 'present' ? (
+                      <>
+                        <strong>
+                          {selectedEvaluation.mappingCoverage.featureCount === 1
+                            ? '1 registrert kartleggingsområde krysser kommunen.'
+                            : `${selectedEvaluation.mappingCoverage.featureCount ?? 'Flere'} registrerte kartleggingsområder krysser kommunen.`}
+                        </strong>
+                        {selectedEvaluation.mappingCoverage.fromYear
+                          && selectedEvaluation.mappingCoverage.toYear ? (
+                            <>
+                              {' '}Registrerte år: {
+                                selectedEvaluation.mappingCoverage.fromYear
+                                === selectedEvaluation.mappingCoverage.toYear
+                                  ? selectedEvaluation.mappingCoverage.fromYear
+                                  : `${selectedEvaluation.mappingCoverage.fromYear}–${selectedEvaluation.mappingCoverage.toYear}`
+                              }.
+                            </>
+                          ) : null}
+                        {' '}{selectedEvaluation.mappingCoverage.note}
+                      </>
+                    ) : selectedEvaluation.mappingCoverage.status === 'none' ? (
+                      <>
+                        <strong>Ingen registrerte kartleggingsområder funnet.</strong>
+                        {' '}{selectedEvaluation.mappingCoverage.note}
+                      </>
+                    ) : (
+                      <>
+                        <strong>Kartleggingsdekningen kunne ikke vurderes nå.</strong>
+                        {' '}{selectedEvaluation.mappingCoverage.note}
+                      </>
+                    )}
+                  </dd>
+                </div>
+              )}
               {selectedDataset && (
                 <div>
                   <dt>Kilde og videre bruk</dt>
