@@ -367,6 +367,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Faglag' })).toBeInTheDocument()
     expect(screen.getByText('Heldekkende')).toBeInTheDocument()
     expect(screen.getByText('4 koblet til')).toBeInTheDocument()
+    expect(screen.getByText('Kartlag tilgjengelig')).toBeInTheDocument()
     expect(screen.getByText(/Naturvernområder/)).toBeInTheDocument()
     expect(screen.getByText(/Villreinområder/)).toBeInTheDocument()
     expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
