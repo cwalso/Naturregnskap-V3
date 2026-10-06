@@ -11,9 +11,11 @@ export interface AccountMetricData {
 export interface AccountOverviewData {
   readonly municipalityNumber: string
   readonly municipalityName: string
-  readonly period: '2025'
+  readonly period: string
   readonly status: 'available' | 'not_available'
   readonly metrics: readonly AccountMetricData[]
+  readonly sourceKind?: 'ssb-prototype' | 'grunnkart-prepared'
+  readonly sourceName?: string
   readonly methodVersion?: string | null
   readonly methodStatus?: string | null
   readonly sourceVersions?: readonly string[]

@@ -1,65 +1,146 @@
-import {
-  accountCategoryIds,
-  createUnavailableAccountOverview,
-  type AccountOverviewData,
+import type {
+  AccountCategoryId,
+  AccountOverviewData,
 } from '../features/account-overview/model'
 
-const ACCOUNT_PERIOD = '2025'
-const ACCOUNT_DATA_BASE = `${import.meta.env.BASE_URL}data/account-overview/${ACCOUNT_PERIOD}`
+const SSB_TABLE_URL = 'https://data.ssb.no/api/pxwebapi/v2/tables/09594/data'
 
-interface AccountIndex {
-  readonly period: '2025'
-  readonly municipalities: readonly string[]
+const SSB_CLASSES: Record<AccountCategoryId, readonly string[]> = {
+  built: ['01', '02', '03', '04', '05', '06', '07', '08-09', '10-11', '12-13', '14'],
+  agriculture: ['15-16'],
+  nature: ['17', '18', '19', '20', '21', '24'],
 }
+
+const FRESHWATER_CLASSES = ['22.01', '22.02'] as const
+const REQUESTED_CLASSES = [
+  ...SSB_CLASSES.built,
+  ...SSB_CLASSES.agriculture,
+  ...SSB_CLASSES.nature,
+  ...FRESHWATER_CLASSES,
+]
+
+type CategoryIndex = string[] | Record<string, number>
 
 export async function getAccountOverview(
   number: string,
   name: string,
   signal?: AbortSignal,
 ): Promise<AccountOverviewData> {
-  const indexResponse = await fetch(`${ACCOUNT_DATA_BASE}/index.json`, { signal })
-  if (!indexResponse.ok) {
-    throw new Error(`Kunne ikke lese publiseringsindeksen, HTTP ${indexResponse.status}`)
-  }
-
-  const index: unknown = await indexResponse.json()
-  if (!isAccountIndex(index)) {
-    throw new Error('Publiseringsindeksen for arealbalansen er ugyldig')
-  }
-
-  if (!index.municipalities.includes(number)) {
-    return createUnavailableAccountOverview(number, name)
-  }
-
-  const response = await fetch(`${ACCOUNT_DATA_BASE}/${number}.json`, { signal })
+  const response = await fetch(buildSsbUrl(number), { signal })
   if (!response.ok) {
-    throw new Error(`Forespørselen feilet med HTTP ${response.status}`)
+    throw new Error(`SSB-spørringen feilet med HTTP ${response.status}`)
   }
 
   const data: unknown = await response.json()
-  if (!isAccountOverview(data) || data.municipalityNumber !== number) {
-    throw new Error('Arealbalansen returnerte et ugyldig svar')
+  return parseSsbAccountOverview(data, number, name)
+}
+
+function buildSsbUrl(number: string): string {
+  const params = new URLSearchParams({
+    lang: 'no',
+    outputformat: 'json-stat2',
+    'valueCodes[Region]': number,
+    'valueCodes[ArealKlasse]': REQUESTED_CLASSES.join(','),
+    'valueCodes[ContentsCode]': 'Areal',
+    'valueCodes[Tid]': 'top(1)',
+  })
+  return `${SSB_TABLE_URL}?${params.toString()}`
+}
+
+function parseSsbAccountOverview(
+  value: unknown,
+  municipalityNumber: string,
+  municipalityName: string,
+): AccountOverviewData {
+  if (typeof value !== 'object' || value === null) {
+    throw new Error('SSB returnerte et ugyldig svar')
   }
-  return data
+
+  const root = value as Record<string, unknown>
+  if (!Array.isArray(root.value) || typeof root.dimension !== 'object' || root.dimension === null) {
+    throw new Error('SSB returnerte et ugyldig JSON-stat-svar')
+  }
+
+  const dimensions = root.dimension as Record<string, unknown>
+  const areaIndex = readCategoryIndex(dimensions.ArealKlasse)
+  const timeIndex = readCategoryIndex(dimensions.Tid)
+  const period = firstCategoryCode(timeIndex)
+
+  for (const code of REQUESTED_CLASSES) {
+    if (categoryPosition(areaIndex, code) < 0) {
+      throw new Error(`SSB-svaret mangler arealklasse ${code}`)
+    }
+  }
+
+  const values = root.value
+  const readArea = (code: string): number => {
+    const raw = values[categoryPosition(areaIndex, code)]
+    if (raw === null || raw === undefined) return 0
+    if (typeof raw !== 'number' || !Number.isFinite(raw) || raw < 0) {
+      throw new Error(`SSB returnerte ugyldig areal for klasse ${code}`)
+    }
+    return raw
+  }
+
+  const sum = (codes: readonly string[]) => codes.reduce((total, code) => total + readArea(code), 0)
+
+  return {
+    municipalityNumber,
+    municipalityName,
+    period,
+    status: 'available',
+    sourceKind: 'ssb-prototype',
+    sourceName: 'SSB tabell 09594',
+    sourceVersions: [period],
+    methodVersion: 'ssb-09594-publicdemo-v1',
+    methodStatus: 'prototype',
+    metrics: [
+      { id: 'nature', areaKm2: sum(SSB_CLASSES.nature), sharePercent: null },
+      { id: 'agriculture', areaKm2: sum(SSB_CLASSES.agriculture), sharePercent: null },
+      { id: 'built', areaKm2: sum(SSB_CLASSES.built), sharePercent: null },
+    ],
+    warnings: [
+      'Prototypevisning basert på SSBs arealstatistikk. Ferskvann inngår ikke i de tre hovedkategoriene i denne grupperingen.',
+      'Tallene er ikke det endelige Grunnkart-baserte regnskapsgrunnlaget for kommunale naturregnskap.',
+    ],
+  }
 }
 
-function isAccountIndex(value: unknown): value is AccountIndex {
-  if (typeof value !== 'object' || value === null) return false
-  const data = value as Record<string, unknown>
-  return data.period === ACCOUNT_PERIOD
-    && Array.isArray(data.municipalities)
-    && data.municipalities.every((item) => typeof item === 'string')
+function readCategoryIndex(dimension: unknown): CategoryIndex {
+  if (typeof dimension !== 'object' || dimension === null) {
+    throw new Error('SSB-svaret mangler dimensjon')
+  }
+  const category = (dimension as Record<string, unknown>).category
+  if (typeof category !== 'object' || category === null) {
+    throw new Error('SSB-svaret mangler kategori')
+  }
+  const index = (category as Record<string, unknown>).index
+  if (Array.isArray(index) && index.every((item) => typeof item === 'string')) {
+    return index
+  }
+  if (
+    typeof index === 'object'
+    && index !== null
+    && Object.values(index).every((item) => typeof item === 'number')
+  ) {
+    return index as Record<string, number>
+  }
+  throw new Error('SSB-svaret har ugyldig kategoriindeks')
 }
 
-function isAccountOverview(value: unknown): value is AccountOverviewData {
-  if (typeof value !== 'object' || value === null) return false
-  const data = value as Record<string, unknown>
-  return typeof data.municipalityNumber === 'string' && typeof data.municipalityName === 'string' &&
-    data.period === ACCOUNT_PERIOD && (data.status === 'available' || data.status === 'not_available') &&
-    Array.isArray(data.metrics) && data.metrics.length === 3 && data.metrics.every((metric) => {
-      if (typeof metric !== 'object' || metric === null) return false
-      const item = metric as Record<string, unknown>
-      return accountCategoryIds.includes(item.id as typeof accountCategoryIds[number]) &&
-        (typeof item.areaKm2 === 'number' || item.areaKm2 === null) && item.sharePercent === null
-    })
+function categoryPosition(index: CategoryIndex, code: string): number {
+  if (Array.isArray(index)) return index.indexOf(code)
+  const position = index[code]
+  return typeof position === 'number' ? position : -1
+}
+
+function firstCategoryCode(index: CategoryIndex): string {
+  if (Array.isArray(index)) {
+    if (!index.length) throw new Error('SSB-svaret mangler år')
+    return index[0]
+  }
+
+  const first = Object.entries(index).sort((a, b) => a[1] - b[1])[0]
+  if (!first) throw new Error('SSB-svaret mangler år')
+  return first[0]
 }

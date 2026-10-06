@@ -88,6 +88,26 @@ function accountResponse(number: string, name: string, areaKm2: number | null = 
   }
 }
 
+function ssbAccountSource(areaKm2: number | null = 12) {
+  const codes = [
+    '01', '02', '03', '04', '05', '06', '07', '08-09', '10-11', '12-13', '14',
+    '15-16', '17', '18', '19', '20', '21', '24', '22.01', '22.02',
+  ]
+  const values = new Array(codes.length).fill(0)
+  if (areaKm2 !== null) {
+    values[codes.indexOf('01')] = 1
+    values[codes.indexOf('15-16')] = 2
+    values[codes.indexOf('17')] = areaKm2
+  }
+  return {
+    dimension: {
+      ArealKlasse: { category: { index: Object.fromEntries(codes.map((code, index) => [code, index])) } },
+      Tid: { category: { index: { '2025': 0 } } },
+    },
+    value: values,
+  }
+}
+
 function thematicFeatureCount(url: string): number {
   if (url.includes('/naturtyper_kuverdi/')) return 3
   if (url.includes('/vern/')) return 2
@@ -100,14 +120,8 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     if (url === 'https://api.kartverket.no/kommuneinfo/v1/kommuner') {
       return Promise.resolve(new Response(JSON.stringify(municipalityListSource), { status: 200 }))
     }
-    if (url.endsWith('/data/account-overview/2025/index.json')) {
-      return Promise.resolve(new Response(JSON.stringify({
-        period: '2025',
-        municipalities: ['5001'],
-      }), { status: 200 }))
-    }
-    if (url.endsWith('/data/account-overview/2025/5001.json')) {
-      return Promise.resolve(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', areaKm2)), { status: 200 }))
+    if (url.startsWith('https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?')) {
+      return Promise.resolve(new Response(JSON.stringify(ssbAccountSource(areaKm2)), { status: 200 }))
     }
     if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
       return Promise.resolve(new Response(JSON.stringify({
@@ -223,13 +237,7 @@ describe('sidestruktur og Oversikt', () => {
           { status: 200 },
         ))
       }
-      if (url.endsWith('/data/account-overview/2025/index.json')) {
-        return Promise.resolve(new Response(JSON.stringify({
-          period: '2025',
-          municipalities: ['5001'],
-        }), { status: 200 }))
-      }
-      if (url.endsWith('/data/account-overview/2025/5001.json')) {
+      if (url.startsWith('https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?')) {
         return Promise.resolve(new Response(null, { status: 503 }))
       }
       if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {

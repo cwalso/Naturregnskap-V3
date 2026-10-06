@@ -24,23 +24,23 @@ export function AccountProvenance({ content }: AccountProvenanceProps) {
               <dd>{content.referenceVersion}</dd>
             </div>
             <div>
-              <dt>Hva viser regnskapet?</dt>
-              <dd>En overordnet arealfordeling for kommunen, klassifisert som Natur, Jordbruk og Bebygd.</dd>
+              <dt>Hva viser visningen?</dt>
+              <dd>En overordnet arealfordeling for kommunen, gruppert som Natur, Dyrket mark og Bebygd.</dd>
             </div>
             <div>
               <dt>Metode</dt>
               <dd>
-                Arealene er klassifisert etter metoden som brukes i kommunale naturregnskap.
+                {content.methodDescription}
                 {content.methodVersion && <> Metodeversjon: {content.methodVersion}.</>}
               </dd>
             </div>
             <div>
               <dt>Datadekning</dt>
-              <dd>Regnskapsgrunnlaget er heldekkende innenfor den geografiske avgrensningen som inngår i beregningen.</dd>
+              <dd>{content.coverageDescription}</dd>
             </div>
             <div>
               <dt>Viktige avgrensninger</dt>
-              <dd>Regnskapet viser arealutbredelse på et overordnet nivå. Det beskriver ikke i seg selv naturtilstand eller alle naturverdier. Mer detaljert naturinformasjon kan vises som supplerende data.</dd>
+              <dd>{content.limitations}</dd>
             </div>
           </dl>
         </div>

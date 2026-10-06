@@ -31,10 +31,12 @@ Brukerflaten:
 - henter kommuneliste og kommunegrense direkte fra Kartverket
 - bruker NIBIOs WMS for visualisering av Grunnkart for arealanalyse
 - spør relevante offentlige ArcGIS-tjenester direkte for supplerende temadata
-- leser ferdig beregnede Level0-resultater som statiske JSON-filer når de finnes
+- viser foreløpige Natur / Dyrket mark / Bebygd-tall direkte fra SSB tabell 09594
+- bruker samme SSB-gruppering som den tekniske Publicdemorepo-demonstratoren
 
-Tunge regnskapsberegninger skal ikke gjøres i nettleseren. Manglende publiserte
-resultater vises som `not_available`, ikke som null eller eksempelverdier.
+SSB-tallene er en prototypevisning for å få en testbar brukerflate med reelle
+kommunetall. De skal ikke forveksles med det endelige Grunnkart-baserte
+regnskapsgrunnlaget. Tunge regnskapsberegninger skal ikke gjøres i nettleseren.
 
 ## Dataskille
 
@@ -59,23 +61,20 @@ WMS brukes som visualiseringskilde, ikke som beregningsgrunnlag.
 - `docs`: metode-, arkitektur-, beslutnings- og produktdokumentasjon.
 - `.data`: lokale analysedata. Mappen versjoneres ikke i Git.
 
-## Publiserte Level0-resultater
+## Foreløpige arealtall fra SSB
 
-Frontend leser publiseringsindeksen:
+Prototypevisningen følger samme enkle gruppering av SSB tabell 09594 som
+Publicdemorepo:
 
-```text
-apps/web/public/data/account-overview/2025/index.json
-```
+- **Bebygd:** arealklasse 01–14
+- **Dyrket mark:** arealklasse 15–16
+- **Natur:** arealklasse 17, 18, 19, 20, 21 og 24
+- **Ferskvann:** 22.01 og 22.02 hentes, men inngår ikke i de tre hovedtallene
 
-En kommune skal bare legges i indeksen når et kontrollert prepared-resultat er
-klart. Resultatet publiseres deretter som:
-
-```text
-apps/web/public/data/account-overview/2025/<kommunenummer>.json
-```
-
-Det skal ikke legges inn syntetiske eller tilnærmede regnskapstall for å fylle
-demoen.
+Nyeste tilgjengelige årgang hentes med `Tid=top(1)`. Dette er en eksplisitt
+prototypemetode. Når et godkjent Grunnkart-basert Level0-resultat foreligger,
+skal det kunne erstatte SSB-visningen uten at domenekategoriene i brukerflaten
+må endres.
 
 ## Lokal frontend
 

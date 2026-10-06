@@ -8,13 +8,16 @@ interface AccountDistributionProps {
 const areaFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 
 export function AccountDistribution({ data }: AccountDistributionProps) {
+  const ssbPrototype = data.sourceKind === 'ssb-prototype'
+
   return (
     <section className="overview-distribution" aria-labelledby="overview-distribution-title">
       <div className="overview-card__header">
         <h2 id="overview-distribution-title">Arealfordeling i {data.municipalityName}</h2>
         <p>
-          Areal i dekar. De tre kategoriene er samme Level0-inndeling som i
-          naturregnskapet over.
+          {ssbPrototype
+            ? 'Areal i dekar, gruppert etter SSB-kodene som brukes i prototypevisningen.'
+            : 'Areal i dekar. De tre kategoriene er samme Level0-inndeling som i naturregnskapet over.'}
         </p>
       </div>
 
@@ -47,11 +50,20 @@ export function AccountDistribution({ data }: AccountDistributionProps) {
 
       <div className="overview-distribution__source">
         <span aria-hidden="true">ⓘ</span>
-        <p>
-          <strong>Datagrunnlag:</strong> Grunnkart for arealanalyse (2025).
-          <br />
-          Metode og klassifisering er dokumentert separat.
-        </p>
+        {ssbPrototype ? (
+          <p>
+            <strong>Prototypedata:</strong> SSB tabell 09594 ({data.period}).
+            <br />
+            SSB-grupperingen er midlertidig og skal ikke forveksles med det
+            framtidige Grunnkart-baserte regnskapsgrunnlaget.
+          </p>
+        ) : (
+          <p>
+            <strong>Datagrunnlag:</strong> Grunnkart for arealanalyse ({data.period}).
+            <br />
+            Metode og klassifisering er dokumentert separat.
+          </p>
+        )}
       </div>
     </section>
   )
