@@ -1,0 +1,19 @@
+{
+  "dataset": "Nasjonalt grunnkart for arealanalyse – årsversjon 2025",
+  "purpose": "prototype overview raster for map and pixel-based analysis",
+  "crs": "EPSG:25833",
+  "municipalities": {
+    "5001": {
+      "name": "Trondheim",
+      "file": "5001.png",
+      "extent": [250339.8, 7010675.6, 285872.9, 7051059.4],
+      "width": 1802,
+      "height": 2048,
+      "resolutionMetersApprox": 19.7187,
+      "sourceRetrieved": "2026-10-05",
+      "copiedFromRepository": "eirikvk/Publicdemorepo",
+      "sourceBlobSha": "5b4115ea557528963d2c17219307b075332e1590",
+      "status": "prototype-derived-raster"
+    }
+  }
+}
