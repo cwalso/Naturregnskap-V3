@@ -22,7 +22,10 @@ interface DatasetBase {
   readonly visualSource: WmsVisualSource
 }
 
+export type AccountDatasetId = 'national-land-cover-analysis-2025'
+
 export interface AccountDatasetDefinition extends DatasetBase {
+  readonly id: AccountDatasetId
   readonly category: 'account'
   readonly analysisSource: {
     readonly type: 'account-overview-api'
@@ -62,6 +65,7 @@ export interface ThematicDatasetDefinition extends DatasetBase {
   } | null
 }
 
+export type DatasetId = AccountDatasetId | ThematicDatasetId
 export type DatasetDefinition = AccountDatasetDefinition | ThematicDatasetDefinition
 
 export const nationalLandCover2025 = {
