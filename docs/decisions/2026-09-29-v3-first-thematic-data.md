@@ -108,3 +108,18 @@ kan endre seg når kildedata oppdateres. API-responsen skal bære denne
 begrensningen som en eksplisitt advarsel. Før eventuell produksjonsbruk må det
 avklares hvordan kildeversjon, tidspunkt og historiske uttrekk skal låses og
 spores.
+
+
+## Utvidelse med Verdsatt natur og INON
+
+Verdsatte naturtyper er koblet til med WMS som visualisering og ArcGIS REST
+Query som kommunespesifikk treffvurdering. Datasettet er ikke heldekkende.
+Ingen registrerte treff skal derfor ikke tolkes som fravær av naturverdi.
+
+Inngrepsfri natur (INON) er i denne versjonen koblet til som WMS-basert
+visualisering. Det beregnes ikke kommuneareal eller treffstatus for INON i denne
+sprinten. Dette er et bevisst skille mellom et tilgjengelig kartlag og en
+etterprøvbar analyse.
+
+Alle fire datasettene er supplerende temadata. De inngår ikke i selve
+regnskapsgrunnlaget uten separat metodisk avklaring.
