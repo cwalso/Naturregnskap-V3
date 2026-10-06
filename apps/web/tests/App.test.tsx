@@ -379,6 +379,10 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
 
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Hopp til hovedinnhold' })).toHaveAttribute('href', '#main-content')
+    expect(screen.getByRole('navigation', { name: 'Hurtignavigasjon i kartvisningen' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Analyse' })).toHaveAttribute('href', '#map-analysis-panel')
+    expect(screen.getByRole('link', { name: 'Kart' })).toHaveAttribute('href', '#map-canvas-region')
     expect(screen.getByRole('heading', { name: 'Kartgrunnlag' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Framtidig utbygging' })).toBeInTheDocument()
     expect(screen.getByText('Analyseområde')).toBeInTheDocument()
@@ -404,7 +408,10 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText('Kartlag tilgjengelig')).toBeInTheDocument()
     expect(screen.getAllByText(/Naturvernområder/).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/Villreinområder/).length).toBeGreaterThan(0)
-    expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
+    const interactiveMap = screen.getByLabelText('Interaktivt kart over Trondheim')
+    expect(interactiveMap).toBeInTheDocument()
+    expect(interactiveMap).toHaveAttribute('tabindex', '0')
+    expect(interactiveMap).toHaveAttribute('aria-describedby', 'map-accessibility-description')
     await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
 
@@ -431,12 +438,12 @@ describe('sidestruktur og Oversikt', () => {
     await act(async () => {
       featureInfoHandler?.({ status: 'loading', results: [] })
     })
-    expect(screen.queryByRole('dialog', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
 
     await act(async () => {
       featureInfoHandler?.({ status: 'idle', results: [] })
     })
-    expect(screen.queryByRole('dialog', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
 
     await act(async () => {
       featureInfoHandler?.({
@@ -457,7 +464,7 @@ describe('sidestruktur og Oversikt', () => {
         }],
       })
     })
-    expect(screen.getByRole('dialog', { name: 'Objektinformasjon' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Objektinformasjon' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bymarka naturreservat' })).toBeInTheDocument()
     expect(screen.getByText('Naturreservat')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'https://example.test/bymarka' })).toHaveAttribute(
@@ -517,7 +524,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hvor ligger arealene?' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
+    expect(screen.getByLabelText('Interaktivt kart over Trondheim')).toBeInTheDocument()
     expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByText('Om datagrunnlaget', { selector: 'summary' }))
