@@ -26,7 +26,15 @@ const municipalityListSource = [
 const boundarySource = {
   kommunenummer: '5001',
   kommunenavn: 'Trondheim',
-  omrade: { type: 'Polygon', coordinates: [] },
+  omrade: {
+    type: 'Polygon',
+    coordinates: [[
+      [10, 63],
+      [11, 63],
+      [11, 64],
+      [10, 63],
+    ]],
+  },
 }
 
 function mapMock(): MunicipalityMap {
@@ -80,33 +88,10 @@ function accountResponse(number: string, name: string, areaKm2: number | null = 
   }
 }
 
-function thematicCoverageResponse() {
-  return {
-    municipalityNumber: '5001',
-    municipalityName: 'Trondheim',
-    methodVersion: 'thematic-intersection-v1',
-    warnings: ['Treffstatus er beregnet mot løpende kildetjenester som ikke er låst til en dataversjon i prototypen.'],
-    results: [
-      {
-        datasetId: 'protected-areas',
-        status: 'hit',
-        featureCount: 2,
-        note: 'Ett eller flere registrerte objekter i kilden krysser kommunegrensen.',
-      },
-      {
-        datasetId: 'valued-nature',
-        status: 'hit',
-        featureCount: 3,
-        note: 'Ett eller flere registrerte objekter i kilden krysser kommunegrensen.',
-      },
-      {
-        datasetId: 'wild-reindeer-areas',
-        status: 'no_hit',
-        featureCount: 0,
-        note: 'Spørringen fant ingen registrerte objekter som krysser kommunegrensen. Datasettet har regional dekning, så statusen skal ikke tolkes som en generell vurdering av temaet.',
-      },
-    ],
-  }
+function thematicFeatureCount(url: string): number {
+  if (url.includes('/naturtyper_kuverdi/')) return 3
+  if (url.includes('/vern/')) return 2
+  return 0
 }
 
 function mockMunicipalityFlow(areaKm2: number | null = 12) {
@@ -124,8 +109,10 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     if (url.endsWith('/data/account-overview/2025/5001.json')) {
       return Promise.resolve(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', areaKm2)), { status: 200 }))
     }
-    if (url.endsWith('/thematic-coverage')) {
-      return Promise.resolve(new Response(JSON.stringify(thematicCoverageResponse()), { status: 200 }))
+    if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+      return Promise.resolve(new Response(JSON.stringify({
+        count: thematicFeatureCount(url),
+      }), { status: 200 }))
     }
     return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
   })
@@ -245,11 +232,10 @@ describe('sidestruktur og Oversikt', () => {
       if (url.endsWith('/data/account-overview/2025/5001.json')) {
         return Promise.resolve(new Response(null, { status: 503 }))
       }
-      if (url.endsWith('/thematic-coverage')) {
-        return Promise.resolve(new Response(
-          JSON.stringify(thematicCoverageResponse()),
-          { status: 200 },
-        ))
+      if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          count: thematicFeatureCount(url),
+        }), { status: 200 }))
       }
       return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
     })
