@@ -65,6 +65,90 @@ class MiljodirektoratetThematicAdapter:
             raise ThematicUpstreamError("Negativt antall fra temadatatjenesten")
         return count
 
+    async def year_range(
+        self,
+        query_url: str,
+        boundary: MunicipalityBoundary,
+        field_name: str,
+    ) -> tuple[int | None, int | None]:
+        geometry = self._to_esri_polygon(boundary.geometry)
+        statistics = [
+            {
+                "statisticType": "min",
+                "onStatisticField": field_name,
+                "outStatisticFieldName": "from_year",
+            },
+            {
+                "statisticType": "max",
+                "onStatisticField": field_name,
+                "outStatisticFieldName": "to_year",
+            },
+        ]
+        payload = {
+            "f": "json",
+            "where": "1=1",
+            "geometry": json.dumps(geometry, separators=(",", ":")),
+            "geometryType": "esriGeometryPolygon",
+            "inSR": "4326",
+            "spatialRel": "esriSpatialRelIntersects",
+            "returnGeometry": "false",
+            "outStatistics": json.dumps(
+                statistics,
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
+        }
+
+        try:
+            if self._client is not None:
+                response = await self._client.post(
+                    query_url,
+                    data=payload,
+                    timeout=TIMEOUT_SECONDS,
+                )
+            else:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(
+                        query_url,
+                        data=payload,
+                        timeout=TIMEOUT_SECONDS,
+                    )
+            response.raise_for_status()
+            data: Any = response.json()
+        except (httpx.HTTPError, ValueError) as error:
+            raise ThematicUpstreamError(
+                "Temadatatjenesten kunne ikke nås"
+            ) from error
+
+        try:
+            features = data["features"]
+            attributes = features[0]["attributes"] if features else {}
+        except (KeyError, IndexError, TypeError) as error:
+            raise ThematicUpstreamError(
+                "Ugyldig statistikksvar fra temadatatjenesten"
+            ) from error
+
+        return (
+            self._optional_year(attributes.get("from_year")),
+            self._optional_year(attributes.get("to_year")),
+        )
+
+    @staticmethod
+    def _optional_year(value: Any) -> int | None:
+        if value is None:
+            return None
+        try:
+            year = int(value)
+        except (TypeError, ValueError) as error:
+            raise ThematicUpstreamError(
+                "Ugyldig årstall fra temadatatjenesten"
+            ) from error
+        if year < 1900 or year > 2200:
+            raise ThematicUpstreamError(
+                "Årstall fra temadatatjenesten er utenfor forventet intervall"
+            )
+        return year
+
     @classmethod
     def _to_esri_polygon(cls, geometry: dict[str, Any]) -> dict[str, Any]:
         geometry_type = geometry.get("type")
