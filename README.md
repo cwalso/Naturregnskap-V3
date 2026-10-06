@@ -76,6 +76,20 @@ prototypemetode. Når et godkjent Grunnkart-basert Level0-resultat foreligger,
 skal det kunne erstatte SSB-visningen uten at domenekategoriene i brukerflaten
 må endres.
 
+## Trondheim-oversiktsraster
+
+For Trondheim (5001) ligger et prototype-raster fra samme demonstrasjonsløp som
+Publicdemorepo under:
+
+```text
+apps/web/public/data/grunnkart/2025/overview/5001.png
+```
+
+Metadata og geografisk utstrekning ligger i `overview/index.json`. Rasteret er
+ca. 19,72 meter per piksel i EPSG:25833 og kan brukes som oversiktsgrunnlag for
+kart- og pikselbasert prototypeanalyse. Det brukes **ikke** som kilde til de tre
+hovedtallene i dagens visning; disse hentes foreløpig fra SSB tabell 09594.
+
 ## Lokal frontend
 
 Krav: Node.js og npm.
