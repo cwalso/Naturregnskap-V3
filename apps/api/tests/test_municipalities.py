@@ -111,6 +111,21 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
             return httpx.Response(200, json={"count": 2})
         if "/naturtyper_kuverdi/MapServer/0/query" in str(request.url):
             return httpx.Response(200, json={"count": 3})
+        if "/naturtyper_nin/MapServer/1/query" in str(request.url):
+            body = parse_qs(request.content.decode())
+            if "outStatistics" in body:
+                return httpx.Response(
+                    200,
+                    json={
+                        "features": [{
+                            "attributes": {
+                                "from_year": 2018,
+                                "to_year": 2024,
+                            }
+                        }]
+                    },
+                )
+            return httpx.Response(200, json={"count": 4})
         if "/villrein/MapServer/1/query" in str(request.url):
             return httpx.Response(200, json={"count": 0})
         return httpx.Response(404)
@@ -143,6 +158,7 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
                     "Ett eller flere registrerte objekter i kilden "
                     "krysser kommunegrensen."
                 ),
+                "mappingCoverage": None,
             },
             {
                 "datasetId": "valued-nature",
@@ -152,6 +168,17 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
                     "Ett eller flere registrerte objekter i kilden "
                     "krysser kommunegrensen."
                 ),
+                "mappingCoverage": {
+                    "status": "present",
+                    "featureCount": 4,
+                    "fromYear": 2018,
+                    "toYear": 2024,
+                    "note": (
+                        "Kilden har registrerte kartleggingsområder som krysser "
+                        "kommunegrensen. Dette betyr ikke at hele kommunen er "
+                        "kartlagt."
+                    ),
+                },
             },
             {
                 "datasetId": "wild-reindeer-areas",
@@ -162,15 +189,23 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
                     "kommunegrensen. Datasettet har regional dekning, så statusen "
                     "skal ikke tolkes som en generell vurdering av temaet."
                 ),
+                "mappingCoverage": None,
             },
         ],
     }
-    assert len(seen_requests) == 3
+    assert len(seen_requests) == 5
     for request in seen_requests:
         body = request.content.decode()
-        assert "returnCountOnly=true" in body
         assert "geometryType=esriGeometryPolygon" in body
         assert "spatialRel=esriSpatialRelIntersects" in body
+    assert sum(
+        "returnCountOnly=true" in request.content.decode()
+        for request in seen_requests
+    ) == 4
+    assert sum(
+        "outStatistics=" in request.content.decode()
+        for request in seen_requests
+    ) == 1
 
 
 def test_thematic_coverage_preserves_source_failure_as_unavailable() -> None:
@@ -211,10 +246,64 @@ def test_thematic_coverage_preserves_source_failure_as_unavailable() -> None:
     assert results["protected-areas"]["featureCount"] is None
     assert results["wild-reindeer-areas"]["status"] == "no_hit"
     assert results["valued-nature"]["status"] == "no_hit"
-    assert (
-        "ikke heldekkende"
-        in results["valued-nature"]["note"]
+    assert results["valued-nature"]["mappingCoverage"] == {
+        "status": "none",
+        "featureCount": 0,
+        "fromYear": None,
+        "toYear": None,
+        "note": (
+            "Kilden returnerte ingen registrerte kartleggingsområder som "
+            "krysser kommunegrensen. Det dokumenterer ikke at hele kommunen "
+            "er ukartlagt."
+        ),
+    }
+    assert "ikke heldekkende" in results["valued-nature"]["note"]
+
+def test_mapping_coverage_failure_does_not_hide_valued_nature_hits() -> None:
+    municipality_transport = httpx.MockTransport(
+        lambda request: httpx.Response(
+            200,
+            json={
+                "kommunenummer": "5001",
+                "kommunenavn": "Trondheim",
+                "omrade": {
+                    "type": "Polygon",
+                    "coordinates": [[[10.0, 63.0], [11.0, 63.0], [10.0, 63.0]]],
+                },
+            },
+        )
     )
+    municipality_adapter = adapter_with(municipality_transport)
+
+    def thematic_handler(request: httpx.Request) -> httpx.Response:
+        url = str(request.url)
+        if "/naturtyper_nin/MapServer/1/query" in url:
+            return httpx.Response(503)
+        if "/naturtyper_kuverdi/MapServer/0/query" in url:
+            return httpx.Response(200, json={"count": 2})
+        return httpx.Response(200, json={"count": 0})
+
+    thematic_adapter = MiljodirektoratetThematicAdapter(
+        httpx.AsyncClient(transport=httpx.MockTransport(thematic_handler))
+    )
+
+    app.dependency_overrides[get_municipalities_adapter] = lambda: municipality_adapter
+    app.dependency_overrides[get_thematic_adapter] = lambda: thematic_adapter
+    try:
+        response = TestClient(app).get("/api/municipalities/5001/thematic-coverage")
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    results = {item["datasetId"]: item for item in response.json()["results"]}
+    assert results["valued-nature"]["status"] == "hit"
+    assert results["valued-nature"]["featureCount"] == 2
+    assert results["valued-nature"]["mappingCoverage"]["status"] == "unavailable"
+    assert (
+        "påvirker ikke selve treffstatusen"
+        in results["valued-nature"]["mappingCoverage"]["note"]
+    )
+
 
 def test_thematic_query_normalizes_multipolygon_to_esri_rings() -> None:
     municipality_transport = httpx.MockTransport(
@@ -264,7 +353,7 @@ def test_thematic_query_normalizes_multipolygon_to_esri_rings() -> None:
         app.dependency_overrides.clear()
 
     assert response.status_code == 200
-    assert len(posted_geometries) == 3
+    assert len(posted_geometries) == 4
     for geometry in posted_geometries:
         assert geometry["spatialReference"] == {"wkid": 4326}
         assert len(geometry["rings"]) == 2
