@@ -1,6 +1,14 @@
 import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 
-export type SiteView = 'oversikt' | 'naturtapet' | 'utforsk-naturen' | 'utforsk-i-kart'
+export type SiteView =
+  | 'oversikt'
+  | 'naturtapet'
+  | 'utforsk-naturen'
+  | 'utforsk-i-kart'
+  | 'tema-valued-nature'
+  | 'tema-protected-areas'
+  | 'tema-wild-reindeer-areas'
+  | 'tema-infrastructure-free-nature'
 
 export function SiteHeader() {
   return (

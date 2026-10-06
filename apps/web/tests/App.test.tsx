@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
@@ -290,9 +290,9 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Supplerende kunnskap om naturen' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Tilstand og økosystemtjenester' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
 
   it('beholder valgt kommune ved navigasjon', async () => {
@@ -317,58 +317,46 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('link', { name: 'Hva slags natur har vi?' })).toHaveAttribute('aria-current', 'page')
   })
 
-  it('lar brukeren velge et tilkoblet tema og åpne det i kart', async () => {
+  it('åpner Verdsatte naturtyper som egen temaside og går videre til analyse', async () => {
     const map = mapMock()
     mockMunicipalityFlow()
     render(<App createMap={() => map} />)
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
-    const reindeer = screen.getByRole('button', { name: /Villreinområder/ })
-    fireEvent.click(reindeer)
+    const valuedTheme = await screen.findByRole('button', { name: /Verdsatte naturtyper/ })
+    await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
+    fireEvent.click(valuedTheme)
 
-    expect(reindeer).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByRole('heading', { name: 'Villreinområder' })).toBeInTheDocument()
-    expect(screen.getByText(/Dekning: Sør-Norge/)).toBeInTheDocument()
-    expect(await screen.findByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
-    expect(screen.getByText(/regional dekning/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText(/Datasettet er ikke heldekkende/)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Hva slags natur har vi?' })).toHaveAttribute('aria-current', 'page')
 
-    fireEvent.click(screen.getByRole('button', { name: /Vis villreinområder i kart/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Åpne analyse/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    await vi.waitFor(() => {
-      expect(map.setThematicLayerVisible).toHaveBeenCalledWith('wild-reindeer-areas', true)
-    })
+    expect(screen.getByRole('radio', { name: /Verdsatte naturtyper/ })).toHaveAttribute('aria-checked', 'true')
   })
 
-  it('viser kommunespesifikk treffstatus for supplerende temadata', async () => {
+  it('åpner øvrige naturtema som egne sider med kommunespesifikk status', async () => {
     mockMunicipalityFlow()
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
+    const reindeer = screen.getByRole('button', { name: /Villreinområder/ })
+    await vi.waitFor(() => expect(reindeer).toHaveTextContent('Ingen registrerte treff'))
+    fireEvent.click(reindeer)
 
-    const valuedTheme = await screen.findByRole('button', { name: /Verdsatte naturtyper/ })
-    await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
-    fireEvent.click(valuedTheme)
-    expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
-    expect(screen.getAllByText(/ikke heldekkende/).length).toBeGreaterThan(0)
-    expect(screen.getByText(/ikke er låst til en dataversjon/)).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Bynatur/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Villreinområder', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText('Sør-Norge')).toBeInTheDocument()
 
-    const inonTheme = screen.getByRole('button', { name: /Inngrepsfri natur/ })
-    expect(inonTheme).toHaveTextContent('Kartlag tilgjengelig')
-
-    const protectedTheme = await screen.findByRole('button', { name: /Verneområder/ })
-    await vi.waitFor(() => expect(protectedTheme).toHaveTextContent('Treff i kommunen'))
-
-    fireEvent.click(protectedTheme)
-    expect(screen.getByText(/2 registrerte objekter i Trondheim/)).toBeInTheDocument()
-
-    const reindeerTheme = screen.getByRole('button', { name: /Villreinområder/ })
-    await vi.waitFor(() => expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff'))
+    fireEvent.click(screen.getByRole('button', { name: /Tilbake til naturtema/ }))
+    expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
   })
 
-  it('viser kart som egen arbeidsflate og beholder kommunegrensen', async () => {
+  it('viser kartet som egen analyseflate uten generell kartlagliste', async () => {
     const map = mapMock()
     const createMap = vi.fn(() => map)
     mockMunicipalityFlow()
@@ -379,134 +367,25 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
 
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Hopp til hovedinnhold' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Hurtignavigasjon i kartvisningen' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Analyse' })).toHaveAttribute('href', '#map-analysis-panel')
     expect(screen.getByRole('link', { name: 'Kart' })).toHaveAttribute('href', '#map-canvas-region')
-    expect(screen.getByRole('heading', { name: 'Kartgrunnlag' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Framtidig utbygging' })).toBeInTheDocument()
-    expect(screen.getByText('Analyseområde')).toBeInTheDocument()
-    expect(screen.getByRole('radiogroup', { name: 'Analysegrunnlag' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Analyse' })).toHaveAttribute('href', '#map-analysis-panel')
+    expect(screen.queryByRole('heading', { name: 'Kartlag' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('checkbox', { name: /Naturvernområder/ })).not.toBeInTheDocument()
 
-    const grunnkartAnalysis = screen.getByRole('radio', { name: /Grunnkart for arealanalyse/ })
-    expect(grunnkartAnalysis).toHaveAttribute('aria-checked', 'true')
-
-    const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
-    expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'false')
-    expect(valuedNatureAnalysis).toHaveTextContent('Klar')
-    fireEvent.click(valuedNatureAnalysis)
-    expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
-    expect(screen.queryByText(/Denne overlayanalysen er ikke koblet til ennå/)).not.toBeInTheDocument()
-    await vi.waitFor(() => {
-      expect(map.setPlannedDevelopmentVisible).toHaveBeenCalledWith(false)
-    })
-
-    expect(screen.getByRole('heading', { name: 'Kartlag' })).toBeInTheDocument()
-    expect(screen.getAllByText('Regnskapsgrunnlag').length).toBeGreaterThan(0)
-    expect(screen.getAllByText('Supplerende temadata').length).toBeGreaterThan(0)
-    expect(screen.getByText('5 tilgjengelige')).toBeInTheDocument()
-    expect(screen.getByText('Kartlag tilgjengelig')).toBeInTheDocument()
-    expect(screen.getAllByText(/Naturvernområder/).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/Villreinområder/).length).toBeGreaterThan(0)
     const interactiveMap = screen.getByLabelText('Interaktivt kart over Trondheim')
     expect(interactiveMap).toBeInTheDocument()
     expect(interactiveMap).toHaveAttribute('tabindex', '0')
     expect(interactiveMap).toHaveAttribute('aria-describedby', 'map-accessibility-description')
+
+    expect(screen.getByRole('heading', { name: 'Framtidig utbygging' })).toBeInTheDocument()
+    const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
+    fireEvent.click(valuedNatureAnalysis)
+    expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
+
     await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
 
-    fireEvent.click(screen.getByRole('checkbox', { name: /Naturvernområder/ }))
-    await vi.waitFor(() => {
-      expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', true)
-    })
-
-    const layerStatusHandler = vi.mocked(map.setThematicLayerStatusHandler).mock.calls.at(-1)?.[0]
-    expect(layerStatusHandler).toBeTypeOf('function')
-    await act(async () => {
-      layerStatusHandler?.('protected-areas', 'loading')
-    })
-    expect(screen.queryByText('Laster kartlag…')).not.toBeInTheDocument()
-
-    await act(async () => {
-      layerStatusHandler?.('protected-areas', 'error')
-    })
-    expect(screen.getByText('Karttjenesten kunne ikke lastes')).toBeInTheDocument()
-
-    const featureInfoHandler = vi.mocked(map.setFeatureInfoHandler).mock.calls.at(-1)?.[0]
-    expect(featureInfoHandler).toBeTypeOf('function')
-
-    await act(async () => {
-      featureInfoHandler?.({ status: 'loading', results: [] })
-    })
-    expect(screen.queryByRole('region', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
-
-    await act(async () => {
-      featureInfoHandler?.({ status: 'idle', results: [] })
-    })
-    expect(screen.queryByRole('region', { name: 'Objektinformasjon' })).not.toBeInTheDocument()
-
-    await act(async () => {
-      featureInfoHandler?.({
-        status: 'ready',
-        results: [{
-          datasetId: 'protected-areas',
-          datasetTitle: 'Naturvernområder',
-          objectLabel: 'Bymarka naturreservat',
-          fields: [
-            { label: 'Navn', value: 'Bymarka naturreservat' },
-            { label: 'Verneform', value: 'Naturreservat' },
-            {
-              label: 'Faktaark',
-              value: 'https://example.test/bymarka',
-              url: 'https://example.test/bymarka',
-            },
-          ],
-        }],
-      })
-    })
-    expect(screen.getByRole('region', { name: 'Objektinformasjon' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Bymarka naturreservat' })).toBeInTheDocument()
-    expect(screen.getByText('Naturreservat')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'https://example.test/bymarka' })).toHaveAttribute(
-      'href',
-      'https://example.test/bymarka',
-    )
-    fireEvent.click(screen.getByRole('button', { name: 'Lukk objektinformasjon' }))
-    expect(map.clearFeatureInfo).toHaveBeenCalledTimes(1)
-
-    await act(async () => {
-      featureInfoHandler?.({
-        status: 'ready',
-        results: [{
-          datasetId: 'protected-areas',
-          datasetTitle: 'Naturvernområder',
-          objectLabel: 'Bymarka naturreservat',
-          fields: [{ label: 'Navn', value: 'Bymarka naturreservat' }],
-        }],
-      })
-    })
-
-    await act(async () => {
-      featureInfoHandler?.({
-        status: 'partial',
-        message: 'Noe objektinformasjon kunne ikke hentes fra ett eller flere aktive kartlag.',
-        results: [{
-          datasetId: 'protected-areas',
-          datasetTitle: 'Naturvernområder',
-          objectLabel: 'Bymarka naturreservat',
-          fields: [{ label: 'Navn', value: 'Bymarka naturreservat' }],
-        }],
-      })
-    })
-    expect(screen.getByText(/Noe objektinformasjon kunne ikke hentes/)).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Bymarka naturreservat' })).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('link', { name: 'Oversikt' }))
-    await vi.waitFor(() => {
-      expect(map.setThematicLayerVisible).toHaveBeenCalledWith('protected-areas', false)
-    })
-
-    fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
   })
