@@ -11,6 +11,7 @@ from app.models.thematic import (
     ThematicCoverageResponse,
     ThematicDatasetEvaluation,
     ThematicDatasetId,
+    ThematicMappingCoverage,
 )
 
 
@@ -19,6 +20,7 @@ class ThematicAnalysisDataset:
     id: ThematicDatasetId
     query_url: str
     coverage_scope: Literal["nationwide", "regional", "partial"]
+    mapping_coverage_query_url: str | None = None
 
 
 DATASETS: tuple[ThematicAnalysisDataset, ...] = (
@@ -37,6 +39,10 @@ DATASETS: tuple[ThematicAnalysisDataset, ...] = (
             "naturtyper_kuverdi/MapServer/0/query"
         ),
         coverage_scope="partial",
+        mapping_coverage_query_url=(
+            "https://kart.miljodirektoratet.no/arcgis/rest/services/"
+            "naturtyper_nin/MapServer/1/query"
+        ),
     ),
     ThematicAnalysisDataset(
         id="wild-reindeer-areas",
@@ -75,6 +81,11 @@ class ThematicCoverageService:
         dataset: ThematicAnalysisDataset,
         boundary: MunicipalityBoundary,
     ) -> ThematicDatasetEvaluation:
+        mapping_coverage = await self._evaluate_mapping_coverage(
+            dataset,
+            boundary,
+        )
+
         try:
             count = await self._adapter.count_intersections(
                 dataset.query_url,
@@ -89,6 +100,7 @@ class ThematicCoverageService:
                     "Temadatatjenesten kunne ikke evalueres nå. "
                     "Dette skal ikke tolkes som manglende treff."
                 ),
+                mapping_coverage=mapping_coverage,
             )
 
         if count > 0:
@@ -100,6 +112,7 @@ class ThematicCoverageService:
                     "Ett eller flere registrerte objekter i kilden "
                     "krysser kommunegrensen."
                 ),
+                mapping_coverage=mapping_coverage,
             )
 
         if dataset.coverage_scope == "regional":
@@ -125,4 +138,67 @@ class ThematicCoverageService:
             status="no_hit",
             feature_count=0,
             note=note,
+            mapping_coverage=mapping_coverage,
+        )
+
+    async def _evaluate_mapping_coverage(
+        self,
+        dataset: ThematicAnalysisDataset,
+        boundary: MunicipalityBoundary,
+    ) -> ThematicMappingCoverage | None:
+        if dataset.mapping_coverage_query_url is None:
+            return None
+
+        try:
+            count = await self._adapter.count_intersections(
+                dataset.mapping_coverage_query_url,
+                boundary,
+            )
+        except ThematicUpstreamError:
+            return ThematicMappingCoverage(
+                status="unavailable",
+                feature_count=None,
+                note=(
+                    "Kartleggingsdekningen kunne ikke evalueres nå. "
+                    "Dette påvirker ikke selve treffstatusen."
+                ),
+            )
+
+        if count == 0:
+            return ThematicMappingCoverage(
+                status="none",
+                feature_count=0,
+                note=(
+                    "Kilden returnerte ingen registrerte kartleggingsområder "
+                    "som krysser kommunegrensen. Det dokumenterer ikke at hele "
+                    "kommunen er ukartlagt."
+                ),
+            )
+
+        try:
+            from_year, to_year = await self._adapter.year_range(
+                dataset.mapping_coverage_query_url,
+                boundary,
+                "Årstall",
+            )
+        except ThematicUpstreamError:
+            return ThematicMappingCoverage(
+                status="present",
+                feature_count=count,
+                note=(
+                    "Kilden har registrerte kartleggingsområder som krysser "
+                    "kommunegrensen, men årsspennet kunne ikke hentes. Dette "
+                    "betyr ikke at hele kommunen er kartlagt."
+                ),
+            )
+
+        return ThematicMappingCoverage(
+            status="present",
+            feature_count=count,
+            from_year=from_year,
+            to_year=to_year,
+            note=(
+                "Kilden har registrerte kartleggingsområder som krysser "
+                "kommunegrensen. Dette betyr ikke at hele kommunen er kartlagt."
+            ),
         )
