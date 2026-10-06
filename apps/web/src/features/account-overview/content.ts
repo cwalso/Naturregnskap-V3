@@ -9,15 +9,15 @@ interface AccountCategoryContent {
 export const accountCategoryContent: Record<AccountCategoryId, AccountCategoryContent> = {
   nature: {
     label: 'Natur',
-    description: 'Areal som i regnskapsgrunnlaget er klassifisert som natur.',
+    description: 'Skog, myr, ferskvann og annen natur i det overordnede regnskapsgrunnlaget.',
   },
   built: {
     label: 'Bebygd',
-    description: 'Areal som i regnskapsgrunnlaget er klassifisert som bebygd og opparbeidet.',
+    description: 'Bebygd og opparbeidet areal i det overordnede regnskapsgrunnlaget.',
   },
   agriculture: {
-    label: 'Jordbruk',
-    description: 'Areal som i regnskapsgrunnlaget er klassifisert som jordbruk.',
+    label: 'Dyrket mark',
+    description: 'Dyrket mark og grasmark i det overordnede regnskapsgrunnlaget.',
   },
 }
 
