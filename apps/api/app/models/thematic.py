@@ -19,6 +19,15 @@ ThematicDatasetId = Literal[
     "infrastructure-free-nature",
 ]
 ThematicEvaluationStatus = Literal["hit", "no_hit", "unavailable"]
+MappingCoverageStatus = Literal["present", "none", "unavailable"]
+
+
+class ThematicMappingCoverage(CamelModel):
+    status: MappingCoverageStatus
+    feature_count: int | None = Field(default=None, ge=0)
+    from_year: int | None = Field(default=None, ge=1900, le=2200)
+    to_year: int | None = Field(default=None, ge=1900, le=2200)
+    note: str
 
 
 class ThematicDatasetEvaluation(CamelModel):
@@ -26,6 +35,7 @@ class ThematicDatasetEvaluation(CamelModel):
     status: ThematicEvaluationStatus
     feature_count: int | None = Field(default=None, ge=0)
     note: str
+    mapping_coverage: ThematicMappingCoverage | None = None
 
 
 class ThematicCoverageResponse(CamelModel):
