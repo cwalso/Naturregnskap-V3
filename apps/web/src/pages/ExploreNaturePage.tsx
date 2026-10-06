@@ -16,7 +16,7 @@ interface ExploreNaturePageProps {
   readonly onOpenThematicLayer?: (datasetId: ThematicDatasetId) => void
 }
 
-type ThemeId = 'valued' | 'protected' | 'reindeer' | 'infrastructure-free' | 'urban'
+type ThemeId = 'valued' | 'protected' | 'reindeer' | 'infrastructure-free'
 
 interface ThemeDefinition {
   readonly id: ThemeId
@@ -60,14 +60,6 @@ const supplementalThemes: readonly ThemeDefinition[] = [
     use: 'Kan gi innsikt i avstand til tyngre tekniske inngrep og utvikling i inngrepsfrie soner.',
     limitation: 'Er en tematisk indikator og må ikke blandes sammen med økosystemtype eller naturtilstand.',
   },
-  {
-    id: 'urban',
-    name: 'Bynatur',
-    icon: '○',
-    description: 'Supplerende data om natur i tettbygde og bynære områder.',
-    use: 'Kan gi bedre innsikt i grønnstruktur og natur i områder der grov arealklassifisering alene gir lite detalj.',
-    limitation: 'Datagrunnlag og definisjon må avklares før dette kan presenteres sammenlignbart mellom kommuner.',
-  },
 ] as const
 
 function evaluationLabel(
@@ -100,11 +92,11 @@ export function ExploreNaturePage({
     <section className="content-page" aria-labelledby="explore-nature-title">
       <header className="content-page__intro">
         <p className="content-page__eyebrow">Naturregnskap / Dagens natur</p>
-        <h1 id="explore-nature-title">Utforsk naturen{place}</h1>
+        <h1 id="explore-nature-title">Hva slags natur har vi{place}?</h1>
         <p>
-          Her skal du kunne gå fra den overordnede arealfordelingen til mer
-          detaljert kunnskap om naturen. Regnskapsgrunnlag og supplerende
-          temadata skal hele tiden være tydelig skilt.
+          Start med det heldekkende regnskapsgrunnlaget, og bruk temadata for å
+          se nærmere på registrerte naturverdier og andre relevante forhold.
+          Regnskapsgrunnlag og supplerende temadata holdes tydelig adskilt.
         </p>
       </header>
 
@@ -131,11 +123,12 @@ export function ExploreNaturePage({
       <section className="content-page__section" aria-labelledby="themes-title">
         <div className="section-heading">
           <span className="section-tag">Supplerende innsikt</span>
-          <h2 id="themes-title">Se nærmere på naturen</h2>
+          <h2 id="themes-title">Supplerende kunnskap om naturen</h2>
           <p>
-            Temadata kan gi viktig innsikt i arealplanlegging og naturforvaltning,
-            men inngår ikke nødvendigvis i selve regnskapsgrunnlaget. Velg et tema
-            for å se hvordan det er tenkt brukt.
+            Disse datasettene kan gi viktig innsikt i arealplanlegging og
+            naturforvaltning, men inngår ikke nødvendigvis i selve
+            regnskapsgrunnlaget. Velg et tema for å se hva som er registrert,
+            hvor godt kilden dekker kommunen og hvordan informasjonen kan brukes.
           </p>
         </div>
 
@@ -221,7 +214,11 @@ export function ExploreNaturePage({
                       </>
                     ) : selectedEvaluation?.status === 'hit' ? (
                       <>
-                        <strong>Treff registrert i {municipalityName}.</strong>{' '}
+                        <strong>
+                          {selectedEvaluation.featureCount === 1
+                            ? `1 registrert lokalitet i ${municipalityName}.`
+                            : `${selectedEvaluation.featureCount ?? 'Flere'} registrerte objekter i ${municipalityName}.`}
+                        </strong>{' '}
                         {selectedEvaluation.note}
                       </>
                     ) : selectedEvaluation?.status === 'no_hit' ? (
@@ -240,6 +237,7 @@ export function ExploreNaturePage({
                       </>
                     )}
                     {' '}{selectedDataset.attribution}. Dekning: {selectedDataset.coverage.label}.
+                    {' '}{selectedDataset.coverage.note}
                   </dd>
                 ) : (
                   <dd>Datakilde, dekning, versjon og presentasjon er ikke koblet til prototypen ennå.</dd>
