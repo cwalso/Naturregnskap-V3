@@ -878,6 +878,58 @@ body { font-size: 16px; }
 .plan-analysis__secondary strong {
   font-variant-numeric: tabular-nums;
 }
+.plan-layer-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  margin-top: .8rem;
+  padding: .75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+.plan-layer-toggle input {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: .12rem;
+  accent-color: var(--color-accent);
+}
+.plan-layer-toggle > span,
+.plan-layer-toggle strong,
+.plan-layer-toggle small {
+  display: block;
+}
+.plan-layer-toggle strong {
+  font-size: .76rem;
+  line-height: 1.35;
+}
+.plan-layer-toggle small {
+  margin-top: .22rem;
+  color: var(--color-text-muted);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+.plan-layer-legend {
+  display: grid;
+  gap: .38rem;
+  margin-top: .65rem;
+}
+.plan-layer-legend > div {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  color: var(--color-text-muted);
+  font-size: .69rem;
+  line-height: 1.35;
+}
+.plan-layer-legend i {
+  flex: 0 0 auto;
+  width: .85rem;
+  height: .85rem;
+  margin-top: .05rem;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
 .plan-analysis__status--error {
   color: var(--color-danger, #9b2c2c);
 }

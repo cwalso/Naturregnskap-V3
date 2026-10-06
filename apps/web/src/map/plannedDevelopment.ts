@@ -35,6 +35,16 @@ const PLAN_FILTER =
 const PLAN_STYLE =
   '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld"><NamedLayer><Name>kparealformalomrade</Name><UserStyle><FeatureTypeStyle><Rule><PolygonSymbolizer><Fill><CssParameter name="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
 
+export interface PlannedDevelopmentOverlayGrid {
+  readonly zoom: 9
+  readonly cx0: number
+  readonly cy0: number
+  readonly width: number
+  readonly height: number
+  readonly extent: readonly [number, number, number, number]
+  readonly cleaned: Uint8Array
+}
+
 export interface PlannedDevelopmentAnalysis {
   readonly municipalityNumber: string
   readonly status: 'available'
@@ -48,6 +58,7 @@ export interface PlannedDevelopmentAnalysis {
   readonly pixelMeters: number
   readonly source: 'DiBK kommuneplaner'
   readonly methodVersion: 'dibk-plan-raster-v1'
+  readonly overlay: PlannedDevelopmentOverlayGrid
 }
 
 export interface PlannedDevelopmentUnavailable {
@@ -134,6 +145,17 @@ export async function calculatePlannedDevelopment(
     const cleaned = removeNarrowPlanStrips(planned, width)
     const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
 
+    const topLeftExtent = planTileGrid.getTileCoordExtent([
+      PLAN_ANALYSIS_ZOOM,
+      minX,
+      minY,
+    ])
+    const bottomRightExtent = planTileGrid.getTileCoordExtent([
+      PLAN_ANALYSIS_ZOOM,
+      maxX,
+      maxY,
+    ])
+
     return {
       municipalityNumber,
       status: 'available',
@@ -149,6 +171,20 @@ export async function calculatePlannedDevelopment(
       pixelMeters: PLAN_PIXEL_METERS,
       source: 'DiBK kommuneplaner',
       methodVersion: 'dibk-plan-raster-v1',
+      overlay: {
+        zoom: PLAN_ANALYSIS_ZOOM,
+        cx0: minX * PLAN_TILE_PIXELS,
+        cy0: minY * PLAN_TILE_PIXELS,
+        width,
+        height,
+        extent: [
+          topLeftExtent[0],
+          bottomRightExtent[1],
+          bottomRightExtent[2],
+          topLeftExtent[3],
+        ],
+        cleaned: cleaned.cleaned,
+      },
     }
   } finally {
     overviewBitmap.close()
@@ -171,6 +207,70 @@ export function buildPlanTileUrl(tileCoord: number[]): string {
     filter: PLAN_FILTER,
   })
 }
+
+const RAW_ACCOUNT_STYLE = (() => {
+  const rules = [
+    [['bebygdOpparbeidetAreal'], '#FF0000'],
+    [['dyrketmark', 'grasmark'], '#00FF00'],
+    [['skog', 'heiBuskmark', 'liteVegetertMark', 'vatmark', 'kyststrenderSvabergDyner'], '#0000FF'],
+    [['hav'], '#FF80FF'],
+    [['innsjoerVannmagasiner'], '#0080FF'],
+    [['elverBekkerKanaler'], '#FF8080'],
+  ].map(([values, color]) => {
+    const comparisons = (values as string[])
+      .map((value) => `<ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>${value}</ogc:Literal></ogc:PropertyIsEqualTo>`)
+      .join('')
+    const filter = (values as string[]).length > 1
+      ? `<ogc:Or>${comparisons}</ogc:Or>`
+      : comparisons
+    return `<Rule><ogc:Filter>${filter}</ogc:Filter><PolygonSymbolizer><Fill><CssParameter name="fill">${color}</CssParameter></Fill></PolygonSymbolizer></Rule>`
+  }).join('')
+
+  return `<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>${rules}</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`
+})()
+
+export function buildRawAccountPlanTileUrl(endpoint: string, tileCoord: number[]): string {
+  return endpoint + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: 'okosystemtype',
+    styles: '',
+    crs: ACCOUNT_CRS,
+    bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
+    width: String(PLAN_TILE_PIXELS),
+    height: String(PLAN_TILE_PIXELS),
+    format: 'image/png; mode=8bit',
+    transparent: 'true',
+    sld_body: RAW_ACCOUNT_STYLE,
+  })
+}
+
+export function isPlannedDevelopmentCellKept(
+  overlay: PlannedDevelopmentOverlayGrid,
+  tileCoord: readonly number[],
+  pixelX: number,
+  pixelY: number,
+): boolean {
+  const [zoom, tileX, tileY] = tileCoord
+  if (zoom < overlay.zoom) return false
+  const shift = zoom - overlay.zoom
+  const x = ((tileX * PLAN_TILE_PIXELS + pixelX) >> shift) - overlay.cx0
+  const y = ((tileY * PLAN_TILE_PIXELS + pixelY) >> shift) - overlay.cy0
+  if (x < 0 || y < 0 || x >= overlay.width || y >= overlay.height) return false
+
+  const index = y * overlay.width + x
+  const grid = overlay.cleaned
+  return Boolean(
+    grid[index]
+    || (x > 0 && grid[index - 1])
+    || (x < overlay.width - 1 && grid[index + 1])
+    || (y > 0 && grid[index - overlay.width])
+    || (y < overlay.height - 1 && grid[index + overlay.width])
+  )
+}
+
+export { planTileGrid, PLAN_ANALYSIS_ZOOM, PLAN_TILE_PIXELS }
 
 export function getPlanTileCoordinates(
   extent: readonly [number, number, number, number],

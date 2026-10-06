@@ -1,8 +1,14 @@
 import type { PlannedDevelopmentResult } from '../../map/plannedDevelopment'
+import {
+  PLANNED_AGRICULTURE_COLOR,
+  PLANNED_NATURE_COLOR,
+} from '../../map/plannedDevelopmentOverlay'
 
 interface PlannedDevelopmentSummaryProps {
   readonly state: 'idle' | 'loading' | 'error'
   readonly result: PlannedDevelopmentResult | null
+  readonly visible: boolean
+  readonly onVisibleChange: (visible: boolean) => void
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', {
@@ -21,6 +27,8 @@ function dekar(km2: number): string {
 export function PlannedDevelopmentSummary({
   state,
   result,
+  visible,
+  onVisibleChange,
 }: PlannedDevelopmentSummaryProps) {
   return (
     <section
@@ -60,6 +68,32 @@ export function PlannedDevelopmentSummary({
             Jordbruk satt av til framtidig utbygging: <strong>ca. {dekar(result.agricultureKm2)}</strong>
           </p>
 
+          <label className="plan-layer-toggle">
+            <input
+              type="checkbox"
+              checked={visible}
+              onChange={(event) => onVisibleChange(event.target.checked)}
+            />
+            <span>
+              <strong>Vis framtidig utbygging i kartet</strong>
+              <small>
+                Kartlaget viser bare natur og jordbruk som overlapper framtidige
+                utbyggingsområder.
+              </small>
+            </span>
+          </label>
+
+          <div className="plan-layer-legend" aria-label="Tegnforklaring for framtidig utbygging">
+            <div>
+              <i style={{ background: PLANNED_NATURE_COLOR }} aria-hidden="true" />
+              <span>Natur satt av til framtidig utbygging</span>
+            </div>
+            <div>
+              <i style={{ background: PLANNED_AGRICULTURE_COLOR }} aria-hidden="true" />
+              <span>Jordbruk satt av til framtidig utbygging</span>
+            </div>
+          </div>
+
           <details className="plan-analysis__details">
             <summary>Om beregningen</summary>
             <p>
@@ -75,8 +109,9 @@ export function PlannedDevelopmentSummary({
             </p>
             <p>
               Med smale striper ville naturanslaget vært ca.{' '}
-              {dekar(result.natureWithNarrowStripsKm2)}. Dette er et anslag til
-              illustrasjon, ikke offisiell statistikk.
+              {dekar(result.natureWithNarrowStripsKm2)}. Smale striper vises ikke
+              i kartet. Dette er et anslag til illustrasjon, ikke offisiell
+              statistikk.
             </p>
           </details>
 
