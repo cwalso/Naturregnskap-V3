@@ -85,6 +85,41 @@ describe('shared municipality data core', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('does not retain transient thematic unavailable responses', async () => {
+    let calls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(() => {
+      calls += 1
+      const status = calls === 1 ? 'unavailable' : 'no_hit'
+      return Promise.resolve(new Response(JSON.stringify({
+        municipalityNumber: '5001',
+        municipalityName: 'Trondheim',
+        methodVersion: 'thematic-intersection-v1',
+        warnings: [],
+        results: [
+          {
+            datasetId: 'protected-areas',
+            status,
+            featureCount: status === 'unavailable' ? null : 0,
+            note: status === 'unavailable' ? 'Midlertidig utilgjengelig.' : 'Ingen treff.',
+          },
+          {
+            datasetId: 'wild-reindeer-areas',
+            status: 'no_hit',
+            featureCount: 0,
+            note: 'Ingen treff.',
+          },
+        ],
+      }), { status: 200 }))
+    })
+
+    const first = await loadMunicipalityThematicCoverage('5001')
+    const second = await loadMunicipalityThematicCoverage('5001')
+
+    expect(first.results[0].status).toBe('unavailable')
+    expect(second.results[0].status).toBe('no_hit')
+    expect(calls).toBe(2)
+  })
+
   it('maps datasets to the four V3 pages with explicit roles', () => {
     expect(datasetsForPage('overview')).toEqual(
       expect.arrayContaining([
@@ -98,18 +133,10 @@ describe('shared municipality data core', () => {
     expect(datasetsForPage('nature')).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ datasetId: 'protected-areas' }),
-        expect.objectContaining({ datasetId: 'valued-nature' }),
-        expect.objectContaining({ datasetId: 'infrastructure-free-nature' }),
+        expect.objectContaining({ datasetId: 'wild-reindeer-areas' }),
       ]),
     )
 
-    expect(datasetsForPage('nature-loss')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          datasetId: 'ssb-area-use-09594',
-          status: 'method-pending',
-        }),
-      ]),
-    )
+    expect(datasetsForPage('nature-loss')).toEqual([])
   })
 })
