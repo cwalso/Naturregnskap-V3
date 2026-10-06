@@ -19,7 +19,7 @@ const REQUESTED_CLASSES = [
   ...FRESHWATER_CLASSES,
 ]
 
-type CategoryIndex = readonly string[] | Record<string, number>
+type CategoryIndex = string[] | Record<string, number>
 
 export async function getAccountOverview(
   number: string,
