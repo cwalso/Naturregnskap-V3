@@ -1,7 +1,7 @@
 import TileGrid from 'ol/tilegrid/TileGrid'
 
 export const ACCOUNT_CRS = 'EPSG:25833'
-export const ACCOUNT_ORIGIN = [-2500000, 9045984] as const
+export const ACCOUNT_ORIGIN = [-2500000, 9045984]
 export const ACCOUNT_RESOLUTIONS = Array.from({ length: 19 }, (_, z) => 21664 / 2 ** z)
 export const ACCOUNT_DETAIL_MAX_RESOLUTION = 30
 export const accountTileGrid = new TileGrid({
