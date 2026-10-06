@@ -615,7 +615,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           <div
             className="map-frame"
             id={variant === 'explore' ? 'map-canvas-region' : undefined}
-            role={variant === 'explore' ? 'region' : undefined}
             aria-labelledby={variant === 'explore' ? 'map-canvas-title' : undefined}
           >
             {variant === 'explore' && (
@@ -644,7 +643,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             <div
               ref={mapElement}
               className="map"
-              role={variant === 'explore' ? 'application' : 'img'}
+              role={variant === 'explore' ? 'region' : 'img'}
               tabIndex={variant === 'explore' ? 0 : undefined}
               aria-label={variant === 'explore' ? `Interaktivt kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
               aria-describedby={variant === 'explore' ? MAP_ACCESSIBILITY_DESCRIPTION_ID : undefined}
