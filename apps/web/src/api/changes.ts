@@ -1,8 +1,9 @@
 import { accountCategoryIds } from '../features/account-overview/model'
 import type { ChangeFeaturesData, ChangesData } from '../features/changes/model'
+import { buildApiUrl } from './url'
 
 export async function getChanges(number: string, signal?: AbortSignal): Promise<ChangesData> {
-  const response = await fetch(`/api/municipalities/${number}/changes`, { signal })
+  const response = await fetch(buildApiUrl(`/api/municipalities/${number}/changes`), { signal })
   if (!response.ok) throw new Error(`Forespørselen feilet med HTTP ${response.status}`)
   const data: unknown = await response.json()
   if (!isChangesData(data)) throw new Error('Endringsdata returnerte et ugyldig svar')
@@ -10,7 +11,7 @@ export async function getChanges(number: string, signal?: AbortSignal): Promise<
 }
 
 export async function getChangeFeatures(number: string, signal?: AbortSignal): Promise<ChangeFeaturesData> {
-  const response = await fetch(`/api/municipalities/${number}/changes/features`, { signal })
+  const response = await fetch(buildApiUrl(`/api/municipalities/${number}/changes/features`), { signal })
   if (!response.ok) throw new Error(`Forespørselen feilet med HTTP ${response.status}`)
   const data: unknown = await response.json()
   if (!isChangeFeaturesData(data)) throw new Error('Endringspolygoner returnerte et ugyldig svar')
