@@ -4,19 +4,29 @@ import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import ImageWMS from 'ol/source/ImageWMS'
+import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
 import VectorSource from 'ol/source/Vector'
 import { Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
+import { fromLonLat } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
 import { nationalLandCover2025, thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
+import {
+  ACCOUNT_CRS,
+  ACCOUNT_DETAIL_MAX_RESOLUTION,
+  ACCOUNT_RESOLUTIONS,
+  accountTileGrid,
+  buildAccountTileUrl,
+  loadOverviewRaster,
+} from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
 
-proj4.defs('EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
+proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
 
 export interface MapFeatureInfoField {
@@ -72,18 +82,71 @@ export type MunicipalityMapFactory = (target: HTMLElement) => MunicipalityMap
 
 export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   const accountVisualSource = nationalLandCover2025.visualSource
-  const accountLayer = new ImageLayer({
-    source: new ImageWMS({
-      url: accountVisualSource.endpoint,
-      params: {
-        LAYERS: accountVisualSource.layer,
-        VERSION: accountVisualSource.version,
-        TRANSPARENT: true,
-      },
-      ratio: 1,
+  const accountOverviewLayer = new ImageLayer({
+    visible: false,
+    opacity: 0.86,
+  })
+  const accountDetailLayer = new TileLayer({
+    source: new XYZ({
+      projection: ACCOUNT_CRS,
+      tileGrid: accountTileGrid,
+      tilePixelRatio: 2,
+      transition: 0,
+      tileUrlFunction: (tileCoord) => buildAccountTileUrl(accountVisualSource.endpoint, tileCoord),
+      attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse',
     }),
     visible: true,
+    opacity: 0.86,
   })
+  let accountVisible = true
+  let accountOverviewRequest = 0
+  let accountOverviewObjectUrl: string | null = null
+  let accountOverviewResolution = 0
+
+  accountOverviewLayer.on('prerender', (event) => {
+    const context = event.context as CanvasRenderingContext2D
+    context.imageSmoothingEnabled = event.frameState.viewState.resolution >= accountOverviewResolution
+  })
+  accountOverviewLayer.on('postrender', (event) => {
+    const context = event.context as CanvasRenderingContext2D
+    context.imageSmoothingEnabled = true
+  })
+
+  function releaseAccountOverviewUrl() {
+    if (!accountOverviewObjectUrl) return
+    URL.revokeObjectURL(accountOverviewObjectUrl)
+    accountOverviewObjectUrl = null
+  }
+
+  async function configureAccountOverview(municipalityNumber: string) {
+    const request = ++accountOverviewRequest
+    accountOverviewLayer.setVisible(false)
+    accountOverviewLayer.setSource(null)
+    releaseAccountOverviewUrl()
+    accountOverviewResolution = 0
+    accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
+
+    try {
+      const raster = await loadOverviewRaster(municipalityNumber)
+      if (request !== accountOverviewRequest || !raster) return
+
+      const url = URL.createObjectURL(raster.blob)
+      accountOverviewObjectUrl = url
+      accountOverviewResolution = raster.resolutionMetersApprox
+      accountOverviewLayer.setSource(new ImageStatic({
+        url,
+        imageExtent: [...raster.extent],
+        projection: ACCOUNT_CRS,
+      }))
+      accountOverviewLayer.setVisible(accountVisible)
+      accountDetailLayer.setMaxResolution(ACCOUNT_DETAIL_MAX_RESOLUTION)
+    } catch {
+      if (request === accountOverviewRequest) {
+        accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
+      }
+    }
+  }
+
   const thematicLayers = new Map<ThematicDatasetId, ImageLayer<ImageWMS>>(
     thematicDatasets.map((dataset) => [
       dataset.id,
@@ -291,7 +354,13 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       fill: new Fill({ color: 'rgba(155, 44, 44, 0.35)' }),
     }),
   })
-  const view = new View({ center: [1_050_000, 9_100_000], zoom: 4, projection: defaultBasemap.projection })
+  const view = new View({
+    projection: ACCOUNT_CRS,
+    center: fromLonLat([15, 65], ACCOUNT_CRS),
+    resolutions: ACCOUNT_RESOLUTIONS.slice(2),
+    resolution: ACCOUNT_RESOLUTIONS[4],
+    enableRotation: false,
+  })
   const map = new OlMap({
     target,
     view,
@@ -300,9 +369,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         source: new XYZ({
           url: defaultBasemap.url,
           attributions: defaultBasemap.attribution,
+          projection: defaultBasemap.projection,
         }),
       }),
-      accountLayer,
+      accountOverviewLayer,
+      accountDetailLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
       boundaryLayer,
@@ -325,14 +396,28 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       boundarySource.clear()
       const features = new GeoJSON().readFeatures(JSON.stringify(boundary), {
         dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857',
+        featureProjection: ACCOUNT_CRS,
       })
       boundarySource.addFeatures(features)
       const extent = boundarySource.getExtent()
+      accountDetailLayer.setExtent(extent)
+      void configureAccountOverview(boundary.properties.number)
       if (extent) view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
     },
-    clearBoundary() { boundarySource.clear() },
-    setAccountLayerVisible(visible) { accountLayer.setVisible(visible) },
+    clearBoundary() {
+      boundarySource.clear()
+      accountOverviewRequest += 1
+      accountOverviewLayer.setSource(null)
+      accountOverviewLayer.setVisible(false)
+      releaseAccountOverviewUrl()
+      accountDetailLayer.setExtent(undefined)
+      accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
+    },
+    setAccountLayerVisible(visible) {
+      accountVisible = visible
+      accountOverviewLayer.setVisible(visible && accountOverviewLayer.getSource() !== null)
+      accountDetailLayer.setVisible(visible)
+    },
     setThematicLayerVisible(datasetId, visible) {
       featureInfoRequest += 1
       thematicLayers.get(datasetId)?.setVisible(visible)
@@ -368,7 +453,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           type: 'Feature',
           geometry: feature.geometry,
           properties: { changeId: feature.changeId },
-        }, { dataProjection: feature.geometryCrs, featureProjection: 'EPSG:3857' }))
+        }, { dataProjection: feature.geometryCrs, featureProjection: ACCOUNT_CRS }))
       }
       if (features.length) {
         const extent = changesSource.getExtent()
@@ -378,6 +463,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     clearChanges() { changesSource.clear() },
     destroy() {
       featureInfoRequest += 1
+      accountOverviewRequest += 1
+      accountOverviewLayer.setSource(null)
+      releaseAccountOverviewUrl()
       featureInfoHandler = null
       thematicLayerStatusHandler = null
       map.setTarget(undefined)
