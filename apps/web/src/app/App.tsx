@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
   getMunicipalities,
@@ -53,6 +53,8 @@ const initialThematicLayerVisibility = Object.fromEntries(
 const initialThematicLayerStatus = Object.fromEntries(
   thematicDatasets.map((dataset) => [dataset.id, 'idle']),
 ) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
+
+const TEMPORARY_DEFAULT_MUNICIPALITY_NUMBER = '5001'
 
 function viewFromHash(): SiteView {
   const value = window.location.hash.replace(/^#/, '')
@@ -146,16 +148,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, boundaryData, selectedMunicipality])
 
   useEffect(() => {
-    const controller = new AbortController()
-    getMunicipalities(controller.signal)
-      .then((items) => { setMunicipalities(items); setListState('ready') })
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) setListState('error')
-      })
-    return () => controller.abort()
-  }, [])
-
-  useEffect(() => {
     if (activeView !== 'utforsk-i-kart' || !selectedMunicipality) {
       setPlannedDevelopment(null)
       setPlannedDevelopmentState('idle')
@@ -232,7 +224,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     if (window.location.hash !== hash) window.location.hash = hash
   }
 
-  async function selectMunicipality(municipality: Municipality | null) {
+  const selectMunicipality = useCallback(async (municipality: Municipality | null) => {
     const requestId = ++boundaryRequest.current
     const accountRequestId = ++accountRequest.current
     const thematicRequestId = ++thematicRequest.current
@@ -295,7 +287,29 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     } catch {
       if (requestId === boundaryRequest.current) setBoundaryState('error')
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    getMunicipalities(controller.signal)
+      .then((items) => {
+        setMunicipalities(items)
+        setListState('ready')
+
+        const defaultMunicipality = items.find(
+          (item) => item.number === TEMPORARY_DEFAULT_MUNICIPALITY_NUMBER,
+        )
+        if (defaultMunicipality) void selectMunicipality(defaultMunicipality)
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          setListState('error')
+        }
+      })
+
+    return () => controller.abort()
+  }, [selectMunicipality])
 
   function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
     setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
