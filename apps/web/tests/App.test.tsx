@@ -349,7 +349,7 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(protectedTheme).toHaveTextContent('Treff i kommunen'))
 
     fireEvent.click(protectedTheme)
-    expect(screen.getByText(/Treff registrert i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText(/2 registrerte objekter i Trondheim/)).toBeInTheDocument()
 
     const reindeerTheme = screen.getByRole('button', { name: /Villreinområder/ })
     await vi.waitFor(() => expect(reindeerTheme).toHaveTextContent('Ingen registrerte treff'))
