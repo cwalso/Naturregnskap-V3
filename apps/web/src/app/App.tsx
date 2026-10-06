@@ -2,15 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 
 import {
   getMunicipalities,
-  getMunicipalityBoundary,
   type Municipality,
   type MunicipalityBoundary,
 } from '../api/municipalities'
-import { getAccountOverview } from '../api/accountOverview'
-import {
-  getThematicCoverage,
-  type ThematicCoverageResponse,
-} from '../api/thematicCoverage'
+import type { ThematicCoverageResponse } from '../api/thematicCoverage'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { ServiceSidebar } from '../components/ServiceSidebar'
@@ -20,6 +15,11 @@ import {
   thematicDatasets,
   type ThematicDatasetId,
 } from '../datasets/registry'
+import {
+  loadMunicipalityAccount,
+  loadMunicipalityBoundary,
+  loadMunicipalityThematicCoverage,
+} from '../data/municipalityWorkspace'
 import { AccountDistribution } from '../features/account-overview/AccountDistribution'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
@@ -170,7 +170,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setAccountState('loading')
     setThematicCoverageState('loading')
 
-    void getAccountOverview(municipality.number)
+    void loadMunicipalityAccount(municipality.number)
       .then((data) => {
         if (accountRequestId === accountRequest.current) {
           setAccountData(data)
@@ -184,7 +184,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         }
       })
 
-    void getThematicCoverage(municipality.number)
+    void loadMunicipalityThematicCoverage(municipality.number)
       .then((data) => {
         if (thematicRequestId === thematicRequest.current) {
           setThematicCoverage(data)
@@ -199,7 +199,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     try {
-      const boundary = await getMunicipalityBoundary(municipality.number)
+      const boundary = await loadMunicipalityBoundary(municipality.number)
       if (requestId === boundaryRequest.current) {
         setBoundaryData(boundary)
         setBoundaryState('idle')
