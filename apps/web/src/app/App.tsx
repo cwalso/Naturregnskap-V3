@@ -36,6 +36,10 @@ import {
   type PlannedNatureBreakdown,
 } from '../map/plannedDevelopment'
 import {
+  calculatePlannedValuedNatureAnalysis,
+  type PlannedValuedNatureAnalysis,
+} from '../map/plannedValuedNature'
+import {
   createMunicipalityMap,
   type MapFeatureInfoState,
   type MunicipalityMap,
@@ -98,6 +102,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     useState<PlannedDevelopmentAnalysisTarget>('grunnkart')
   const [plannedNatureBreakdown, setPlannedNatureBreakdown] = useState<PlannedNatureBreakdown | null>(null)
   const [plannedNatureBreakdownState, setPlannedNatureBreakdownState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [plannedValuedNature, setPlannedValuedNature] = useState<PlannedValuedNatureAnalysis | null>(null)
+  const [plannedValuedNatureState, setPlannedValuedNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -242,6 +248,37 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => controller.abort()
   }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
 
+  useEffect(() => {
+    if (
+      activeView !== 'utforsk-i-kart'
+      || plannedDevelopmentAnalysisTarget !== 'valued-nature'
+      || plannedDevelopment?.status !== 'available'
+    ) {
+      setPlannedValuedNature(null)
+      setPlannedValuedNatureState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setPlannedValuedNature(null)
+    setPlannedValuedNatureState('loading')
+
+    void calculatePlannedValuedNatureAnalysis(plannedDevelopment, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setPlannedValuedNature(result)
+        setPlannedValuedNatureState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setPlannedValuedNature(null)
+        setPlannedValuedNatureState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+
   function navigate(view: SiteView) {
     setActiveView(view)
     const hash = `#${view}`
@@ -262,6 +299,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedDevelopmentAnalysisTarget('grunnkart')
     setPlannedNatureBreakdown(null)
     setPlannedNatureBreakdownState('idle')
+    setPlannedValuedNature(null)
+    setPlannedValuedNatureState('idle')
     map.current?.clearBoundary()
 
     if (!municipality) {
@@ -449,6 +488,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   natureBreakdownState={plannedNatureBreakdownState}
                   analysisTarget={plannedDevelopmentAnalysisTarget}
                   onAnalysisTargetChange={setPlannedDevelopmentAnalysisTarget}
+                  valuedNatureAnalysis={plannedValuedNature}
+                  valuedNatureAnalysisState={plannedValuedNatureState}
                 />
 
                 <section
