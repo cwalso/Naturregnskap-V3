@@ -61,6 +61,8 @@ const initialThematicLayerStatus = Object.fromEntries(
   thematicDatasets.map((dataset) => [dataset.id, 'idle']),
 ) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
 
+const MAP_ACCESSIBILITY_DESCRIPTION_ID = 'map-accessibility-description'
+
 function viewFromHash(): SiteView {
   const value = window.location.hash.replace(/^#/, '')
   if (value === 'naturtapet' || value === 'utforsk-naturen' || value === 'utforsk-i-kart') return value
@@ -475,8 +477,19 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           <p>{description}</p>
         </div>
 
+        {variant === 'explore' && (
+          <nav className="map-mobile-jump-nav" aria-label="Hurtignavigasjon i kartvisningen">
+            <a href="#map-analysis-panel">Analyse</a>
+            <a href="#map-canvas-region">Kart</a>
+            <a href="#map-layers-title">Kartlag</a>
+          </nav>
+        )}
+
         <div className="map-workspace__body">
-          <div className="map-sidebar">
+          <div
+            className="map-sidebar"
+            id={variant === 'explore' ? 'map-analysis-panel' : undefined}
+          >
             {variant === 'explore' ? (
               <>
                 <PlannedDevelopmentSummary
@@ -599,7 +612,21 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             )}
           </div>
 
-          <div className="map-frame">
+          <div
+            className="map-frame"
+            id={variant === 'explore' ? 'map-canvas-region' : undefined}
+            role={variant === 'explore' ? 'region' : undefined}
+            aria-labelledby={variant === 'explore' ? 'map-canvas-title' : undefined}
+          >
+            {variant === 'explore' && (
+              <>
+                <h3 id="map-canvas-title" className="visually-hidden">Interaktivt kart</h3>
+                <p id={MAP_ACCESSIBILITY_DESCRIPTION_ID} className="visually-hidden">
+                  Kartet supplerer analysen. De viktigste resultatene finnes også som tekst
+                  i analysepanelet.
+                </p>
+              </>
+            )}
             {variant === 'explore' && (
               <div className="map-frame__context" aria-live="polite">
                 <span><strong>{selectedMunicipality.name}</strong></span>
@@ -617,14 +644,22 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             <div
               ref={mapElement}
               className="map"
-              aria-label={variant === 'explore' ? `Kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
+              role={variant === 'explore' ? 'application' : 'img'}
+              tabIndex={variant === 'explore' ? 0 : undefined}
+              aria-label={variant === 'explore' ? `Interaktivt kart over ${selectedMunicipality.name}` : 'Kart over Norge'}
+              aria-describedby={variant === 'explore' ? MAP_ACCESSIBILITY_DESCRIPTION_ID : undefined}
             />
 
             {variant === 'explore'
               && mapFeatureInfo.status !== 'idle'
               && mapFeatureInfo.status !== 'loading'
               && (
-              <aside className="map-info-popup" role="dialog" aria-label="Objektinformasjon">
+              <aside
+                className="map-info-popup"
+                role="region"
+                aria-label="Objektinformasjon"
+                aria-live="polite"
+              >
                 <button
                   type="button"
                   className="map-info-popup__close"
@@ -810,6 +845,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main-content">Hopp til hovedinnhold</a>
       <SiteHeader />
       {selectedMunicipality ? (
         <div className="service-layout">
@@ -818,12 +854,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             municipalityPicker={municipalityPicker}
             onNavigate={navigate}
           />
-          <main id="main-content" className="service-main">
+          <main id="main-content" className="service-main" tabIndex={-1}>
             {activeContent}
           </main>
         </div>
       ) : (
-        <main id="main-content">
+        <main id="main-content" tabIndex={-1}>
           {overview}
         </main>
       )}
