@@ -4,6 +4,7 @@ import { classifyAccountPixel } from './accountOverviewRaster'
 import {
   buildRawAccountPlanTileUrl,
   isPlannedDevelopmentCellKept,
+  loadPlanTileBlobByUrl,
   PLAN_ANALYSIS_ZOOM,
   PLAN_TILE_PIXELS,
   type PlannedDevelopmentOverlayGrid,
@@ -68,18 +69,18 @@ export async function loadPlannedDevelopmentDetailTile(
   }
 
   try {
-    const [accountResponse, planResponse] = await Promise.all([
+    const [accountResponse, planBlob] = await Promise.all([
       fetch(buildRawAccountPlanTileUrl(accountEndpoint, tileCoord)),
-      fetch(planUrl),
+      loadPlanTileBlobByUrl(planUrl),
     ])
 
-    if (!accountResponse.ok || !planResponse.ok) {
+    if (!accountResponse.ok) {
       throw new Error('Kartflis kunne ikke hentes')
     }
 
     const [accountBitmap, planBitmap] = await Promise.all([
       createImageBitmap(await accountResponse.blob()),
-      createImageBitmap(await planResponse.blob()),
+      createImageBitmap(planBlob),
     ])
 
     try {
