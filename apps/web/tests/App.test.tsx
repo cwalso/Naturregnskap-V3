@@ -393,6 +393,9 @@ describe('sidestruktur og Oversikt', () => {
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
     expect(screen.getByText(/Denne overlayanalysen er ikke koblet til ennå/)).toBeInTheDocument()
     expect(screen.getByText(/fordelt på verdi og naturtype/)).toBeInTheDocument()
+    await vi.waitFor(() => {
+      expect(map.setPlannedDevelopmentVisible).toHaveBeenCalledWith(false)
+    })
 
     expect(screen.getByRole('heading', { name: 'Kartlag' })).toBeInTheDocument()
     expect(screen.getByText('Regnskapsgrunnlag')).toBeInTheDocument()
