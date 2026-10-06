@@ -18,6 +18,8 @@ const NATURE_CLASS = 2
 const AGRICULTURE_CLASS = 1
 const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
 const IMAGE_CACHE_LIMIT = 120
+const NATURE_TYPE_SCALE = 2
+const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
 
 const natureTypeDefinitions = [
   { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0] },
@@ -32,6 +34,7 @@ const plannedDevelopmentCache = new Map<string, PlannedDevelopmentResult>()
 const natureBreakdownCache = new Map<string, PlannedNatureBreakdown>()
 
 export const PLAN_PIXEL_METERS = ACCOUNT_RESOLUTIONS[PLAN_ANALYSIS_ZOOM] / 2
+export const NATURE_TYPE_PIXEL_METERS = PLAN_PIXEL_METERS / NATURE_TYPE_SCALE
 
 const planTileGrid = new TileGrid({
   origin: ACCOUNT_ORIGIN,
@@ -76,6 +79,7 @@ export interface PlannedNatureBreakdown {
   readonly methodVersion: 'planned-nature-types-v1'
   readonly tileCount: number
   readonly pixelMeters: number
+  readonly classificationPixelMeters: number
   readonly classifiedAreaKm2: number
   readonly unclassifiedAreaKm2: number
   readonly metrics: readonly PlannedNatureTypeMetric[]
@@ -271,8 +275,8 @@ export function buildNatureTypeTileUrl(tileCoord: number[]): string {
     styles: '',
     crs: ACCOUNT_CRS,
     bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
-    width: String(PLAN_TILE_PIXELS),
-    height: String(PLAN_TILE_PIXELS),
+    width: String(NATURE_TYPE_TILE_PIXELS),
+    height: String(NATURE_TYPE_TILE_PIXELS),
     format: 'image/png; mode=8bit',
     transparent: 'true',
     sld_body: NATURE_TYPE_STYLE,
@@ -301,8 +305,10 @@ export async function calculatePlannedNatureBreakdown(
     unclassified += item.unclassified
   }
 
-  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
-  const plannedNaturePixels = Math.round(analysis.natureKm2 / pixelAreaKm2)
+  const pixelAreaKm2 = NATURE_TYPE_PIXEL_METERS * NATURE_TYPE_PIXEL_METERS / 1_000_000
+  const plannedNaturePixels = Math.round(
+    analysis.natureKm2 / (PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000),
+  ) * NATURE_TYPE_SCALE * NATURE_TYPE_SCALE
   const metrics = natureTypeDefinitions
     .map((definition, index) => ({
       id: definition.id,
@@ -321,6 +327,7 @@ export async function calculatePlannedNatureBreakdown(
     methodVersion: 'planned-nature-types-v1',
     tileCount: tiles.length,
     pixelMeters: PLAN_PIXEL_METERS,
+    classificationPixelMeters: NATURE_TYPE_PIXEL_METERS,
     classifiedAreaKm2: counts.reduce((sum, count) => sum + count, 0) * pixelAreaKm2,
     unclassifiedAreaKm2: unclassified * pixelAreaKm2,
     metrics,
@@ -405,11 +412,18 @@ async function countNatureTypesInTile(
   const bitmap = await createImageBitmap(blob)
 
   try {
-    const canvas = createTileCanvas()
+    const canvas = document.createElement('canvas')
+    canvas.width = NATURE_TYPE_TILE_PIXELS
+    canvas.height = NATURE_TYPE_TILE_PIXELS
     const context = canvas.getContext('2d', { willReadFrequently: true })
     if (!context) throw new Error('Kunne ikke lese naturfordelingen i nettleseren')
     context.drawImage(bitmap, 0, 0)
-    const pixels = context.getImageData(0, 0, PLAN_TILE_PIXELS, PLAN_TILE_PIXELS).data
+    const pixels = context.getImageData(
+      0,
+      0,
+      NATURE_TYPE_TILE_PIXELS,
+      NATURE_TYPE_TILE_PIXELS,
+    ).data
 
     const counts = new Array<number>(natureTypeDefinitions.length).fill(0)
     let unclassified = 0
@@ -422,12 +436,23 @@ async function countNatureTypesInTile(
         const globalIndex = globalRow + tileOffsetX + x
         if (overlay.cleaned[globalIndex] !== 1) continue
 
-        const rgba = 4 * (y * PLAN_TILE_PIXELS + x)
-        if (pixels[rgba + 3] < 100) {
-          unclassified += 1
-          continue
+        for (let subY = 0; subY < NATURE_TYPE_SCALE; subY += 1) {
+          for (let subX = 0; subX < NATURE_TYPE_SCALE; subX += 1) {
+            const sourceX = x * NATURE_TYPE_SCALE + subX
+            const sourceY = y * NATURE_TYPE_SCALE + subY
+            const rgba = 4 * (sourceY * NATURE_TYPE_TILE_PIXELS + sourceX)
+
+            if (pixels[rgba + 3] < 100) {
+              unclassified += 1
+              continue
+            }
+            counts[classifyNatureTypePixel(
+              pixels[rgba],
+              pixels[rgba + 1],
+              pixels[rgba + 2],
+            )] += 1
+          }
         }
-        counts[classifyNatureTypePixel(pixels[rgba], pixels[rgba + 1], pixels[rgba + 2])] += 1
       }
     }
 

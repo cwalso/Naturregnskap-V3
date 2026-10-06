@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
+  NATURE_TYPE_PIXEL_METERS,
   PLAN_PIXEL_METERS,
   buildNatureTypeTileUrl,
   buildPlanTileUrl,
@@ -77,6 +78,9 @@ describe('DiBK planned development prototype', () => {
       'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse',
     )
     expect(url.searchParams.get('layers')).toBe('okosystemtype')
+    expect(url.searchParams.get('width')).toBe('1024')
+    expect(url.searchParams.get('height')).toBe('1024')
+    expect(Math.round(NATURE_TYPE_PIXEL_METERS)).toBe(11)
     expect(style).toContain('<ogc:Literal>skog</ogc:Literal>')
     expect(style).toContain('<ogc:Literal>heiBuskmark</ogc:Literal>')
     expect(style).toContain('<ogc:Literal>liteVegetertMark</ogc:Literal>')

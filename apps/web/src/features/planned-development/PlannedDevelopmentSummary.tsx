@@ -143,8 +143,10 @@ export function PlannedDevelopmentSummary({
                 )}
 
                 <p className="plan-nature-breakdown__note">
-                  Fordelingen er beregnet på de samme ca. {Math.round(natureBreakdown.pixelMeters)} m-rutene
-                  som hovedanslaget, og bare for naturareal som er beholdt etter filtrering av smale striper.
+                  Fordelingen bruker den samme ca. {Math.round(natureBreakdown.pixelMeters)} m-planmasken
+                  som hovedanslaget. Økosystemtype leses fra NIBIO med ca.{' '}
+                  {Math.round(natureBreakdown.classificationPixelMeters)} m oppløsning,
+                  og bare naturareal som er beholdt etter filtrering av smale striper inngår.
                 </p>
               </>
             ) : null}
