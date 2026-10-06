@@ -2,11 +2,22 @@ import { thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
 
 export type ThematicEvaluationStatus = 'hit' | 'no_hit' | 'unavailable'
 
+export type MappingCoverageStatus = 'present' | 'none' | 'unavailable'
+
+export interface ThematicMappingCoverage {
+  readonly status: MappingCoverageStatus
+  readonly featureCount: number | null
+  readonly fromYear: number | null
+  readonly toYear: number | null
+  readonly note: string
+}
+
 export interface ThematicDatasetEvaluation {
   readonly datasetId: ThematicDatasetId
   readonly status: ThematicEvaluationStatus
   readonly featureCount: number | null
   readonly note: string
+  readonly mappingCoverage: ThematicMappingCoverage | null
 }
 
 export interface ThematicCoverageResponse {
@@ -66,6 +77,29 @@ function isEvaluation(value: unknown): value is ThematicDatasetEvaluation {
     || !['hit', 'no_hit', 'unavailable'].includes(String(value.status))
     || !('featureCount' in value)
     || !(value.featureCount === null || (typeof value.featureCount === 'number' && value.featureCount >= 0))
+    || !('note' in value)
+    || typeof value.note !== 'string'
+    || !('mappingCoverage' in value)
+    || !isMappingCoverage(value.mappingCoverage)
+  ) return false
+  return true
+}
+
+function isMappingCoverage(value: unknown): value is ThematicMappingCoverage | null {
+  if (value === null) return true
+  if (typeof value !== 'object') return false
+  if (
+    !('status' in value)
+    || !['present', 'none', 'unavailable'].includes(String(value.status))
+    || !('featureCount' in value)
+    || !(value.featureCount === null
+      || (typeof value.featureCount === 'number' && value.featureCount >= 0))
+    || !('fromYear' in value)
+    || !(value.fromYear === null
+      || (typeof value.fromYear === 'number' && value.fromYear >= 1900 && value.fromYear <= 2200))
+    || !('toYear' in value)
+    || !(value.toYear === null
+      || (typeof value.toYear === 'number' && value.toYear >= 1900 && value.toYear <= 2200))
     || !('note' in value)
     || typeof value.note !== 'string'
   ) return false
