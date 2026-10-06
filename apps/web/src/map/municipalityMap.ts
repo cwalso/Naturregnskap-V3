@@ -469,6 +469,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     ],
   })
 
+
+  const resizeObserver = typeof ResizeObserver !== 'undefined'
+    ? new ResizeObserver(() => map.updateSize())
+    : null
+  resizeObserver?.observe(target)
+
   map.on('singleclick', (event) => {
     const resolution = view.getResolution()
     if (resolution === undefined) return
@@ -562,6 +568,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     clearChanges() { changesSource.clear() },
     destroy() {
+      resizeObserver?.disconnect()
       featureInfoRequest += 1
       accountOverviewRequest += 1
       accountOverviewLayer.setSource(null)
