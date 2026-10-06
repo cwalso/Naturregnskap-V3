@@ -83,25 +83,35 @@ interface OverviewRasterIndex {
 
 export interface LoadedOverviewRaster extends OverviewRasterEntry {
   readonly blob: Blob
+  readonly rawBlob: Blob
 }
 
 let indexPromise: Promise<OverviewRasterIndex> | null = null
-const rasterPromises = new Map<string, Promise<Blob>>()
+const rawRasterPromises = new Map<string, Promise<Blob>>()
+const displayRasterPromises = new Map<string, Promise<Blob>>()
 
 export async function loadOverviewRaster(municipalityNumber: string): Promise<LoadedOverviewRaster | null> {
   const index = await loadOverviewIndex()
   const entry = index.municipalities[municipalityNumber]
   if (!entry) return null
 
-  let rasterPromise = rasterPromises.get(municipalityNumber)
-  if (!rasterPromise) {
-    rasterPromise = fetchRaster(entry.file)
-    rasterPromises.set(municipalityNumber, rasterPromise)
+  let rawPromise = rawRasterPromises.get(municipalityNumber)
+  if (!rawPromise) {
+    rawPromise = fetchRawRaster(entry.file)
+    rawRasterPromises.set(municipalityNumber, rawPromise)
   }
 
+  let displayPromise = displayRasterPromises.get(municipalityNumber)
+  if (!displayPromise) {
+    displayPromise = rawPromise.then(recolorOverviewRaster)
+    displayRasterPromises.set(municipalityNumber, displayPromise)
+  }
+
+  const [rawBlob, blob] = await Promise.all([rawPromise, displayPromise])
   return {
     ...entry,
-    blob: await rasterPromise,
+    blob,
+    rawBlob,
   }
 }
 
@@ -118,15 +128,14 @@ async function loadOverviewIndex(): Promise<OverviewRasterIndex> {
   return indexPromise
 }
 
-async function fetchRaster(file: string): Promise<Blob> {
+async function fetchRawRaster(file: string): Promise<Blob> {
   const response = await fetch(
     `${import.meta.env.BASE_URL}data/grunnkart/2025/overview/${encodeURIComponent(file)}`,
   )
   if (!response.ok) {
     throw new Error(`Kunne ikke hente oversiktsraster, HTTP ${response.status}`)
   }
-  const original = await response.blob()
-  return recolorOverviewRaster(original)
+  return response.blob()
 }
 
 function parseOverviewIndex(value: unknown): OverviewRasterIndex {
@@ -209,6 +218,11 @@ for (let q = 0; q < 32768; q += 1) {
 
 function lookupIndex(red: number, green: number, blue: number): number {
   return (red >> 3) << 10 | (green >> 3) << 5 | blue >> 3
+}
+
+export function classifyAccountPixel(red: number, green: number, blue: number): number {
+  const q = lookupIndex(red, green, blue)
+  return LOOKUP_T[q] >= 128 ? LOOKUP_A[q] : LOOKUP_B[q]
 }
 
 async function recolorOverviewRaster(blob: Blob): Promise<Blob> {
