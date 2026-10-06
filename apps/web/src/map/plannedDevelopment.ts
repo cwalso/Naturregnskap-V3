@@ -60,6 +60,7 @@ export interface PlannedDevelopmentOverlayGrid {
   readonly height: number
   readonly extent: readonly [number, number, number, number]
   readonly cleaned: Uint8Array
+  readonly analysisMask: Uint8Array
 }
 
 export type PlannedNatureTypeId = typeof natureTypeDefinitions[number]['id']
@@ -119,6 +120,7 @@ export type PlannedDevelopmentResult =
 interface TileAnalysis {
   readonly tileCoord: [number, number, number]
   readonly planned: Uint8Array
+  readonly plannedAny: Uint8Array
   readonly nature: number
   readonly agriculture: number
   readonly plannedNature: number
@@ -165,6 +167,7 @@ export async function calculatePlannedDevelopment(
     const width = (maxX - minX + 1) * PLAN_TILE_PIXELS
     const height = (maxY - minY + 1) * PLAN_TILE_PIXELS
     const planned = new Uint8Array(width * height)
+    const plannedAny = new Uint8Array(width * height)
 
     let totalNature = 0
     let totalAgriculture = 0
@@ -182,6 +185,10 @@ export async function calculatePlannedDevelopment(
           tile.planned.subarray(sourceStart, sourceStart + PLAN_TILE_PIXELS),
           targetStart,
         )
+        plannedAny.set(
+          tile.plannedAny.subarray(sourceStart, sourceStart + PLAN_TILE_PIXELS),
+          targetStart,
+        )
       }
 
       totalNature += tile.nature
@@ -191,6 +198,7 @@ export async function calculatePlannedDevelopment(
     }
 
     const cleaned = removeNarrowPlanStrips(planned, width)
+    const cleanedAnalysisMask = removeNarrowPlanStrips(plannedAny, width)
     const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
 
     const topLeftExtent = planTileGrid.getTileCoordExtent([
@@ -232,6 +240,7 @@ export async function calculatePlannedDevelopment(
           topLeftExtent[3],
         ],
         cleaned: cleaned.cleaned,
+        analysisMask: cleanedAnalysisMask.cleaned,
       },
     }
     plannedDevelopmentCache.set(municipalityNumber, result)
@@ -666,6 +675,7 @@ async function analyseTile(
   }
 
   const planned = new Uint8Array(PLAN_TILE_PIXELS * PLAN_TILE_PIXELS)
+  const plannedAny = new Uint8Array(PLAN_TILE_PIXELS * PLAN_TILE_PIXELS)
   let nature = 0
   let agriculture = 0
   let plannedNature = 0
@@ -674,6 +684,9 @@ async function analyseTile(
   for (let pixel = 0, rgba = 0; pixel < planned.length; pixel += 1, rgba += 4) {
     if (classes[rgba + 3] < 100) continue
 
+    const isPlanned = plan[rgba + 3] >= 128
+    if (isPlanned) plannedAny[pixel] = 1
+
     const accountClass = classifyAccountPixel(
       classes[rgba],
       classes[rgba + 1],
@@ -681,7 +694,6 @@ async function analyseTile(
     )
     if (accountClass !== NATURE_CLASS && accountClass !== AGRICULTURE_CLASS) continue
 
-    const isPlanned = plan[rgba + 3] >= 128
     if (accountClass === NATURE_CLASS) {
       nature += 1
       if (isPlanned) {
@@ -700,6 +712,7 @@ async function analyseTile(
   return {
     tileCoord,
     planned,
+    plannedAny,
     nature,
     agriculture,
     plannedNature,
