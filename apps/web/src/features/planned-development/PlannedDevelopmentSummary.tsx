@@ -1,4 +1,7 @@
-import type { PlannedDevelopmentResult } from '../../map/plannedDevelopment'
+import type {
+  PlannedDevelopmentResult,
+  PlannedNatureBreakdown,
+} from '../../map/plannedDevelopment'
 import {
   PLANNED_AGRICULTURE_COLOR,
   PLANNED_NATURE_COLOR,
@@ -9,6 +12,8 @@ interface PlannedDevelopmentSummaryProps {
   readonly result: PlannedDevelopmentResult | null
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
+  readonly natureBreakdown: PlannedNatureBreakdown | null
+  readonly natureBreakdownState: 'idle' | 'loading' | 'error'
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', {
@@ -29,6 +34,8 @@ export function PlannedDevelopmentSummary({
   result,
   visible,
   onVisibleChange,
+  natureBreakdown,
+  natureBreakdownState,
 }: PlannedDevelopmentSummaryProps) {
   return (
     <section
@@ -92,6 +99,55 @@ export function PlannedDevelopmentSummary({
               <i style={{ background: PLANNED_AGRICULTURE_COLOR }} aria-hidden="true" />
               <span>Jordbruk satt av til framtidig utbygging</span>
             </div>
+          </div>
+
+          <div className="plan-nature-breakdown">
+            <div className="plan-nature-breakdown__header">
+              <div>
+                <p className="map-sidebar__eyebrow">Grunnkart · økosystemtype nivå 1</p>
+                <h4>Hva slags natur ligger i utbyggingsområdene?</h4>
+              </div>
+            </div>
+
+            {natureBreakdownState === 'loading' ? (
+              <p className="plan-nature-breakdown__status" role="status">
+                Beregner fordeling på økosystemtype…
+              </p>
+            ) : natureBreakdownState === 'error' ? (
+              <p className="plan-nature-breakdown__status plan-nature-breakdown__status--error" role="alert">
+                Fordelingen på økosystemtype kunne ikke beregnes nå.
+              </p>
+            ) : natureBreakdown ? (
+              <>
+                <div className="plan-nature-breakdown__list">
+                  {natureBreakdown.metrics.map((metric) => (
+                    <div className="plan-nature-breakdown__row" key={metric.id}>
+                      <div className="plan-nature-breakdown__labels">
+                        <strong>{metric.label}</strong>
+                        <span>
+                          {dekar(metric.areaKm2)} · {percentFormatter.format(metric.sharePercent)} %
+                        </span>
+                      </div>
+                      <div className="plan-nature-breakdown__bar" aria-hidden="true">
+                        <span style={{ width: `${Math.max(1, metric.sharePercent)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {natureBreakdown.unclassifiedAreaKm2 > 0.001 && (
+                  <p className="plan-nature-breakdown__note">
+                    Ca. {dekar(natureBreakdown.unclassifiedAreaKm2)} av det planlagte naturarealet
+                    kunne ikke fordeles sikkert på økosystemtype i denne rasterberegningen.
+                  </p>
+                )}
+
+                <p className="plan-nature-breakdown__note">
+                  Fordelingen er beregnet på de samme ca. {Math.round(natureBreakdown.pixelMeters)} m-rutene
+                  som hovedanslaget, og bare for naturareal som er beholdt etter filtrering av smale striper.
+                </p>
+              </>
+            ) : null}
           </div>
 
           <details className="plan-analysis__details">
