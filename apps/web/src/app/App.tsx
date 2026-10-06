@@ -88,6 +88,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -177,6 +178,20 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => controller.abort()
   }, [activeView, selectedMunicipality])
 
+  useEffect(() => {
+    if (!map.current) return
+
+    const overlay = activeView === 'utforsk-i-kart'
+      && plannedDevelopment?.status === 'available'
+      ? plannedDevelopment.overlay
+      : null
+
+    map.current.setPlannedDevelopmentOverlay(overlay)
+    map.current.setPlannedDevelopmentVisible(
+      activeView === 'utforsk-i-kart' && plannedDevelopmentVisible,
+    )
+  }, [activeView, plannedDevelopment, plannedDevelopmentVisible, selectedMunicipality])
+
   function navigate(view: SiteView) {
     setActiveView(view)
     const hash = `#${view}`
@@ -193,6 +208,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setBoundaryData(null)
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
+    setPlannedDevelopmentVisible(true)
     map.current?.clearBoundary()
 
     if (!municipality) {
@@ -389,6 +405,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 <PlannedDevelopmentSummary
                   state={plannedDevelopmentState}
                   result={plannedDevelopment}
+                  visible={plannedDevelopmentVisible}
+                  onVisibleChange={setPlannedDevelopmentVisible}
                 />
 
                 <section className="map-sidebar__section map-sidebar__section--supplementary" aria-labelledby="thematic-layers-title">
