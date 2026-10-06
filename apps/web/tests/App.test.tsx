@@ -137,9 +137,6 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
 async function chooseTrondheim() {
   const input = await screen.findByRole('combobox', { name: 'Velg kommune' })
   await vi.waitFor(() => expect(input).toBeEnabled())
-  if (input.getAttribute('value') === 'Trondheim' || (input as HTMLInputElement).value === 'Trondheim') {
-    return
-  }
   fireEvent.focus(input)
   fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
 }
@@ -233,16 +230,6 @@ describe('kommunevalg', () => {
 })
 
 describe('sidestruktur og Oversikt', () => {
-  it('åpner Trondheim automatisk som midlertidig standardkommune', async () => {
-    mockMunicipalityFlow()
-    render(<App createMap={() => mapMock()} />)
-
-    expect(
-      await screen.findByRole('heading', { name: 'Hvor mye natur har Trondheim?' }),
-    ).toBeInTheDocument()
-    expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim')
-  })
-
   it('skiller teknisk feil fra manglende klargjorte regnskapstall', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
       const url = String(input)
