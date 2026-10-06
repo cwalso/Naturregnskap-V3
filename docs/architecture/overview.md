@@ -71,6 +71,20 @@ Backend har ansvar for:
 - versjonering/sporbarhet for analysegrunnlag
 - felles resultatmodell for kart, statistikk og rapport
 
+## Hybrid datatilgang
+
+V3 bruker en hybridmodell:
+
+- regnskapskritiske resultater går gjennom versjonert backend/analysegrunnlag
+- dynamiske, supplerende kilder kan hentes direkte eller via backend-adapter
+- karttjenester brukes til visualisering og skal ikke i seg selv bli regnskapsgrunnlag
+- samme kommunekontekst og cache gjenbrukes på tvers av temasidene
+
+Dette gjør det mulig å bruke en enkel dataflyt for åpne temadata uten å svekke
+sporbarheten i selve naturregnskapet.
+
+Se også `v3-target-architecture-demo-reference.md`.
+
 ## Kart og analyse er to forskjellige behov
 
 Samme datasett kan ha ulike tekniske kilder:
