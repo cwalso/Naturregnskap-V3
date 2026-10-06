@@ -1,4 +1,4 @@
-import { buildApiUrl } from './url'
+const KARTVERKET_BASE_URL = 'https://api.kartverket.no/kommuneinfo/v1'
 
 export interface Municipality {
   number: string
@@ -16,6 +16,17 @@ interface GeoJSONGeometry {
   coordinates: unknown[]
 }
 
+interface KartverketMunicipality {
+  kommunenummer: string
+  kommunenavnNorsk: string
+}
+
+interface KartverketBoundary {
+  kommunenummer: string
+  kommunenavn: string
+  omrade: GeoJSONGeometry
+}
+
 async function requestJson(url: string, signal?: AbortSignal): Promise<unknown> {
   const response = await fetch(url, { signal })
   if (!response.ok) {
@@ -25,35 +36,53 @@ async function requestJson(url: string, signal?: AbortSignal): Promise<unknown> 
 }
 
 export async function getMunicipalities(signal?: AbortSignal): Promise<Municipality[]> {
-  const data = await requestJson(buildApiUrl('/api/municipalities'), signal)
-  if (!Array.isArray(data) || !data.every(isMunicipality)) {
-    throw new Error('Kommunelisten returnerte et ugyldig svar')
+  const data = await requestJson(`${KARTVERKET_BASE_URL}/kommuner`, signal)
+  if (!Array.isArray(data) || !data.every(isKartverketMunicipality)) {
+    throw new Error('Kommunelisten fra Kartverket returnerte et ugyldig svar')
   }
-  return [...data].sort((a, b) => a.name.localeCompare(b.name, 'nb'))
+
+  return data
+    .map((item) => ({ number: item.kommunenummer, name: item.kommunenavnNorsk }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'nb'))
 }
 
 export async function getMunicipalityBoundary(
   number: string,
   signal?: AbortSignal,
 ): Promise<MunicipalityBoundary> {
-  const data = await requestJson(buildApiUrl(`/api/municipalities/${number}/boundary`), signal)
-  if (!isBoundary(data)) {
-    throw new Error('Kommunegrensen returnerte et ugyldig svar')
+  const data = await requestJson(
+    `${KARTVERKET_BASE_URL}/kommuner/${number}/omrade`,
+    signal,
+  )
+  if (!isKartverketBoundary(data)) {
+    throw new Error('Kommunegrensen fra Kartverket returnerte et ugyldig svar')
   }
-  return data
+
+  return {
+    type: 'Feature',
+    geometry: data.omrade,
+    properties: {
+      number: data.kommunenummer,
+      name: data.kommunenavn,
+    },
+  }
 }
 
-function isMunicipality(value: unknown): value is Municipality {
-  return typeof value === 'object' && value !== null &&
-    'number' in value && typeof value.number === 'string' &&
-    'name' in value && typeof value.name === 'string'
+function isKartverketMunicipality(value: unknown): value is KartverketMunicipality {
+  return typeof value === 'object' && value !== null
+    && 'kommunenummer' in value && typeof value.kommunenummer === 'string'
+    && 'kommunenavnNorsk' in value && typeof value.kommunenavnNorsk === 'string'
 }
 
-function isBoundary(value: unknown): value is MunicipalityBoundary {
-  if (typeof value !== 'object' || value === null || !('type' in value) || value.type !== 'Feature' ||
-      !('properties' in value) || !isMunicipality(value.properties) ||
-      !('geometry' in value) || typeof value.geometry !== 'object' || value.geometry === null) return false
-  const geometry = value.geometry
-  return 'type' in geometry && (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon') &&
-    'coordinates' in geometry && Array.isArray(geometry.coordinates)
+function isGeometry(value: unknown): value is GeoJSONGeometry {
+  return typeof value === 'object' && value !== null
+    && 'type' in value && (value.type === 'Polygon' || value.type === 'MultiPolygon')
+    && 'coordinates' in value && Array.isArray(value.coordinates)
+}
+
+function isKartverketBoundary(value: unknown): value is KartverketBoundary {
+  return typeof value === 'object' && value !== null
+    && 'kommunenummer' in value && typeof value.kommunenummer === 'string'
+    && 'kommunenavn' in value && typeof value.kommunenavn === 'string'
+    && 'omrade' in value && isGeometry(value.omrade)
 }

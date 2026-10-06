@@ -19,10 +19,14 @@ import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 import { buildWmsLegendUrl } from '../src/map/wmsLegend'
 
-const boundary = {
-  type: 'Feature',
-  geometry: { type: 'Polygon', coordinates: [] },
-  properties: { number: '5001', name: 'Trondheim' },
+const municipalityListSource = [
+  { kommunenummer: '5001', kommunenavnNorsk: 'Trondheim' },
+]
+
+const boundarySource = {
+  kommunenummer: '5001',
+  kommunenavn: 'Trondheim',
+  omrade: { type: 'Polygon', coordinates: [] },
 }
 
 function mapMock(): MunicipalityMap {
@@ -108,8 +112,8 @@ function thematicCoverageResponse() {
 function mockMunicipalityFlow(areaKm2: number | null = 12) {
   vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
     const url = String(input)
-    if (url === '/api/municipalities') {
-      return Promise.resolve(new Response(JSON.stringify([{ number: '5001', name: 'Trondheim' }]), { status: 200 }))
+    if (url === 'https://api.kartverket.no/kommuneinfo/v1/kommuner') {
+      return Promise.resolve(new Response(JSON.stringify(municipalityListSource), { status: 200 }))
     }
     if (url.endsWith('/account-overview')) {
       return Promise.resolve(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', areaKm2)), { status: 200 }))
@@ -117,7 +121,7 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     if (url.endsWith('/thematic-coverage')) {
       return Promise.resolve(new Response(JSON.stringify(thematicCoverageResponse()), { status: 200 }))
     }
-    return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+    return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
   })
 }
 
@@ -220,9 +224,9 @@ describe('sidestruktur og Oversikt', () => {
   it('skiller teknisk feil fra manglende klargjorte regnskapstall', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
       const url = String(input)
-      if (url === '/api/municipalities') {
+      if (url === 'https://api.kartverket.no/kommuneinfo/v1/kommuner') {
         return Promise.resolve(new Response(
-          JSON.stringify([{ number: '5001', name: 'Trondheim' }]),
+          JSON.stringify(municipalityListSource),
           { status: 200 },
         ))
       }
@@ -235,7 +239,7 @@ describe('sidestruktur og Oversikt', () => {
           { status: 200 },
         ))
       }
-      return Promise.resolve(new Response(JSON.stringify(boundary), { status: 200 }))
+      return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
     })
 
     render(<App createMap={() => mapMock()} />)

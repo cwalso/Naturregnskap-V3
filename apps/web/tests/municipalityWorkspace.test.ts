@@ -17,9 +17,9 @@ describe('shared municipality data core', () => {
   it('caches kommunegrensen per kommune', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(JSON.stringify({
-        type: 'Feature',
-        geometry: { type: 'Polygon', coordinates: [] },
-        properties: { number: '5001', name: 'Trondheim' },
+        kommunenummer: '5001',
+        kommunenavn: 'Trondheim',
+        omrade: { type: 'Polygon', coordinates: [] },
       }), { status: 200 }),
     )
 
