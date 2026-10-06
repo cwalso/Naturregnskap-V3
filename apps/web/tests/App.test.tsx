@@ -389,10 +389,10 @@ describe('sidestruktur og Oversikt', () => {
 
     const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'false')
+    expect(valuedNatureAnalysis).toHaveTextContent('Klar')
     fireEvent.click(valuedNatureAnalysis)
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
-    expect(screen.getByText(/Denne overlayanalysen er ikke koblet til ennå/)).toBeInTheDocument()
-    expect(screen.getByText(/fordelt på verdi og naturtype/)).toBeInTheDocument()
+    expect(screen.queryByText(/Denne overlayanalysen er ikke koblet til ennå/)).not.toBeInTheDocument()
     await vi.waitFor(() => {
       expect(map.setPlannedDevelopmentVisible).toHaveBeenCalledWith(false)
     })
