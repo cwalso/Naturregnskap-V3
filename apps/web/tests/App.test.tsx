@@ -42,6 +42,8 @@ function mapMock(): MunicipalityMap {
     showBoundary: vi.fn(),
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
+    setPlannedDevelopmentOverlay: vi.fn(),
+    setPlannedDevelopmentVisible: vi.fn(),
     setThematicLayerVisible: vi.fn(),
     setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
