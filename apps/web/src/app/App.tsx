@@ -43,30 +43,46 @@ import {
   createMunicipalityMap,
   type MapFeatureInfoState,
   type MunicipalityMap,
-  type ThematicLayerLoadStatus,
   type MunicipalityMapFactory,
 } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 import { ExploreNaturePage } from '../pages/ExploreNaturePage'
+import { ThematicDataPage } from '../pages/ThematicDataPage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
 import { OverviewPage } from '../pages/OverviewPage'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
 
-const initialThematicLayerVisibility = Object.fromEntries(
-  thematicDatasets.map((dataset) => [dataset.id, false]),
-) as Record<ThematicDatasetId, boolean>
-
-const initialThematicLayerStatus = Object.fromEntries(
-  thematicDatasets.map((dataset) => [dataset.id, 'idle']),
-) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
-
 const MAP_ACCESSIBILITY_DESCRIPTION_ID = 'map-accessibility-description'
 
+const thematicViewByDataset: Record<ThematicDatasetId, SiteView> = {
+  'valued-nature': 'tema-valued-nature',
+  'protected-areas': 'tema-protected-areas',
+  'wild-reindeer-areas': 'tema-wild-reindeer-areas',
+  'infrastructure-free-nature': 'tema-infrastructure-free-nature',
+}
+
+const datasetByThematicView: Partial<Record<SiteView, ThematicDatasetId>> = {
+  'tema-valued-nature': 'valued-nature',
+  'tema-protected-areas': 'protected-areas',
+  'tema-wild-reindeer-areas': 'wild-reindeer-areas',
+  'tema-infrastructure-free-nature': 'infrastructure-free-nature',
+}
+
+const validViews: readonly SiteView[] = [
+  'oversikt',
+  'naturtapet',
+  'utforsk-naturen',
+  'utforsk-i-kart',
+  'tema-valued-nature',
+  'tema-protected-areas',
+  'tema-wild-reindeer-areas',
+  'tema-infrastructure-free-nature',
+]
+
 function viewFromHash(): SiteView {
-  const value = window.location.hash.replace(/^#/, '')
-  if (value === 'naturtapet' || value === 'utforsk-naturen' || value === 'utforsk-i-kart') return value
-  return 'oversikt'
+  const value = window.location.hash.replace(/^#/, '') as SiteView
+  return validViews.includes(value) ? value : 'oversikt'
 }
 
 export function App({ createMap = createMunicipalityMap }: AppProps) {
@@ -82,16 +98,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [listState, setListState] = useState<'loading' | 'ready' | 'error'>('loading')
   const [boundaryState, setBoundaryState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [accountLayerVisible, setAccountLayerVisible] = useState(true)
-  const [thematicLayerVisibility, setThematicLayerVisibility] = useState<Record<ThematicDatasetId, boolean>>(
-    initialThematicLayerVisibility,
-  )
   const [accountData, setAccountData] = useState<AccountOverviewData | null>(null)
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [thematicCoverage, setThematicCoverage] = useState<ThematicCoverageResponse | null>(null)
   const [thematicCoverageState, setThematicCoverageState] = useState<'idle' | 'loading' | 'error'>('idle')
-  const [thematicLayerStatus, setThematicLayerStatus] = useState<
-    Record<ThematicDatasetId, ThematicLayerLoadStatus>
-  >(initialThematicLayerStatus)
   const [mapFeatureInfo, setMapFeatureInfo] = useState<MapFeatureInfoState>({
     status: 'idle',
     results: [],
@@ -126,9 +136,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       setMapRuntimeError(null)
       map.current = createMap(mapElement.current)
       map.current.setFeatureInfoHandler(setMapFeatureInfo)
-      map.current.setThematicLayerStatusHandler((datasetId, status) => {
-        setThematicLayerStatus((current) => ({ ...current, [datasetId]: status }))
-      })
     } catch (error) {
       map.current = null
       setMapRuntimeError(error instanceof Error ? error.message : 'Ukjent feil ved initialisering av kartet')
@@ -145,12 +152,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       activeView === 'oversikt' ? true : accountLayerVisible,
     )
     for (const dataset of thematicDatasets) {
-      map.current?.setThematicLayerVisible(
-        dataset.id,
-        activeView === 'utforsk-i-kart' && thematicLayerVisibility[dataset.id],
-      )
+      map.current?.setThematicLayerVisible(dataset.id, false)
     }
-  }, [accountLayerVisible, activeView, selectedMunicipality, thematicLayerVisibility])
+  }, [accountLayerVisible, activeView, selectedMunicipality])
 
   useEffect(() => {
     if (!map.current) return
@@ -355,13 +359,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
   }
 
-  function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
-    setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
-    setMapFeatureInfo({ status: 'idle', results: [] })
+  function openThematicPage(datasetId: ThematicDatasetId) {
+    navigate(thematicViewByDataset[datasetId])
   }
 
-  function openThematicLayerInMap(datasetId: ThematicDatasetId) {
-    setThematicLayer(datasetId, true)
+  function openValuedNatureAnalysis() {
+    setPlannedDevelopmentAnalysisTarget('valued-nature')
     navigate('utforsk-i-kart')
   }
 
@@ -452,17 +455,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         visible: accountLayerVisible,
         imageUrl: buildWmsLegendUrl(nationalLandCover2025.visualSource),
       },
-      ...thematicDatasets.map((dataset) => ({
-        id: dataset.id,
-        title: dataset.visualSource.title,
-        visible: variant === 'explore' && thematicLayerVisibility[dataset.id],
-        imageUrl: buildWmsLegendUrl(dataset.visualSource),
-      })),
     ]
-
-    const activeThematicCount = thematicDatasets.filter(
-      (dataset) => thematicLayerVisibility[dataset.id],
-    ).length
 
     const legend = <MapLegend items={legendItems} />
 
@@ -479,9 +472,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
         {variant === 'explore' && (
           <nav className="map-mobile-jump-nav" aria-label="Hurtignavigasjon i kartvisningen">
-            <a href="#map-analysis-panel">Analyse</a>
             <a href="#map-canvas-region">Kart</a>
-            <a href="#map-layers-title">Kartlag</a>
+            <a href="#map-analysis-panel">Analyse</a>
           </nav>
         )}
 
@@ -504,89 +496,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   valuedNatureAnalysis={plannedValuedNature}
                   valuedNatureAnalysisState={plannedValuedNatureState}
                 />
-
-                <section
-                  className="map-sidebar__section map-sidebar__section--layers"
-                  aria-labelledby="map-layers-title"
-                >
-                  <div className="map-sidebar__section-heading">
-                    <div>
-                      <p className="map-sidebar__eyebrow">Visning</p>
-                      <h3 id="map-layers-title">Kartlag</h3>
-                    </div>
-                    <span className="status-tag status-tag--muted">
-                      {1 + thematicDatasets.length} tilgjengelige
-                    </span>
-                  </div>
-
-                  <p className="map-sidebar__group-label">Regnskapsgrunnlag</p>
-                  {layerToggle}
-
-                  <p className="map-sidebar__group-label map-sidebar__group-label--spaced">
-                    Supplerende temadata
-                  </p>
-                  <div className="thematic-layer-list">
-                    {thematicDatasets.map((dataset) => {
-                      const evaluation = thematicCoverage?.results.find(
-                        (item) => item.datasetId === dataset.id,
-                      )
-                      const evaluationText = dataset.analysisSource === null
-                        ? 'Kartlag tilgjengelig'
-                        : thematicCoverageState === 'loading'
-                          ? 'Vurderer treff…'
-                          : thematicCoverageState === 'error'
-                            ? 'Treffstatus utilgjengelig'
-                            : evaluation?.status === 'hit'
-                              ? 'Treff i kommunen'
-                              : evaluation?.status === 'no_hit'
-                                ? 'Ingen registrerte treff'
-                                : evaluation?.status === 'unavailable'
-                                  ? 'Kilden kunne ikke vurderes'
-                                  : null
-                      return (
-                        <label className="layer-toggle layer-toggle--thematic" key={dataset.id}>
-                          <input
-                            type="checkbox"
-                            checked={thematicLayerVisibility[dataset.id]}
-                            onChange={(event) => setThematicLayer(dataset.id, event.target.checked)}
-                          />
-                          <span>
-                            <strong>{dataset.title}</strong>
-                            <small>{dataset.coverage.label} · supplerende temadata</small>
-                            {evaluationText && (
-                              <small className={
-                                evaluation?.status === 'hit'
-                                  ? 'layer-toggle__coverage layer-toggle__coverage--hit'
-                                  : 'layer-toggle__coverage'
-                              }>
-                                {evaluationText}
-                              </small>
-                            )}
-                            {thematicLayerVisibility[dataset.id]
-                              && thematicLayerStatus[dataset.id] === 'error' && (
-                              <small className="layer-toggle__status layer-toggle__status--error">
-                                Karttjenesten kunne ikke lastes
-                              </small>
-                            )}
-                          </span>
-                        </label>
-                      )
-                    })}
-                  </div>
-
-                  <p className="map-sidebar__explanation">
-                    Kartlag styrer bare hva som er synlig i kartet. De inngår ikke
-                    automatisk i analysen. Velg analysegrunnlag under «Analyser mot»
-                    over når et lag skal brukes i overlayanalysen.
-                  </p>
-                  <button
-                    type="button"
-                    className="map-sidebar__link"
-                    onClick={() => navigate('utforsk-naturen')}
-                  >
-                    Les om temadataene <span aria-hidden="true">→</span>
-                  </button>
-                </section>
 
                 <section className="map-sidebar__tools" aria-labelledby="map-tools-title">
                   <h3 id="map-tools-title">Kartverktøy</h3>
@@ -631,7 +540,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 <span><strong>{selectedMunicipality.name}</strong></span>
                 <span>
                   {accountLayerVisible ? 'Regnskapsgrunnlag vises' : 'Regnskapsgrunnlag er skjult'}
-                  {activeThematicCount > 0 ? ` · ${activeThematicCount} supplerende lag aktive` : ''}
                 </span>
               </div>
             )}
@@ -818,7 +726,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           </section>
           {mapWorkspace(
             'Kartgrunnlag',
-            'Slå det heldekkende grunnlaget av og på, les tegnforklaringen og utforsk kommunen. Supplerende faglag kobles på separat når datakilde og metodisk rolle er avklart.',
+            'Kartet viser analyseområdet og valgt analyseresultat. Supplerende temadata har egne temasider og brukes her når de inngår i en konkret overlayanalyse.',
             'explore',
           )}
         </>
@@ -835,7 +743,21 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           municipalityName={selectedMunicipality?.name}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
-          onOpenThematicLayer={openThematicLayerInMap}
+          onOpenThemePage={openThematicPage}
+        />
+      )}
+      {datasetByThematicView[activeView] && (
+        <ThematicDataPage
+          datasetId={datasetByThematicView[activeView]!}
+          municipalityName={selectedMunicipality?.name}
+          thematicCoverage={thematicCoverage}
+          thematicCoverageState={thematicCoverageState}
+          onBack={() => navigate('utforsk-naturen')}
+          onOpenFutureDevelopmentAnalysis={
+            datasetByThematicView[activeView] === 'valued-nature'
+              ? openValuedNatureAnalysis
+              : undefined
+          }
         />
       )}
       {activeView === 'utforsk-i-kart' && mapView}
