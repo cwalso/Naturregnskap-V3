@@ -455,9 +455,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                                 {evaluationText}
                               </small>
                             )}
-                            {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'loading' && (
-                              <small className="layer-toggle__status">Laster kartlag…</small>
-                            )}
                             {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'error' && (
                               <small className="layer-toggle__status layer-toggle__status--error">
                                 Karttjenesten kunne ikke lastes
