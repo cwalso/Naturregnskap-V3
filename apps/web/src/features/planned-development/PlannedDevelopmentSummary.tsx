@@ -123,13 +123,25 @@ export function PlannedDevelopmentSummary({
                   {natureBreakdown.metrics.map((metric) => (
                     <div className="plan-nature-breakdown__row" key={metric.id}>
                       <div className="plan-nature-breakdown__labels">
-                        <strong>{metric.label}</strong>
+                        <strong>
+                          <i
+                            className="plan-nature-breakdown__swatch"
+                            style={{ background: metric.color }}
+                            aria-hidden="true"
+                          />
+                          {metric.label}
+                        </strong>
                         <span>
                           {dekar(metric.areaKm2)} · {percentFormatter.format(metric.sharePercent)} %
                         </span>
                       </div>
                       <div className="plan-nature-breakdown__bar" aria-hidden="true">
-                        <span style={{ width: `${Math.max(1, metric.sharePercent)}%` }} />
+                        <span
+                          style={{
+                            width: `${Math.max(1, metric.sharePercent)}%`,
+                            background: metric.color,
+                          }}
+                        />
                       </div>
                     </div>
                   ))}

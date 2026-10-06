@@ -959,7 +959,17 @@ body { font-size: 16px; }
   line-height: 1.3;
 }
 .plan-nature-breakdown__labels strong {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
   font-size: .73rem;
+}
+.plan-nature-breakdown__swatch {
+  flex: 0 0 auto;
+  width: .72rem;
+  height: .72rem;
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-radius: .12rem;
 }
 .plan-nature-breakdown__labels span {
   color: var(--color-text-muted);

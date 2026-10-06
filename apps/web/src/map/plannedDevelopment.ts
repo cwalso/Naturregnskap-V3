@@ -22,11 +22,11 @@ const NATURE_TYPE_SCALE = 2
 const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
 
 const natureTypeDefinitions = [
-  { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0] },
-  { id: 'hei-buskmark', label: 'Hei og buskmark', sourceValue: 'heiBuskmark', color: [0, 255, 0] },
-  { id: 'lite-vegetert-mark', label: 'Lite vegetert mark', sourceValue: 'liteVegetertMark', color: [0, 0, 255] },
-  { id: 'vatmark', label: 'Våtmark', sourceValue: 'vatmark', color: [255, 0, 255] },
-  { id: 'kyst', label: 'Kyststrender, svaberg og dyner', sourceValue: 'kyststrenderSvabergDyner', color: [0, 255, 255] },
+  { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0], displayColor: '#9ECC73' },
+  { id: 'hei-buskmark', label: 'Hei og buskmark', sourceValue: 'heiBuskmark', color: [0, 255, 0], displayColor: '#E1C790' },
+  { id: 'lite-vegetert-mark', label: 'Lite vegetert mark', sourceValue: 'liteVegetertMark', color: [0, 0, 255], displayColor: '#FFE8C2' },
+  { id: 'vatmark', label: 'Våtmark', sourceValue: 'vatmark', color: [255, 0, 255], displayColor: '#C9B0EC' },
+  { id: 'kyst', label: 'Kyststrender, svaberg og dyner', sourceValue: 'kyststrenderSvabergDyner', color: [0, 255, 255], displayColor: '#DCDCDC' },
 ] as const
 
 const imageBlobCache = new Map<string, Promise<Blob>>()
@@ -64,9 +64,14 @@ export interface PlannedDevelopmentOverlayGrid {
 
 export type PlannedNatureTypeId = typeof natureTypeDefinitions[number]['id']
 
+export function plannedNatureDisplayColor(id: PlannedNatureTypeId): string {
+  return natureTypeDefinitions.find((definition) => definition.id === id)?.displayColor ?? '#000000'
+}
+
 export interface PlannedNatureTypeMetric {
   readonly id: PlannedNatureTypeId
   readonly label: string
+  readonly color: string
   readonly areaKm2: number
   readonly sharePercent: number
 }
@@ -313,6 +318,7 @@ export async function calculatePlannedNatureBreakdown(
     .map((definition, index) => ({
       id: definition.id,
       label: definition.label,
+      color: definition.displayColor,
       areaKm2: counts[index] * pixelAreaKm2,
       sharePercent: plannedNaturePixels > 0 ? counts[index] / plannedNaturePixels * 100 : 0,
     }))
