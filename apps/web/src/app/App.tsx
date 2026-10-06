@@ -25,7 +25,10 @@ import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
-import { PlannedDevelopmentSummary } from '../features/planned-development/PlannedDevelopmentSummary'
+import {
+  PlannedDevelopmentSummary,
+  type PlannedDevelopmentAnalysisTarget,
+} from '../features/planned-development/PlannedDevelopmentSummary'
 import {
   calculatePlannedDevelopment,
   calculatePlannedNatureBreakdown,
@@ -91,6 +94,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
+  const [plannedDevelopmentAnalysisTarget, setPlannedDevelopmentAnalysisTarget] =
+    useState<PlannedDevelopmentAnalysisTarget>('grunnkart')
   const [plannedNatureBreakdown, setPlannedNatureBreakdown] = useState<PlannedNatureBreakdown | null>(null)
   const [plannedNatureBreakdownState, setPlannedNatureBreakdownState] = useState<'idle' | 'loading' | 'error'>('idle')
 
@@ -185,20 +190,31 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   useEffect(() => {
     if (!map.current) return
 
+    const usesGrunnkartAnalysis = plannedDevelopmentAnalysisTarget === 'grunnkart'
     const overlay = activeView === 'utforsk-i-kart'
+      && usesGrunnkartAnalysis
       && plannedDevelopment?.status === 'available'
       ? plannedDevelopment.overlay
       : null
 
     map.current.setPlannedDevelopmentOverlay(overlay)
     map.current.setPlannedDevelopmentVisible(
-      activeView === 'utforsk-i-kart' && plannedDevelopmentVisible,
+      activeView === 'utforsk-i-kart'
+        && usesGrunnkartAnalysis
+        && plannedDevelopmentVisible,
     )
-  }, [activeView, plannedDevelopment, plannedDevelopmentVisible, selectedMunicipality])
+  }, [
+    activeView,
+    plannedDevelopment,
+    plannedDevelopmentAnalysisTarget,
+    plannedDevelopmentVisible,
+    selectedMunicipality,
+  ])
 
   useEffect(() => {
     if (
       activeView !== 'utforsk-i-kart'
+      || plannedDevelopmentAnalysisTarget !== 'grunnkart'
       || plannedDevelopment?.status !== 'available'
     ) {
       setPlannedNatureBreakdown(null)
@@ -224,7 +240,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     return () => controller.abort()
-  }, [activeView, plannedDevelopment])
+  }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
 
   function navigate(view: SiteView) {
     setActiveView(view)
@@ -243,6 +259,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
     setPlannedDevelopmentVisible(true)
+    setPlannedDevelopmentAnalysisTarget('grunnkart')
     setPlannedNatureBreakdown(null)
     setPlannedNatureBreakdownState('idle')
     map.current?.clearBoundary()
@@ -423,21 +440,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           <div className="map-sidebar">
             {variant === 'explore' ? (
               <>
-                <section className="map-sidebar__section" aria-labelledby="account-layers-title">
-                  <div className="map-sidebar__section-heading">
-                    <div>
-                      <p className="map-sidebar__eyebrow">Regnskapsgrunnlag</p>
-                      <h3 id="account-layers-title">Aktivt kartlag</h3>
-                    </div>
-                    <span className="status-tag">Heldekkende</span>
-                  </div>
-                  {layerToggle}
-                  <p className="map-sidebar__explanation">
-                    Grunnkart for arealanalyse er sentralt heldekkende datagrunnlag.
-                    Karttjenesten her brukes til visualisering, ikke til å beregne arealtall.
-                  </p>
-                </section>
-
                 <PlannedDevelopmentSummary
                   state={plannedDevelopmentState}
                   result={plannedDevelopment}
@@ -445,17 +447,30 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   onVisibleChange={setPlannedDevelopmentVisible}
                   natureBreakdown={plannedNatureBreakdown}
                   natureBreakdownState={plannedNatureBreakdownState}
+                  analysisTarget={plannedDevelopmentAnalysisTarget}
+                  onAnalysisTargetChange={setPlannedDevelopmentAnalysisTarget}
                 />
 
-                <section className="map-sidebar__section map-sidebar__section--supplementary" aria-labelledby="thematic-layers-title">
+                <section
+                  className="map-sidebar__section map-sidebar__section--layers"
+                  aria-labelledby="map-layers-title"
+                >
                   <div className="map-sidebar__section-heading">
                     <div>
-                      <p className="map-sidebar__eyebrow">Supplerende temadata</p>
-                      <h3 id="thematic-layers-title">Faglag</h3>
+                      <p className="map-sidebar__eyebrow">Visning</p>
+                      <h3 id="map-layers-title">Kartlag</h3>
                     </div>
-                    <span className="status-tag status-tag--muted">{thematicDatasets.length} koblet til</span>
+                    <span className="status-tag status-tag--muted">
+                      {1 + thematicDatasets.length} tilgjengelige
+                    </span>
                   </div>
 
+                  <p className="map-sidebar__group-label">Regnskapsgrunnlag</p>
+                  {layerToggle}
+
+                  <p className="map-sidebar__group-label map-sidebar__group-label--spaced">
+                    Supplerende temadata
+                  </p>
                   <div className="thematic-layer-list">
                     {thematicDatasets.map((dataset) => {
                       const evaluation = thematicCoverage?.results.find(
@@ -493,7 +508,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                                 {evaluationText}
                               </small>
                             )}
-                            {thematicLayerVisibility[dataset.id] && thematicLayerStatus[dataset.id] === 'error' && (
+                            {thematicLayerVisibility[dataset.id]
+                              && thematicLayerStatus[dataset.id] === 'error' && (
                               <small className="layer-toggle__status layer-toggle__status--error">
                                 Karttjenesten kunne ikke lastes
                               </small>
@@ -505,11 +521,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   </div>
 
                   <p className="map-sidebar__explanation">
-                    Lagene gir supplerende innsikt og inngår ikke i selve
-                    regnskapsgrunnlaget. Treffstatus vurderes romlig mot
-                    kommunegrensen via kildens feature-tjeneste. WMS-laget brukes
-                    fortsatt bare til kartvisning. I prototypen brukes løpende
-                    kildetjenester, ikke en låst dataversjon.
+                    Kartlag styrer bare hva som er synlig i kartet. De inngår ikke
+                    automatisk i analysen. Velg analysegrunnlag under «Analyser mot»
+                    over når et lag skal brukes i overlayanalysen.
                   </p>
                   <button
                     type="button"
