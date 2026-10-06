@@ -39,8 +39,6 @@ jobs:
 
       - name: Build
         working-directory: apps/web
-        env:
-          VITE_API_ORIGIN: ${{ vars.VITE_API_ORIGIN }}
         run: npm run build -- --base=/Naturregnskap-V3/
 
       - name: Setup Pages
