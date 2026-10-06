@@ -238,6 +238,11 @@ export function ExploreNaturePage({
                     )}
                     {' '}{selectedDataset.attribution}. Dekning: {selectedDataset.coverage.label}.
                     {' '}{selectedDataset.coverage.note}
+                    {selectedDataset.analysisSource && thematicCoverage?.warnings.length ? (
+                      <span className="theme-detail__provenance">
+                        {' '}Datastatus: {thematicCoverage.warnings.join(' ')}
+                      </span>
+                    ) : null}
                   </dd>
                 ) : (
                   <dd>Datakilde, dekning, versjon og presentasjon er ikke koblet til prototypen ennå.</dd>
