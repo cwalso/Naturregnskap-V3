@@ -25,6 +25,11 @@ import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
+import { PlannedDevelopmentSummary } from '../features/planned-development/PlannedDevelopmentSummary'
+import {
+  calculatePlannedDevelopment,
+  type PlannedDevelopmentResult,
+} from '../map/plannedDevelopment'
 import {
   createMunicipalityMap,
   type MapFeatureInfoState,
@@ -81,6 +86,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     results: [],
   })
   const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
+  const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
+  const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -143,6 +150,33 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => controller.abort()
   }, [])
 
+  useEffect(() => {
+    if (activeView !== 'utforsk-i-kart' || !selectedMunicipality) {
+      setPlannedDevelopment(null)
+      setPlannedDevelopmentState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setPlannedDevelopment(null)
+    setPlannedDevelopmentState('loading')
+
+    void calculatePlannedDevelopment(selectedMunicipality.number, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setPlannedDevelopment(result)
+        setPlannedDevelopmentState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setPlannedDevelopment(null)
+        setPlannedDevelopmentState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, selectedMunicipality])
+
   function navigate(view: SiteView) {
     setActiveView(view)
     const hash = `#${view}`
@@ -157,6 +191,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setAccountData(null)
     setThematicCoverage(null)
     setBoundaryData(null)
+    setPlannedDevelopment(null)
+    setPlannedDevelopmentState('idle')
     map.current?.clearBoundary()
 
     if (!municipality) {
@@ -350,6 +386,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   </p>
                 </section>
 
+                <PlannedDevelopmentSummary
+                  state={plannedDevelopmentState}
+                  result={plannedDevelopment}
+                />
+
                 <section className="map-sidebar__section map-sidebar__section--supplementary" aria-labelledby="thematic-layers-title">
                   <div className="map-sidebar__section-heading">
                     <div>
@@ -524,10 +565,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
         {variant === 'explore' && (
           <div className="map-workspace__method">
-            <strong>Kartet er en visning av datagrunnlaget.</strong>
+            <strong>Kartet viser både datagrunnlag og et illustrativt plananslag.</strong>
             <span>
-              Arealtall og framtidige analyser skal bygge på godkjente data og
-              dokumentert metode, ikke beregnes fra kartbildet i nettleseren.
+              Regnskapsgrunnlag, supplerende temadata og analyse holdes adskilt.
+              Plananslaget beregnes i nettleseren fra Grunnkart-raster og DiBK-data
+              med dokumentert prototypemetode.
             </span>
           </div>
         )}

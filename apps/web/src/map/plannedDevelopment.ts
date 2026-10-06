@@ -1,0 +1,397 @@
+import TileGrid from 'ol/tilegrid/TileGrid'
+
+import {
+  ACCOUNT_CRS,
+  ACCOUNT_ORIGIN,
+  ACCOUNT_RESOLUTIONS,
+  classifyAccountPixel,
+  loadOverviewRaster,
+  type LoadedOverviewRaster,
+} from './accountOverviewRaster'
+
+const PLAN_ENDPOINT = 'https://nap.ft.dibk.no/services/wms/kommuneplaner/'
+const PLAN_ANALYSIS_ZOOM = 9
+const PLAN_TILE_PIXELS = 512
+const PLAN_SOURCE_TILE_SIZE = 256
+const MAX_CONCURRENT_REQUESTS = 4
+const NATURE_CLASS = 2
+const AGRICULTURE_CLASS = 1
+
+export const PLAN_PIXEL_METERS = ACCOUNT_RESOLUTIONS[PLAN_ANALYSIS_ZOOM] / 2
+
+const planTileGrid = new TileGrid({
+  origin: ACCOUNT_ORIGIN,
+  resolutions: ACCOUNT_RESOLUTIONS,
+  tileSize: PLAN_SOURCE_TILE_SIZE,
+  minZoom: 5,
+})
+
+const planLike = (value: string) =>
+  `<PropertyIsLike wildCard="*" singleChar="?" escapeChar="!"><PropertyName>arealformål</PropertyName><Literal>${value}</Literal></PropertyIsLike>`
+
+const PLAN_FILTER =
+  `<Filter xmlns="http://www.opengis.net/ogc"><And><PropertyIsEqualTo><PropertyName>arealbruksstatus</PropertyName><Literal>2</Literal></PropertyIsEqualTo><Or>${planLike('1*')}${planLike('2*')}</Or></And></Filter>`
+
+const PLAN_STYLE =
+  '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld"><NamedLayer><Name>kparealformalomrade</Name><UserStyle><FeatureTypeStyle><Rule><PolygonSymbolizer><Fill><CssParameter name="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
+
+export interface PlannedDevelopmentAnalysis {
+  readonly municipalityNumber: string
+  readonly status: 'available'
+  readonly natureKm2: number
+  readonly agricultureKm2: number
+  readonly natureWithNarrowStripsKm2: number
+  readonly agricultureWithNarrowStripsKm2: number
+  readonly natureSharePercent: number | null
+  readonly agricultureSharePercent: number | null
+  readonly tileCount: number
+  readonly pixelMeters: number
+  readonly source: 'DiBK kommuneplaner'
+  readonly methodVersion: 'dibk-plan-raster-v1'
+}
+
+export interface PlannedDevelopmentUnavailable {
+  readonly municipalityNumber: string
+  readonly status: 'not_available'
+  readonly reason: string
+}
+
+export type PlannedDevelopmentResult =
+  | PlannedDevelopmentAnalysis
+  | PlannedDevelopmentUnavailable
+
+interface TileAnalysis {
+  readonly tileCoord: [number, number, number]
+  readonly planned: Uint8Array
+  readonly nature: number
+  readonly agriculture: number
+  readonly plannedNature: number
+  readonly plannedAgriculture: number
+}
+
+export async function calculatePlannedDevelopment(
+  municipalityNumber: string,
+  signal?: AbortSignal,
+): Promise<PlannedDevelopmentResult> {
+  const raster = await loadOverviewRaster(municipalityNumber)
+  if (!raster) {
+    return {
+      municipalityNumber,
+      status: 'not_available',
+      reason: 'Beregningen krever et klargjort oversiktsraster for kommunen i denne prototypen.',
+    }
+  }
+
+  const tileCoords = getPlanTileCoordinates(raster.extent)
+  if (tileCoords.length === 0) {
+    return {
+      municipalityNumber,
+      status: 'not_available',
+      reason: 'Fant ingen analyseruter for kommunen.',
+    }
+  }
+
+  const overviewBitmap = await createImageBitmap(raster.rawBlob)
+  try {
+    const tileResults = await mapWithConcurrency(
+      tileCoords,
+      MAX_CONCURRENT_REQUESTS,
+      (tileCoord) => analyseTile(tileCoord, raster, overviewBitmap, signal),
+    )
+
+    const minX = Math.min(...tileResults.map((tile) => tile.tileCoord[1]))
+    const maxX = Math.max(...tileResults.map((tile) => tile.tileCoord[1]))
+    const minY = Math.min(...tileResults.map((tile) => tile.tileCoord[2]))
+    const maxY = Math.max(...tileResults.map((tile) => tile.tileCoord[2]))
+    const width = (maxX - minX + 1) * PLAN_TILE_PIXELS
+    const height = (maxY - minY + 1) * PLAN_TILE_PIXELS
+    const planned = new Uint8Array(width * height)
+
+    let totalNature = 0
+    let totalAgriculture = 0
+    let rawNature = 0
+    let rawAgriculture = 0
+
+    for (const tile of tileResults) {
+      const tileX = (tile.tileCoord[1] - minX) * PLAN_TILE_PIXELS
+      const tileY = (tile.tileCoord[2] - minY) * PLAN_TILE_PIXELS
+
+      for (let row = 0; row < PLAN_TILE_PIXELS; row += 1) {
+        const sourceStart = row * PLAN_TILE_PIXELS
+        const targetStart = (tileY + row) * width + tileX
+        planned.set(
+          tile.planned.subarray(sourceStart, sourceStart + PLAN_TILE_PIXELS),
+          targetStart,
+        )
+      }
+
+      totalNature += tile.nature
+      totalAgriculture += tile.agriculture
+      rawNature += tile.plannedNature
+      rawAgriculture += tile.plannedAgriculture
+    }
+
+    const cleaned = removeNarrowPlanStrips(planned, width)
+    const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+
+    return {
+      municipalityNumber,
+      status: 'available',
+      natureKm2: cleaned.nature * pixelAreaKm2,
+      agricultureKm2: cleaned.agriculture * pixelAreaKm2,
+      natureWithNarrowStripsKm2: rawNature * pixelAreaKm2,
+      agricultureWithNarrowStripsKm2: rawAgriculture * pixelAreaKm2,
+      natureSharePercent: totalNature > 0 ? cleaned.nature / totalNature * 100 : null,
+      agricultureSharePercent: totalAgriculture > 0
+        ? cleaned.agriculture / totalAgriculture * 100
+        : null,
+      tileCount: tileResults.length,
+      pixelMeters: PLAN_PIXEL_METERS,
+      source: 'DiBK kommuneplaner',
+      methodVersion: 'dibk-plan-raster-v1',
+    }
+  } finally {
+    overviewBitmap.close()
+  }
+}
+
+export function buildPlanTileUrl(tileCoord: number[]): string {
+  return PLAN_ENDPOINT + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: 'kparealformalomrade',
+    sld_body: PLAN_STYLE,
+    crs: ACCOUNT_CRS,
+    bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
+    width: String(PLAN_TILE_PIXELS),
+    height: String(PLAN_TILE_PIXELS),
+    format: 'image/png8',
+    transparent: 'true',
+    filter: PLAN_FILTER,
+  })
+}
+
+export function getPlanTileCoordinates(
+  extent: readonly [number, number, number, number],
+): [number, number, number][] {
+  const coordinates: [number, number, number][] = []
+  planTileGrid.forEachTileCoord(
+    [...extent],
+    PLAN_ANALYSIS_ZOOM,
+    (tileCoord) => coordinates.push([tileCoord[0], tileCoord[1], tileCoord[2]]),
+  )
+  return coordinates
+}
+
+export function removeNarrowPlanStrips(
+  planned: Uint8Array,
+  width: number,
+): { cleaned: Uint8Array; nature: number; agriculture: number } {
+  const candidates: number[] = []
+  for (let index = 0; index < planned.length; index += 1) {
+    if (planned[index] === 1 || planned[index] === 2) candidates.push(index)
+  }
+
+  const cleaned = new Uint8Array(planned.length)
+  let frontier: number[] = []
+
+  for (const index of candidates) {
+    const x = index % width
+    if (
+      x > 0
+      && x < width - 1
+      && index >= width
+      && index < planned.length - width
+      && planned[index - 1]
+      && planned[index + 1]
+      && planned[index - width]
+      && planned[index + width]
+    ) {
+      cleaned[index] = planned[index]
+      frontier.push(index)
+    }
+  }
+
+  while (frontier.length > 0) {
+    const next: number[] = []
+    for (const index of frontier) {
+      for (const neighbour of [
+        index - 1,
+        index + 1,
+        index - width,
+        index + width,
+        index - width - 1,
+        index - width + 1,
+        index + width - 1,
+        index + width + 1,
+      ]) {
+        if (
+          neighbour >= 0
+          && neighbour < planned.length
+          && (planned[neighbour] === 1 || planned[neighbour] === 2)
+          && cleaned[neighbour] === 0
+        ) {
+          cleaned[neighbour] = planned[neighbour]
+          next.push(neighbour)
+        }
+      }
+    }
+    frontier = next
+  }
+
+  let nature = 0
+  let agriculture = 0
+  for (const index of candidates) {
+    if (cleaned[index] === 1) nature += 1
+    else if (cleaned[index] === 2) agriculture += 1
+  }
+
+  return { cleaned, nature, agriculture }
+}
+
+async function analyseTile(
+  tileCoord: [number, number, number],
+  raster: LoadedOverviewRaster,
+  overviewBitmap: ImageBitmap,
+  signal?: AbortSignal,
+): Promise<TileAnalysis> {
+  const tileExtent = planTileGrid.getTileCoordExtent(tileCoord)
+  const classesCanvas = createTileCanvas()
+  const classesContext = classesCanvas.getContext('2d', { willReadFrequently: true })
+  if (!classesContext) throw new Error('Kunne ikke lese Grunnkart-rasteret i nettleseren')
+
+  const rasterResolution = (raster.extent[2] - raster.extent[0]) / raster.width
+  drawImageSection(
+    classesContext,
+    overviewBitmap,
+    (tileExtent[0] - raster.extent[0]) / rasterResolution,
+    (raster.extent[3] - tileExtent[3]) / rasterResolution,
+    (tileExtent[2] - tileExtent[0]) / rasterResolution,
+    (tileExtent[3] - tileExtent[1]) / rasterResolution,
+  )
+  const classes = classesContext.getImageData(
+    0,
+    0,
+    PLAN_TILE_PIXELS,
+    PLAN_TILE_PIXELS,
+  ).data
+
+  const response = await fetch(buildPlanTileUrl(tileCoord), { signal })
+  if (!response.ok) {
+    throw new Error(`DiBK kommuneplan feilet med HTTP ${response.status}`)
+  }
+
+  const planBitmap = await createImageBitmap(await response.blob())
+  let plan: Uint8ClampedArray
+  try {
+    const planCanvas = createTileCanvas()
+    const planContext = planCanvas.getContext('2d', { willReadFrequently: true })
+    if (!planContext) throw new Error('Kunne ikke lese kommuneplanrasteret i nettleseren')
+    planContext.drawImage(planBitmap, 0, 0)
+    plan = planContext.getImageData(0, 0, PLAN_TILE_PIXELS, PLAN_TILE_PIXELS).data
+  } finally {
+    planBitmap.close()
+  }
+
+  const planned = new Uint8Array(PLAN_TILE_PIXELS * PLAN_TILE_PIXELS)
+  let nature = 0
+  let agriculture = 0
+  let plannedNature = 0
+  let plannedAgriculture = 0
+
+  for (let pixel = 0, rgba = 0; pixel < planned.length; pixel += 1, rgba += 4) {
+    if (classes[rgba + 3] < 100) continue
+
+    const accountClass = classifyAccountPixel(
+      classes[rgba],
+      classes[rgba + 1],
+      classes[rgba + 2],
+    )
+    if (accountClass !== NATURE_CLASS && accountClass !== AGRICULTURE_CLASS) continue
+
+    const isPlanned = plan[rgba + 3] >= 128
+    if (accountClass === NATURE_CLASS) {
+      nature += 1
+      if (isPlanned) {
+        planned[pixel] = 1
+        plannedNature += 1
+      }
+    } else {
+      agriculture += 1
+      if (isPlanned) {
+        planned[pixel] = 2
+        plannedAgriculture += 1
+      }
+    }
+  }
+
+  return {
+    tileCoord,
+    planned,
+    nature,
+    agriculture,
+    plannedNature,
+    plannedAgriculture,
+  }
+}
+
+function createTileCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas')
+  canvas.width = PLAN_TILE_PIXELS
+  canvas.height = PLAN_TILE_PIXELS
+  return canvas
+}
+
+function drawImageSection(
+  context: CanvasRenderingContext2D,
+  image: CanvasImageSource,
+  sourceX: number,
+  sourceY: number,
+  sourceWidth: number,
+  sourceHeight: number,
+) {
+  const x0 = Math.max(0, sourceX)
+  const y0 = Math.max(0, sourceY)
+  const imageWidth = 'width' in image ? Number(image.width) : 0
+  const imageHeight = 'height' in image ? Number(image.height) : 0
+  const x1 = Math.min(imageWidth, sourceX + sourceWidth)
+  const y1 = Math.min(imageHeight, sourceY + sourceHeight)
+  if (!(x1 > x0 && y1 > y0)) return
+
+  const factorX = PLAN_TILE_PIXELS / sourceWidth
+  const factorY = PLAN_TILE_PIXELS / sourceHeight
+  context.drawImage(
+    image,
+    x0,
+    y0,
+    x1 - x0,
+    y1 - y0,
+    (x0 - sourceX) * factorX,
+    (y0 - sourceY) * factorY,
+    (x1 - x0) * factorX,
+    (y1 - y0) * factorY,
+  )
+}
+
+async function mapWithConcurrency<T, R>(
+  items: readonly T[],
+  concurrency: number,
+  worker: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let nextIndex = 0
+
+  async function run() {
+    while (nextIndex < items.length) {
+      const index = nextIndex
+      nextIndex += 1
+      results[index] = await worker(items[index])
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => run()),
+  )
+  return results
+}
