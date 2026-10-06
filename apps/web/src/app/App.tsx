@@ -28,7 +28,9 @@ import { createUnavailableAccountOverview, type AccountOverviewData } from '../f
 import { PlannedDevelopmentSummary } from '../features/planned-development/PlannedDevelopmentSummary'
 import {
   calculatePlannedDevelopment,
+  calculatePlannedNatureBreakdown,
   type PlannedDevelopmentResult,
+  type PlannedNatureBreakdown,
 } from '../map/plannedDevelopment'
 import {
   createMunicipalityMap,
@@ -89,6 +91,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
+  const [plannedNatureBreakdown, setPlannedNatureBreakdown] = useState<PlannedNatureBreakdown | null>(null)
+  const [plannedNatureBreakdownState, setPlannedNatureBreakdownState] = useState<'idle' | 'loading' | 'error'>('idle')
 
   const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
 
@@ -192,6 +196,36 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     )
   }, [activeView, plannedDevelopment, plannedDevelopmentVisible, selectedMunicipality])
 
+  useEffect(() => {
+    if (
+      activeView !== 'utforsk-i-kart'
+      || plannedDevelopment?.status !== 'available'
+    ) {
+      setPlannedNatureBreakdown(null)
+      setPlannedNatureBreakdownState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setPlannedNatureBreakdown(null)
+    setPlannedNatureBreakdownState('loading')
+
+    void calculatePlannedNatureBreakdown(plannedDevelopment, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setPlannedNatureBreakdown(result)
+        setPlannedNatureBreakdownState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setPlannedNatureBreakdown(null)
+        setPlannedNatureBreakdownState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, plannedDevelopment])
+
   function navigate(view: SiteView) {
     setActiveView(view)
     const hash = `#${view}`
@@ -209,6 +243,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
     setPlannedDevelopmentVisible(true)
+    setPlannedNatureBreakdown(null)
+    setPlannedNatureBreakdownState('idle')
     map.current?.clearBoundary()
 
     if (!municipality) {
@@ -407,6 +443,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   result={plannedDevelopment}
                   visible={plannedDevelopmentVisible}
                   onVisibleChange={setPlannedDevelopmentVisible}
+                  natureBreakdown={plannedNatureBreakdown}
+                  natureBreakdownState={plannedNatureBreakdownState}
                 />
 
                 <section className="map-sidebar__section map-sidebar__section--supplementary" aria-labelledby="thematic-layers-title">
