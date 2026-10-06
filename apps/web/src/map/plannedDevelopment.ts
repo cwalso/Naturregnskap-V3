@@ -20,7 +20,6 @@ const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
 const IMAGE_CACHE_LIMIT = 120
 const NATURE_TYPE_SCALE = 2
 const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
-const NATURE_TYPE_PIXEL_METERS = PLAN_PIXEL_METERS / NATURE_TYPE_SCALE
 
 const natureTypeDefinitions = [
   { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0] },
@@ -35,6 +34,7 @@ const plannedDevelopmentCache = new Map<string, PlannedDevelopmentResult>()
 const natureBreakdownCache = new Map<string, PlannedNatureBreakdown>()
 
 export const PLAN_PIXEL_METERS = ACCOUNT_RESOLUTIONS[PLAN_ANALYSIS_ZOOM] / 2
+export const NATURE_TYPE_PIXEL_METERS = PLAN_PIXEL_METERS / NATURE_TYPE_SCALE
 
 const planTileGrid = new TileGrid({
   origin: ACCOUNT_ORIGIN,
@@ -245,8 +245,8 @@ export function buildPlanTileUrl(tileCoord: number[]): string {
     sld_body: PLAN_STYLE,
     crs: ACCOUNT_CRS,
     bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
-    width: String(NATURE_TYPE_TILE_PIXELS),
-    height: String(NATURE_TYPE_TILE_PIXELS),
+    width: String(PLAN_TILE_PIXELS),
+    height: String(PLAN_TILE_PIXELS),
     format: 'image/png8',
     transparent: 'true',
     filter: PLAN_FILTER,
@@ -275,8 +275,8 @@ export function buildNatureTypeTileUrl(tileCoord: number[]): string {
     styles: '',
     crs: ACCOUNT_CRS,
     bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
-    width: String(PLAN_TILE_PIXELS),
-    height: String(PLAN_TILE_PIXELS),
+    width: String(NATURE_TYPE_TILE_PIXELS),
+    height: String(NATURE_TYPE_TILE_PIXELS),
     format: 'image/png; mode=8bit',
     transparent: 'true',
     sld_body: NATURE_TYPE_STYLE,
