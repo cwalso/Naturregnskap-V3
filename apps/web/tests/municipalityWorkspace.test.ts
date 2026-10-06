@@ -8,6 +8,20 @@ import {
 } from '../src/data/municipalityWorkspace'
 import { datasetsForPage } from '../src/datasets/pageCatalog'
 
+const boundarySource = {
+  kommunenummer: '5001',
+  kommunenavn: 'Trondheim',
+  omrade: {
+    type: 'Polygon',
+    coordinates: [[
+      [10, 63],
+      [11, 63],
+      [11, 64],
+      [10, 63],
+    ]],
+  },
+}
+
 afterEach(() => {
   clearMunicipalityDataCache()
   vi.restoreAllMocks()
@@ -16,11 +30,7 @@ afterEach(() => {
 describe('shared municipality data core', () => {
   it('caches kommunegrensen per kommune', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify({
-        kommunenummer: '5001',
-        kommunenavn: 'Trondheim',
-        omrade: { type: 'Polygon', coordinates: [] },
-      }), { status: 200 }),
+      new Response(JSON.stringify(boundarySource), { status: 200 }),
     )
 
     const first = await loadMunicipalityBoundary('5001')
@@ -50,37 +60,15 @@ describe('shared municipality data core', () => {
             { id: 'agriculture', areaKm2: null, sharePercent: null },
             { id: 'built', areaKm2: null, sharePercent: null },
           ],
-          sourceVersions: ['2025'],
-          methodVersion: 'level0-v0.3-prototype',
-          sourceFormat: null,
-          sourceFeatureCount: null,
-          areaMethod: null,
-          classifiedAreaKm2: null,
-          excludedAreaKm2: null,
-          warnings: [],
         }), { status: 200 }))
       }
-
-      return Promise.resolve(new Response(JSON.stringify({
-        municipalityNumber: '5001',
-        municipalityName: 'Trondheim',
-        methodVersion: 'thematic-intersection-v1',
-        warnings: [],
-        results: [
-          {
-            datasetId: 'protected-areas',
-            status: 'hit',
-            featureCount: 1,
-            note: 'Treff.',
-          },
-          {
-            datasetId: 'wild-reindeer-areas',
-            status: 'no_hit',
-            featureCount: 0,
-            note: 'Ingen registrerte treff.',
-          },
-        ],
-      }), { status: 200 }))
+      if (url.endsWith('/kommuner/5001/omrade')) {
+        return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
+      }
+      if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+        return Promise.resolve(new Response(JSON.stringify({ count: 1 }), { status: 200 }))
+      }
+      throw new Error(`Uventet URL i test: ${url}`)
     })
 
     await loadMunicipalityAccount('5001', 'Trondheim')
@@ -88,42 +76,35 @@ describe('shared municipality data core', () => {
     await loadMunicipalityThematicCoverage('5001')
     await loadMunicipalityThematicCoverage('5001')
 
-    expect(fetchSpy).toHaveBeenCalledTimes(3)
+    expect(fetchSpy).toHaveBeenCalledTimes(6)
   })
 
   it('does not retain transient thematic unavailable responses', async () => {
-    let calls = 0
-    vi.spyOn(globalThis, 'fetch').mockImplementation(() => {
-      calls += 1
-      const status = calls === 1 ? 'unavailable' : 'no_hit'
-      return Promise.resolve(new Response(JSON.stringify({
-        municipalityNumber: '5001',
-        municipalityName: 'Trondheim',
-        methodVersion: 'thematic-intersection-v1',
-        warnings: [],
-        results: [
-          {
-            datasetId: 'protected-areas',
-            status,
-            featureCount: status === 'unavailable' ? null : 0,
-            note: status === 'unavailable' ? 'Midlertidig utilgjengelig.' : 'Ingen treff.',
-          },
-          {
-            datasetId: 'wild-reindeer-areas',
-            status: 'no_hit',
-            featureCount: 0,
-            note: 'Ingen treff.',
-          },
-        ],
-      }), { status: 200 }))
+    let protectedCalls = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      const url = String(input)
+      if (url.endsWith('/kommuner/5001/omrade')) {
+        return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
+      }
+      if (url.includes('/vern/MapServer/0/query')) {
+        protectedCalls += 1
+        if (protectedCalls === 1) {
+          return Promise.resolve(new Response(null, { status: 503 }))
+        }
+        return Promise.resolve(new Response(JSON.stringify({ count: 0 }), { status: 200 }))
+      }
+      if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+        return Promise.resolve(new Response(JSON.stringify({ count: 0 }), { status: 200 }))
+      }
+      throw new Error(`Uventet URL i test: ${url}`)
     })
 
     const first = await loadMunicipalityThematicCoverage('5001')
     const second = await loadMunicipalityThematicCoverage('5001')
 
-    expect(first.results[0].status).toBe('unavailable')
-    expect(second.results[0].status).toBe('no_hit')
-    expect(calls).toBe(2)
+    expect(first.results.find((item) => item.datasetId === 'protected-areas')?.status).toBe('unavailable')
+    expect(second.results.find((item) => item.datasetId === 'protected-areas')?.status).toBe('no_hit')
+    expect(protectedCalls).toBe(2)
   })
 
   it('maps datasets to the four V3 pages with explicit roles', () => {

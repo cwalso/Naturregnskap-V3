@@ -59,7 +59,8 @@ export function loadMunicipalityThematicCoverage(
     thematicCache,
     municipalityNumber,
     async () => {
-      const response = await getThematicCoverage(municipalityNumber)
+      const boundary = await loadMunicipalityBoundary(municipalityNumber)
+      const response = await getThematicCoverage(boundary)
       if (response.results.some((item) => item.status === 'unavailable')) {
         thematicCache.delete(municipalityNumber)
       }

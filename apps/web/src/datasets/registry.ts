@@ -28,7 +28,7 @@ export interface AccountDatasetDefinition extends DatasetBase {
   readonly id: AccountDatasetId
   readonly category: 'account'
   readonly analysisSource: {
-    readonly type: 'account-overview-api'
+    readonly type: 'static-prepared-result'
     readonly period: '2025'
   }
 }
@@ -60,8 +60,8 @@ export interface ThematicDatasetDefinition extends DatasetBase {
   readonly attribution: string
   readonly coverage: ThematicCoverage
   readonly analysisSource: {
-    readonly type: 'municipality-thematic-coverage-api'
-    readonly datasetId: ThematicDatasetId
+    readonly type: 'arcgis-rest-query'
+    readonly queryUrl: string
   } | null
 }
 
@@ -94,7 +94,7 @@ export const nationalLandCover2025 = {
     },
   },
   analysisSource: {
-    type: 'account-overview-api',
+    type: 'static-prepared-result',
     period: '2025',
   },
 } as const satisfies AccountDatasetDefinition
@@ -130,8 +130,8 @@ export const protectedAreas = {
     },
   },
   analysisSource: {
-    type: 'municipality-thematic-coverage-api',
-    datasetId: 'protected-areas',
+    type: 'arcgis-rest-query',
+    queryUrl: 'https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer/0/query',
   },
 } as const satisfies ThematicDatasetDefinition
 
@@ -166,8 +166,8 @@ export const wildReindeerAreas = {
     },
   },
   analysisSource: {
-    type: 'municipality-thematic-coverage-api',
-    datasetId: 'wild-reindeer-areas',
+    type: 'arcgis-rest-query',
+    queryUrl: 'https://kart.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query',
   },
 } as const satisfies ThematicDatasetDefinition
 
@@ -204,8 +204,8 @@ export const valuedNature = {
     },
   },
   analysisSource: {
-    type: 'municipality-thematic-coverage-api',
-    datasetId: 'valued-nature',
+    type: 'arcgis-rest-query',
+    queryUrl: 'https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query',
   },
 } as const satisfies ThematicDatasetDefinition
 
