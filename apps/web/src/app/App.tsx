@@ -364,17 +364,19 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                       const evaluation = thematicCoverage?.results.find(
                         (item) => item.datasetId === dataset.id,
                       )
-                      const evaluationText = thematicCoverageState === 'loading'
-                        ? 'Vurderer treff…'
-                        : thematicCoverageState === 'error'
-                          ? 'Treffstatus utilgjengelig'
-                          : evaluation?.status === 'hit'
-                            ? 'Treff i kommunen'
-                            : evaluation?.status === 'no_hit'
-                              ? 'Ingen registrerte treff'
-                              : evaluation?.status === 'unavailable'
-                                ? 'Kilden kunne ikke vurderes'
-                                : null
+                      const evaluationText = dataset.analysisSource === null
+                        ? 'Kartlag tilgjengelig'
+                        : thematicCoverageState === 'loading'
+                          ? 'Vurderer treff…'
+                          : thematicCoverageState === 'error'
+                            ? 'Treffstatus utilgjengelig'
+                            : evaluation?.status === 'hit'
+                              ? 'Treff i kommunen'
+                              : evaluation?.status === 'no_hit'
+                                ? 'Ingen registrerte treff'
+                                : evaluation?.status === 'unavailable'
+                                  ? 'Kilden kunne ikke vurderes'
+                                  : null
                       return (
                         <label className="layer-toggle layer-toggle--thematic" key={dataset.id}>
                           <input
