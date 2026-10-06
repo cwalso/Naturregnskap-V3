@@ -18,7 +18,7 @@ from app.models.thematic import (
 class ThematicAnalysisDataset:
     id: ThematicDatasetId
     query_url: str
-    coverage_scope: Literal["nationwide", "regional"]
+    coverage_scope: Literal["nationwide", "regional", "partial"]
 
 
 DATASETS: tuple[ThematicAnalysisDataset, ...] = (
@@ -29,6 +29,14 @@ DATASETS: tuple[ThematicAnalysisDataset, ...] = (
             "vern/MapServer/0/query"
         ),
         coverage_scope="nationwide",
+    ),
+    ThematicAnalysisDataset(
+        id="valued-nature",
+        query_url=(
+            "https://kart.miljodirektoratet.no/arcgis/rest/services/"
+            "naturtyper_kuverdi/MapServer/0/query"
+        ),
+        coverage_scope="partial",
     ),
     ThematicAnalysisDataset(
         id="wild-reindeer-areas",
@@ -99,6 +107,12 @@ class ThematicCoverageService:
                 "Spørringen fant ingen registrerte objekter som krysser "
                 "kommunegrensen. Datasettet har regional dekning, så statusen "
                 "skal ikke tolkes som en generell vurdering av temaet."
+            )
+        elif dataset.coverage_scope == "partial":
+            note = (
+                "Spørringen fant ingen registrerte lokaliteter som krysser "
+                "kommunegrensen. Datasettet er ikke heldekkende, så dette skal "
+                "ikke tolkes som fravær av naturverdi."
             )
         else:
             note = (

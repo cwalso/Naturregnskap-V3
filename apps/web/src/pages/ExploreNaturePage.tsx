@@ -148,7 +148,9 @@ export function ExploreNaturePage({
                 ? thematicCoverage?.results.find((item) => item.datasetId === dataset.id)
                 : undefined
               const statusLabel = dataset
-                ? evaluationLabel(evaluation, municipalityName ? thematicCoverageState : 'idle')
+                ? dataset.sourceStatus === 'visual-only'
+                  ? 'Kartlag tilgjengelig'
+                  : evaluationLabel(evaluation, municipalityName ? thematicCoverageState : 'idle')
                 : 'Ikke koblet til ennå'
               return (
                 <button
@@ -196,7 +198,13 @@ export function ExploreNaturePage({
                 <dt>Status</dt>
                 {selectedDataset ? (
                   <dd>
-                    {!municipalityName ? (
+                    {selectedDataset.sourceStatus === 'visual-only' ? (
+                      <>
+                        <strong>Kartlaget er koblet til.</strong> Kommuneareal og
+                        treffstatus beregnes ikke i denne versjonen. Dette er
+                        supplerende visualisering, ikke regnskapsgrunnlag.
+                      </>
+                    ) : !municipalityName ? (
                       <>
                         <strong>Koblet til kartvisningen.</strong> Velg kommune for å vurdere
                         registrerte treff mot kommunegrensen.

@@ -1,4 +1,4 @@
-import type { ThematicDatasetId } from '../datasets/registry'
+import { thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
 
 export type ThematicEvaluationStatus = 'hit' | 'no_hit' | 'unavailable'
 
@@ -57,9 +57,11 @@ function isCoverageResponse(value: unknown): value is ThematicCoverageResponse {
 
 function isEvaluation(value: unknown): value is ThematicDatasetEvaluation {
   if (typeof value !== 'object' || value === null) return false
+  const validDatasetIds = thematicDatasets.map((dataset) => dataset.id) as readonly string[]
   if (
     !('datasetId' in value)
-    || (value.datasetId !== 'protected-areas' && value.datasetId !== 'wild-reindeer-areas')
+    || typeof value.datasetId !== 'string'
+    || !validDatasetIds.includes(value.datasetId)
     || !('status' in value)
     || !['hit', 'no_hit', 'unavailable'].includes(String(value.status))
     || !('featureCount' in value)

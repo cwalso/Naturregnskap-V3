@@ -6,9 +6,11 @@ import agencyLogo from '../src/assets/miljodirektoratet-logo-primary.svg'
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import {
   datasetRegistry,
+  infrastructureFreeNature,
   nationalLandCover2025,
   protectedAreas,
   thematicDatasets,
+  valuedNature,
   wildReindeerAreas,
 } from '../src/datasets/registry'
 import { AccountOverview } from '../src/features/account-overview/AccountOverview'
@@ -88,6 +90,12 @@ function thematicCoverageResponse() {
         note: 'Ett eller flere registrerte objekter i kilden krysser kommunegrensen.',
       },
       {
+        datasetId: 'valued-nature',
+        status: 'hit',
+        featureCount: 3,
+        note: 'Ett eller flere registrerte objekter i kilden krysser kommunegrensen.',
+      },
+      {
         datasetId: 'wild-reindeer-areas',
         status: 'no_hit',
         featureCount: 0,
@@ -137,7 +145,9 @@ describe('grunnkonfigurasjon', () => {
   it('registrerer reelle supplerende temadatasett med eksplisitt dekningsstatus', () => {
     expect(datasetRegistry).toContain(protectedAreas)
     expect(datasetRegistry).toContain(wildReindeerAreas)
-    expect(thematicDatasets).toHaveLength(2)
+    expect(thematicDatasets).toHaveLength(4)
+    expect(datasetRegistry).toContain(valuedNature)
+    expect(datasetRegistry).toContain(infrastructureFreeNature)
     expect(protectedAreas).toMatchObject({
       category: 'thematic',
       themeId: 'protected',
@@ -148,6 +158,19 @@ describe('grunnkonfigurasjon', () => {
       themeId: 'reindeer',
       attribution: 'Kilde: Villreinbasen, Miljødirektoratet',
       coverage: { scope: 'regional', municipalityEvaluation: 'spatial_query' },
+    })
+    expect(valuedNature).toMatchObject({
+      category: 'thematic',
+      themeId: 'valued',
+      sourceStatus: 'connected',
+      coverage: { scope: 'partial', municipalityEvaluation: 'spatial_query' },
+    })
+    expect(infrastructureFreeNature).toMatchObject({
+      category: 'thematic',
+      themeId: 'infrastructure-free',
+      sourceStatus: 'visual-only',
+      analysisSource: null,
+      coverage: { municipalityEvaluation: 'visual_only' },
     })
   })
 
@@ -312,6 +335,12 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
 
+    const valuedTheme = await screen.findByRole('button', { name: /Verdsatte naturtyper/ })
+    await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
+
+    const inonTheme = screen.getByRole('button', { name: /Inngrepsfri natur/ })
+    expect(inonTheme).toHaveTextContent('Kartlag tilgjengelig')
+
     const protectedTheme = await screen.findByRole('button', { name: /Verneområder/ })
     await vi.waitFor(() => expect(protectedTheme).toHaveTextContent('Treff i kommunen'))
 
@@ -337,7 +366,8 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Aktivt kartlag' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Faglag' })).toBeInTheDocument()
     expect(screen.getByText('Heldekkende')).toBeInTheDocument()
-    expect(screen.getByText('2 koblet til')).toBeInTheDocument()
+    expect(screen.getByText('4 koblet til')).toBeInTheDocument()
+    expect(screen.getByText('Kartlag tilgjengelig')).toBeInTheDocument()
     expect(screen.getByText(/Naturvernområder/)).toBeInTheDocument()
     expect(screen.getByText(/Villreinområder/)).toBeInTheDocument()
     expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()

@@ -22,7 +22,10 @@ interface DatasetBase {
   readonly visualSource: WmsVisualSource
 }
 
+export type AccountDatasetId = 'national-land-cover-analysis-2025'
+
 export interface AccountDatasetDefinition extends DatasetBase {
+  readonly id: AccountDatasetId
   readonly category: 'account'
   readonly analysisSource: {
     readonly type: 'account-overview-api'
@@ -30,13 +33,22 @@ export interface AccountDatasetDefinition extends DatasetBase {
   }
 }
 
-export type ThematicDatasetId = 'protected-areas' | 'wild-reindeer-areas'
-export type ThematicThemeId = 'protected' | 'reindeer'
+export type ThematicDatasetId =
+  | 'protected-areas'
+  | 'wild-reindeer-areas'
+  | 'valued-nature'
+  | 'infrastructure-free-nature'
+
+export type ThematicThemeId =
+  | 'protected'
+  | 'reindeer'
+  | 'valued'
+  | 'infrastructure-free'
 
 export interface ThematicCoverage {
-  readonly scope: 'nationwide' | 'regional'
+  readonly scope: 'nationwide' | 'regional' | 'partial'
   readonly label: string
-  readonly municipalityEvaluation: 'spatial_query'
+  readonly municipalityEvaluation: 'spatial_query' | 'visual_only'
   readonly note: string
 }
 
@@ -44,15 +56,16 @@ export interface ThematicDatasetDefinition extends DatasetBase {
   readonly id: ThematicDatasetId
   readonly category: 'thematic'
   readonly themeId: ThematicThemeId
-  readonly sourceStatus: 'connected'
+  readonly sourceStatus: 'connected' | 'visual-only'
   readonly attribution: string
   readonly coverage: ThematicCoverage
   readonly analysisSource: {
     readonly type: 'municipality-thematic-coverage-api'
     readonly datasetId: ThematicDatasetId
-  }
+  } | null
 }
 
+export type DatasetId = AccountDatasetId | ThematicDatasetId
 export type DatasetDefinition = AccountDatasetDefinition | ThematicDatasetDefinition
 
 export const nationalLandCover2025 = {
@@ -158,7 +171,83 @@ export const wildReindeerAreas = {
   },
 } as const satisfies ThematicDatasetDefinition
 
-export const thematicDatasets = [protectedAreas, wildReindeerAreas] as const
+
+
+export const valuedNature = {
+  id: 'valued-nature',
+  title: 'Verdsatte naturtyper',
+  category: 'thematic',
+  themeId: 'valued',
+  version: 'løpende tjeneste',
+  sourceDataCutoff: 'ikke låst i prototypen',
+  publisher: 'Miljødirektoratet',
+  serviceProvider: 'Miljødirektoratet',
+  metadataUrl: 'https://kartkatalog.miljodirektoratet.no/MapService/Details/naturtyper_kuverdi',
+  sourceStatus: 'connected',
+  attribution: 'Kilde: Miljødirektoratet, naturtyper med KU-verdi',
+  coverage: {
+    scope: 'partial',
+    label: 'Kartlagte lokaliteter · ikke heldekkende',
+    municipalityEvaluation: 'spatial_query',
+    note: 'Treff vurderes mot registrerte verdsatte naturtypelokaliteter. Manglende treff skal ikke tolkes som fravær av naturverdi fordi datasettet ikke er heldekkende.',
+  },
+  visualSource: {
+    type: 'wms',
+    endpoint: 'https://kart.miljodirektoratet.no/arcgis/services/naturtyper_kuverdi/MapServer/WMSServer',
+    layer: 'kuverdi_naturtype_alle',
+    title: 'Naturtyper – verdsatte',
+    version: '1.3.0',
+    supportedCrs: ['EPSG:3857', 'EPSG:25833', 'EPSG:4326'],
+    legend: {
+      format: 'image/png',
+      sldVersion: '1.1.0',
+    },
+  },
+  analysisSource: {
+    type: 'municipality-thematic-coverage-api',
+    datasetId: 'valued-nature',
+  },
+} as const satisfies ThematicDatasetDefinition
+
+export const infrastructureFreeNature = {
+  id: 'infrastructure-free-nature',
+  title: 'Inngrepsfri natur',
+  category: 'thematic',
+  themeId: 'infrastructure-free',
+  version: 'status 2023',
+  sourceDataCutoff: '2023-01',
+  publisher: 'Miljødirektoratet',
+  serviceProvider: 'Miljødirektoratet',
+  metadataUrl: 'https://kartkatalog.miljodirektoratet.no/MapService/Details/inngrepsfrinatur',
+  sourceStatus: 'visual-only',
+  attribution: 'Kilde: Miljødirektoratet – inngrepsfri natur 01.2023',
+  coverage: {
+    scope: 'nationwide',
+    label: 'Fastlands-Norge · status 2023',
+    municipalityEvaluation: 'visual_only',
+    note: 'Kartlaget er koblet til som supplerende indikator. Kommuneareal og treffstatus beregnes ikke i denne sprinten.',
+  },
+  visualSource: {
+    type: 'wms',
+    endpoint: 'https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/wms',
+    layer: 'status',
+    title: 'Status inngrepsfri natur 2023',
+    version: '1.3.0',
+    supportedCrs: ['EPSG:3857', 'EPSG:25833', 'EPSG:4326'],
+    legend: {
+      format: 'image/png',
+      sldVersion: '1.1.0',
+    },
+  },
+  analysisSource: null,
+} as const satisfies ThematicDatasetDefinition
+
+export const thematicDatasets = [
+  valuedNature,
+  protectedAreas,
+  wildReindeerAreas,
+  infrastructureFreeNature,
+] as const
 
 export const datasetRegistry: readonly DatasetDefinition[] = [
   nationalLandCover2025,
