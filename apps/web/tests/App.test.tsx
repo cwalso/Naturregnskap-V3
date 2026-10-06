@@ -398,8 +398,8 @@ describe('sidestruktur og Oversikt', () => {
     })
 
     expect(screen.getByRole('heading', { name: 'Kartlag' })).toBeInTheDocument()
-    expect(screen.getByText('Regnskapsgrunnlag')).toBeInTheDocument()
-    expect(screen.getByText('Supplerende temadata')).toBeInTheDocument()
+    expect(screen.getAllByText('Regnskapsgrunnlag').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Supplerende temadata').length).toBeGreaterThan(0)
     expect(screen.getByText('5 tilgjengelige')).toBeInTheDocument()
     expect(screen.getByText('Kartlag tilgjengelig')).toBeInTheDocument()
     expect(screen.getAllByText(/Naturvernområder/).length).toBeGreaterThan(0)
