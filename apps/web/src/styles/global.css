@@ -2407,3 +2407,191 @@ body { font-size: 16px; }
     padding: .65rem .2rem;
   }
 }
+
+
+/* V3.16 – egne temasider og tydelig mobilkart */
+.theme-grid--pages {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.theme-card--page {
+  position: relative;
+  min-height: 13rem;
+  padding-bottom: 3.2rem;
+}
+.theme-card__open {
+  position: absolute;
+  left: 1.35rem;
+  bottom: 1.15rem;
+  color: var(--color-accent) !important;
+  font-weight: 700;
+}
+
+.thematic-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 2.75rem;
+  margin-bottom: 1.25rem;
+  padding: .45rem .65rem;
+  color: var(--color-accent);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+  cursor: pointer;
+}
+.thematic-page__back:hover {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.thematic-page__title-row {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.thematic-page__title-row .theme-card__icon {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.thematic-page__title-row h1 {
+  margin: 0;
+}
+.thematic-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .55fr);
+  gap: 1rem;
+  align-items: start;
+}
+.thematic-page__main,
+.thematic-page__status,
+.thematic-page__analysis,
+.thematic-page__source {
+  padding: 1.25rem 1.35rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+.thematic-page__main h2,
+.thematic-page__status h2,
+.thematic-page__analysis h2,
+.thematic-page__source h2 {
+  margin: .6rem 0 .55rem;
+  font-size: 1.15rem;
+}
+.thematic-page__main p,
+.thematic-page__status p,
+.thematic-page__analysis p,
+.thematic-page__source p {
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+.thematic-page__notice {
+  margin: 1.25rem 0;
+  padding: .9rem 1rem;
+  background: var(--color-warning-surface);
+  border-left: 4px solid var(--color-warning-border);
+}
+.thematic-page__notice p {
+  margin: .35rem 0 0;
+}
+.thematic-page__status dl {
+  margin: 1rem 0 0;
+}
+.thematic-page__status dl > div {
+  padding: .7rem 0;
+  border-top: 1px solid var(--color-border);
+}
+.thematic-page__status dt {
+  margin-bottom: .2rem;
+  color: var(--color-text-muted);
+  font-size: .78rem;
+  font-weight: 700;
+}
+.thematic-page__status dd {
+  margin: 0;
+  font-size: .86rem;
+}
+.thematic-page__analysis,
+.thematic-page__source {
+  max-width: 58rem;
+  margin-top: 1rem;
+}
+.thematic-page__analysis {
+  background: var(--color-brand-surface);
+  border-left: 4px solid var(--color-accent);
+}
+.thematic-page__analysis button {
+  min-height: 2.75rem;
+  padding: .65rem .85rem;
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+  cursor: pointer;
+}
+.thematic-page__source a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-underline-offset: .2em;
+}
+
+@media (max-width: 70rem) {
+  .theme-grid--pages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 52rem) {
+  .map-mobile-jump-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .map-workspace--explore .map-frame {
+    order: -1;
+    min-height: 26rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .map-workspace--explore .map {
+    min-height: 26rem;
+  }
+
+  .map-workspace--explore .map-sidebar {
+    order: 1;
+  }
+
+  .thematic-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .thematic-page__status {
+    order: -1;
+  }
+}
+
+@media (max-width: 38rem) {
+  .theme-grid--pages {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-card--page {
+    min-height: 11rem;
+  }
+
+  .thematic-page__title-row {
+    align-items: flex-start;
+  }
+
+  .thematic-page__main,
+  .thematic-page__status,
+  .thematic-page__analysis,
+  .thematic-page__source {
+    padding: 1rem;
+  }
+
+  .map-workspace--explore .map-frame,
+  .map-workspace--explore .map {
+    min-height: 23rem;
+  }
+}
