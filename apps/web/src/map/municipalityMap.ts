@@ -130,7 +130,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     const ignoredFields = /^(shape|shape_|objectid|fid|geometry|st_area|st_length)/i
     const fields: MapFeatureInfoField[] = []
 
-    function safeHttpUrl(value: string | null): string | undefined {
+    function safeHttpUrl(value: string | null | undefined): string | undefined {
       if (!value) return undefined
       try {
         const parsed = new URL(value)
@@ -357,7 +357,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     fitToBoundary() {
       if (boundarySource.getFeatures().length === 0) return
-      view.fit(boundarySource.getExtent(), { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
+      const extent = boundarySource.getExtent()
+      if (!extent) return
+      view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
     },
     showChanges(features) {
       changesSource.clear()
