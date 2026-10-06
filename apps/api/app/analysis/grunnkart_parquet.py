@@ -1,3 +1,4 @@
+import hashlib
 import json
 from collections import Counter
 from datetime import UTC, datetime
@@ -146,6 +147,10 @@ def prepare_balance(
         period="2025",
         dataset_version=dataset_version,
         source_file=input_path.name,
+        source_sha256=_sha256(input_path),
+        source_format="geoparquet",
+        source_feature_count=parquet.metadata.num_rows,
+        area_method=f"source-field:{area_field}",
         geo_parquet_version=_geo_parquet_version(parquet),
         method_version=rules.version,
         method_status=rules.status,
@@ -204,3 +209,11 @@ def _is_numeric(data_type: Any) -> bool:
         or patypes.is_floating(data_type)
         or patypes.is_decimal(data_type)
     )
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()

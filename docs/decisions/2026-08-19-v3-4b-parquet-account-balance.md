@@ -1,7 +1,7 @@
 # V3.4B: Kommunevis Parquet til prepared nivå-0-balanse
 
 **Dato:** 2026-08-19  
-**Status:** Akseptert for prototype
+**Status:** Historisk prototypebeslutning. Nivå 0-koblingen er erstattet av `level0-v0.3-prototype`; se `2026-09-30-v3-level0-method-engine.md`.
 
 ## Beslutning
 

@@ -36,7 +36,7 @@ def parquet(
             "arealdekkeniva1": classes,
             "arealdekkeniva2": ["ikke-et-arealfelt"] * len(areas),
             "arealbruklandhovedklasse": ["tekst"] * len(areas),
-            "okosystemtypeniva1": ecosystem_classes or ["Skog"] * len(areas),
+            "okosystemtypeniva1": ecosystem_classes or ["skog"] * len(areas),
             "SHAPE_Area": areas,
             "geometry": [b"unused"] * len(areas),
         }
@@ -51,13 +51,18 @@ def test_paths_are_generic(tmp_path: Path) -> None:
 
 
 def test_verified_level_zero_mapping_is_exact_and_case_sensitive() -> None:
+    assert GRUNNKART_LEVEL0_RULES.source_field == "okosystemtypeniva1"
     assert GRUNNKART_LEVEL0_RULES.mapping == {
-        "bebygdSamferdsel": "built",
-        "jordbruk": "agriculture",
+        "bebygdOpparbeidetAreal": "built",
+        "dyrketmark": "agriculture",
+        "grasmark": "agriculture",
         "skog": "nature",
-        "snaumark": "nature",
-        "myr": "nature",
-        "ferskvann": "nature",
+        "heiBuskmark": "nature",
+        "liteVegetertMark": "nature",
+        "vatmark": "nature",
+        "elverBekkerKanaler": "nature",
+        "innsjoerVannmagasiner": "nature",
+        "kyststrenderSvabergDyner": "nature",
         "hav": "excluded",
     }
 
@@ -69,66 +74,130 @@ def test_inspector_reports_metadata_and_relevant_values(tmp_path: Path) -> None:
     assert report["rowGroups"] == 1
     assert report["distinctValues"]["kommunenummer"] == ["4204"]
     assert report["distinctValues"]["arealdekkeniva1"] == ["skog"]
-    assert report["distinctValues"]["okosystemtypeniva1"] == ["Skog"]
+    assert report["distinctValues"]["okosystemtypeniva1"] == ["skog"]
     assert report["areaFields"] == ["SHAPE_Area"]
 
 
 def test_prepare_sums_explicit_classes_and_writes_provenance(tmp_path: Path) -> None:
     path = parquet(
         tmp_path / "source.parquet",
-        ["4204"] * 7,
+        ["4204"] * 11,
+        ["unused"] * 11,
         [
+            30_000,
+            120_000,
+            80_000,
+            400_000,
+            60_000,
+            40_000,
+            100_000,
+            50_000,
+            50_000,
+            100_000,
+            5_000,
+        ],
+        [
+            "bebygdOpparbeidetAreal",
+            "dyrketmark",
+            "grasmark",
             "skog",
-            "snaumark",
-            "myr",
-            "ferskvann",
-            "jordbruk",
-            "bebygdSamferdsel",
+            "heiBuskmark",
+            "liteVegetertMark",
+            "vatmark",
+            "elverBekkerKanaler",
+            "innsjoerVannmagasiner",
+            "kyststrenderSvabergDyner",
             "hav",
         ],
-        [400_000, 300_000, 200_000, 100_000, 200_000, 30_000, 5_000],
-        ["Skog", "Snaumark", "Myr", "Ferskvann", "Åker", "By", "Hav"],
     )
     output = tmp_path / "prepared.json"
     result = prepare_balance(path, "4204", output, area_field="SHAPE_Area")
     assert [metric.id for metric in result.metrics] == list(ACCOUNT_CATEGORY_IDS)
-    assert [metric.area_m2 for metric in result.metrics] == [1_000_000, 200_000, 30_000]
+    assert [metric.area_m2 for metric in result.metrics] == [800_000, 200_000, 30_000]
     assert result.reconciliation.excluded_area_m2 == 5_000
-    assert result.method_version == "level0-v0.1-prototype"
+    assert result.method_version == "level0-v0.3-prototype"
     assert result.method_status == GRUNNKART_LEVEL0_RULES.status
+    assert result.source_format == "geoparquet"
+    assert result.source_feature_count == 11
+    assert result.area_method == "source-field:SHAPE_Area"
+    assert result.source_sha256 is not None
+    assert len(result.source_sha256) == 64
     assert json.loads(output.read_text())["municipalityNumber"] == "4204"
 
 
 def test_prepare_rejects_multiple_municipalities(tmp_path: Path) -> None:
     path = parquet(
-        tmp_path / "source.parquet", ["4204", "0301"], ["skog", "skog"], [1, 1]
+        tmp_path / "source.parquet",
+        ["4204", "0301"],
+        ["unused", "unused"],
+        [1, 1],
+        ["skog", "skog"],
     )
     with pytest.raises(PreparationError, match="Forventet bare kommune"):
         prepare_balance(path, "4204", tmp_path / "out.json", area_field="SHAPE_Area")
 
 
 def test_unmapped_class_blocks_output(tmp_path: Path) -> None:
-    path = parquet(tmp_path / "source.parquet", ["4204"], ["Ukjent"], [50])
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"],
+        ["unused"],
+        [50],
+        ["ukjentOkosystemklasse"],
+    )
     output = tmp_path / "out.json"
     with pytest.raises(PreparationError, match="Ukjente kildeklasser"):
         prepare_balance(path, "4204", output, area_field="SHAPE_Area")
     assert not output.exists()
 
 
-def test_ecosystem_type_is_not_used_for_level_zero(tmp_path: Path) -> None:
+def test_arealdekke_is_not_used_for_level_zero(tmp_path: Path) -> None:
     path = parquet(
         tmp_path / "source.parquet",
         ["4204"],
         ["Ukjent arealdekke"],
         [50],
-        ["Skog"],
+        ["skog"],
     )
-    with pytest.raises(PreparationError, match="Ukjente kildeklasser"):
-        prepare_balance(path, "4204", tmp_path / "out.json", area_field="SHAPE_Area")
+    result = prepare_balance(
+        path,
+        "4204",
+        tmp_path / "out.json",
+        area_field="SHAPE_Area",
+    )
+    assert result.metrics[0].area_m2 == 50
+
+
+def test_level0_tracks_classified_and_excluded_area_without_publishing_shares(
+    tmp_path: Path,
+) -> None:
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"] * 4,
+        ["unused"] * 4,
+        [600_000, 200_000, 200_000, 250_000],
+        ["skog", "dyrketmark", "bebygdOpparbeidetAreal", "hav"],
+    )
+    prepare_balance(
+        path,
+        "4204",
+        prepared_path("4204", tmp_path),
+        area_field="SHAPE_Area",
+    )
+    result = PreparedAccountBalanceProvider(tmp_path).get("4204", "Kristiansand")
+    assert all(metric.share_percent is None for metric in result.metrics)
+    assert result.classified_area_km2 == 1.0
+    assert result.excluded_area_km2 == 0.25
 
 
 def test_provider_available_and_not_available(tmp_path: Path) -> None:
-    path = parquet(tmp_path / "source.parquet", ["4204"], ["skog"], [2_000_000])
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"],
+        ["unused"],
+        [2_000_000],
+        ["skog"],
+    )
     prepare_balance(
         path, "4204", prepared_path("4204", tmp_path), area_field="SHAPE_Area"
     )
@@ -138,8 +207,45 @@ def test_provider_available_and_not_available(tmp_path: Path) -> None:
     assert available.status == "available"
     assert available.metrics[0].area_km2 == 2
     assert available.metrics[0].share_percent is None
+    assert available.classified_area_km2 == 2
+    assert available.excluded_area_km2 == 0
+    assert available.source_format == "geoparquet"
+    assert available.source_feature_count == 1
+    assert available.area_method == "source-field:SHAPE_Area"
+    assert available.source_sha256 is not None
     assert missing.status == "not_available"
     assert all(metric.area_km2 is None for metric in missing.metrics)
+
+
+def test_provider_rejects_prepared_balance_from_superseded_method(
+    tmp_path: Path,
+) -> None:
+    path = parquet(
+        tmp_path / "source.parquet",
+        ["4204"],
+        ["unused"],
+        [2_000_000],
+        ["skog"],
+    )
+    prepared = prepare_balance(
+        path,
+        "4204",
+        prepared_path("4204", tmp_path),
+        area_field="SHAPE_Area",
+    )
+    payload = prepared.model_dump(by_alias=True)
+    payload["methodVersion"] = "level0-v0.1-prototype"
+    prepared_path("4204", tmp_path).write_text(json.dumps(payload))
+
+    result = PreparedAccountBalanceProvider(tmp_path).get(
+        "4204",
+        "Kristiansand",
+    )
+
+    assert result.status == "not_available"
+    assert all(metric.area_km2 is None for metric in result.metrics)
+    assert result.warnings
+    assert "utgått metodeversjon" in result.warnings[0]
 
 
 def test_api_returns_missing_as_expected_state(tmp_path: Path) -> None:

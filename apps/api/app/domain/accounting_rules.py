@@ -4,7 +4,7 @@ from typing import Literal
 AccountCategory = Literal["nature", "agriculture", "built"]
 RuleTarget = AccountCategory | Literal["excluded"]
 
-METHOD_VERSION = "level0-v0.1-prototype"
+METHOD_VERSION = "level0-v0.3-prototype"
 METHOD_STATUS = "prototype"
 
 
@@ -19,16 +19,21 @@ class Level0Rules:
 GRUNNKART_LEVEL0_RULES = Level0Rules(
     version=METHOD_VERSION,
     status=METHOD_STATUS,
-    source_field="arealdekkeniva1",
+    source_field="okosystemtypeniva1",
     mapping={
-        # Exact, case-sensitive Arealdekke nivå 1 codes verified in the 5054
-        # Parquet. Any additional source code must pass the mapping gate first.
-        "bebygdSamferdsel": "built",
-        "jordbruk": "agriculture",
+        # Prototypekobling mot økosystemtype nivå 1.
+        # Ukjente kildeklasser skal stoppe preparation.
+        "bebygdOpparbeidetAreal": "built",
+        "dyrketmark": "agriculture",
+        "grasmark": "agriculture",
         "skog": "nature",
-        "snaumark": "nature",
-        "myr": "nature",
-        "ferskvann": "nature",
+        "heiBuskmark": "nature",
+        "liteVegetertMark": "nature",
+        "vatmark": "nature",
+        "elverBekkerKanaler": "nature",
+        "innsjoerVannmagasiner": "nature",
+        "kyststrenderSvabergDyner": "nature",
+        # Arbeidsretning: land + ferskvann, ikke sjø.
         "hav": "excluded",
     },
 )
