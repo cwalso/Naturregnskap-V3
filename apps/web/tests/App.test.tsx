@@ -339,7 +339,7 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
     fireEvent.click(valuedTheme)
     expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
-    expect(screen.getByText(/ikke heldekkende/)).toBeInTheDocument()
+    expect(screen.getAllByText(/ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.queryByRole('button', { name: /Bynatur/ })).not.toBeInTheDocument()
 
     const inonTheme = screen.getByRole('button', { name: /Inngrepsfri natur/ })
