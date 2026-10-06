@@ -1,4 +1,5 @@
 import GeoJSON from 'ol/format/GeoJSON'
+import type ImageTile from 'ol/ImageTile'
 import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
@@ -203,7 +204,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
       tileLoadFunction: (tile, src) => {
         void loadPlannedDevelopmentDetailTile(
-          tile,
+          tile as ImageTile,
           src,
           accountVisualSource.endpoint,
           overlay,
