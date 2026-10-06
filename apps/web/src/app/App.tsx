@@ -368,6 +368,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     navigate('utforsk-i-kart')
   }
 
+  function scrollToMapSection(targetId: 'map-canvas-region' | 'map-analysis-panel') {
+    document.getElementById(targetId)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   const municipalityPicker = (
     <section id="municipality-picker" className="municipality-picker" aria-label="Kommunevalg">
       <MunicipalityCombobox
@@ -472,8 +479,18 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
         {variant === 'explore' && (
           <nav className="map-mobile-jump-nav" aria-label="Hurtignavigasjon i kartvisningen">
-            <a href="#map-canvas-region">Kart</a>
-            <a href="#map-analysis-panel">Analyse</a>
+            <button
+              type="button"
+              onClick={() => scrollToMapSection('map-canvas-region')}
+            >
+              Kart
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToMapSection('map-analysis-panel')}
+            >
+              Analyse
+            </button>
           </nav>
         )}
 

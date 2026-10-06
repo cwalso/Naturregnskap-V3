@@ -84,6 +84,7 @@ export interface MunicipalityMap {
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
   clearFeatureInfo(): void
+  refreshSize(): void
   fitToBoundary(): void
   showChanges(features: readonly ChangeFeature[]): void
   clearChanges(): void
@@ -470,10 +471,23 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   })
 
 
+  function refreshMapSize() {
+    map.updateSize()
+    map.renderSync()
+  }
+
   const resizeObserver = typeof ResizeObserver !== 'undefined'
-    ? new ResizeObserver(() => map.updateSize())
+    ? new ResizeObserver(refreshMapSize)
     : null
   resizeObserver?.observe(target)
+
+  const firstFrame = window.requestAnimationFrame(() => {
+    refreshMapSize()
+    window.requestAnimationFrame(refreshMapSize)
+  })
+  const delayedRefresh = window.setTimeout(refreshMapSize, 250)
+  window.addEventListener('resize', refreshMapSize)
+  window.visualViewport?.addEventListener('resize', refreshMapSize)
 
   map.on('singleclick', (event) => {
     const resolution = view.getResolution()
@@ -546,6 +560,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       featureInfoRequest += 1
       featureInfoHandler?.({ status: 'idle', results: [] })
     },
+    refreshSize() {
+      refreshMapSize()
+    },
     fitToBoundary() {
       if (boundarySource.getFeatures().length === 0) return
       const extent = boundarySource.getExtent()
@@ -569,6 +586,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     clearChanges() { changesSource.clear() },
     destroy() {
       resizeObserver?.disconnect()
+      window.cancelAnimationFrame(firstFrame)
+      window.clearTimeout(delayedRefresh)
+      window.removeEventListener('resize', refreshMapSize)
+      window.visualViewport?.removeEventListener('resize', refreshMapSize)
       featureInfoRequest += 1
       accountOverviewRequest += 1
       accountOverviewLayer.setSource(null)
