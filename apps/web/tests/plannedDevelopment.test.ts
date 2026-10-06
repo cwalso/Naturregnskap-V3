@@ -7,6 +7,7 @@ import {
   buildPlanTileUrl,
   classifyNatureTypePixel,
   getPlanTileCoordinates,
+  plannedNatureDisplayColor,
   loadPlanTileBlobByUrl,
   removeNarrowPlanStrips,
 } from '../src/map/plannedDevelopment'
@@ -109,6 +110,14 @@ describe('DiBK planned development prototype', () => {
     await loadPlanTileBlobByUrl(url)
 
     expect(fetchSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('uses the official Grunnkart legend colours for ecosystem statistics', () => {
+    expect(plannedNatureDisplayColor('skog')).toBe('#9ECC73')
+    expect(plannedNatureDisplayColor('hei-buskmark')).toBe('#E1C790')
+    expect(plannedNatureDisplayColor('lite-vegetert-mark')).toBe('#FFE8C2')
+    expect(plannedNatureDisplayColor('vatmark')).toBe('#C9B0EC')
+    expect(plannedNatureDisplayColor('kyst')).toBe('#DCDCDC')
   })
 
 
