@@ -25,6 +25,15 @@ import {
   loadOverviewRaster,
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
+import {
+  buildPlanTileUrl,
+  planTileGrid,
+  type PlannedDevelopmentOverlayGrid,
+} from './plannedDevelopment'
+import {
+  createPlannedDevelopmentOverviewBlob,
+  loadPlannedDevelopmentDetailTile,
+} from './plannedDevelopmentOverlay'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -68,6 +77,8 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
+  setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
+  setPlannedDevelopmentVisible(visible: boolean): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
@@ -146,6 +157,80 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
       }
     }
+  }
+
+  const plannedOverviewLayer = new ImageLayer({
+    visible: false,
+    opacity: 0.92,
+    minResolution: ACCOUNT_DETAIL_MAX_RESOLUTION,
+  })
+  const plannedDetailLayer = new TileLayer({
+    visible: false,
+    opacity: 0.92,
+    maxResolution: ACCOUNT_DETAIL_MAX_RESOLUTION,
+  })
+  let plannedVisible = true
+  let plannedOverlayRequest = 0
+  let plannedOverviewObjectUrl: string | null = null
+
+  function releasePlannedOverviewUrl() {
+    if (!plannedOverviewObjectUrl) return
+    URL.revokeObjectURL(plannedOverviewObjectUrl)
+    plannedOverviewObjectUrl = null
+  }
+
+  function clearPlannedDevelopmentOverlay() {
+    plannedOverlayRequest += 1
+    plannedOverviewLayer.setSource(null)
+    plannedOverviewLayer.setVisible(false)
+    plannedDetailLayer.setSource(null)
+    plannedDetailLayer.setVisible(false)
+    releasePlannedOverviewUrl()
+  }
+
+  function configurePlannedDevelopmentOverlay(
+    overlay: PlannedDevelopmentOverlayGrid | null,
+  ) {
+    clearPlannedDevelopmentOverlay()
+    if (!overlay) return
+
+    const request = plannedOverlayRequest
+    plannedDetailLayer.setSource(new XYZ({
+      projection: ACCOUNT_CRS,
+      tileGrid: planTileGrid,
+      tilePixelRatio: 2,
+      transition: 0,
+      tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
+      tileLoadFunction: (tile, src) => {
+        void loadPlannedDevelopmentDetailTile(
+          tile,
+          src,
+          accountVisualSource.endpoint,
+          overlay,
+        )
+      },
+      attributions: 'Kilder: DiBK kommuneplaner og NIBIO Grunnkart for arealanalyse',
+    }))
+    plannedDetailLayer.setVisible(plannedVisible)
+
+    void createPlannedDevelopmentOverviewBlob(overlay)
+      .then((blob) => {
+        if (request !== plannedOverlayRequest) return
+        const url = URL.createObjectURL(blob)
+        plannedOverviewObjectUrl = url
+        plannedOverviewLayer.setSource(new ImageStatic({
+          url,
+          imageExtent: [...overlay.extent],
+          projection: ACCOUNT_CRS,
+        }))
+        plannedOverviewLayer.setVisible(plannedVisible)
+      })
+      .catch(() => {
+        if (request === plannedOverlayRequest) {
+          plannedOverviewLayer.setSource(null)
+          plannedOverviewLayer.setVisible(false)
+        }
+      })
   }
 
   const thematicLayers = new Map<ThematicDatasetId, ImageLayer<ImageWMS>>(
@@ -375,6 +460,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       }),
       accountOverviewLayer,
       accountDetailLayer,
+      plannedOverviewLayer,
+      plannedDetailLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
       boundaryLayer,
@@ -415,11 +502,20 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       releaseAccountOverviewUrl()
       accountDetailLayer.setExtent(undefined)
       accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
+      clearPlannedDevelopmentOverlay()
     },
     setAccountLayerVisible(visible) {
       accountVisible = visible
       accountOverviewLayer.setVisible(visible && accountOverviewLayer.getSource() !== null)
       accountDetailLayer.setVisible(visible)
+    },
+    setPlannedDevelopmentOverlay(overlay) {
+      configurePlannedDevelopmentOverlay(overlay)
+    },
+    setPlannedDevelopmentVisible(visible) {
+      plannedVisible = visible
+      plannedOverviewLayer.setVisible(visible && plannedOverviewLayer.getSource() !== null)
+      plannedDetailLayer.setVisible(visible && plannedDetailLayer.getSource() !== null)
     },
     setThematicLayerVisible(datasetId, visible) {
       featureInfoRequest += 1
@@ -469,6 +565,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountOverviewRequest += 1
       accountOverviewLayer.setSource(null)
       releaseAccountOverviewUrl()
+      clearPlannedDevelopmentOverlay()
       featureInfoHandler = null
       thematicLayerStatusHandler = null
       map.setTarget(undefined)
