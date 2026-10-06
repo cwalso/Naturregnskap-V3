@@ -24,6 +24,8 @@ export function ServiceSidebar({
   municipalityPicker,
   onNavigate,
 }: ServiceSidebarProps) {
+  const natureSectionActive = activeView === 'utforsk-naturen' || activeView.startsWith('tema-')
+
   return (
     <aside className="service-sidebar" aria-label="Navigasjon og kommunevalg">
       <div className="service-sidebar__picker">
@@ -35,7 +37,12 @@ export function ServiceSidebar({
           <a
             key={item.view}
             href={`#${item.view}`}
-            aria-current={activeView === item.view ? 'page' : undefined}
+            aria-current={
+              activeView === item.view
+                || (item.view === 'utforsk-naturen' && natureSectionActive)
+                ? 'page'
+                : undefined
+            }
             onClick={(event) => {
               event.preventDefault()
               onNavigate(item.view)
