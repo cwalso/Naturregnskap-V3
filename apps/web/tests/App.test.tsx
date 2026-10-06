@@ -115,7 +115,13 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     if (url === 'https://api.kartverket.no/kommuneinfo/v1/kommuner') {
       return Promise.resolve(new Response(JSON.stringify(municipalityListSource), { status: 200 }))
     }
-    if (url.endsWith('/account-overview')) {
+    if (url.endsWith('/data/account-overview/2025/index.json')) {
+      return Promise.resolve(new Response(JSON.stringify({
+        period: '2025',
+        municipalities: ['5001'],
+      }), { status: 200 }))
+    }
+    if (url.endsWith('/data/account-overview/2025/5001.json')) {
       return Promise.resolve(new Response(JSON.stringify(accountResponse('5001', 'Trondheim', areaKm2)), { status: 200 }))
     }
     if (url.endsWith('/thematic-coverage')) {
@@ -230,7 +236,13 @@ describe('sidestruktur og Oversikt', () => {
           { status: 200 },
         ))
       }
-      if (url.endsWith('/account-overview')) {
+      if (url.endsWith('/data/account-overview/2025/index.json')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          period: '2025',
+          municipalities: ['5001'],
+        }), { status: 200 }))
+      }
+      if (url.endsWith('/data/account-overview/2025/5001.json')) {
         return Promise.resolve(new Response(null, { status: 503 }))
       }
       if (url.endsWith('/thematic-coverage')) {

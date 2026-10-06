@@ -33,7 +33,13 @@ describe('shared municipality data core', () => {
   it('caches regnskap og temadatastatus uavhengig', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
       const url = String(input)
-      if (url.endsWith('/account-overview')) {
+      if (url.endsWith('/data/account-overview/2025/index.json')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          period: '2025',
+          municipalities: ['5001'],
+        }), { status: 200 }))
+      }
+      if (url.endsWith('/data/account-overview/2025/5001.json')) {
         return Promise.resolve(new Response(JSON.stringify({
           municipalityNumber: '5001',
           municipalityName: 'Trondheim',
@@ -77,12 +83,12 @@ describe('shared municipality data core', () => {
       }), { status: 200 }))
     })
 
-    await loadMunicipalityAccount('5001')
-    await loadMunicipalityAccount('5001')
+    await loadMunicipalityAccount('5001', 'Trondheim')
+    await loadMunicipalityAccount('5001', 'Trondheim')
     await loadMunicipalityThematicCoverage('5001')
     await loadMunicipalityThematicCoverage('5001')
 
-    expect(fetchSpy).toHaveBeenCalledTimes(2)
+    expect(fetchSpy).toHaveBeenCalledTimes(3)
   })
 
   it('does not retain transient thematic unavailable responses', async () => {

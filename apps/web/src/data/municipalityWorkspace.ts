@@ -43,11 +43,12 @@ export function loadMunicipalityBoundary(
 
 export function loadMunicipalityAccount(
   municipalityNumber: string,
+  municipalityName: string,
 ): Promise<AccountOverviewData> {
   return cached(
     accountCache,
     municipalityNumber,
-    () => getAccountOverview(municipalityNumber),
+    () => getAccountOverview(municipalityNumber, municipalityName),
   )
 }
 
