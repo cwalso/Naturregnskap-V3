@@ -1,0 +1,424 @@
+import { valuedNature } from '../datasets/registry'
+import {
+  PLAN_PIXEL_METERS,
+  type PlannedDevelopmentAnalysis,
+  type PlannedDevelopmentOverlayGrid,
+} from './plannedDevelopment'
+
+const PAGE_SIZE = 1000
+
+const valueCategoryColors: Record<string, string> = {
+  'Svært stor verdi': '#AF0C0C',
+  'Stor verdi': '#FD7032',
+  'Middels verdi': '#FEC02D',
+  'Noe verdi': '#FFFE37',
+  'Vurderes per lokalitet': '#0084A8',
+  'Vurderes per naturtype': '#BED2FF',
+  'Ikke gitt verdi': '#C4C9AD',
+  'Ikke oppgitt': '#D8DDDA',
+}
+
+const valueCategoryOrder = [
+  'Svært stor verdi',
+  'Stor verdi',
+  'Middels verdi',
+  'Noe verdi',
+  'Vurderes per lokalitet',
+  'Vurderes per naturtype',
+  'Ikke gitt verdi',
+  'Ikke oppgitt',
+] as const
+
+type EsriRing = readonly (readonly [number, number])[]
+type EsriRings = readonly EsriRing[]
+
+interface EsriValuedNatureFeature {
+  readonly attributes: Record<string, unknown>
+  readonly geometry?: {
+    readonly rings?: EsriRings
+  }
+}
+
+interface EsriQueryResponse {
+  readonly features?: readonly EsriValuedNatureFeature[]
+  readonly exceededTransferLimit?: boolean
+  readonly error?: {
+    readonly message?: string
+  }
+}
+
+export interface ValuedNatureBreakdownMetric {
+  readonly label: string
+  readonly color?: string
+  readonly featureCount: number
+  readonly areaKm2: number
+  readonly sharePercent: number
+}
+
+export interface PlannedValuedNatureAnalysis {
+  readonly municipalityNumber: string
+  readonly status: 'available'
+  readonly source: 'Miljødirektoratet – naturtyper med KU-verdi'
+  readonly methodVersion: 'planned-valued-nature-v1'
+  readonly pixelMeters: number
+  readonly candidateFeatureCount: number
+  readonly affectedFeatureCount: number
+  readonly uniqueOverlapAreaKm2: number
+  readonly registeredOverlapAreaKm2: number
+  readonly hasOverlappingRegistrations: boolean
+  readonly valueMetrics: readonly ValuedNatureBreakdownMetric[]
+  readonly typeMetrics: readonly ValuedNatureBreakdownMetric[]
+}
+
+const analysisCache = new Map<string, Promise<PlannedValuedNatureAnalysis>>()
+
+export function calculatePlannedValuedNatureAnalysis(
+  analysis: PlannedDevelopmentAnalysis,
+  signal?: AbortSignal,
+): Promise<PlannedValuedNatureAnalysis> {
+  const cached = analysisCache.get(analysis.municipalityNumber)
+  if (cached) return cached
+
+  const request = runAnalysis(analysis, signal).catch((error: unknown) => {
+    analysisCache.delete(analysis.municipalityNumber)
+    throw error
+  })
+  analysisCache.set(analysis.municipalityNumber, request)
+  return request
+}
+
+async function runAnalysis(
+  analysis: PlannedDevelopmentAnalysis,
+  signal?: AbortSignal,
+): Promise<PlannedValuedNatureAnalysis> {
+  const features = await fetchValuedNatureFeatures(analysis.overlay.extent, signal)
+  const summary = summarizeFeatures(features, analysis.overlay)
+  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+  const registeredOverlapAreaKm2 = summary.featurePixelTotal * pixelAreaKm2
+  const uniqueOverlapAreaKm2 = summary.uniquePixelCount * pixelAreaKm2
+
+  return {
+    municipalityNumber: analysis.municipalityNumber,
+    status: 'available',
+    source: 'Miljødirektoratet – naturtyper med KU-verdi',
+    methodVersion: 'planned-valued-nature-v1',
+    pixelMeters: PLAN_PIXEL_METERS,
+    candidateFeatureCount: features.length,
+    affectedFeatureCount: summary.affectedFeatureCount,
+    uniqueOverlapAreaKm2,
+    registeredOverlapAreaKm2,
+    hasOverlappingRegistrations:
+      registeredOverlapAreaKm2 > uniqueOverlapAreaKm2 + pixelAreaKm2,
+    valueMetrics: buildMetrics(
+      summary.byValue,
+      summary.affectedFeatureCount,
+      summary.featurePixelTotal,
+      pixelAreaKm2,
+      true,
+    ),
+    typeMetrics: buildMetrics(
+      summary.byType,
+      summary.affectedFeatureCount,
+      summary.featurePixelTotal,
+      pixelAreaKm2,
+      false,
+    ),
+  }
+}
+
+export function buildValuedNatureQueryBody(
+  extent: readonly [number, number, number, number],
+  offset = 0,
+): URLSearchParams {
+  return new URLSearchParams({
+    f: 'json',
+    where: '1=1',
+    geometry: JSON.stringify({
+      xmin: extent[0],
+      ymin: extent[1],
+      xmax: extent[2],
+      ymax: extent[3],
+      spatialReference: { wkid: 25833 },
+    }),
+    geometryType: 'esriGeometryEnvelope',
+    inSR: '25833',
+    outSR: '25833',
+    spatialRel: 'esriSpatialRelIntersects',
+    outFields: 'OBJECTID,KuverdiNaturtypeId,Verdikategori,Naturtype,Områdenavn',
+    returnGeometry: 'true',
+    geometryPrecision: '1',
+    orderByFields: 'OBJECTID',
+    resultOffset: String(offset),
+    resultRecordCount: String(PAGE_SIZE),
+  })
+}
+
+async function fetchValuedNatureFeatures(
+  extent: readonly [number, number, number, number],
+  signal?: AbortSignal,
+): Promise<readonly EsriValuedNatureFeature[]> {
+  const queryUrl = valuedNature.analysisSource?.queryUrl
+  if (!queryUrl) throw new Error('Verdsatte naturtyper mangler analysekilde')
+
+  const features: EsriValuedNatureFeature[] = []
+  let offset = 0
+
+  while (true) {
+    const response = await fetch(queryUrl, {
+      method: 'POST',
+      body: buildValuedNatureQueryBody(extent, offset),
+      signal,
+    })
+    if (!response.ok) {
+      throw new Error(`Verdsatte naturtyper feilet med HTTP ${response.status}`)
+    }
+
+    const data = await response.json() as EsriQueryResponse
+    if (data.error) {
+      throw new Error(data.error.message ?? 'Verdsatte naturtyper returnerte en feil')
+    }
+
+    const page = Array.isArray(data.features) ? data.features : []
+    features.push(...page)
+
+    if (!data.exceededTransferLimit && page.length < PAGE_SIZE) break
+    if (page.length === 0) break
+    offset += page.length
+  }
+
+  return features
+}
+
+interface GroupCounter {
+  featureCount: number
+  pixelCount: number
+}
+
+interface FeatureSummary {
+  affectedFeatureCount: number
+  featurePixelTotal: number
+  uniquePixelCount: number
+  byValue: Map<string, GroupCounter>
+  byType: Map<string, GroupCounter>
+}
+
+export function summarizeValuedNatureFeaturesForTest(
+  features: readonly EsriValuedNatureFeature[],
+  overlay: PlannedDevelopmentOverlayGrid,
+): FeatureSummary {
+  return summarizeFeatures(features, overlay)
+}
+
+function summarizeFeatures(
+  features: readonly EsriValuedNatureFeature[],
+  overlay: PlannedDevelopmentOverlayGrid,
+): FeatureSummary {
+  const byValue = new Map<string, GroupCounter>()
+  const byType = new Map<string, GroupCounter>()
+  const uniqueOverlap = new Uint8Array(overlay.analysisMask.length)
+
+  let affectedFeatureCount = 0
+  let featurePixelTotal = 0
+
+  for (const feature of features) {
+    const rings = normalizeRings(feature.geometry?.rings)
+    if (rings.length === 0) continue
+
+    const pixelCount = countFeaturePixels(rings, overlay, uniqueOverlap)
+    if (pixelCount === 0) continue
+
+    affectedFeatureCount += 1
+    featurePixelTotal += pixelCount
+
+    const value = attributeText(feature.attributes, 'Verdikategori')
+    const natureType = attributeText(feature.attributes, 'Naturtype')
+    incrementGroup(byValue, value, pixelCount)
+    incrementGroup(byType, natureType, pixelCount)
+  }
+
+  let uniquePixelCount = 0
+  for (const value of uniqueOverlap) {
+    if (value) uniquePixelCount += 1
+  }
+
+  return {
+    affectedFeatureCount,
+    featurePixelTotal,
+    uniquePixelCount,
+    byValue,
+    byType,
+  }
+}
+
+function countFeaturePixels(
+  rings: readonly (readonly [number, number])[][],
+  overlay: PlannedDevelopmentOverlayGrid,
+  uniqueOverlap: Uint8Array,
+): number {
+  const bounds = polygonBounds(rings)
+  if (!bounds) return 0
+
+  const [minX, minY, maxX, maxY] = bounds
+  const [extentMinX, extentMinY, extentMaxX, extentMaxY] = overlay.extent
+  const resolutionX = (extentMaxX - extentMinX) / overlay.width
+  const resolutionY = (extentMaxY - extentMinY) / overlay.height
+
+  const minColumn = clamp(Math.floor((minX - extentMinX) / resolutionX), 0, overlay.width - 1)
+  const maxColumn = clamp(Math.floor((maxX - extentMinX) / resolutionX), 0, overlay.width - 1)
+  const minRow = clamp(Math.floor((extentMaxY - maxY) / resolutionY), 0, overlay.height - 1)
+  const maxRow = clamp(Math.floor((extentMaxY - minY) / resolutionY), 0, overlay.height - 1)
+
+  if (
+    maxX < extentMinX
+    || minX > extentMaxX
+    || maxY < extentMinY
+    || minY > extentMaxY
+  ) {
+    return 0
+  }
+
+  let pixelCount = 0
+  for (let row = minRow; row <= maxRow; row += 1) {
+    const y = extentMaxY - (row + 0.5) * resolutionY
+    const rowStart = row * overlay.width
+
+    for (let column = minColumn; column <= maxColumn; column += 1) {
+      const index = rowStart + column
+      if (!overlay.analysisMask[index]) continue
+
+      const x = extentMinX + (column + 0.5) * resolutionX
+      if (!pointInPolygon(x, y, rings)) continue
+
+      pixelCount += 1
+      uniqueOverlap[index] = 1
+    }
+  }
+
+  return pixelCount
+}
+
+function normalizeRings(
+  value: EsriRings | undefined,
+): readonly (readonly [number, number])[][] {
+  if (!Array.isArray(value)) return []
+
+  const rings: [number, number][][] = []
+  for (const ring of value) {
+    if (!Array.isArray(ring)) continue
+
+    const points: [number, number][] = []
+    for (const point of ring) {
+      if (
+        Array.isArray(point)
+        && point.length >= 2
+        && Number.isFinite(Number(point[0]))
+        && Number.isFinite(Number(point[1]))
+      ) {
+        points.push([Number(point[0]), Number(point[1])])
+      }
+    }
+    if (points.length >= 3) rings.push(points)
+  }
+  return rings
+}
+
+function pointInPolygon(
+  x: number,
+  y: number,
+  rings: readonly (readonly [number, number])[][],
+): boolean {
+  let inside = false
+  for (const ring of rings) {
+    if (pointInRing(x, y, ring)) inside = !inside
+  }
+  return inside
+}
+
+function pointInRing(
+  x: number,
+  y: number,
+  ring: readonly (readonly [number, number])[],
+): boolean {
+  let inside = false
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index, index += 1) {
+    const [xi, yi] = ring[index]
+    const [xj, yj] = ring[previous]
+    const crosses = (yi > y) !== (yj > y)
+      && x < (xj - xi) * (y - yi) / (yj - yi) + xi
+    if (crosses) inside = !inside
+  }
+  return inside
+}
+
+function polygonBounds(
+  rings: readonly (readonly [number, number])[][],
+): [number, number, number, number] | null {
+  let minX = Number.POSITIVE_INFINITY
+  let minY = Number.POSITIVE_INFINITY
+  let maxX = Number.NEGATIVE_INFINITY
+  let maxY = Number.NEGATIVE_INFINITY
+
+  for (const ring of rings) {
+    for (const [x, y] of ring) {
+      minX = Math.min(minX, x)
+      minY = Math.min(minY, y)
+      maxX = Math.max(maxX, x)
+      maxY = Math.max(maxY, y)
+    }
+  }
+
+  return Number.isFinite(minX) ? [minX, minY, maxX, maxY] : null
+}
+
+function attributeText(attributes: Record<string, unknown>, field: string): string {
+  const value = attributes[field]
+  return typeof value === 'string' && value.trim() ? value.trim() : 'Ikke oppgitt'
+}
+
+function incrementGroup(
+  groups: Map<string, GroupCounter>,
+  label: string,
+  pixelCount: number,
+) {
+  const current = groups.get(label) ?? { featureCount: 0, pixelCount: 0 }
+  groups.set(label, {
+    featureCount: current.featureCount + 1,
+    pixelCount: current.pixelCount + pixelCount,
+  })
+}
+
+function buildMetrics(
+  groups: Map<string, GroupCounter>,
+  affectedFeatureCount: number,
+  featurePixelTotal: number,
+  pixelAreaKm2: number,
+  useValueColors: boolean,
+): ValuedNatureBreakdownMetric[] {
+  const metrics = [...groups.entries()].map(([label, counter]) => ({
+    label,
+    color: useValueColors ? valueCategoryColors[label] ?? '#D8DDDA' : undefined,
+    featureCount: counter.featureCount,
+    areaKm2: counter.pixelCount * pixelAreaKm2,
+    sharePercent: featurePixelTotal > 0
+      ? counter.pixelCount / featurePixelTotal * 100
+      : affectedFeatureCount > 0
+        ? counter.featureCount / affectedFeatureCount * 100
+        : 0,
+  }))
+
+  if (useValueColors) {
+    return metrics.sort((a, b) => {
+      const aIndex = valueCategoryOrder.indexOf(a.label as typeof valueCategoryOrder[number])
+      const bIndex = valueCategoryOrder.indexOf(b.label as typeof valueCategoryOrder[number])
+      const normalizedA = aIndex === -1 ? valueCategoryOrder.length : aIndex
+      const normalizedB = bIndex === -1 ? valueCategoryOrder.length : bIndex
+      return normalizedA - normalizedB
+    })
+  }
+
+  return metrics.sort((a, b) => b.areaKm2 - a.areaKm2 || b.featureCount - a.featureCount)
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value))
+}

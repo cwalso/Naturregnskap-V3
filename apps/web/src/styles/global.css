@@ -1952,3 +1952,104 @@ body { font-size: 16px; }
 .map-sidebar__section--layers .thematic-layer-list {
   margin-top: 0;
 }
+
+
+/* Verdsatte naturtyper × framtidig utbygging */
+.valued-nature-result {
+  display: grid;
+  gap: 1rem;
+}
+.valued-nature-result__summary {
+  display: grid;
+  gap: .65rem;
+}
+.valued-nature-result__area {
+  padding: .75rem .85rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.valued-nature-result__area span,
+.valued-nature-result__area strong {
+  display: block;
+}
+.valued-nature-result__area span {
+  color: var(--color-text-muted);
+  font-size: .68rem;
+}
+.valued-nature-result__area strong {
+  margin-top: .2rem;
+  font-size: .95rem;
+  font-variant-numeric: tabular-nums;
+}
+.valued-nature-breakdown {
+  padding-top: .85rem;
+  border-top: 1px solid var(--color-border);
+}
+.valued-nature-breakdown .map-sidebar__eyebrow {
+  margin-bottom: .65rem;
+}
+.valued-nature-breakdown__list {
+  display: grid;
+  gap: .68rem;
+}
+.valued-nature-metric {
+  display: grid;
+  gap: .28rem;
+}
+.valued-nature-metric__labels {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  font-size: .7rem;
+}
+.valued-nature-metric__labels strong {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
+  min-width: 0;
+  font-size: .72rem;
+  line-height: 1.35;
+}
+.valued-nature-metric__labels > span {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.valued-nature-metric > small {
+  color: var(--color-text-muted);
+  font-size: .64rem;
+}
+.valued-nature-metric__swatch {
+  flex: 0 0 auto;
+  width: .68rem;
+  height: .68rem;
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-radius: .1rem;
+}
+.valued-nature-metric__bar {
+  height: .34rem;
+  overflow: hidden;
+  background: var(--color-surface-subtle);
+  border-radius: 999px;
+}
+.valued-nature-metric__bar span {
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  border-radius: inherit;
+}
+.valued-nature-breakdown__more {
+  margin-top: .75rem;
+  padding-top: .65rem;
+  border-top: 1px solid var(--color-border);
+}
+.valued-nature-breakdown__more summary {
+  color: var(--color-accent);
+  font-size: .68rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.valued-nature-breakdown__more .valued-nature-breakdown__list {
+  margin-top: .75rem;
+}

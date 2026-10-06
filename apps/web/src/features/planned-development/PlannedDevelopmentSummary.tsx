@@ -12,6 +12,7 @@ import {
   PLANNED_AGRICULTURE_COLOR,
   PLANNED_NATURE_COLOR,
 } from '../../map/plannedDevelopmentOverlay'
+import type { PlannedValuedNatureAnalysis } from '../../map/plannedValuedNature'
 
 export type PlannedDevelopmentAnalysisTarget =
   | 'grunnkart'
@@ -28,6 +29,8 @@ interface PlannedDevelopmentSummaryProps {
   readonly natureBreakdownState: 'idle' | 'loading' | 'error'
   readonly analysisTarget: PlannedDevelopmentAnalysisTarget
   readonly onAnalysisTargetChange: (target: PlannedDevelopmentAnalysisTarget) => void
+  readonly valuedNatureAnalysis: PlannedValuedNatureAnalysis | null
+  readonly valuedNatureAnalysisState: 'idle' | 'loading' | 'error'
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', {
@@ -57,7 +60,7 @@ const analysisTargets: readonly {
     id: 'valued-nature',
     label: valuedNature.title,
     description: 'Verdi og naturtype · ikke heldekkende',
-    status: 'next',
+    status: 'ready',
     futureResult: 'berørt areal og antall lokaliteter, fordelt på verdi og naturtype',
   },
   {
@@ -80,6 +83,136 @@ function dekar(km2: number): string {
   return `${areaFormatter.format(km2 * 1000)} dekar`
 }
 
+function ValuedNatureResult({
+  analysis,
+}: {
+  readonly analysis: PlannedValuedNatureAnalysis
+}) {
+  if (analysis.affectedFeatureCount === 0) {
+    return (
+      <div className="valued-nature-result">
+        <div className="plan-analysis">
+          <span>Registrerte verdsatte naturtypelokaliteter med beregnet overlapp</span>
+          <strong>0</strong>
+          <small>
+            Datasettet er ikke heldekkende. Null treff skal derfor ikke tolkes som
+            fravær av naturverdi.
+          </small>
+        </div>
+        <p className="plan-nature-breakdown__note">
+          Analysen er gjort mot registrerte lokaliteter i Miljødirektoratets
+          løpende tjeneste, med samme ca. {Math.round(analysis.pixelMeters)} m
+          planmaske som analyseområdet.
+        </p>
+      </div>
+    )
+  }
+
+  const primaryTypes = analysis.typeMetrics.slice(0, 6)
+  const remainingTypes = analysis.typeMetrics.slice(6)
+
+  return (
+    <div className="valued-nature-result">
+      <div className="valued-nature-result__summary">
+        <div className="plan-analysis">
+          <span>Registrerte lokaliteter som overlapper analyseområdet</span>
+          <strong>{areaFormatter.format(analysis.affectedFeatureCount)}</strong>
+          <small>
+            av {areaFormatter.format(analysis.candidateFeatureCount)} lokaliteter
+            hentet for analyseutsnittet
+          </small>
+        </div>
+        <div className="valued-nature-result__area">
+          <span>Beregnet unikt overlappsareal</span>
+          <strong>ca. {dekar(analysis.uniqueOverlapAreaKm2)}</strong>
+        </div>
+      </div>
+
+      <div className="valued-nature-breakdown">
+        <p className="map-sidebar__eyebrow">Fordelt på verdikategori</p>
+        <div className="valued-nature-breakdown__list">
+          {analysis.valueMetrics.map((metric) => (
+            <ValuedNatureMetricRow metric={metric} key={metric.label} showColor />
+          ))}
+        </div>
+      </div>
+
+      <div className="valued-nature-breakdown">
+        <p className="map-sidebar__eyebrow">Fordelt på naturtype</p>
+        <div className="valued-nature-breakdown__list">
+          {primaryTypes.map((metric) => (
+            <ValuedNatureMetricRow metric={metric} key={metric.label} />
+          ))}
+        </div>
+
+        {remainingTypes.length > 0 && (
+          <details className="valued-nature-breakdown__more">
+            <summary>Vis alle {analysis.typeMetrics.length} naturtyper</summary>
+            <div className="valued-nature-breakdown__list">
+              {remainingTypes.map((metric) => (
+                <ValuedNatureMetricRow metric={metric} key={metric.label} />
+              ))}
+            </div>
+          </details>
+        )}
+      </div>
+
+      {analysis.hasOverlappingRegistrations && (
+        <p className="plan-nature-breakdown__note">
+          Enkelte registrerte lokaliteter overlapper hverandre. Fordelingene viser
+          registrert overlappsareal per lokalitet og kan derfor summeres til mer enn
+          det unike fysiske overlappsarealet.
+        </p>
+      )}
+
+      <p className="plan-nature-breakdown__note">
+        Verdsatte naturtyper er supplerende temadata og ikke heldekkende
+        regnskapsgrunnlag. Arealene er prototypeanslag beregnet på ca.{' '}
+        {Math.round(analysis.pixelMeters)} m rutenett mot framtidige
+        utbyggingsområder.
+      </p>
+    </div>
+  )
+}
+
+function ValuedNatureMetricRow({
+  metric,
+  showColor = false,
+}: {
+  readonly metric: PlannedValuedNatureAnalysis['valueMetrics'][number]
+  readonly showColor?: boolean
+}) {
+  return (
+    <div className="valued-nature-metric">
+      <div className="valued-nature-metric__labels">
+        <strong>
+          {showColor && (
+            <i
+              className="valued-nature-metric__swatch"
+              style={{ background: metric.color }}
+              aria-hidden="true"
+            />
+          )}
+          {metric.label}
+        </strong>
+        <span>{dekar(metric.areaKm2)}</span>
+      </div>
+      <small>
+        {metric.featureCount} {metric.featureCount === 1 ? 'lokalitet' : 'lokaliteter'}
+        {' · '}{percentFormatter.format(metric.sharePercent)} %
+      </small>
+      <div className="valued-nature-metric__bar" aria-hidden="true">
+        <span
+          style={{
+            width: `${Math.max(1, metric.sharePercent)}%`,
+            background: metric.color ?? 'var(--color-accent)',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export function PlannedDevelopmentSummary({
   state,
   result,
@@ -89,6 +222,8 @@ export function PlannedDevelopmentSummary({
   natureBreakdownState,
   analysisTarget,
   onAnalysisTargetChange,
+  valuedNatureAnalysis,
+  valuedNatureAnalysisState,
 }: PlannedDevelopmentSummaryProps) {
   const selectedTarget = analysisTargets.find((target) => target.id === analysisTarget)
     ?? analysisTargets[0]
@@ -159,7 +294,27 @@ export function PlannedDevelopmentSummary({
           <strong>{selectedTarget.label}</strong>
         </div>
 
-        {analysisTarget !== 'grunnkart' ? (
+        {analysisTarget === 'valued-nature' ? (
+          state === 'loading' || valuedNatureAnalysisState === 'loading' ? (
+            <p className="plan-analysis__status" role="status">
+              Beregner overlapp med verdsatte naturtyper…
+            </p>
+          ) : state === 'error' || valuedNatureAnalysisState === 'error' ? (
+            <p className="plan-analysis__status plan-analysis__status--error" role="alert">
+              Overlayanalysen mot verdsatte naturtyper kunne ikke beregnes nå.
+              Dette skal ikke tolkes som manglende treff.
+            </p>
+          ) : valuedNatureAnalysis ? (
+            <ValuedNatureResult analysis={valuedNatureAnalysis} />
+          ) : result?.status === 'not_available' ? (
+            <>
+              <p className="plan-analysis__status">
+                Analyseområdet er ikke klargjort for denne kommunen i prototypen.
+              </p>
+              <p className="map-sidebar__explanation">{result.reason}</p>
+            </>
+          ) : null
+        ) : analysisTarget !== 'grunnkart' ? (
           <div className="analysis-result__pending">
             <strong>{selectedTarget.label} × framtidig utbygging</strong>
             <p>
