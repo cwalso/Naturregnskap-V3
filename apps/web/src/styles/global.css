@@ -802,6 +802,17 @@ body { font-size: 16px; }
   margin-top: 1.25rem;
   background: transparent;
 }
+.map-workspace--explore .map-frame {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.map-workspace--explore .map {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
 .map-frame__context {
   display: flex;
   justify-content: space-between;
@@ -828,6 +839,63 @@ body { font-size: 16px; }
 }
 .map-workspace__method span {
   color: var(--color-text-muted);
+}
+
+
+.map-sidebar__section--analysis {
+  padding-top: 1.25rem;
+}
+.plan-analysis {
+  display: grid;
+  gap: .28rem;
+  padding: .9rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-surface);
+}
+.plan-analysis > span {
+  color: var(--color-text-muted);
+  font-size: .72rem;
+  line-height: 1.4;
+}
+.plan-analysis > strong {
+  font-size: 1.18rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.plan-analysis > small {
+  color: var(--color-text-muted);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+.plan-analysis__secondary,
+.plan-analysis__status {
+  margin: .75rem 0 0;
+  font-size: .75rem;
+  line-height: 1.45;
+}
+.plan-analysis__secondary strong {
+  font-variant-numeric: tabular-nums;
+}
+.plan-analysis__status--error {
+  color: var(--color-danger, #9b2c2c);
+}
+.plan-analysis__details {
+  margin-top: .75rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+.plan-analysis__details summary {
+  color: var(--color-accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+.plan-analysis__details p {
+  margin: .55rem 0 0;
 }
 
 /* V3.11 – reelle supplerende temadata */
