@@ -42,27 +42,7 @@ export const pageDatasetUsage: readonly PageDatasetUsage[] = [
     status: 'connected',
     note: 'Regionalt datasett. Null treff er ikke en generell vurdering av villreinrelevans.',
   },
-  {
-    datasetId: 'valued-nature',
-    pages: ['nature', 'map'],
-    role: 'supplementary',
-    status: 'planned',
-    note: 'Verdsatte naturtyper kan gi viktig innsikt, men dekningsgrad må presenteres sammen med treff.',
-  },
-  {
-    datasetId: 'infrastructure-free-nature',
-    pages: ['nature', 'map'],
-    role: 'supplementary',
-    status: 'planned',
-    note: 'INON er en tematisk indikator og ikke en egen regnskapskategori.',
-  },
-  {
-    datasetId: 'ssb-area-use-09594',
-    pages: ['overview', 'nature-loss'],
-    role: 'change-context',
-    status: 'method-pending',
-    note: 'Kan brukes som referanse eller statistisk kontekst, men er ikke automatisk samme regnskapsgrunnlag som Grunnkart.',
-  },
+
 ] as const
 
 export function datasetsForPage(page: V3PageId): readonly PageDatasetUsage[] {
