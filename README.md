@@ -86,9 +86,15 @@ apps/web/public/data/grunnkart/2025/overview/5001.png
 ```
 
 Metadata og geografisk utstrekning ligger i `overview/index.json`. Rasteret er
-ca. 19,72 meter per piksel i EPSG:25833 og kan brukes som oversiktsgrunnlag for
-kart- og pikselbasert prototypeanalyse. Det brukes **ikke** som kilde til de tre
-hovedtallene i dagens visning; disse hentes foreløpig fra SSB tabell 09594.
+ca. 19,72 meter per piksel i EPSG:25833. For Trondheim brukes det nå på samme
+grunnprinsipp som i Publicdemorepo: rasteret vises som heldekkende oversiktsbilde
+når kartet er zoomet ut, mens detaljerte fliser fra NIBIOs Grunnkart-tjeneste
+tar over når oppløsningen kommer under ca. 30 meter per piksel. Rasteret
+fargelegges i nettleseren fra de rå klassefargene til samme grupperte palett som
+det detaljerte kartlaget.
+
+Rasteret brukes **ikke** som kilde til de tre hovedtallene i dagens visning;
+disse hentes foreløpig fra SSB tabell 09594.
 
 ## Lokal frontend
 
