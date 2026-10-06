@@ -29,10 +29,13 @@ const valueCategoryOrder = [
   'Ikke oppgitt',
 ] as const
 
+type EsriRing = readonly (readonly [number, number])[]
+type EsriRings = readonly EsriRing[]
+
 interface EsriValuedNatureFeature {
   readonly attributes: Record<string, unknown>
   readonly geometry?: {
-    readonly rings?: readonly (readonly (readonly [number, number])[])[]
+    readonly rings?: EsriRings
   }
 }
 
@@ -295,7 +298,7 @@ function countFeaturePixels(
 }
 
 function normalizeRings(
-  value: EsriValuedNatureFeature['geometry'] extends { rings?: infer R } | undefined ? R : never,
+  value: EsriRings | undefined,
 ): readonly (readonly [number, number])[][] {
   if (!Array.isArray(value)) return []
 
