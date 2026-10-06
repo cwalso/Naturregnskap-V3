@@ -54,8 +54,6 @@ const initialThematicLayerStatus = Object.fromEntries(
   thematicDatasets.map((dataset) => [dataset.id, 'idle']),
 ) as Record<ThematicDatasetId, ThematicLayerLoadStatus>
 
-const TEMPORARY_DEFAULT_MUNICIPALITY_NUMBER = '5001'
-
 function viewFromHash(): SiteView {
   const value = window.location.hash.replace(/^#/, '')
   if (value === 'naturtapet' || value === 'utforsk-naturen' || value === 'utforsk-i-kart') return value
@@ -298,20 +296,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       if (requestId === boundaryRequest.current) setBoundaryState('error')
     }
   }
-
-
-  useEffect(() => {
-    if (
-      import.meta.env.MODE === 'test'
-      || listState !== 'ready'
-      || selectedMunicipality
-    ) return
-
-    const defaultMunicipality = municipalities.find(
-      (item) => item.number === TEMPORARY_DEFAULT_MUNICIPALITY_NUMBER,
-    )
-    if (defaultMunicipality) void selectMunicipality(defaultMunicipality)
-  }, [listState, municipalities, selectedMunicipality, selectMunicipality])
 
   function setThematicLayer(datasetId: ThematicDatasetId, visible: boolean) {
     setThematicLayerVisibility((current) => ({ ...current, [datasetId]: visible }))
