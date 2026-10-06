@@ -105,7 +105,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   accountOverviewLayer.on('prerender', (event) => {
     const context = event.context as CanvasRenderingContext2D
-    context.imageSmoothingEnabled = event.frameState.viewState.resolution >= accountOverviewResolution
+    const resolution = event.frameState?.viewState.resolution
+    context.imageSmoothingEnabled = resolution === undefined || resolution >= accountOverviewResolution
   })
   accountOverviewLayer.on('postrender', (event) => {
     const context = event.context as CanvasRenderingContext2D
@@ -400,9 +401,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       })
       boundarySource.addFeatures(features)
       const extent = boundarySource.getExtent()
-      accountDetailLayer.setExtent(extent)
+      if (extent) {
+        accountDetailLayer.setExtent(extent)
+        view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
+      }
       void configureAccountOverview(boundary.properties.number)
-      if (extent) view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
     },
     clearBoundary() {
       boundarySource.clear()
