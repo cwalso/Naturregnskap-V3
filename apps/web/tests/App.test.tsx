@@ -399,6 +399,11 @@ describe('sidestruktur og Oversikt', () => {
     const layerStatusHandler = vi.mocked(map.setThematicLayerStatusHandler).mock.calls.at(-1)?.[0]
     expect(layerStatusHandler).toBeTypeOf('function')
     await act(async () => {
+      layerStatusHandler?.('protected-areas', 'loading')
+    })
+    expect(screen.queryByText('Laster kartlag…')).not.toBeInTheDocument()
+
+    await act(async () => {
       layerStatusHandler?.('protected-areas', 'error')
     })
     expect(screen.getByText('Karttjenesten kunne ikke lastes')).toBeInTheDocument()
