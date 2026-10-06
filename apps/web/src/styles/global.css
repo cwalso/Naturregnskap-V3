@@ -2626,7 +2626,7 @@ body { font-size: 16px; }
 
 
 /* V3.18 – mobiltilpasning av Oversikt */
-@media (max-width: 52rem) {
+@media (max-width: 72rem) {
   .overview-dashboard-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
