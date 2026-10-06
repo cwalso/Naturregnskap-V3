@@ -524,7 +524,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hvor ligger arealene?' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Interaktivt kart over Trondheim')).toBeInTheDocument()
+    expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
     expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByText('Om datagrunnlaget', { selector: 'summary' }))
