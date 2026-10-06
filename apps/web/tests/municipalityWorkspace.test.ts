@@ -43,23 +43,21 @@ describe('shared municipality data core', () => {
   it('caches regnskap og temadatastatus uavhengig', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
       const url = String(input)
-      if (url.endsWith('/data/account-overview/2025/index.json')) {
+      if (url.startsWith('https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?')) {
+        const codes = [
+          '01', '02', '03', '04', '05', '06', '07', '08-09', '10-11', '12-13', '14',
+          '15-16', '17', '18', '19', '20', '21', '24', '22.01', '22.02',
+        ]
+        const values = new Array(codes.length).fill(0)
+        values[codes.indexOf('01')] = 1
+        values[codes.indexOf('15-16')] = 2
+        values[codes.indexOf('17')] = 12
         return Promise.resolve(new Response(JSON.stringify({
-          period: '2025',
-          municipalities: ['5001'],
-        }), { status: 200 }))
-      }
-      if (url.endsWith('/data/account-overview/2025/5001.json')) {
-        return Promise.resolve(new Response(JSON.stringify({
-          municipalityNumber: '5001',
-          municipalityName: 'Trondheim',
-          period: '2025',
-          status: 'not_available',
-          metrics: [
-            { id: 'nature', areaKm2: null, sharePercent: null },
-            { id: 'agriculture', areaKm2: null, sharePercent: null },
-            { id: 'built', areaKm2: null, sharePercent: null },
-          ],
+          dimension: {
+            ArealKlasse: { category: { index: Object.fromEntries(codes.map((code, index) => [code, index])) } },
+            Tid: { category: { index: { '2025': 0 } } },
+          },
+          value: values,
         }), { status: 200 }))
       }
       if (url.endsWith('/kommuner/5001/omrade')) {
@@ -76,7 +74,7 @@ describe('shared municipality data core', () => {
     await loadMunicipalityThematicCoverage('5001')
     await loadMunicipalityThematicCoverage('5001')
 
-    expect(fetchSpy).toHaveBeenCalledTimes(6)
+    expect(fetchSpy).toHaveBeenCalledTimes(5)
   })
 
   it('does not retain transient thematic unavailable responses', async () => {
