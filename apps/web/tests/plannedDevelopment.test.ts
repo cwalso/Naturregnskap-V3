@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
   PLAN_PIXEL_METERS,
@@ -6,8 +6,13 @@ import {
   buildPlanTileUrl,
   classifyNatureTypePixel,
   getPlanTileCoordinates,
+  loadPlanTileBlobByUrl,
   removeNarrowPlanStrips,
 } from '../src/map/plannedDevelopment'
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 describe('DiBK planned development prototype', () => {
   it('uses the same DiBK WMS filter as Publicdemorepo', () => {
@@ -86,5 +91,21 @@ describe('DiBK planned development prototype', () => {
     expect(classifyNatureTypePixel(255, 0, 255)).toBe(3)
     expect(classifyNatureTypePixel(0, 255, 255)).toBe(4)
   })
+
+  it('reuses identical DiBK image requests within the browser session', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(new Blob(['plan'], { type: 'image/png' }), {
+        status: 200,
+        headers: { 'content-type': 'image/png' },
+      }),
+    )
+    const url = 'https://nap.ft.dibk.no/services/wms/kommuneplaner/?cache-test=5001'
+
+    await loadPlanTileBlobByUrl(url)
+    await loadPlanTileBlobByUrl(url)
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1)
+  })
+
 
 })
