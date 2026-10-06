@@ -1,32 +1,83 @@
 # Kommunale naturregnskap V3
 
-V3 er en modulær prototype for et felles, etterprøvbart grunnlag for kommunale
-naturregnskap og framtidig analyse- og beslutningsstøtte. Dette repoet inneholder
-det tekniske fundamentet og en første kartflyt. Brukeren kan søke etter og velge
-en norsk kommune, se kommunegrensen og få kartet tilpasset kommunen. Nasjonalt
-grunnkart for arealanalyse, årsversjon 2025, kan visualiseres som kartlaget
-«Arealdekke nivå 1» via WMS. WMS er bare en `visualSource`, ikke et
-analysegrunnlag; naturregnskap, arealberegninger og GIS-analyser er ikke
-implementert.
+V3 er en teknisk prototype for å prøve ut et felles og etterprøvbart grunnlag
+for kommunale naturregnskap. Prototypen utvikles trinnvis. Første versjon
+handler først og fremst om et arealbasert naturregnskap, datagrunnlag,
+sporbarhet og forståelig bruk i kommunal arealforvaltning.
 
-Brukerflaten bruker Kartverkets gråtonekart som standard bakgrunnskart, en lys
-profilheader med Miljødirektoratets offisielle logo og en permanent
-kart-tegnforklaring som følger aktive faglag. Dette er en tidlig
-profiltilpasning, ikke en ferdig eller profilgodkjent løsning.
+Den offentlige testflaten ligger på:
 
-## Arkitektur
+https://cwalso.github.io/Naturregnskap-V3/
 
-- `apps/web`: React, TypeScript i strict mode, Vite og OpenLayers. Kartmodulen
-  viser Kartverkets gråtonebakgrunn, Grunnkartets WMS-lag og en valgt
-  kommunegrense. Et lite dataset registry holder metadata og kildekonfigurasjon.
-- `apps/api`: FastAPI og Pydantic. API-et tilbyr helsesjekk og egne endepunkter
-  for kommuneliste og kommunegrense. Kartverkets Administrative enheter API er
-  skjult bak en adapter.
+## Enkel demoarkitektur
 
-Frontend bruker samme `/api`-sti i utvikling og ved senere integrasjon. Vites
-utviklingsserver videresender lokale kall til FastAPI på port 8000.
+GitHub Pages er den eneste runtime-komponenten som trengs for den offentlige
+demoen.
 
-## Frontend
+```text
+offentlige datakilder
+        +
+offline preparation / beregning
+        ↓
+statiske, versjonerte resultater
+        ↓
+React / Vite
+        ↓
+GitHub Pages
+```
+
+Brukerflaten:
+
+- henter kommuneliste og kommunegrense direkte fra Kartverket
+- bruker NIBIOs WMS for visualisering av Grunnkart for arealanalyse
+- spør relevante offentlige ArcGIS-tjenester direkte for supplerende temadata
+- leser ferdig beregnede Level0-resultater som statiske JSON-filer når de finnes
+
+Tunge regnskapsberegninger skal ikke gjøres i nettleseren. Manglende publiserte
+resultater vises som `not_available`, ikke som null eller eksempelverdier.
+
+## Dataskille
+
+Prototypen skiller mellom:
+
+1. **Regnskapsgrunnlag** – heldekkende og metodebundet grunnlag for selve
+   naturregnskapet.
+2. **Supplerende temadata** – relevante kartlag som gir ekstra innsikt, men som
+   ikke automatisk inngår i regnskapet.
+3. **Analyse- og beslutningsstøtte** – videre bruk av regnskap og andre data.
+4. **Veiledning og formidling** – nødvendig for riktig forståelse og bruk.
+
+WMS brukes som visualiseringskilde, ikke som beregningsgrunnlag.
+
+## Repo
+
+- `apps/web`: React, TypeScript, Vite og OpenLayers. Dette er den offentlige
+  demoen som deployes til GitHub Pages.
+- `apps/api`: FastAPI/Python-kode, domenelogikk, adaptere, tester og
+  preparation-skript. Denne delen er nyttig for utvikling og databehandling,
+  men er ikke en runtime-forutsetning for dagens Pages-demo.
+- `docs`: metode-, arkitektur-, beslutnings- og produktdokumentasjon.
+- `.data`: lokale analysedata. Mappen versjoneres ikke i Git.
+
+## Publiserte Level0-resultater
+
+Frontend leser publiseringsindeksen:
+
+```text
+apps/web/public/data/account-overview/2025/index.json
+```
+
+En kommune skal bare legges i indeksen når et kontrollert prepared-resultat er
+klart. Resultatet publiseres deretter som:
+
+```text
+apps/web/public/data/account-overview/2025/<kommunenummer>.json
+```
+
+Det skal ikke legges inn syntetiske eller tilnærmede regnskapstall for å fylle
+demoen.
+
+## Lokal frontend
 
 Krav: Node.js og npm.
 
@@ -38,7 +89,7 @@ npm run dev
 
 Frontend er da tilgjengelig på `http://localhost:5173`.
 
-## Backend
+## Python/FastAPI for utvikling og preparation
 
 Krav: Python 3.11 eller nyere.
 
@@ -50,34 +101,25 @@ python -m pip install -r requirements-dev.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-API-et er da tilgjengelig på `http://localhost:8000`, og helsesjekken på
-`http://localhost:8000/api/health`.
+FastAPI-koden beholdes som utviklings- og teststøtte og for eksisterende
+preparation-/domenelogikk. Den offentlige GitHub Pages-demoen skal ikke være
+avhengig av at denne prosessen kjører.
 
-Kommunedata er tilgjengelig via `GET /api/municipalities` og
-`GET /api/municipalities/{municipality_number}/boundary`. Backend må kjøre for
-at kommunevelgeren skal fungere. Bakgrunnskartet lastes direkte fra Kartverket
-som en ren visualiseringskilde.
+## GitHub Codespaces
 
-## Browser-preview med GitHub Codespaces
+Codespaces kan fortsatt brukes når frontend, Python-verktøy og lokale
+preparation-løp skal testes samlet:
 
-1. Åpne repoet i GitHub.
-2. Velg **Code → Codespaces**.
-3. Opprett et Codespace på `main`.
-4. Vent til det automatiske oppsettet er ferdig.
-5. Kjør fra roten av repoet:
+```bash
+./.devcontainer/start-preview.sh
+```
 
-   ```bash
-   ./.devcontainer/start-preview.sh
-   ```
-
-6. Åpne port 5173 når GitHub tilbyr **Open in Browser**.
-
-Previewen kjører bare mens Codespace-et er aktivt. Dette er en
-utviklingspreview, ikke en produksjonsdeployment. Frontend bruker backend i det
-samme Codespace-et gjennom den eksisterende `/api`-proxyen. Eksterne kilder fra
-Kartverket og NIBIO brukes på samme måte som i V3.2.
+For vanlig funksjonell test av den publiserte brukerflaten skal det ikke være
+nødvendig å starte et Codespace.
 
 ## Tester og kvalitetskontroll
+
+Frontend:
 
 ```bash
 cd apps/web
@@ -86,18 +128,21 @@ npm run lint
 npm run build
 ```
 
+Backend/preparation:
+
 ```bash
 cd apps/api
 source .venv/bin/activate
 pytest
 ruff check .
-ruff format --check .
 ```
+
+Pull requests og `main` kjøres gjennom GitHub Actions quality gate. Endringer
+i frontend deployes automatisk til GitHub Pages etter merge til `main`.
 
 ## Førende dokumentasjon
 
-Instruksjonene i [`AGENTS.md`](AGENTS.md) og dokumentasjonen under [`docs/`](docs/)
-er permanent og førende kontekst for utviklingen. Endringer skal være avgrensede,
-reviewes før de tas inn og bevare de etablerte faglige domeneskillene.
+Instruksjonene i [`AGENTS.md`](AGENTS.md) og dokumentasjonen under
+[`docs/`](docs/) er førende kontekst for videre utvikling.
 
 [Utviklingsplan for V3-prototypen](docs/utviklingsplan.md)
