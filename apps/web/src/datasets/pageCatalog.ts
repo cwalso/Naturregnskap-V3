@@ -42,7 +42,20 @@ export const pageDatasetUsage: readonly PageDatasetUsage[] = [
     status: 'connected',
     note: 'Regionalt datasett. Null treff er ikke en generell vurdering av villreinrelevans.',
   },
-
+  {
+    datasetId: 'valued-nature',
+    pages: ['nature', 'map'],
+    role: 'supplementary',
+    status: 'connected',
+    note: 'Verdsatte naturtyper er koblet til kart og kommunespesifikk treffvurdering. Dekningsgrad må presenteres sammen med treff.',
+  },
+  {
+    datasetId: 'infrastructure-free-nature',
+    pages: ['nature', 'map'],
+    role: 'supplementary',
+    status: 'connected',
+    note: 'INON er koblet til som kartlag og tematisk indikator. Kommuneanalyse kommer senere og er ikke en regnskapskategori.',
+  },
 ] as const
 
 export function datasetsForPage(page: V3PageId): readonly PageDatasetUsage[] {

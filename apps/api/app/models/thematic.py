@@ -12,7 +12,12 @@ class CamelModel(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
 
-ThematicDatasetId = Literal["protected-areas", "wild-reindeer-areas"]
+ThematicDatasetId = Literal[
+    "protected-areas",
+    "wild-reindeer-areas",
+    "valued-nature",
+    "infrastructure-free-nature",
+]
 ThematicEvaluationStatus = Literal["hit", "no_hit", "unavailable"]
 
 

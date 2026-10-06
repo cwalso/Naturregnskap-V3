@@ -1,5 +1,6 @@
 import json
 from urllib.parse import parse_qs
+
 import httpx
 from fastapi.testclient import TestClient
 
@@ -108,6 +109,8 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
         seen_requests.append(request)
         if "/vern/MapServer/0/query" in str(request.url):
             return httpx.Response(200, json={"count": 2})
+        if "/naturtyper_kuverdi/MapServer/0/query" in str(request.url):
+            return httpx.Response(200, json={"count": 3})
         if "/villrein/MapServer/1/query" in str(request.url):
             return httpx.Response(200, json={"count": 0})
         return httpx.Response(404)
@@ -136,7 +139,19 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
                 "datasetId": "protected-areas",
                 "status": "hit",
                 "featureCount": 2,
-                "note": "Ett eller flere registrerte objekter i kilden krysser kommunegrensen.",
+                "note": (
+                    "Ett eller flere registrerte objekter i kilden "
+                    "krysser kommunegrensen."
+                ),
+            },
+            {
+                "datasetId": "valued-nature",
+                "status": "hit",
+                "featureCount": 3,
+                "note": (
+                    "Ett eller flere registrerte objekter i kilden "
+                    "krysser kommunegrensen."
+                ),
             },
             {
                 "datasetId": "wild-reindeer-areas",
@@ -150,7 +165,7 @@ def test_thematic_coverage_evaluates_real_feature_sources() -> None:
             },
         ],
     }
-    assert len(seen_requests) == 2
+    assert len(seen_requests) == 3
     for request in seen_requests:
         body = request.content.decode()
         assert "returnCountOnly=true" in body
@@ -195,6 +210,11 @@ def test_thematic_coverage_preserves_source_failure_as_unavailable() -> None:
     assert results["protected-areas"]["status"] == "unavailable"
     assert results["protected-areas"]["featureCount"] is None
     assert results["wild-reindeer-areas"]["status"] == "no_hit"
+    assert results["valued-nature"]["status"] == "no_hit"
+    assert (
+        "ikke heldekkende"
+        in results["valued-nature"]["note"]
+    )
 
 def test_thematic_query_normalizes_multipolygon_to_esri_rings() -> None:
     municipality_transport = httpx.MockTransport(
@@ -244,7 +264,7 @@ def test_thematic_query_normalizes_multipolygon_to_esri_rings() -> None:
         app.dependency_overrides.clear()
 
     assert response.status_code == 200
-    assert len(posted_geometries) == 2
+    assert len(posted_geometries) == 3
     for geometry in posted_geometries:
         assert geometry["spatialReference"] == {"wkid": 4326}
         assert len(geometry["rings"]) == 2
