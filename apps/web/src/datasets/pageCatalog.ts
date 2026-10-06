@@ -1,4 +1,4 @@
-import type { ThematicDatasetId } from './registry'
+import type { DatasetId } from './registry'
 
 export type V3PageId =
   | 'overview'
@@ -13,7 +13,7 @@ export type DatasetRole =
   | 'visualization'
 
 export interface PageDatasetUsage {
-  readonly datasetId: string
+  readonly datasetId: DatasetId
   readonly pages: readonly V3PageId[]
   readonly role: DatasetRole
   readonly status: 'connected' | 'planned' | 'method-pending'
@@ -29,14 +29,14 @@ export const pageDatasetUsage: readonly PageDatasetUsage[] = [
     note: 'Heldekkende grunnlag. WMS brukes til kart; regnskapstall kommer fra versjonert analysegrunnlag.',
   },
   {
-    datasetId: 'protected-areas' satisfies ThematicDatasetId,
+    datasetId: 'protected-areas',
     pages: ['nature', 'map'],
     role: 'supplementary',
     status: 'connected',
     note: 'Formelt vern som supplerende temadata.',
   },
   {
-    datasetId: 'wild-reindeer-areas' satisfies ThematicDatasetId,
+    datasetId: 'wild-reindeer-areas',
     pages: ['nature', 'map'],
     role: 'supplementary',
     status: 'connected',
