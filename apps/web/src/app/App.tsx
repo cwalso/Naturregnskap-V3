@@ -170,7 +170,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setAccountState('loading')
     setThematicCoverageState('loading')
 
-    void loadMunicipalityAccount(municipality.number)
+    void loadMunicipalityAccount(municipality.number, municipality.name)
       .then((data) => {
         if (accountRequestId === accountRequest.current) {
           setAccountData(data)
