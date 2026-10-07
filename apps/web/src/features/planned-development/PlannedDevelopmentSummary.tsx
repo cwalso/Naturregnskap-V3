@@ -8,10 +8,6 @@ import type {
   PlannedDevelopmentResult,
   PlannedNatureBreakdown,
 } from '../../map/plannedDevelopment'
-import {
-  PLANNED_AGRICULTURE_COLOR,
-  PLANNED_NATURE_COLOR,
-} from '../../map/plannedDevelopmentOverlay'
 import type {
   PlannedValuedNatureAnalysis,
   ValuedNatureMapSelection,
@@ -132,51 +128,46 @@ function ValuedNatureResult({
 
   return (
     <div className="valued-nature-result">
-      <div className="valued-nature-result__summary">
-        <div className="plan-analysis">
-          <span>Registrerte lokaliteter som overlapper analyseområdet</span>
+      <div className="analysis-result__summary-grid">
+        <div className="analysis-result__metric">
+          <span>Berørte lokaliteter</span>
           <strong>{areaFormatter.format(analysis.affectedFeatureCount)}</strong>
           <small>
-            av {areaFormatter.format(analysis.candidateFeatureCount)} lokaliteter
-            hentet for analyseutsnittet
+            av {areaFormatter.format(analysis.candidateFeatureCount)} registrerte
+            lokaliteter i analyseutsnittet
           </small>
         </div>
-        <div className="valued-nature-result__area">
-          <span>Beregnet unikt overlappsareal</span>
+        <div className="analysis-result__metric">
+          <span>Unikt overlappsareal</span>
           <strong>ca. {dekar(analysis.uniqueOverlapAreaKm2)}</strong>
+          <small>Fysisk areal uten dobbelttelling av overlappende registreringer</small>
         </div>
       </div>
 
-      <label className="plan-layer-toggle">
-        <input
-          type="checkbox"
-          checked={visible}
-          onChange={(event) => onVisibleChange(event.target.checked)}
-        />
-        <span>
-          <strong>Vis analyseresultatet i kartet</strong>
-          <small>
-            Kartlaget viser registrerte verdsatte naturtyper som overlapper
-            framtidige utbyggingsområder.
-          </small>
-        </span>
-      </label>
-
-      <div className="valued-nature-map-control" aria-live="polite">
-        <div>
-          <span className="analysis-workspace__label">Stedfest resultat</span>
-          <strong>
-            {selection.kind === 'all'
-              ? 'Alle beregnede overlapper'
-              : selection.label}
-          </strong>
-        </div>
-        <button type="button" onClick={() => onShowInMap({ kind: 'all' })}>
-          {selection.kind === 'all'
-            ? 'Finn alle i kart'
-            : 'Vis alle og finn i kart'}
+      <div className="analysis-result__map-actions" aria-live="polite">
+        <button
+          type="button"
+          className="analysis-result__primary-action"
+          onClick={() => onShowInMap({ kind: 'all' })}
+        >
+          {selection.kind === 'all' ? 'Finn resultatet i kartet' : 'Vis alle og finn i kartet'}
+          <span aria-hidden="true">→</span>
         </button>
+        <label className="analysis-result__visibility">
+          <input
+            type="checkbox"
+            checked={visible}
+            onChange={(event) => onVisibleChange(event.target.checked)}
+          />
+          <span>Vis resultatlaget</span>
+        </label>
       </div>
+
+      {selection.kind !== 'all' && (
+        <p className="analysis-result__active-filter">
+          Kartet er filtrert til: <strong>{selection.label}</strong>
+        </p>
+      )}
 
       <div className="valued-nature-breakdown">
         <p className="map-sidebar__eyebrow">Fordelt på verdikategori</p>
@@ -313,82 +304,112 @@ export function PlannedDevelopmentSummary({
 
   return (
     <section
-      className="map-sidebar__section map-sidebar__section--analysis analysis-workspace"
+      className="analysis-workbench"
       aria-labelledby="planned-development-title"
     >
-      <div className="map-sidebar__section-heading analysis-workspace__heading">
+      <header className="analysis-workbench__header">
         <div>
-          <p className="map-sidebar__eyebrow">Analyse</p>
-          <h3 id="planned-development-title">Framtidig utbygging</h3>
+          <p className="map-sidebar__eyebrow">Overlayanalyse</p>
+          <h3 id="planned-development-title">Hva blir berørt?</h3>
         </div>
-        <span className="status-tag status-tag--muted">Anslag</span>
-      </div>
+        <span className="status-tag status-tag--muted">Prototype</span>
+      </header>
 
-      <div className="analysis-area-card">
-        <span className="analysis-step-label">
-          <b aria-hidden="true">1</b>
-          Analyseområde
-        </span>
-        <strong>Områder satt av til framtidig utbygging</strong>
-        <p>
-          Kommuneplanområder med framtidig arealbruk brukes som analyseområde.
-          Kartet viser resultatet av kryssingen mot valgt analysegrunnlag.
-        </p>
-        <small>Kilde: DiBK kommuneplaner</small>
-      </div>
+      <div className="analysis-builder">
+        <section className="analysis-builder__step" aria-labelledby="analysis-area-heading">
+          <div className="analysis-builder__step-heading">
+            <span className="analysis-step-label">
+              <b aria-hidden="true">1</b>
+              <span id="analysis-area-heading">Velg analyseområde</span>
+            </span>
+          </div>
 
-      <div className="analysis-target-picker">
-        <div className="analysis-target-picker__heading">
-          <span className="analysis-step-label">
-            <b aria-hidden="true">2</b>
-            Velg analysegrunnlag
-          </span>
-          <small>Hva skal utbyggingsområdene krysses med?</small>
-        </div>
-
-        <div className="analysis-target-list" role="radiogroup" aria-label="Analysegrunnlag">
-          {readyAnalysisTargets.map((target) => (
+          <div className="analysis-area-options">
             <button
               type="button"
-              className={
-                target.id === analysisTarget
-                  ? 'analysis-target analysis-target--selected'
-                  : 'analysis-target'
-              }
-              role="radio"
-              aria-checked={target.id === analysisTarget}
-              key={target.id}
-              onClick={() => onAnalysisTargetChange(target.id)}
+              className="analysis-area-option analysis-area-option--selected"
+              aria-pressed="true"
             >
-              <span className="analysis-target__radio" aria-hidden="true" />
-              <span className="analysis-target__content">
-                <strong>{target.label}</strong>
-                <small>{target.description}</small>
+              <span className="analysis-area-option__icon" aria-hidden="true">▧</span>
+              <span>
+                <strong>Framtidig utbygging</strong>
+                <small>Områder satt av til framtidig utbygging i kommuneplanen</small>
               </span>
+              <span className="analysis-area-option__state">Valgt</span>
             </button>
-          ))}
-        </div>
 
-        <details className="analysis-upcoming">
-          <summary>Flere analyser planlegges</summary>
-          <div className="analysis-upcoming__list">
-            {plannedAnalysisTargets.map((target) => (
-              <div className="analysis-upcoming__item" key={target.id}>
-                <strong>{target.label}</strong>
-                <small>{target.description}</small>
-              </div>
+            <button
+              type="button"
+              className="analysis-area-option analysis-area-option--next"
+              disabled
+              aria-describedby="custom-area-coming"
+            >
+              <span className="analysis-area-option__icon" aria-hidden="true">✎</span>
+              <span>
+                <strong>Tegn eget område</strong>
+                <small id="custom-area-coming">Tegn et polygon direkte i kartet</small>
+              </span>
+              <span className="analysis-area-option__state">Neste</span>
+            </button>
+          </div>
+        </section>
+
+        <section className="analysis-builder__step" aria-labelledby="analysis-source-heading">
+          <div className="analysis-builder__step-heading">
+            <span className="analysis-step-label">
+              <b aria-hidden="true">2</b>
+              <span id="analysis-source-heading">Kryss området med</span>
+            </span>
+          </div>
+
+          <div className="analysis-target-list" role="radiogroup" aria-label="Analysegrunnlag">
+            {readyAnalysisTargets.map((target) => (
+              <button
+                type="button"
+                className={
+                  target.id === analysisTarget
+                    ? 'analysis-target analysis-target--selected'
+                    : 'analysis-target'
+                }
+                role="radio"
+                aria-checked={target.id === analysisTarget}
+                key={target.id}
+                onClick={() => onAnalysisTargetChange(target.id)}
+              >
+                <span className="analysis-target__radio" aria-hidden="true" />
+                <span className="analysis-target__content">
+                  <strong>
+                    {target.id === 'grunnkart' ? 'Natur og jordbruk' : target.label}
+                  </strong>
+                  <small>{target.description}</small>
+                </span>
+              </button>
             ))}
           </div>
-        </details>
+
+          <details className="analysis-upcoming">
+            <summary>Flere datalag</summary>
+            <div className="analysis-upcoming__list">
+              {plannedAnalysisTargets.map((target) => (
+                <div className="analysis-upcoming__item" key={target.id}>
+                  <strong>{target.label}</strong>
+                  <small>{target.description}</small>
+                </div>
+              ))}
+            </div>
+          </details>
+        </section>
       </div>
 
-      <div className="analysis-result">
-        <div className="analysis-result__heading">
+      <section className="analysis-output" aria-labelledby="analysis-result-heading">
+        <div className="analysis-output__heading">
           <span className="analysis-step-label">
             <b aria-hidden="true">3</b>
-            Resultat
+            <span id="analysis-result-heading">Resultat</span>
           </span>
-          <strong>{selectedTarget.label}</strong>
+          <strong>
+            {analysisTarget === 'grunnkart' ? 'Natur og jordbruk' : selectedTarget.label}
+          </strong>
         </div>
 
         {analysisTarget === 'valued-nature' ? (
@@ -410,24 +431,15 @@ export function PlannedDevelopmentSummary({
               onShowInMap={onShowValuedNatureInMap}
             />
           ) : result?.status === 'not_available' ? (
-            <>
-              <p className="plan-analysis__status">
-                Analyseområdet er ikke klargjort for denne kommunen i prototypen.
-              </p>
-              <p className="map-sidebar__explanation">{result.reason}</p>
-            </>
+            <div className="analysis-result__empty">
+              <strong>Analyseområdet er ikke klargjort</strong>
+              <p>{result.reason}</p>
+            </div>
           ) : null
         ) : analysisTarget !== 'grunnkart' ? (
-          <div className="analysis-result__pending">
-            <strong>{selectedTarget.label} × framtidig utbygging</strong>
-            <p>
-              Denne overlayanalysen er ikke koblet til ennå. Når den bygges ut,
-              skal resultatet vise {selectedTarget.futureResult}.
-            </p>
-            <small>
-              Temadataene har egne temasider. Et datasett vises i denne kartflaten
-              når det inngår i en konkret overlayanalyse.
-            </small>
+          <div className="analysis-result__empty">
+            <strong>{selectedTarget.label}</strong>
+            <p>Denne overlayanalysen er ikke koblet til ennå.</p>
           </div>
         ) : state === 'loading' ? (
           <p className="plan-analysis__status" role="status">
@@ -439,70 +451,59 @@ export function PlannedDevelopmentSummary({
           </p>
         ) : result?.status === 'available' ? (
           <>
-            <div className="plan-analysis">
-              <span>Natur i områder satt av til framtidig utbygging</span>
-              <strong>ca. {dekar(result.natureKm2)}</strong>
-              {result.natureSharePercent !== null && (
+            <div className="analysis-result__summary-grid">
+              <div className="analysis-result__metric analysis-result__metric--nature">
+                <span>Natur som overlapper</span>
+                <strong>ca. {dekar(result.natureKm2)}</strong>
                 <small>
-                  {percentFormatter.format(result.natureSharePercent)} % av naturen i
-                  beregningsgrunnlaget
+                  {result.natureSharePercent !== null
+                    ? `${percentFormatter.format(result.natureSharePercent)} % av naturen i beregningsgrunnlaget`
+                    : 'Andel kan ikke beregnes sikkert'}
                 </small>
-              )}
-            </div>
-
-            <p className="plan-analysis__secondary">
-              Jordbruk i områdene: <strong>ca. {dekar(result.agricultureKm2)}</strong>
-            </p>
-
-            <label className="plan-layer-toggle">
-              <input
-                type="checkbox"
-                checked={visible}
-                onChange={(event) => onVisibleChange(event.target.checked)}
-              />
-              <span>
-                <strong>Vis analyseresultatet i kartet</strong>
-                <small>
-                  Kartlaget viser natur og jordbruk som overlapper framtidige
-                  utbyggingsområder.
-                </small>
-              </span>
-            </label>
-
-            <button
-              type="button"
-              className="analysis-result__find-map"
-              onClick={onFindGrunnkartResultInMap}
-            >
-              Finn analyseresultatet i kartet <span aria-hidden="true">→</span>
-            </button>
-
-            <div className="plan-layer-legend" aria-label="Tegnforklaring for analyseresultatet">
-              <div>
-                <i style={{ background: PLANNED_NATURE_COLOR }} aria-hidden="true" />
-                <span>Natur i framtidige utbyggingsområder</span>
               </div>
-              <div>
-                <i style={{ background: PLANNED_AGRICULTURE_COLOR }} aria-hidden="true" />
-                <span>Jordbruk i framtidige utbyggingsområder</span>
+              <div className="analysis-result__metric analysis-result__metric--agriculture">
+                <span>Jordbruk som overlapper</span>
+                <strong>ca. {dekar(result.agricultureKm2)}</strong>
+                <small>Berørt jordbruksareal i analyseområdet</small>
               </div>
             </div>
 
-            <div className="plan-nature-breakdown">
+            <div className="analysis-result__map-actions">
+              <button
+                type="button"
+                className="analysis-result__primary-action"
+                onClick={onFindGrunnkartResultInMap}
+              >
+                Finn resultatet i kartet <span aria-hidden="true">→</span>
+              </button>
+              <label className="analysis-result__visibility">
+                <input
+                  type="checkbox"
+                  checked={visible}
+                  onChange={(event) => onVisibleChange(event.target.checked)}
+                />
+                <span>Vis resultatlaget</span>
+              </label>
+            </div>
+
+            <div className="plan-nature-breakdown analysis-result__breakdown">
               <div className="plan-nature-breakdown__header">
                 <div>
-                  <p className="map-sidebar__eyebrow">Grunnkart · økosystemtype nivå 1</p>
-                  <h4>Hva slags natur ligger i utbyggingsområdene?</h4>
+                  <p className="map-sidebar__eyebrow">Fordeling på økosystemtype</p>
+                  <h4>Hva slags natur blir berørt?</h4>
                 </div>
               </div>
 
               {natureBreakdownState === 'loading' ? (
                 <p className="plan-nature-breakdown__status" role="status">
-                  Beregner fordeling på økosystemtype…
+                  Beregner fordeling…
                 </p>
               ) : natureBreakdownState === 'error' ? (
-                <p className="plan-nature-breakdown__status plan-nature-breakdown__status--error" role="alert">
-                  Fordelingen på økosystemtype kunne ikke beregnes nå.
+                <p
+                  className="plan-nature-breakdown__status plan-nature-breakdown__status--error"
+                  role="alert"
+                >
+                  Fordelingen kunne ikke beregnes nå.
                 </p>
               ) : natureBreakdown ? (
                 <>
@@ -536,60 +537,43 @@ export function PlannedDevelopmentSummary({
 
                   {natureBreakdown.unclassifiedAreaKm2 > 0.001 && (
                     <p className="plan-nature-breakdown__note">
-                      Ca. {dekar(natureBreakdown.unclassifiedAreaKm2)} av det planlagte naturarealet
-                      kunne ikke fordeles sikkert på økosystemtype i denne rasterberegningen.
+                      Ca. {dekar(natureBreakdown.unclassifiedAreaKm2)} kunne ikke
+                      fordeles sikkert på økosystemtype.
                     </p>
                   )}
-
-                  <p className="plan-nature-breakdown__note">
-                    Fordelingen bruker den samme ca. {Math.round(natureBreakdown.pixelMeters)} m-planmasken
-                    som hovedanslaget. Økosystemtype leses fra NIBIO med ca.{' '}
-                    {Math.round(natureBreakdown.classificationPixelMeters)} m oppløsning,
-                    og bare naturareal som er beholdt etter filtrering av smale striper inngår.
-                  </p>
                 </>
               ) : null}
             </div>
 
-            <details className="plan-analysis__details">
-              <summary>Om beregningen</summary>
+            <details className="analysis-method">
+              <summary>Metode og forbehold</summary>
               <p>
-                Kilde: DiBK kommuneplaner. Framtidig arealbruk med arealbruksstatus 2
-                og arealformål i 1000- og 2000-serien er krysset med dagens
-                Grunnkart-klasser i nettleseren.
+                Framtidig arealbruk med arealbruksstatus 2 og arealformål i
+                1000- og 2000-serien krysses med Grunnkartet i nettleseren.
+                Beregningen bruker ca. {Math.round(result.pixelMeters)} m ruter.
               </p>
               <p>
-                Regnet ut fra {result.tileCount} kartfliser med piksler på{' '}
-                {Math.round(result.pixelMeters)} meter. Smale striper er felt som
-                ikke er bredere enn rundt 40 meter noe sted, ofte langs eksisterende
-                bebyggelse. Smale deler av et større felt regnes med.
-              </p>
-              <p>
-                Med smale striper ville naturanslaget vært ca.{' '}
-                {dekar(result.natureWithNarrowStripsKm2)}. Smale striper vises ikke
-                i kartet. Dette er et anslag til illustrasjon, ikke offisiell
-                statistikk.
+                Smale striper filtreres bort. Med smale striper ville naturanslaget
+                vært ca. {dekar(result.natureWithNarrowStripsKm2)}. Resultatet er
+                et prototypeanslag, ikke offisiell statistikk.
               </p>
             </details>
           </>
         ) : result?.status === 'not_available' ? (
-          <>
-            <p className="plan-analysis__status">
-              Analysen er ikke klargjort for denne kommunen i prototypen.
-            </p>
-            <p className="map-sidebar__explanation">{result.reason}</p>
-          </>
+          <div className="analysis-result__empty">
+            <strong>Analysen er ikke klargjort for denne kommunen</strong>
+            <p>{result.reason}</p>
+          </div>
         ) : (
           <p className="plan-analysis__status">
-            Velg kommune for å beregne framtidig utbygging.
+            Velg kommune for å starte analysen.
           </p>
         )}
-      </div>
+      </section>
 
-      <p className="map-sidebar__explanation analysis-workspace__footnote">
-        Framtidig utbygging er analyseområdet. Valgt analysegrunnlag bestemmer
-        hvilke natur- eller arealverdier som undersøkes. Resultatene er
-        analyse- og beslutningsstøtte og inngår ikke som egne regnskapskategorier.
+      <p className="analysis-workbench__footnote">
+        Analyseområdet og datagrunnlaget holdes adskilt. Resultatet er
+        beslutningsstøtte og endrer ikke selve naturregnskapet.
       </p>
     </section>
   )

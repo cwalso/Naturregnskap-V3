@@ -946,18 +946,20 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   onShowValuedNatureInMap={showValuedNatureInMap}
                 />
 
-                <section className="map-sidebar__tools" aria-labelledby="map-tools-title">
-                  <h3 id="map-tools-title">Kartverktøy</h3>
-                  <button
-                    type="button"
-                    className="map-tool-button"
-                    onClick={() => map.current?.fitToBoundary()}
-                  >
-                    Tilpass kartet til kommunen
-                  </button>
-                </section>
-
-                {legend}
+                <details className="analysis-map-options">
+                  <summary>Kartvisning</summary>
+                  <div className="analysis-map-options__content">
+                    {layerToggle}
+                    <button
+                      type="button"
+                      className="map-tool-button"
+                      onClick={() => map.current?.fitToBoundary()}
+                    >
+                      Vis hele kommunen
+                    </button>
+                    {legend}
+                  </div>
+                </details>
               </>
             ) : (
               <>
@@ -987,14 +989,20 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             {variant === 'explore' && (
               <div className="map-frame__context" aria-live="polite">
                 <span className="map-frame__context-municipality">
-                  <strong>{selectedMunicipality.name}</strong>
+                  <small>Analyseområde</small>
+                  <strong>Framtidig utbygging · {selectedMunicipality.name}</strong>
                 </span>
                 <span className="map-frame__context-analysis">
-                  <strong>Kart viser nå:</strong> {analysisMapStatus}
+                  <small>Kartet viser</small>
+                  <strong>{analysisMapStatus}</strong>
                 </span>
-                <span className="map-frame__context-background">
-                  Bakgrunn: {accountLayerVisible ? 'Grunnkart vises' : 'Grunnkart er skjult'}
-                </span>
+                <button
+                  type="button"
+                  className="map-frame__fit"
+                  onClick={() => map.current?.fitToBoundary()}
+                >
+                  Hele kommunen
+                </button>
               </div>
             )}
             {mapRuntimeError && (
@@ -1125,14 +1133,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
       <header className="content-page__intro map-page__intro">
-        <p className="content-page__eyebrow">Kartutforsking</p>
+        <p className="content-page__eyebrow">Kart og analyse</p>
         <h1 id="explore-map-title">
           Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
         </h1>
         <p>
-          Utforsk kartgrunnlaget for naturregnskapet. Regnskapsgrunnlag og
-          supplerende temadata holdes tydelig adskilt, slik at det er klart hva
-          som inngår i selve regnskapet og hva som gir ekstra kontekst.
+          Velg et analyseområde og kryss det med natur- og arealdata. Resultatet
+          vises som tydelige tall og kan stedfestes direkte i kartet.
         </p>
       </header>
 
@@ -1143,23 +1150,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <section className="map-page__facts" aria-label="Om kartvisningen">
-            <div>
-              <span>Valgt kommune</span>
-              <strong>{selectedMunicipality.name}</strong>
-            </div>
-            <div>
-              <span>Regnskapsgrunnlag</span>
-              <strong>Grunnkart for arealanalyse · 2025</strong>
-            </div>
-            <div>
-              <span>Supplerende temadata</span>
-              <strong>Treffstatus vurderes mot kommunegrensen</strong>
-            </div>
-          </section>
+          <div className="map-page__flow" aria-label="Arbeidsflyt">
+            <span><b>1</b> Velg område</span>
+            <span><b>2</b> Velg datagrunnlag</span>
+            <span><b>3</b> Les og stedfest resultatet</span>
+          </div>
           {mapWorkspace(
-            'Kartgrunnlag',
-            'Kartet viser analyseområdet og valgt analyseresultat. Supplerende temadata har egne temasider og brukes her når de inngår i en konkret overlayanalyse.',
+            'Analyse',
+            'Kartet viser valgt analyseområde og resultat. Tallene i analysepanelet er hovedresultatet; kartet brukes til å finne hvor overlappene ligger.',
             'explore',
           )}
         </>
