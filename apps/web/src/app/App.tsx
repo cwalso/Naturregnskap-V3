@@ -860,13 +860,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
-  const activeContent = (
+  const activeContent = !selectedMunicipality ? overview : (
     <>
       {activeView === 'oversikt' && overview}
-      {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality?.name} />}
+      {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality.name} />}
       {activeView === 'utforsk-naturen' && (
         <ExploreNaturePage
-          municipalityName={selectedMunicipality?.name}
+          municipalityName={selectedMunicipality.name}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           onOpenThemePage={openThematicPage}
@@ -875,7 +875,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       {datasetByThematicView[activeView] && (
         <ThematicDataPage
           datasetId={datasetByThematicView[activeView]!}
-          municipalityName={selectedMunicipality?.name}
+          municipalityName={selectedMunicipality.name}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           onBack={() => navigate('utforsk-naturen')}
