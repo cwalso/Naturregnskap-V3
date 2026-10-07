@@ -598,7 +598,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             className="map"
             role="region"
             tabIndex={0}
-            aria-label={`Skog i ${selectedMunicipality.name}`}
+            aria-label={`Kart over skogtyper i ${selectedMunicipality.name}`}
           />
           <button
             type="button"
