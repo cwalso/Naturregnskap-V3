@@ -389,10 +389,14 @@ describe('sidestruktur og Oversikt', () => {
       screen.queryByRole('checkbox', { name: 'Vis framtidige utbyggingsområder i kartet' }),
     ).not.toBeInTheDocument()
     expect(screen.getByText(/brukes som analyseområde/)).toBeInTheDocument()
+    expect(screen.getByText('Flere analyser planlegges')).toBeInTheDocument()
+    expect(screen.queryByRole('radio', { name: /Naturvernområder/ })).not.toBeInTheDocument()
+    expect(screen.getByText(/Kart viser nå:/)).toBeInTheDocument()
 
     const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
     fireEvent.click(valuedNatureAnalysis)
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByText(/Verdsatte naturtyper × framtidig utbygging/)).toBeInTheDocument()
 
     await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
