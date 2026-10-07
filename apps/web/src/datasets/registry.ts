@@ -155,7 +155,7 @@ export const wildReindeerAreas = {
   },
   visualSource: {
     type: 'wms',
-    endpoint: 'https://kart.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer',
+    endpoint: 'https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer',
     layer: 'villrein_leveomrade',
     title: 'Leveområde for villrein',
     version: '1.3.0',
@@ -167,7 +167,7 @@ export const wildReindeerAreas = {
   },
   analysisSource: {
     type: 'arcgis-rest-query',
-    queryUrl: 'https://kart.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query',
+    queryUrl: 'https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query',
   },
 } as const satisfies ThematicDatasetDefinition
 
