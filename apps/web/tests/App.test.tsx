@@ -368,9 +368,11 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(valuedTheme)
 
     expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper', level: 1 })).toBeInTheDocument()
-    await vi.waitFor(() => expect(screen.getByText('3 registrerte lokaliteter')).toBeInTheDocument())
-    expect(screen.getByText('Gammel furuskog')).toBeInTheDocument()
-    expect(screen.getByText('Rikmyr')).toBeInTheDocument()
+    await vi.waitFor(() => {
+      expect(screen.getByText('3 registrerte lokaliteter')).toBeInTheDocument()
+      expect(screen.getByText('Gammel furuskog')).toBeInTheDocument()
+      expect(screen.getByText('Rikmyr')).toBeInTheDocument()
+    })
     expect(screen.getAllByText(/Datasettet er ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
