@@ -44,6 +44,7 @@ function mapMock(): MunicipalityMap {
     setAccountLayerVisible: vi.fn(),
     setForestLayerVisible: vi.fn(),
     setEcosystemLayer: vi.fn(),
+    setUrbanLayerVisible: vi.fn(),
     setPlannedDevelopmentOverlay: vi.fn(),
     setPlannedDevelopmentVisible: vi.fn(),
     fitToPlannedDevelopmentResult: vi.fn(),
@@ -335,12 +336,13 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Utforsk økosystemene' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Temasider fra regnskapsgrunnlaget' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Myr \(våtmark\)/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Skog/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Våtmark/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Hei og buskmark/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Lite vegetert mark/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Kyststrender, svaberg og dyner/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Bynaturen \(grå arealer\)/ })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Hei og buskmark/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Lite vegetert mark/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Kyststrender, svaberg og dyner/ })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
@@ -396,21 +398,36 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(map.setForestLayerVisible).toHaveBeenCalledWith(true))
   })
 
-  it('åpner de øvrige økosystemtypene med samme temasidemal', async () => {
+  it('åpner Myr (våtmark) med samme temasidemal', async () => {
     const map = mapMock()
     mockMunicipalityFlow()
     render(<App createMap={() => map} />)
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
-    fireEvent.click(screen.getByRole('button', { name: /Våtmark/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Myr \(våtmark\)/ }))
 
-    expect(screen.getByRole('heading', { name: 'Våtmark', level: 1 })).toBeInTheDocument()
-    expect(screen.getByText('Våtmark er del av det heldekkende regnskapsgrunnlaget')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Myr (våtmark)', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText('Myr (våtmark) er del av det heldekkende regnskapsgrunnlaget')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Fordeling av landbasert natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Økosystemtypene i kommunen' })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Kart over våtmark i Trondheim' })).toBeInTheDocument()
     await vi.waitFor(() => expect(map.setEcosystemLayer).toHaveBeenCalledWith('vatmark'))
+  })
+
+  it('åpner Bynaturen (grå arealer) som egen temaside', async () => {
+    const map = mapMock()
+    mockMunicipalityFlow()
+    render(<App createMap={() => map} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
+    fireEvent.click(screen.getByRole('button', { name: /Bynaturen \(grå arealer\)/ }))
+
+    expect(screen.getByRole('heading', { name: 'Bynaturen (grå arealer)', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText(/Bynaturen er ikke en egen økosystemtype/)).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Kart over grå arealer i Trondheim' })).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.setUrbanLayerVisible).toHaveBeenCalledWith(true))
   })
 
   it('åpner Verdsatte naturtyper som egen temaside og går videre til analyse', async () => {
