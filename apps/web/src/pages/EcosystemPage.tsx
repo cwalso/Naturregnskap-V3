@@ -29,36 +29,12 @@ interface EcosystemPageConfig {
 
 export const ecosystemPageConfig: Readonly<Record<EcosystemPageId, EcosystemPageConfig>> = {
   vatmark: {
-    title: 'Våtmark',
-    intro: 'Våtmark er en av hovedøkosystemtypene i Grunnkart for arealanalyse. Her vises utbredelsen i kommunen og hvordan våtmark inngår i det samlede naturarealet.',
-    whatIs: 'Siden følger våtmark som økosystemtype nivå 1 i Grunnkart for arealanalyse.',
+    title: 'Myr (våtmark)',
+    intro: 'Myr og annen våtmark vises her med utgangspunkt i våtmark som hovedøkosystemtype i Grunnkart for arealanalyse. Siden viser areal, utbredelse og hvordan våtmark inngår i kommunens samlede naturareal.',
+    whatIs: 'I regnskapsgrunnlaget følger siden våtmark som økosystemtype nivå 1 i Grunnkart for arealanalyse. Begrepet «Myr (våtmark)» brukes som inngang i temasiden.',
     whyUseful: 'Et heldekkende grunnlag gjør det mulig å se hvor mye våtmark kommunen har, hvor den ligger og hvor den overlapper arealer satt av til framtidig utbygging.',
     heroClass: 'ecosystem-hero__image--wetland',
     icon: '≈',
-  },
-  'hei-buskmark': {
-    title: 'Hei og buskmark',
-    intro: 'Hei og buskmark er en av hovedøkosystemtypene i Grunnkart for arealanalyse. Her vises omfang, utbredelse og andel av kommunens naturareal.',
-    whatIs: 'Siden følger hei og buskmark som økosystemtype nivå 1 i Grunnkart for arealanalyse.',
-    whyUseful: 'Oversikten gir et sammenlignbart, heldekkende grunnlag for å se hvor denne økosystemtypen ligger og hvordan den berøres av framtidig arealbruk.',
-    heroClass: 'ecosystem-hero__image--heath',
-    icon: '⌁',
-  },
-  'lite-vegetert-mark': {
-    title: 'Lite vegetert mark',
-    intro: 'Lite vegetert mark er en av hovedøkosystemtypene i Grunnkart for arealanalyse. Siden viser omfang og geografisk utbredelse i kommunen.',
-    whatIs: 'Siden følger lite vegetert mark som økosystemtype nivå 1 i Grunnkart for arealanalyse.',
-    whyUseful: 'Det heldekkende grunnlaget kan brukes til å følge arealfordeling og som utgangspunkt for videre analyser, men beskriver ikke naturtilstand alene.',
-    heroClass: 'ecosystem-hero__image--sparse',
-    icon: '△',
-  },
-  kyst: {
-    title: 'Kyststrender, svaberg og dyner',
-    intro: 'Kyststrender, svaberg og dyner er en av hovedøkosystemtypene i Grunnkart for arealanalyse. Her vises areal og utbredelse i kystkommuner.',
-    whatIs: 'Siden følger kyststrender, svaberg og dyner som økosystemtype nivå 1 i Grunnkart for arealanalyse.',
-    whyUseful: 'Oversikten gir et heldekkende arealgrunnlag for denne økosystemtypen og kan kobles til framtidige utbyggingsområder i kommunal planlegging.',
-    heroClass: 'ecosystem-hero__image--coast',
-    icon: '≋',
   },
 }
 
