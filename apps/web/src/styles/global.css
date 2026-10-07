@@ -3727,3 +3727,83 @@ button.overview-status-card:hover {
     font-size: 1.9rem;
   }
 }
+
+
+/* V3.22 – Naturtap i samme designfamilie */
+.naturtap-page {
+  width: min(100% - 2rem, 74rem) !important;
+  padding-top: 1.35rem;
+}
+.naturtap-hero {
+  max-width: 48rem;
+  margin-bottom: 2.3rem;
+}
+.naturtap-hero h1 {
+  margin-bottom: .75rem;
+  color: var(--color-accent);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+.naturtap-hero > p:last-child {
+  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.naturtap-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+  margin-bottom: 1.5rem;
+}
+.naturtap-kpis article {
+  min-height: 11rem;
+  padding: 1rem 1.05rem;
+  color: var(--color-accent);
+  background: #eee8da;
+}
+.naturtap-kpis__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .8rem;
+}
+.naturtap-kpis__value {
+  display: block;
+  margin: 1.4rem 0 1.2rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1;
+}
+.naturtap-kpis__meta {
+  display: block;
+  color: var(--color-text);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+.naturtap-warning {
+  margin-bottom: 3.4rem;
+}
+.naturtap-insight {
+  margin-bottom: 1.4rem;
+}
+.naturtap-questions {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 52rem) {
+  .naturtap-page {
+    width: 100% !important;
+    padding-inline: .75rem;
+  }
+  .naturtap-kpis {
+    grid-template-columns: 1fr;
+  }
+  .naturtap-kpis article {
+    min-height: 9.5rem;
+  }
+  .naturtap-kpis__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .2rem;
+  }
+}
