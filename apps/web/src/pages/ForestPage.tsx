@@ -193,7 +193,10 @@ export function ForestPage({
         <section className="thematic-map-section" aria-labelledby="forest-map-title">
           <div className="thematic-section-heading">
             <h2 id="forest-map-title">Skog i {municipalityName}</h2>
-            <p>Viser økosystemtype skog fra Grunnkart for arealanalyse.</p>
+            <p>
+              Kartet viser skogtypene i arealdekke nivå 2. Hovedtallet over følger
+              økosystemtype skog på nivå 1.
+            </p>
           </div>
           {mapContent}
         </section>
