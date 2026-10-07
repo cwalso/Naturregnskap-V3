@@ -53,6 +53,7 @@ const PLAN_STYLE =
   '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld"><NamedLayer><Name>kparealformalomrade</Name><UserStyle><FeatureTypeStyle><Rule><PolygonSymbolizer><Fill><CssParameter name="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
 
 export interface PlannedDevelopmentOverlayGrid {
+  readonly kind: 'planned' | 'drawn'
   readonly zoom: 9
   readonly cx0: number
   readonly cy0: number
@@ -93,6 +94,9 @@ export interface PlannedNatureBreakdown {
 
 export interface PlannedDevelopmentAnalysis {
   readonly municipalityNumber: string
+  readonly analysisId: string
+  readonly analysisAreaKind: 'planned' | 'drawn'
+  readonly analysisAreaKm2: number | null
   readonly status: 'available'
   readonly natureKm2: number
   readonly agricultureKm2: number
@@ -100,10 +104,12 @@ export interface PlannedDevelopmentAnalysis {
   readonly agricultureWithNarrowStripsKm2: number
   readonly natureSharePercent: number | null
   readonly agricultureSharePercent: number | null
+  readonly natureShareOfAnalysisAreaPercent: number | null
+  readonly agricultureShareOfAnalysisAreaPercent: number | null
   readonly tileCount: number
   readonly pixelMeters: number
-  readonly source: 'DiBK kommuneplaner'
-  readonly methodVersion: 'dibk-plan-raster-v1'
+  readonly source: 'DiBK kommuneplaner' | 'Eget tegnet område'
+  readonly methodVersion: 'dibk-plan-raster-v1' | 'drawn-area-raster-v1'
   readonly overlay: PlannedDevelopmentOverlayGrid
 }
 
@@ -214,6 +220,9 @@ export async function calculatePlannedDevelopment(
 
     const result: PlannedDevelopmentAnalysis = {
       municipalityNumber,
+      analysisId: `planned:${municipalityNumber}`,
+      analysisAreaKind: 'planned',
+      analysisAreaKm2: cleanedAnalysisMask.nature * pixelAreaKm2,
       status: 'available',
       natureKm2: cleaned.nature * pixelAreaKm2,
       agricultureKm2: cleaned.agriculture * pixelAreaKm2,
@@ -223,11 +232,18 @@ export async function calculatePlannedDevelopment(
       agricultureSharePercent: totalAgriculture > 0
         ? cleaned.agriculture / totalAgriculture * 100
         : null,
+      natureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
+        ? cleaned.nature / cleanedAnalysisMask.nature * 100
+        : null,
+      agricultureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
+        ? cleaned.agriculture / cleanedAnalysisMask.nature * 100
+        : null,
       tileCount: tileResults.length,
       pixelMeters: PLAN_PIXEL_METERS,
       source: 'DiBK kommuneplaner',
       methodVersion: 'dibk-plan-raster-v1',
       overlay: {
+        kind: 'planned',
         zoom: PLAN_ANALYSIS_ZOOM,
         cx0: minX * PLAN_TILE_PIXELS,
         cy0: minY * PLAN_TILE_PIXELS,
@@ -334,7 +350,8 @@ export async function calculatePlannedNatureBreakdown(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedNatureBreakdown> {
-  const cached = natureBreakdownCache.get(analysis.municipalityNumber)
+  const cacheKey = analysis.analysisId
+  const cached = natureBreakdownCache.get(cacheKey)
   if (cached) return cached
 
   const overlay = analysis.overlay
@@ -380,7 +397,7 @@ export async function calculatePlannedNatureBreakdown(
     unclassifiedAreaKm2: unclassified * pixelAreaKm2,
     metrics,
   }
-  natureBreakdownCache.set(analysis.municipalityNumber, result)
+  natureBreakdownCache.set(cacheKey, result)
   return result
 }
 

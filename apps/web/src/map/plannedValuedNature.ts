@@ -84,14 +84,15 @@ export function calculatePlannedValuedNatureAnalysis(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedValuedNatureAnalysis> {
-  const cached = analysisCache.get(analysis.municipalityNumber)
+  const cacheKey = analysis.analysisId
+  const cached = analysisCache.get(cacheKey)
   if (cached) return cached
 
   const request = runAnalysis(analysis, signal).catch((error: unknown) => {
-    analysisCache.delete(analysis.municipalityNumber)
+    analysisCache.delete(cacheKey)
     throw error
   })
-  analysisCache.set(analysis.municipalityNumber, request)
+  analysisCache.set(cacheKey, request)
   return request
 }
 

@@ -4,6 +4,7 @@ import {
   valuedNature,
   wildReindeerAreas,
 } from '../../datasets/registry'
+import type { DrawnAnalysisArea } from '../../map/drawnAnalysis'
 import type {
   PlannedDevelopmentResult,
   PlannedNatureBreakdown,
@@ -12,6 +13,8 @@ import type {
   PlannedValuedNatureAnalysis,
   ValuedNatureMapSelection,
 } from '../../map/plannedValuedNature'
+
+export type AnalysisAreaMode = 'planned' | 'drawn'
 
 export type PlannedDevelopmentAnalysisTarget =
   | 'grunnkart'
@@ -35,6 +38,16 @@ interface PlannedDevelopmentSummaryProps {
   readonly onValuedNatureResultVisibleChange: (visible: boolean) => void
   readonly valuedNatureMapSelection: ValuedNatureMapSelection
   readonly onShowValuedNatureInMap: (selection: ValuedNatureMapSelection) => void
+  readonly analysisAreaMode: AnalysisAreaMode
+  readonly drawnArea: DrawnAnalysisArea | null
+  readonly drawing: boolean
+  readonly onUsePlannedArea: () => void
+  readonly onUseDrawnArea: () => void
+  readonly onStartDrawing: () => void
+  readonly onFinishDrawing: () => void
+  readonly onUndoDrawing: () => void
+  readonly onCancelDrawing: () => void
+  readonly onClearDrawnArea: () => void
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', {
@@ -96,12 +109,14 @@ function ValuedNatureResult({
   onVisibleChange,
   selection,
   onShowInMap,
+  analysisAreaLabel,
 }: {
   readonly analysis: PlannedValuedNatureAnalysis
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
   readonly selection: ValuedNatureMapSelection
   readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
+  readonly analysisAreaLabel: string
 }) {
   if (analysis.affectedFeatureCount === 0) {
     return (
@@ -225,8 +240,7 @@ function ValuedNatureResult({
       <p className="plan-nature-breakdown__note">
         Verdsatte naturtyper er supplerende temadata og ikke heldekkende
         regnskapsgrunnlag. Arealene er prototypeanslag beregnet på ca.{' '}
-        {Math.round(analysis.pixelMeters)} m rutenett mot framtidige
-        utbyggingsområder.
+        {Math.round(analysis.pixelMeters)} m rutenett mot {analysisAreaLabel.toLowerCase()}.
       </p>
     </div>
   )
@@ -298,9 +312,21 @@ export function PlannedDevelopmentSummary({
   onValuedNatureResultVisibleChange,
   valuedNatureMapSelection,
   onShowValuedNatureInMap,
+  analysisAreaMode,
+  drawnArea,
+  drawing,
+  onUsePlannedArea,
+  onUseDrawnArea,
+  onStartDrawing,
+  onFinishDrawing,
+  onUndoDrawing,
+  onCancelDrawing,
+  onClearDrawnArea,
 }: PlannedDevelopmentSummaryProps) {
   const selectedTarget = analysisTargets.find((target) => target.id === analysisTarget)
     ?? analysisTargets[0]
+  const areaLabel = analysisAreaMode === 'drawn' ? 'Eget tegnet område' : 'Framtidig utbygging'
+  const drawnAreaDekar = drawnArea ? dekar(drawnArea.areaKm2) : null
 
   return (
     <section
@@ -327,31 +353,69 @@ export function PlannedDevelopmentSummary({
           <div className="analysis-area-options">
             <button
               type="button"
-              className="analysis-area-option analysis-area-option--selected"
-              aria-pressed="true"
+              className={
+                analysisAreaMode === 'planned'
+                  ? 'analysis-area-option analysis-area-option--selected'
+                  : 'analysis-area-option'
+              }
+              aria-pressed={analysisAreaMode === 'planned'}
+              onClick={onUsePlannedArea}
             >
               <span className="analysis-area-option__icon" aria-hidden="true">▧</span>
               <span>
                 <strong>Framtidig utbygging</strong>
                 <small>Områder satt av til framtidig utbygging i kommuneplanen</small>
               </span>
-              <span className="analysis-area-option__state">Valgt</span>
+              <span className="analysis-area-option__state">
+                {analysisAreaMode === 'planned' ? 'Valgt' : 'Velg'}
+              </span>
             </button>
 
             <button
               type="button"
-              className="analysis-area-option analysis-area-option--next"
-              disabled
-              aria-describedby="custom-area-coming"
+              className={
+                analysisAreaMode === 'drawn' || drawing
+                  ? 'analysis-area-option analysis-area-option--selected'
+                  : 'analysis-area-option'
+              }
+              aria-pressed={analysisAreaMode === 'drawn'}
+              onClick={drawnArea ? onUseDrawnArea : onStartDrawing}
             >
               <span className="analysis-area-option__icon" aria-hidden="true">✎</span>
               <span>
-                <strong>Tegn eget område</strong>
-                <small id="custom-area-coming">Tegn et polygon direkte i kartet</small>
+                <strong>{drawing ? 'Tegner område…' : 'Eget område'}</strong>
+                <small>
+                  {drawnArea
+                    ? `Tegnet polygon · ca. ${drawnAreaDekar}`
+                    : 'Tegn et polygon direkte i kartet'}
+                </small>
               </span>
-              <span className="analysis-area-option__state">Neste</span>
+              <span className="analysis-area-option__state">
+                {drawing ? 'Aktiv' : analysisAreaMode === 'drawn' ? 'Valgt' : 'Tegn'}
+              </span>
             </button>
           </div>
+
+          {drawing && (
+            <div className="analysis-draw-controls" role="status">
+              <p>
+                Trykk i kartet for hvert hjørne. Avslutt på første punkt eller bruk
+                «Ferdig» når polygonet har minst tre punkter.
+              </p>
+              <div>
+                <button type="button" onClick={onUndoDrawing}>Angre punkt</button>
+                <button type="button" onClick={onFinishDrawing}>Ferdig</button>
+                <button type="button" onClick={onCancelDrawing}>Avbryt</button>
+              </div>
+            </div>
+          )}
+
+          {drawnArea && !drawing && (
+            <div className="analysis-drawn-actions">
+              <button type="button" onClick={onStartDrawing}>Tegn på nytt</button>
+              <button type="button" onClick={onClearDrawnArea}>Fjern område</button>
+            </div>
+          )}
         </section>
 
         <section className="analysis-builder__step" aria-labelledby="analysis-source-heading">
@@ -426,6 +490,7 @@ export function PlannedDevelopmentSummary({
             <ValuedNatureResult
               analysis={valuedNatureAnalysis}
               visible={valuedNatureResultVisible}
+              analysisAreaLabel={areaLabel}
               onVisibleChange={onValuedNatureResultVisibleChange}
               selection={valuedNatureMapSelection}
               onShowInMap={onShowValuedNatureInMap}
@@ -456,15 +521,19 @@ export function PlannedDevelopmentSummary({
                 <span>Natur som overlapper</span>
                 <strong>ca. {dekar(result.natureKm2)}</strong>
                 <small>
-                  {result.natureSharePercent !== null
-                    ? `${percentFormatter.format(result.natureSharePercent)} % av naturen i beregningsgrunnlaget`
+                  {result.natureShareOfAnalysisAreaPercent !== null
+                    ? `${percentFormatter.format(result.natureShareOfAnalysisAreaPercent)} % av analyseområdet`
                     : 'Andel kan ikke beregnes sikkert'}
                 </small>
               </div>
               <div className="analysis-result__metric analysis-result__metric--agriculture">
                 <span>Jordbruk som overlapper</span>
                 <strong>ca. {dekar(result.agricultureKm2)}</strong>
-                <small>Berørt jordbruksareal i analyseområdet</small>
+                <small>
+                  {result.agricultureShareOfAnalysisAreaPercent !== null
+                    ? `${percentFormatter.format(result.agricultureShareOfAnalysisAreaPercent)} % av analyseområdet`
+                    : 'Berørt jordbruksareal i analyseområdet'}
+                </small>
               </div>
             </div>
 
@@ -547,16 +616,26 @@ export function PlannedDevelopmentSummary({
 
             <details className="analysis-method">
               <summary>Metode og forbehold</summary>
-              <p>
-                Framtidig arealbruk med arealbruksstatus 2 og arealformål i
-                1000- og 2000-serien krysses med Grunnkartet i nettleseren.
-                Beregningen bruker ca. {Math.round(result.pixelMeters)} m ruter.
-              </p>
-              <p>
-                Smale striper filtreres bort. Med smale striper ville naturanslaget
-                vært ca. {dekar(result.natureWithNarrowStripsKm2)}. Resultatet er
-                et prototypeanslag, ikke offisiell statistikk.
-              </p>
+              {result.analysisAreaKind === 'planned' ? (
+                <>
+                  <p>
+                    Framtidig arealbruk med arealbruksstatus 2 og arealformål i
+                    1000- og 2000-serien krysses med Grunnkartet i nettleseren.
+                    Beregningen bruker ca. {Math.round(result.pixelMeters)} m ruter.
+                  </p>
+                  <p>
+                    Smale striper filtreres bort. Med smale striper ville naturanslaget
+                    vært ca. {dekar(result.natureWithNarrowStripsKm2)}.
+                  </p>
+                </>
+              ) : (
+                <p>
+                  Det tegnede polygonet rasteriseres på samme ca.{' '}
+                  {Math.round(result.pixelMeters)} m rutenett og klippes til valgt
+                  kommune før det krysses med Grunnkartet.
+                </p>
+              )}
+              <p>Resultatet er et prototypeanslag, ikke offisiell statistikk.</p>
             </details>
           </>
         ) : result?.status === 'not_available' ? (

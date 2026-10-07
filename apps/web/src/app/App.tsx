@@ -41,8 +41,13 @@ import { getAccountProvenanceContent } from '../features/account-overview/conten
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import {
   PlannedDevelopmentSummary,
+  type AnalysisAreaMode,
   type PlannedDevelopmentAnalysisTarget,
 } from '../features/planned-development/PlannedDevelopmentSummary'
+import {
+  calculateDrawnAreaAnalysis,
+  type DrawnAnalysisArea,
+} from '../map/drawnAnalysis'
 import {
   calculatePlannedDevelopment,
   calculatePlannedNatureBreakdown,
@@ -149,6 +154,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
+  const [analysisAreaMode, setAnalysisAreaMode] = useState<AnalysisAreaMode>('planned')
+  const [drawnAnalysisArea, setDrawnAnalysisArea] = useState<DrawnAnalysisArea | null>(null)
+  const [drawingAnalysisArea, setDrawingAnalysisArea] = useState(false)
+  const [drawnAnalysis, setDrawnAnalysis] = useState<PlannedDevelopmentResult | null>(null)
+  const [drawnAnalysisState, setDrawnAnalysisState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureResultVisible, setValuedNatureResultVisible] = useState(true)
   const [plannedDevelopmentAnalysisTarget, setPlannedDevelopmentAnalysisTarget] =
     useState<PlannedDevelopmentAnalysisTarget>('grunnkart')
@@ -158,6 +168,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedValuedNatureState, setPlannedValuedNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureMapSelection, setValuedNatureMapSelection] =
     useState<ValuedNatureMapSelection>({ kind: 'all' })
+
+  const mapAnalysisResult = analysisAreaMode === 'drawn' ? drawnAnalysis : plannedDevelopment
+  const mapAnalysisState = analysisAreaMode === 'drawn' ? drawnAnalysisState : plannedDevelopmentState
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
   const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
@@ -266,13 +279,44 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeEcosystemId, activeView, selectedMunicipality])
 
   useEffect(() => {
+    if (!selectedMunicipality || !drawnAnalysisArea) {
+      setDrawnAnalysis(null)
+      setDrawnAnalysisState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('loading')
+
+    void calculateDrawnAreaAnalysis(
+      selectedMunicipality.number,
+      drawnAnalysisArea,
+      controller.signal,
+    )
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setDrawnAnalysis(result)
+        setDrawnAnalysisState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setDrawnAnalysis(null)
+        setDrawnAnalysisState('error')
+      })
+
+    return () => controller.abort()
+  }, [drawnAnalysisArea, selectedMunicipality])
+
+  useEffect(() => {
     if (!map.current) return
 
     const usesGrunnkartAnalysis = plannedDevelopmentAnalysisTarget === 'grunnkart'
     const overlay = activeView === 'utforsk-i-kart'
       && usesGrunnkartAnalysis
-      && plannedDevelopment?.status === 'available'
-      ? plannedDevelopment.overlay
+      && mapAnalysisResult?.status === 'available'
+      ? mapAnalysisResult.overlay
       : null
 
     map.current.setPlannedDevelopmentOverlay(overlay)
@@ -281,9 +325,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         && usesGrunnkartAnalysis
         && plannedDevelopmentVisible,
     )
+    map.current.setDrawnAnalysisAreaVisible(
+      activeView === 'utforsk-i-kart' && analysisAreaMode === 'drawn',
+    )
   }, [
     activeView,
-    plannedDevelopment,
+    analysisAreaMode,
+    mapAnalysisResult,
     plannedDevelopmentAnalysisTarget,
     plannedDevelopmentVisible,
     selectedMunicipality,
@@ -293,7 +341,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     const needsGrunnkartBreakdown = activeView === 'tema-forest'
       || activeEcosystemId !== null
       || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'grunnkart')
-    if (!needsGrunnkartBreakdown || plannedDevelopment?.status !== 'available') {
+    const analysis = activeView === 'utforsk-i-kart'
+      ? mapAnalysisResult
+      : plannedDevelopment
+
+    if (!needsGrunnkartBreakdown || analysis?.status !== 'available') {
       setPlannedNatureBreakdown(null)
       setPlannedNatureBreakdownState('idle')
       return
@@ -303,7 +355,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedNatureBreakdown(null)
     setPlannedNatureBreakdownState('loading')
 
-    void calculatePlannedNatureBreakdown(plannedDevelopment, controller.signal)
+    void calculatePlannedNatureBreakdown(analysis, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
         setPlannedNatureBreakdown(result)
@@ -317,12 +369,22 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     return () => controller.abort()
-  }, [activeEcosystemId, activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+  }, [
+    activeEcosystemId,
+    activeView,
+    mapAnalysisResult,
+    plannedDevelopment,
+    plannedDevelopmentAnalysisTarget,
+  ])
 
   useEffect(() => {
     const needsValuedNature = activeView === 'tema-valued-nature'
       || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'valued-nature')
-    if (!needsValuedNature || plannedDevelopment?.status !== 'available') {
+    const analysis = activeView === 'utforsk-i-kart'
+      ? mapAnalysisResult
+      : plannedDevelopment
+
+    if (!needsValuedNature || analysis?.status !== 'available') {
       setPlannedValuedNature(null)
       setPlannedValuedNatureState('idle')
       return
@@ -332,7 +394,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedValuedNature(null)
     setPlannedValuedNatureState('loading')
 
-    void calculatePlannedValuedNatureAnalysis(plannedDevelopment, controller.signal)
+    void calculatePlannedValuedNatureAnalysis(analysis, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
         setPlannedValuedNature(result)
@@ -346,7 +408,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     return () => controller.abort()
-  }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+  }, [activeView, mapAnalysisResult, plannedDevelopment, plannedDevelopmentAnalysisTarget])
 
   useEffect(() => {
     if (activeView !== 'tema-forest' || !selectedMunicipality) {
@@ -470,14 +532,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     if (
       activeView === 'utforsk-i-kart'
       && plannedDevelopmentAnalysisTarget === 'valued-nature'
-      && plannedDevelopment?.status === 'available'
+      && mapAnalysisResult?.status === 'available'
       && plannedValuedNature
       && valuedNatureResultVisible
     ) {
       map.current.setAnalysisHighlight(
         buildValuedNatureMapOverlay(
           plannedValuedNature,
-          plannedDevelopment.overlay,
+          mapAnalysisResult.overlay,
           valuedNatureMapSelection,
         ),
       )
@@ -486,7 +548,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
   }, [
     activeView,
-    plannedDevelopment,
+    mapAnalysisResult,
     plannedDevelopmentAnalysisTarget,
     plannedValuedNature,
     valuedNatureMapSelection,
@@ -518,6 +580,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
     setPlannedDevelopmentVisible(true)
+    setAnalysisAreaMode('planned')
+    setDrawnAnalysisArea(null)
+    setDrawingAnalysisArea(false)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
     setValuedNatureResultVisible(true)
     setPlannedDevelopmentAnalysisTarget('grunnkart')
     setPlannedNatureBreakdown(null)
@@ -584,8 +651,68 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function openValuedNatureAnalysis() {
+    setAnalysisAreaMode('planned')
     setPlannedDevelopmentAnalysisTarget('valued-nature')
+    map.current?.setDrawnAnalysisAreaVisible(false)
     navigate('utforsk-i-kart')
+  }
+
+  function usePlannedAnalysisArea() {
+    setAnalysisAreaMode('planned')
+    setDrawingAnalysisArea(false)
+    map.current?.cancelDrawnAnalysisArea()
+    map.current?.setDrawnAnalysisAreaVisible(false)
+  }
+
+  function useDrawnAnalysisArea() {
+    if (!drawnAnalysisArea) {
+      startDrawingAnalysisArea()
+      return
+    }
+    setAnalysisAreaMode('drawn')
+    setDrawingAnalysisArea(false)
+    map.current?.cancelDrawnAnalysisArea()
+    map.current?.setDrawnAnalysisAreaVisible(true)
+  }
+
+  function startDrawingAnalysisArea() {
+    setAnalysisAreaMode('drawn')
+    setDrawnAnalysisArea(null)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
+    setDrawingAnalysisArea(true)
+    map.current?.clearDrawnAnalysisArea()
+    map.current?.startDrawnAnalysisArea((area) => {
+      setDrawnAnalysisArea(area)
+      setAnalysisAreaMode('drawn')
+      setDrawingAnalysisArea(false)
+      map.current?.setDrawnAnalysisAreaVisible(true)
+      map.current?.fitToDrawnAnalysisArea()
+    })
+    scrollToMapSection('map-canvas-region')
+  }
+
+  function finishDrawingAnalysisArea() {
+    map.current?.finishDrawnAnalysisArea()
+  }
+
+  function undoDrawingAnalysisPoint() {
+    map.current?.undoDrawnAnalysisPoint()
+  }
+
+  function cancelDrawingAnalysisArea() {
+    map.current?.cancelDrawnAnalysisArea()
+    setDrawingAnalysisArea(false)
+    if (!drawnAnalysisArea) setAnalysisAreaMode('planned')
+  }
+
+  function clearDrawnAnalysisArea() {
+    map.current?.clearDrawnAnalysisArea()
+    setDrawnAnalysisArea(null)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
+    setDrawingAnalysisArea(false)
+    setAnalysisAreaMode('planned')
   }
 
   function findGrunnkartResultInMap() {
@@ -600,12 +727,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setValuedNatureMapSelection(selection)
 
     if (
-      plannedDevelopment?.status === 'available'
+      mapAnalysisResult?.status === 'available'
       && plannedValuedNature
     ) {
       const overlay = buildValuedNatureMapOverlay(
         plannedValuedNature,
-        plannedDevelopment.overlay,
+        mapAnalysisResult.overlay,
         selection,
       )
       map.current?.setAnalysisHighlight(overlay)
@@ -883,15 +1010,18 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     const legend = <MapLegend items={legendItems} />
 
+    const analysisAreaLabel = analysisAreaMode === 'drawn'
+      ? 'Eget tegnet område'
+      : 'Framtidig utbygging'
     const analysisMapStatus = plannedDevelopmentAnalysisTarget === 'valued-nature'
       ? !valuedNatureResultVisible
         ? 'Analyseresultatet er skjult'
         : valuedNatureMapSelection.kind === 'all'
-          ? 'Verdsatte naturtyper × framtidig utbygging'
-          : `${valuedNatureMapSelection.label} × framtidig utbygging`
+          ? `Verdsatte naturtyper × ${analysisAreaLabel.toLowerCase()}`
+          : `${valuedNatureMapSelection.label} × ${analysisAreaLabel.toLowerCase()}`
       : !plannedDevelopmentVisible
         ? 'Analyseresultatet er skjult'
-        : 'Natur og jordbruk × framtidig utbygging'
+        : `Natur og jordbruk × ${analysisAreaLabel.toLowerCase()}`
 
     return (
       <section
@@ -929,8 +1059,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             {variant === 'explore' ? (
               <>
                 <PlannedDevelopmentSummary
-                  state={plannedDevelopmentState}
-                  result={plannedDevelopment}
+                  state={mapAnalysisState}
+                  result={mapAnalysisResult}
                   visible={plannedDevelopmentVisible}
                   onVisibleChange={setPlannedDevelopmentVisible}
                   onFindGrunnkartResultInMap={findGrunnkartResultInMap}
@@ -944,6 +1074,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   onValuedNatureResultVisibleChange={setValuedNatureResultVisible}
                   valuedNatureMapSelection={valuedNatureMapSelection}
                   onShowValuedNatureInMap={showValuedNatureInMap}
+                  analysisAreaMode={analysisAreaMode}
+                  drawnArea={drawnAnalysisArea}
+                  drawing={drawingAnalysisArea}
+                  onUsePlannedArea={usePlannedAnalysisArea}
+                  onUseDrawnArea={useDrawnAnalysisArea}
+                  onStartDrawing={startDrawingAnalysisArea}
+                  onFinishDrawing={finishDrawingAnalysisArea}
+                  onUndoDrawing={undoDrawingAnalysisPoint}
+                  onCancelDrawing={cancelDrawingAnalysisArea}
+                  onClearDrawnArea={clearDrawnAnalysisArea}
                 />
 
                 <details className="analysis-map-options">
@@ -990,7 +1130,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               <div className="map-frame__context" aria-live="polite">
                 <span className="map-frame__context-municipality">
                   <small>Analyseområde</small>
-                  <strong>Framtidig utbygging · {selectedMunicipality.name}</strong>
+                  <strong>{analysisAreaLabel} · {selectedMunicipality.name}</strong>
                 </span>
                 <span className="map-frame__context-analysis">
                   <small>Kartet viser</small>

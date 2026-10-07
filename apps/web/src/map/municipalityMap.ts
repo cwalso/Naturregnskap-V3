@@ -2,6 +2,7 @@ import Feature from 'ol/Feature'
 import GeoJSON from 'ol/format/GeoJSON'
 import MultiPolygon from 'ol/geom/MultiPolygon'
 import Polygon from 'ol/geom/Polygon'
+import Draw from 'ol/interaction/Draw'
 import type ImageTile from 'ol/ImageTile'
 import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
@@ -12,7 +13,7 @@ import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
 import VectorSource from 'ol/source/Vector'
-import { Fill, Stroke, Style } from 'ol/style'
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 import { fromLonLat } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
@@ -32,6 +33,7 @@ import {
   loadOverviewRaster,
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
+import type { DrawnAnalysisArea } from './drawnAnalysis'
 import {
   createAnalysisRasterBlob,
   maskExtent,
@@ -99,6 +101,13 @@ export interface MunicipalityMap {
   fitToPlannedDevelopmentResult(): void
   setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
   fitToAnalysisHighlight(): void
+  startDrawnAnalysisArea(handler: (area: DrawnAnalysisArea) => void): void
+  finishDrawnAnalysisArea(): void
+  undoDrawnAnalysisPoint(): void
+  cancelDrawnAnalysisArea(): void
+  clearDrawnAnalysisArea(): void
+  setDrawnAnalysisAreaVisible(visible: boolean): void
+  fitToDrawnAnalysisArea(): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
@@ -314,23 +323,31 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
     currentPlannedOverlay = overlay
     const request = plannedOverlayRequest
-    plannedDetailLayer.setSource(new XYZ({
-      projection: ACCOUNT_CRS,
-      tileGrid: planTileGrid,
-      tilePixelRatio: 2,
-      transition: 0,
-      tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
-      tileLoadFunction: (tile, src) => {
-        void loadPlannedDevelopmentDetailTile(
-          tile as ImageTile,
-          src,
-          accountVisualSource.endpoint,
-          overlay,
-        )
-      },
-      attributions: 'Kilder: DiBK kommuneplaner og NIBIO Grunnkart for arealanalyse',
-    }))
-    plannedDetailLayer.setVisible(plannedVisible)
+
+    if (overlay.kind === 'planned') {
+      plannedOverviewLayer.setMinResolution(ACCOUNT_DETAIL_MAX_RESOLUTION)
+      plannedDetailLayer.setSource(new XYZ({
+        projection: ACCOUNT_CRS,
+        tileGrid: planTileGrid,
+        tilePixelRatio: 2,
+        transition: 0,
+        tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
+        tileLoadFunction: (tile, src) => {
+          void loadPlannedDevelopmentDetailTile(
+            tile as ImageTile,
+            src,
+            accountVisualSource.endpoint,
+            overlay,
+          )
+        },
+        attributions: 'Kilder: DiBK kommuneplaner og NIBIO Grunnkart for arealanalyse',
+      }))
+      plannedDetailLayer.setVisible(plannedVisible)
+    } else {
+      plannedOverviewLayer.setMinResolution(0)
+      plannedDetailLayer.setSource(null)
+      plannedDetailLayer.setVisible(false)
+    }
 
     void createPlannedDevelopmentOverviewBlob(overlay)
       .then((blob) => {
@@ -551,6 +568,40 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   const boundarySource = new VectorSource()
 
+  const drawnAnalysisSource = new VectorSource()
+  const drawnAnalysisLayer = new VectorLayer({
+    source: drawnAnalysisSource,
+    visible: false,
+    style: new Style({
+      stroke: new Stroke({ color: '#005b42', width: 3 }),
+      fill: new Fill({ color: 'rgba(0, 91, 66, 0.13)' }),
+    }),
+  })
+  let drawInteraction: Draw | null = null
+  let drawnAreaCounter = 0
+
+  const drawInteractionStyle = new Style({
+    stroke: new Stroke({ color: '#005b42', width: 3, lineDash: [8, 5] }),
+    fill: new Fill({ color: 'rgba(0, 91, 66, 0.10)' }),
+    image: new CircleStyle({
+      radius: 6,
+      fill: new Fill({ color: '#005b42' }),
+      stroke: new Stroke({ color: '#ffffff', width: 2 }),
+    }),
+  })
+
+  function stopDrawInteraction(abort: boolean) {
+    if (!drawInteraction) return
+    const interaction = drawInteraction
+    drawInteraction = null
+    if (abort) interaction.abortDrawing()
+    map.removeInteraction(interaction)
+  }
+
+  function updateDrawnAreaMaskVisibility() {
+    updateMunicipalityMaskVisibility()
+  }
+
   const municipalityMaskSource = new VectorSource()
   const municipalityMaskLayer = new VectorLayer({
     source: municipalityMaskSource,
@@ -589,6 +640,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       forestLayer.getVisible()
       || ecosystemLayer.getVisible()
       || urbanLayer.getVisible()
+      || (drawnAnalysisLayer.getVisible() && drawnAnalysisSource.getFeatures().length > 0)
       || [...thematicLayers.values()].some((layer) => layer.getVisible())
     municipalityMaskLayer.setVisible(thematicVisible)
   }
@@ -638,6 +690,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       analysisHighlightLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
+      drawnAnalysisLayer,
       municipalityMaskLayer,
       boundaryLayer,
     ],
@@ -677,6 +730,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   window.visualViewport?.addEventListener('resize', refreshMapSize)
 
   map.on('singleclick', (event) => {
+    if (drawInteraction) return
     const resolution = view.getResolution()
     if (resolution === undefined) return
     void identifyThematicFeatures(event.coordinate, resolution)
@@ -727,6 +781,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       for (const layer of thematicLayers.values()) layer.setExtent(undefined)
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
+      stopDrawInteraction(true)
+      drawnAnalysisSource.clear()
+      drawnAnalysisLayer.setVisible(false)
     },
     setAccountLayerVisible(visible) {
       accountVisible = visible
@@ -795,6 +852,81 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         maxZoom: 14,
       })
     },
+    startDrawnAnalysisArea(handler) {
+      stopDrawInteraction(true)
+      drawnAnalysisSource.clear()
+      drawnAnalysisLayer.setVisible(true)
+      updateDrawnAreaMaskVisibility()
+
+      const interaction = new Draw({
+        source: drawnAnalysisSource,
+        type: 'Polygon',
+        stopClick: true,
+        style: drawInteractionStyle,
+      })
+      drawInteraction = interaction
+
+      interaction.on('drawend', (event) => {
+        const geometry = event.feature.getGeometry()
+        if (!(geometry instanceof Polygon)) return
+
+        const rings = geometry.getCoordinates().map((ring) => (
+          ring.map((coordinate) => [coordinate[0], coordinate[1]] as [number, number])
+        ))
+        const extent = geometry.getExtent()
+        const area: DrawnAnalysisArea = {
+          id: `drawn:${++drawnAreaCounter}`,
+          rings,
+          extent: [extent[0], extent[1], extent[2], extent[3]],
+          areaKm2: geometry.getArea() / 1_000_000,
+        }
+
+        window.setTimeout(() => {
+          if (drawInteraction === interaction) {
+            map.removeInteraction(interaction)
+            drawInteraction = null
+          }
+          drawnAnalysisLayer.setVisible(true)
+          updateDrawnAreaMaskVisibility()
+          handler(area)
+        }, 0)
+      })
+
+      map.addInteraction(interaction)
+    },
+    finishDrawnAnalysisArea() {
+      drawInteraction?.finishDrawing()
+    },
+    undoDrawnAnalysisPoint() {
+      drawInteraction?.removeLastPoint()
+    },
+    cancelDrawnAnalysisArea() {
+      stopDrawInteraction(true)
+      if (drawnAnalysisSource.getFeatures().length === 0) {
+        drawnAnalysisLayer.setVisible(false)
+      }
+      updateDrawnAreaMaskVisibility()
+    },
+    clearDrawnAnalysisArea() {
+      stopDrawInteraction(true)
+      drawnAnalysisSource.clear()
+      drawnAnalysisLayer.setVisible(false)
+      updateDrawnAreaMaskVisibility()
+    },
+    setDrawnAnalysisAreaVisible(visible) {
+      drawnAnalysisLayer.setVisible(visible && drawnAnalysisSource.getFeatures().length > 0)
+      updateDrawnAreaMaskVisibility()
+    },
+    fitToDrawnAnalysisArea() {
+      if (drawnAnalysisSource.getFeatures().length === 0) return
+      const extent = drawnAnalysisSource.getExtent()
+      if (!extent) return
+      view.fit(extent, {
+        padding: [72, 72, 72, 72],
+        duration: 350,
+        maxZoom: 15,
+      })
+    },
     setThematicLayerVisible(datasetId, visible) {
       featureInfoRequest += 1
       thematicLayers.get(datasetId)?.setVisible(visible)
@@ -854,6 +986,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       releaseAccountOverviewUrl()
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
+      stopDrawInteraction(true)
+      drawnAnalysisSource.clear()
       featureInfoHandler = null
       thematicLayerStatusHandler = null
       map.setTarget(undefined)
