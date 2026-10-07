@@ -302,7 +302,7 @@ describe('sidestruktur og Oversikt', () => {
     window.location.hash = '#naturtapet'
     render(<App createMap={() => mapMock()} />)
 
-    expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Velg kommune for å se naturregnskapet' })).toBeInTheDocument()
     await chooseTrondheim()
 
     expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim' })).toBeInTheDocument()
