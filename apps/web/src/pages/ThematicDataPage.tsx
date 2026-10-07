@@ -422,70 +422,206 @@ export function ThematicDataPage({
   }
 
   const status = dataset.sourceStatus === 'visual-only'
-    ? 'Kartlaget er koblet som visualisering. Kommunevis treffstatus beregnes ikke i denne versjonen.'
+    ? 'Kartlaget er koblet som visualisering. Kommunevis arealstatistikk er ikke beregnet i denne versjonen.'
     : evaluationText(evaluation, thematicCoverageState, municipalityName)
 
-  return (
-    <section className="content-page thematic-page" aria-labelledby="thematic-page-title">
-      <button type="button" className="thematic-page__back" onClick={onBack}>
-        <span aria-hidden="true">←</span> Tilbake til naturtema
-      </button>
+  const municipality = municipalityName ?? 'kommunen'
+  const registeredCount = evaluation?.status === 'hit' ? evaluation.featureCount : 0
 
-      <header className="content-page__intro thematic-page__intro">
-        <p className="content-page__eyebrow">Supplerende temadata</p>
-        <div className="thematic-page__title-row">
-          <span className="theme-card__icon" aria-hidden="true">{content.icon}</span>
-          <h1 id="thematic-page-title">{dataset.title}</h1>
+  const page = dataset.id === 'protected-areas'
+    ? {
+        lead: 'Verneområder viser områder med formelt vern. De gir viktig og tydelig planfaglig informasjon, men beskriver ikke all verdifull natur i kommunen.',
+        heroClass: 'thematic-hero__image--protected',
+        questionOne: 'Hva viser verneområdene?',
+        answerOne: 'Kartet viser registrerte naturvernområder fra Naturbase. Vern er en juridisk og forvaltningsmessig status og må skilles fra naturverdi utenfor verneområdene.',
+        questionTwo: 'Hvordan brukes dette i planlegging?',
+        answerTwo: 'Verneområder bør inngå som et tydelig hensyn i arealplanlegging og analyser. Temalaget er supplerende innsikt og er ikke selve regnskapsgrunnlaget.',
+        primaryLabel: 'Registrerte verneobjekter som krysser kommunen',
+        primaryValue: thematicCoverageState === 'loading'
+          ? '…'
+          : thematicCoverageState === 'error'
+            ? 'Ikke tilgjengelig'
+            : evaluation?.status === 'hit'
+              ? areaFormatter.format(registeredCount ?? 0)
+              : evaluation?.status === 'no_hit'
+                ? '0'
+                : '–',
+        secondaryLabel: 'Dekning',
+        secondaryValue: 'Landsdekkende',
+        insightTitle: 'Hva bør kommunen lese ut av kartet?',
+        insightText: 'Kartet viser hvor kommunen berører formelt vern. Det sier ikke at natur utenfor verneområdene er uten verdi, og bør brukes sammen med regnskapsgrunnlaget og andre relevante temadata.',
+        factsTitle: 'Rolle i naturregnskapet',
+        facts: [
+          'Formelt vern er supplerende temadata.',
+          'Treff mot kommunegrensen gir planfaglig kontekst.',
+          'Vern må ikke brukes som erstatning for heldekkende naturinformasjon.',
+        ],
+      }
+    : dataset.id === 'wild-reindeer-areas'
+      ? {
+          lead: 'Villreinområder viser leveområder og funksjonsområder som det bør tas spesielt hensyn til i arealplanlegging. Karttjenesten er relevant der kommunen berører villreinfjella.',
+          heroClass: 'thematic-hero__image--reindeer',
+          questionOne: 'Hva viser kartet?',
+          answerOne: 'Kartet på siden viser registrert leveområde for villrein. Kildetjenesten inneholder også egne lag for blant annet trekkområder, kalvingsområder og ulike beiteområder.',
+          questionTwo: 'Hvordan bør dataene brukes?',
+          answerTwo: 'Dataene kan brukes som supplerende kunnskapsgrunnlag i arealplanlegging. For kommuner utenfor villreinområdene skal null treff ikke tolkes som en generell vurdering av naturkvalitet.',
+          primaryLabel: 'Registrerte villreinobjekter som krysser kommunen',
+          primaryValue: thematicCoverageState === 'loading'
+            ? '…'
+            : thematicCoverageState === 'error'
+              ? 'Ikke tilgjengelig'
+              : evaluation?.status === 'hit'
+                ? areaFormatter.format(registeredCount ?? 0)
+                : evaluation?.status === 'no_hit'
+                  ? '0'
+                  : '–',
+          secondaryLabel: 'Geografisk dekning',
+          secondaryValue: 'Villreinområdene i Sør-Norge',
+          insightTitle: 'Funksjonsområder i kildetjenesten',
+          insightText: 'Miljødirektoratets karttjeneste har egne lag for leveområde, trekkområde, kalvingsområde, sommer- og høstbeite, vinterbeite, barmarksbeite og helårsbeite. Prototypen viser foreløpig leveområdet som hovedlag.',
+          factsTitle: 'Bruk i kommunal planlegging',
+          facts: [
+            'Se om planområdet ligger i eller nær registrert leveområde.',
+            'Suppler med relevante funksjonsområder ved konkrete vurderinger.',
+            'Unngå å tolke datasettet som et heldekkende naturregnskap.',
+          ],
+        }
+      : {
+          lead: 'Inngrepsfri natur viser områder som ligger én kilometer eller mer fra større naturinngrep. Temaet gir informasjon om påvirkning fra teknisk infrastruktur, men er ikke en økosystemtype eller et mål på naturtilstand.',
+          heroClass: 'thematic-hero__image--infrastructure-free',
+          questionOne: 'Hva betyr inngrepsfri natur?',
+          answerOne: 'Inngrepsfrie naturområder ligger minst én kilometer i luftlinje fra større inngrep som veier, kraftlinjer, jernbane, steinbrudd og større kraftutbygginger.',
+          questionTwo: 'Hva kan utviklingen over tid vise?',
+          answerTwo: 'Kildetjenesten har statusår for 1988, 2008, 2013, 2018 og 2023, samt egne endringslag. Det gjør temaet egnet til å vise utvikling over tid som supplerende indikator.',
+          primaryLabel: 'Nyeste status',
+          primaryValue: '2023',
+          secondaryLabel: 'Historiske statusår',
+          secondaryValue: '1988–2023',
+          insightTitle: 'Tidsserie og endring',
+          insightText: 'Kildetjenesten inneholder status for 1988, 2008, 2013, 2018 og 2023, i tillegg til endringslag mellom periodene. Før kommunevise endringstall vises bør beregningsmetoden avklares og dokumenteres.',
+          factsTitle: 'Hva temaet kan brukes til',
+          facts: [
+            'Synliggjøre avstand til større tekniske inngrep.',
+            'Følge utvikling i inngrepsfrie områder over tid.',
+            'Supplere naturregnskapet uten å blande indikatoren inn i selve økosystemregnskapet.',
+          ],
+        }
+
+  return (
+    <section className="content-page thematic-page thematic-page--editorial" aria-labelledby="thematic-page-title">
+      <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
+        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <span aria-hidden="true">›</span>
+        <span>{dataset.title}</span>
+      </nav>
+
+      <header className="thematic-hero">
+        <div className="thematic-hero__content">
+          <div className="thematic-hero__title-row">
+            <span className="thematic-hero__icon" aria-hidden="true">{content.icon}</span>
+            <h1 id="thematic-page-title">{dataset.title}</h1>
+          </div>
+          <p className="thematic-hero__lead">{page.lead}</p>
+
+          <div className="thematic-questions">
+            <details>
+              <summary>{page.questionOne}</summary>
+              <p>{page.answerOne}</p>
+            </details>
+            <details>
+              <summary>{page.questionTwo}</summary>
+              <p>{page.answerTwo}</p>
+            </details>
+            <details>
+              <summary>Datagrunnlag og begrensninger</summary>
+              <p>{content.limitation}</p>
+            </details>
+          </div>
         </div>
-        <p>{content.description}</p>
+
+        <div className={`thematic-hero__image ${page.heroClass}`} role="img" aria-label={`Illustrasjon for ${dataset.title.toLowerCase()}`} />
       </header>
 
-      <div className="thematic-page__grid">
-        <section className="thematic-page__main" aria-labelledby="thematic-use-title">
-          <span className="section-tag">Bruk og rolle</span>
-          <h2 id="thematic-use-title">Hva kan dette bidra med?</h2>
-          <p>{content.use}</p>
+      <section className="thematic-kpis" aria-label={`Nøkkelinformasjon for ${dataset.title}`}>
+        <article>
+          <span>{page.primaryLabel}</span>
+          <strong>{page.primaryValue}</strong>
+          <small>{status}</small>
+        </article>
+        <article>
+          <span>{page.secondaryLabel}</span>
+          <strong>{page.secondaryValue}</strong>
+          <small>{dataset.coverage.label}</small>
+        </article>
+      </section>
 
-          <div className="thematic-page__notice">
-            <strong>Viktig avgrensning</strong>
-            <p>{content.limitation}</p>
-          </div>
-
-          <h2>Rolle i kommunalt naturregnskap</h2>
-          <p>{content.role}</p>
-        </section>
-
-        <aside className="thematic-page__status" aria-labelledby="thematic-status-title">
-          <p className="map-sidebar__eyebrow">Status i kommunen</p>
-          <h2 id="thematic-status-title">
-            {municipalityName ? dataset.title + ' i ' + municipalityName : dataset.title}
-          </h2>
-          <p>{status}</p>
-          <dl>
-            <div>
-              <dt>Dekning</dt>
-              <dd>{dataset.coverage.label}</dd>
-            </div>
-            <div>
-              <dt>Versjon</dt>
-              <dd>{dataset.version}</dd>
-            </div>
-            <div>
-              <dt>Utgiver</dt>
-              <dd>{dataset.publisher}</dd>
-            </div>
-          </dl>
-        </aside>
-      </div>
-
-      <section className="thematic-page__source" aria-labelledby="thematic-source-title">
-        <h2 id="thematic-source-title">Kilde og metadata</h2>
+      <details className="thematic-source-accordion">
+        <summary>Hvor er dataene hentet fra?</summary>
         <p>
           {dataset.attribution}. {dataset.coverage.note}
         </p>
-        <a href={dataset.metadataUrl} target="_blank" rel="noreferrer">
-          Se metadata hos Miljødirektoratet
-        </a>
+      </details>
+
+      <aside className="forest-account-note thematic-role-note">
+        <span aria-hidden="true">i</span>
+        <div>
+          <strong>Supplerende temadata</strong>
+          <p>{content.role}</p>
+        </div>
+      </aside>
+
+      {mapContent && (
+        <section className="thematic-map-section" aria-labelledby="supplementary-map-title">
+          <div className="thematic-section-heading">
+            <h2 id="supplementary-map-title">{dataset.title} i {municipality}</h2>
+            <p>Kartlaget er avgrenset visuelt til valgt kommune i prototypen.</p>
+          </div>
+          {mapContent}
+        </section>
+      )}
+
+      <section className="thematic-insight-row">
+        <div className="thematic-insight-row__text">
+          <h2>{page.insightTitle}</h2>
+          <p>{page.insightText}</p>
+          <p className="thematic-insight-row__source">
+            {dataset.attribution}
+          </p>
+        </div>
+
+        <div className="thematic-fact-panel">
+          <h3>{page.factsTitle}</h3>
+          <ul>
+            {page.facts.map((fact) => <li key={fact}>{fact}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <div className="thematic-questions thematic-questions--wide">
+        <details>
+          <summary>Hva kan dette bidra med i arealplanlegging?</summary>
+          <p>{content.use}</p>
+        </details>
+        <details>
+          <summary>Hva må vi være forsiktige med?</summary>
+          <p>{content.limitation}</p>
+        </details>
+      </div>
+
+      <section className="thematic-faq" aria-labelledby="supplementary-faq-title">
+        <h2 id="supplementary-faq-title">Kilde og videre bruk</h2>
+        <details>
+          <summary>Er dette en del av selve naturregnskapet?</summary>
+          <p>{content.role}</p>
+        </details>
+        <details>
+          <summary>Hvor finner jeg metadata?</summary>
+          <p>
+            <a href={dataset.metadataUrl} target="_blank" rel="noreferrer">
+              Se metadata for {dataset.title}
+            </a>
+          </p>
+        </details>
       </section>
     </section>
   )
