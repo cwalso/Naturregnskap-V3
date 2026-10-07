@@ -17,8 +17,8 @@ import proj4 from 'proj4'
 
 import {
   FOREST_WMS_ENDPOINT,
+  FOREST_WMS_FILTER,
   FOREST_WMS_LAYER,
-  FOREST_WMS_STYLE,
 } from '../api/forestStatistics'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
@@ -133,7 +133,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         LAYERS: FOREST_WMS_LAYER,
         VERSION: '1.3.0',
         TRANSPARENT: true,
-        SLD_BODY: FOREST_WMS_STYLE,
+        FILTER: FOREST_WMS_FILTER,
       },
       ratio: 1,
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
