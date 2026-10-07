@@ -323,23 +323,31 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
     currentPlannedOverlay = overlay
     const request = plannedOverlayRequest
-    plannedDetailLayer.setSource(new XYZ({
-      projection: ACCOUNT_CRS,
-      tileGrid: planTileGrid,
-      tilePixelRatio: 2,
-      transition: 0,
-      tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
-      tileLoadFunction: (tile, src) => {
-        void loadPlannedDevelopmentDetailTile(
-          tile as ImageTile,
-          src,
-          accountVisualSource.endpoint,
-          overlay,
-        )
-      },
-      attributions: 'Kilder: DiBK kommuneplaner og NIBIO Grunnkart for arealanalyse',
-    }))
-    plannedDetailLayer.setVisible(plannedVisible)
+
+    if (overlay.kind === 'planned') {
+      plannedOverviewLayer.setMinResolution(ACCOUNT_DETAIL_MAX_RESOLUTION)
+      plannedDetailLayer.setSource(new XYZ({
+        projection: ACCOUNT_CRS,
+        tileGrid: planTileGrid,
+        tilePixelRatio: 2,
+        transition: 0,
+        tileUrlFunction: (tileCoord) => buildPlanTileUrl(tileCoord),
+        tileLoadFunction: (tile, src) => {
+          void loadPlannedDevelopmentDetailTile(
+            tile as ImageTile,
+            src,
+            accountVisualSource.endpoint,
+            overlay,
+          )
+        },
+        attributions: 'Kilder: DiBK kommuneplaner og NIBIO Grunnkart for arealanalyse',
+      }))
+      plannedDetailLayer.setVisible(plannedVisible)
+    } else {
+      plannedOverviewLayer.setMinResolution(0)
+      plannedDetailLayer.setSource(null)
+      plannedDetailLayer.setVisible(false)
+    }
 
     void createPlannedDevelopmentOverviewBlob(overlay)
       .then((blob) => {
@@ -560,6 +568,40 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   const boundarySource = new VectorSource()
 
+  const drawnAnalysisSource = new VectorSource()
+  const drawnAnalysisLayer = new VectorLayer({
+    source: drawnAnalysisSource,
+    visible: false,
+    style: new Style({
+      stroke: new Stroke({ color: '#005b42', width: 3 }),
+      fill: new Fill({ color: 'rgba(0, 91, 66, 0.13)' }),
+    }),
+  })
+  let drawInteraction: Draw | null = null
+  let drawnAreaCounter = 0
+
+  const drawInteractionStyle = new Style({
+    stroke: new Stroke({ color: '#005b42', width: 3, lineDash: [8, 5] }),
+    fill: new Fill({ color: 'rgba(0, 91, 66, 0.10)' }),
+    image: new CircleStyle({
+      radius: 6,
+      fill: new Fill({ color: '#005b42' }),
+      stroke: new Stroke({ color: '#ffffff', width: 2 }),
+    }),
+  })
+
+  function stopDrawInteraction(abort: boolean) {
+    if (!drawInteraction) return
+    const interaction = drawInteraction
+    drawInteraction = null
+    if (abort) interaction.abortDrawing()
+    map.removeInteraction(interaction)
+  }
+
+  function updateDrawnAreaMaskVisibility() {
+    updateMunicipalityMaskVisibility()
+  }
+
   const municipalityMaskSource = new VectorSource()
   const municipalityMaskLayer = new VectorLayer({
     source: municipalityMaskSource,
@@ -598,6 +640,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       forestLayer.getVisible()
       || ecosystemLayer.getVisible()
       || urbanLayer.getVisible()
+      || (drawnAnalysisLayer.getVisible() && drawnAnalysisSource.getFeatures().length > 0)
       || [...thematicLayers.values()].some((layer) => layer.getVisible())
     municipalityMaskLayer.setVisible(thematicVisible)
   }
@@ -647,6 +690,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       analysisHighlightLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
+      drawnAnalysisLayer,
       municipalityMaskLayer,
       boundaryLayer,
     ],
@@ -686,6 +730,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   window.visualViewport?.addEventListener('resize', refreshMapSize)
 
   map.on('singleclick', (event) => {
+    if (drawInteraction) return
     const resolution = view.getResolution()
     if (resolution === undefined) return
     void identifyThematicFeatures(event.coordinate, resolution)
