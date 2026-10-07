@@ -4090,3 +4090,73 @@ button.overview-status-card:hover {
     margin-bottom: 2.2rem;
   }
 }
+
+
+/* V3.26 – øvrige økosystemtyper */
+.theme-grid--account {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+.ecosystem-hero__icon {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+.ecosystem-hero__image--wetland {
+  background:
+    linear-gradient(rgb(25 72 72 / 10%), rgb(25 72 72 / 10%)),
+    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.ecosystem-hero__image--heath {
+  background:
+    linear-gradient(rgb(79 86 52 / 12%), rgb(79 86 52 / 12%)),
+    url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.ecosystem-hero__image--sparse {
+  background:
+    linear-gradient(rgb(116 98 72 / 9%), rgb(116 98 72 / 9%)),
+    url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.ecosystem-hero__image--coast {
+  background:
+    linear-gradient(rgb(24 72 92 / 9%), rgb(24 72 92 / 9%)),
+    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.ecosystem-map-legend {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin-top: .8rem;
+  color: var(--color-text-muted);
+  font-size: .76rem;
+}
+.ecosystem-map-legend i {
+  display: inline-block;
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+.ecosystem-distribution-chart .thematic-value-chart__row.is-active {
+  margin-inline: -.45rem;
+  padding-inline: .45rem;
+  background: #f1f7ef;
+  border-left: 3px solid var(--color-accent);
+}
+.ecosystem-type-table tr.is-active td {
+  background: #f1f7ef;
+  font-weight: 700;
+}
+.ecosystem-account-note {
+  background: #eff5ec;
+}
+
+@media (max-width: 52rem) {
+  .theme-grid--account {
+    grid-template-columns: 1fr;
+  }
+  .ecosystem-hero__image {
+    min-height: 13rem;
+  }
+}
