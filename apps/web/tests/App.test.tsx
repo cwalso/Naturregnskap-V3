@@ -2,7 +2,6 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
-import agencyLogo from '../src/assets/miljodirektoratet-logo-primary.svg'
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import {
   datasetRegistry,
@@ -300,7 +299,8 @@ describe('sidestruktur og Oversikt', () => {
     expect(navigation).toHaveTextContent('Naturtema')
     expect(navigation).toHaveTextContent('Utforsk i kart')
     expect(screen.getByRole('link', { name: 'Kommuneoversikt' })).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByRole('img', { name: 'Miljødirektoratet' })).toHaveAttribute('src', agencyLogo)
+    expect(screen.queryByRole('img', { name: 'Miljødirektoratet' })).not.toBeInTheDocument()
+    expect(screen.getByRole('banner')).toHaveTextContent('Kommunale naturregnskap')
     expect(screen.getByRole('banner')).toHaveTextContent('TEST')
   })
 

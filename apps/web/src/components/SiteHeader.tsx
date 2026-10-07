@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import agencyLogo from '../assets/miljodirektoratet-logo-primary.svg'
 
 export type SiteView =
   | 'oversikt'
@@ -41,7 +40,7 @@ export function SiteHeader({
           onClick={() => onNavigate?.('oversikt')}
           aria-label="Gå til kommuneoversikten"
         >
-          <img className="site-header__logo" src={agencyLogo} alt="Miljødirektoratet" />
+          <span className="site-header__brand-label">Kommunale naturregnskap</span>
         </button>
 
         <span className="site-header__test" aria-label="Testversjon">★ TEST ★</span>
