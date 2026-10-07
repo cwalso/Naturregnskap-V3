@@ -6,6 +6,12 @@ import {
   type MunicipalityBoundary,
 } from '../api/municipalities'
 import type { ThematicCoverageResponse } from '../api/thematicCoverage'
+import {
+  getPlannedCoverageGap,
+  getValuedNatureStatistics,
+  type PlannedCoverageGap,
+  type ValuedNatureStatistics,
+} from '../api/valuedNatureStatistics'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
 import { SiteHeader, type SiteView } from '../components/SiteHeader'
@@ -102,6 +108,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [thematicCoverage, setThematicCoverage] = useState<ThematicCoverageResponse | null>(null)
   const [thematicCoverageState, setThematicCoverageState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [valuedNatureStatistics, setValuedNatureStatistics] = useState<ValuedNatureStatistics | null>(null)
+  const [valuedNatureStatisticsState, setValuedNatureStatisticsState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [plannedCoverageGap, setPlannedCoverageGap] = useState<PlannedCoverageGap | null>(null)
+  const [plannedCoverageGapState, setPlannedCoverageGapState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [mapFeatureInfo, setMapFeatureInfo] = useState<MapFeatureInfoState>({
     status: 'idle',
     results: [],
@@ -179,7 +189,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [])
 
   useEffect(() => {
-    if (activeView !== 'utforsk-i-kart' || !selectedMunicipality) {
+    if (
+      (activeView !== 'utforsk-i-kart' && activeView !== 'tema-valued-nature')
+      || !selectedMunicipality
+    ) {
       setPlannedDevelopment(null)
       setPlannedDevelopmentState('idle')
       return
@@ -261,11 +274,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
 
   useEffect(() => {
-    if (
-      activeView !== 'utforsk-i-kart'
-      || plannedDevelopmentAnalysisTarget !== 'valued-nature'
-      || plannedDevelopment?.status !== 'available'
-    ) {
+    const needsValuedNature = activeView === 'tema-valued-nature'
+      || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'valued-nature')
+    if (!needsValuedNature || plannedDevelopment?.status !== 'available') {
       setPlannedValuedNature(null)
       setPlannedValuedNatureState('idle')
       return
@@ -290,6 +301,60 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     return () => controller.abort()
   }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+
+  useEffect(() => {
+    if (activeView !== 'tema-valued-nature' || !boundaryData) {
+      setValuedNatureStatistics(null)
+      setValuedNatureStatisticsState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setValuedNatureStatistics(null)
+    setValuedNatureStatisticsState('loading')
+
+    void getValuedNatureStatistics(boundaryData, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setValuedNatureStatistics(result)
+        setValuedNatureStatisticsState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setValuedNatureStatistics(null)
+        setValuedNatureStatisticsState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, boundaryData])
+
+  useEffect(() => {
+    if (activeView !== 'tema-valued-nature' || plannedDevelopment?.status !== 'available') {
+      setPlannedCoverageGap(null)
+      setPlannedCoverageGapState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setPlannedCoverageGap(null)
+    setPlannedCoverageGapState('loading')
+
+    void getPlannedCoverageGap(plannedDevelopment, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setPlannedCoverageGap(result)
+        setPlannedCoverageGapState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setPlannedCoverageGap(null)
+        setPlannedCoverageGapState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, plannedDevelopment])
 
   useEffect(() => {
     if (!map.current) return
@@ -333,6 +398,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setSelectedMunicipality(municipality)
     setAccountData(null)
     setThematicCoverage(null)
+    setValuedNatureStatistics(null)
+    setValuedNatureStatisticsState('idle')
+    setPlannedCoverageGap(null)
+    setPlannedCoverageGapState('idle')
     setBoundaryData(null)
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
@@ -878,6 +947,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           municipalityName={selectedMunicipality.name}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
+          valuedNatureStatistics={valuedNatureStatistics}
+          valuedNatureStatisticsState={valuedNatureStatisticsState}
+          plannedValuedNature={plannedValuedNature}
+          plannedValuedNatureState={plannedValuedNatureState}
+          plannedCoverageGap={plannedCoverageGap}
+          plannedCoverageGapState={plannedCoverageGapState}
           onBack={() => navigate('utforsk-naturen')}
           onOpenFutureDevelopmentAnalysis={
             datasetByThematicView[activeView] === 'valued-nature'

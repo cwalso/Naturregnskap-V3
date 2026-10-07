@@ -121,7 +121,7 @@ function thematicFeatureCount(url: string): number {
 }
 
 function mockMunicipalityFlow(areaKm2: number | null = 12) {
-  vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+  vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {
     const url = String(input)
     if (url === 'https://api.kartverket.no/kommuneinfo/v1/kommuner') {
       return Promise.resolve(new Response(JSON.stringify(municipalityListSource), { status: 200 }))
@@ -130,9 +130,34 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
       return Promise.resolve(new Response(JSON.stringify(ssbAccountSource(areaKm2)), { status: 200 }))
     }
     if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
-      return Promise.resolve(new Response(JSON.stringify({
-        count: thematicFeatureCount(url),
-      }), { status: 200 }))
+      const body = init?.body instanceof URLSearchParams ? init.body : null
+      if (body?.get('returnCountOnly') === 'true') {
+        return Promise.resolve(new Response(JSON.stringify({
+          count: thematicFeatureCount(url),
+        }), { status: 200 }))
+      }
+      if (url.includes('/naturtyper_kuverdi/') && body?.get('returnGeometry') === 'true') {
+        return Promise.resolve(new Response(JSON.stringify({
+          features: [
+            {
+              attributes: { OBJECTID: 1, Verdikategori: 'Svært stor verdi', Naturtype: 'Gammel furuskog' },
+              geometry: { rings: [[[0, 0], [100, 0], [100, 100], [0, 100], [0, 0]]] },
+            },
+            {
+              attributes: { OBJECTID: 2, Verdikategori: 'Stor verdi', Naturtype: 'Rikmyr' },
+              geometry: { rings: [[[200, 0], [400, 0], [400, 100], [200, 100], [200, 0]]] },
+            },
+            {
+              attributes: { OBJECTID: 3, Verdikategori: 'Stor verdi', Naturtype: 'Rikmyr' },
+              geometry: { rings: [[[500, 0], [600, 0], [600, 100], [500, 100], [500, 0]]] },
+            },
+          ],
+        }), { status: 200 }))
+      }
+      if (url.includes('/naturtyper_nin/FeatureServer/1/')) {
+        return Promise.resolve(new Response(JSON.stringify({ features: [] }), { status: 200 }))
+      }
+      return Promise.resolve(new Response(JSON.stringify({ count: thematicFeatureCount(url) }), { status: 200 }))
     }
     return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
   })
@@ -343,7 +368,11 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(valuedTheme)
 
     expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper', level: 1 })).toBeInTheDocument()
-    expect(screen.getByText('3')).toBeInTheDocument()
+    await vi.waitFor(() => {
+      expect(screen.getByText('3 registrerte lokaliteter')).toBeInTheDocument()
+      expect(screen.getByText('Gammel furuskog')).toBeInTheDocument()
+      expect(screen.getByText('Rikmyr')).toBeInTheDocument()
+    })
     expect(screen.getAllByText(/Datasettet er ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 

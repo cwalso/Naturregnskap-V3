@@ -4,6 +4,11 @@ import type {
   ThematicCoverageResponse,
   ThematicDatasetEvaluation,
 } from '../api/thematicCoverage'
+import type {
+  PlannedCoverageGap,
+  ValuedNatureStatistics,
+} from '../api/valuedNatureStatistics'
+import type { PlannedValuedNatureAnalysis } from '../map/plannedValuedNature'
 import {
   thematicDatasets,
   type ThematicDatasetId,
@@ -15,6 +20,12 @@ interface ThematicDataPageProps {
   readonly municipalityName?: string
   readonly thematicCoverage?: ThematicCoverageResponse | null
   readonly thematicCoverageState?: 'idle' | 'loading' | 'error'
+  readonly valuedNatureStatistics?: ValuedNatureStatistics | null
+  readonly valuedNatureStatisticsState?: 'idle' | 'loading' | 'error'
+  readonly plannedValuedNature?: PlannedValuedNatureAnalysis | null
+  readonly plannedValuedNatureState?: 'idle' | 'loading' | 'error'
+  readonly plannedCoverageGap?: PlannedCoverageGap | null
+  readonly plannedCoverageGapState?: 'idle' | 'loading' | 'error'
   readonly onBack: () => void
   readonly onOpenFutureDevelopmentAnalysis?: () => void
   readonly mapContent?: ReactNode
@@ -41,6 +52,23 @@ function evaluationText(
   return `Treffstatus kunne ikke vurderes nå. ${evaluation.note}`
 }
 
+const areaFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
+const percentFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 })
+
+function dekar(areaKm2: number): string {
+  return `${areaFormatter.format(areaKm2 * 1000)} dekar`
+}
+
+function percent(value: number): string {
+  return `${percentFormatter.format(value)} %`
+}
+
+function loadingValue(state: 'idle' | 'loading' | 'error', fallback = '–'): string {
+  if (state === 'loading') return '…'
+  if (state === 'error') return 'Ikke tilgjengelig'
+  return fallback
+}
+
 function TreeIcon() {
   return (
     <svg viewBox="0 0 48 48" aria-hidden="true">
@@ -52,20 +80,32 @@ function TreeIcon() {
 function ValuedNaturePage({
   municipalityName,
   evaluation,
-  state,
+  statistics,
+  statisticsState,
+  plannedValuedNature,
+  plannedValuedNatureState,
+  plannedCoverageGap,
+  plannedCoverageGapState,
   onBack,
   onOpenFutureDevelopmentAnalysis,
   mapContent,
 }: {
   readonly municipalityName?: string
   readonly evaluation?: ThematicDatasetEvaluation
-  readonly state: 'idle' | 'loading' | 'error'
+  readonly statistics?: ValuedNatureStatistics | null
+  readonly statisticsState: 'idle' | 'loading' | 'error'
+  readonly plannedValuedNature?: PlannedValuedNatureAnalysis | null
+  readonly plannedValuedNatureState: 'idle' | 'loading' | 'error'
+  readonly plannedCoverageGap?: PlannedCoverageGap | null
+  readonly plannedCoverageGapState: 'idle' | 'loading' | 'error'
   readonly onBack: () => void
   readonly onOpenFutureDevelopmentAnalysis?: () => void
   readonly mapContent?: ReactNode
 }) {
-  const featureCount = evaluation?.status === 'hit' ? evaluation.featureCount : null
+  const featureCount = statistics?.featureCount
+    ?? (evaluation?.status === 'hit' ? evaluation.featureCount : null)
   const municipality = municipalityName ?? 'kommunen'
+  const topNatureTypes = statistics?.typeMetrics.slice(0, 12) ?? []
 
   return (
     <section className="content-page thematic-page thematic-page--editorial" aria-labelledby="thematic-page-title">
@@ -120,25 +160,46 @@ function ValuedNaturePage({
 
       <section className="thematic-kpis" aria-label="Nøkkeltall for verdsatte naturtyper">
         <article>
-          <span>Registrerte objekter i {municipality}</span>
+          <span>Andel av kommunen kartlagt</span>
           <strong>
-            {state === 'loading'
-              ? '…'
-              : state === 'error'
-                ? 'Ikke tilgjengelig'
-                : featureCount ?? 'Ingen registrerte treff'}
+            {statistics
+              ? percent(statistics.mappedCoveragePercent)
+              : loadingValue(statisticsState)}
           </strong>
+          <small>
+            {statistics
+              ? `Omtrent ${dekar(statistics.mappedCoverageKm2)} kartlagt etter Miljødirektoratets instruks`
+              : 'Beregnes fra dekningskartet for naturtypekartlegging.'}
+          </small>
         </article>
         <article>
-          <span>Dekning</span>
-          <strong>Ikke heldekkende</strong>
+          <span>Kartlagte verdsatte naturtyper</span>
+          <strong>
+            {statistics
+              ? dekar(statistics.registeredAreaKm2)
+              : loadingValue(statisticsState)}
+          </strong>
+          <small>
+            {featureCount === null || featureCount === undefined
+              ? 'Antall lokaliteter er ikke tilgjengelig.'
+              : `${areaFormatter.format(featureCount)} registrerte lokaliteter`}
+          </small>
         </article>
       </section>
 
       <section className="thematic-plan-cards" aria-label="Framtidig utbygging">
         <article>
           <strong>Verdsatte naturtyper i områder satt av til framtidig utbygging</strong>
-          <span>Beregn overlapp i analyseflaten.</span>
+          <span className="thematic-plan-cards__value">
+            {plannedValuedNature
+              ? dekar(plannedValuedNature.uniqueOverlapAreaKm2)
+              : loadingValue(plannedValuedNatureState)}
+          </span>
+          <span>
+            {plannedValuedNature
+              ? `${areaFormatter.format(plannedValuedNature.affectedFeatureCount)} registrerte lokaliteter berøres i prototypeanalysen.`
+              : 'Overlapp beregnes mot arealer satt av til framtidig utbygging.'}
+          </span>
           {onOpenFutureDevelopmentAnalysis && municipalityName && (
             <button type="button" onClick={onOpenFutureDevelopmentAnalysis}>
               Åpne analyse i kart <span aria-hidden="true">→</span>
@@ -146,16 +207,26 @@ function ValuedNaturePage({
           )}
         </article>
         <article>
-          <strong>Områder uten registrert kartlegging i framtidige utbyggingsområder</strong>
-          <span>Ikke beregnet i denne versjonen.</span>
+          <strong>Ikke-kartlagte områder som er satt av til framtidig utbygging</strong>
+          <span className="thematic-plan-cards__value">
+            {plannedCoverageGap
+              ? dekar(plannedCoverageGap.unmappedPlannedAreaKm2)
+              : loadingValue(plannedCoverageGapState)}
+          </span>
+          <span>
+            {plannedCoverageGap
+              ? `${percent(plannedCoverageGap.mappedSharePercent)} av utbyggingsarealet ligger innenfor dekningskartet.`
+              : 'Beregnes mot dekningskartet for naturtypekartlegging.'}
+          </span>
         </article>
       </section>
 
       <details className="thematic-source-accordion">
         <summary>Hvor er tallene hentet fra?</summary>
         <p>
-          Kommunevis treffstatus hentes fra Miljødirektoratets løpende
-          feature-tjeneste. Datasettet er ikke heldekkende.
+          Statistikken hentes fra Miljødirektoratets løpende tjenester for
+          Naturtyper – verdsatte og dekningskartet for naturtyper etter
+          Miljødirektoratets instruks. Datasettet er ikke heldekkende.
         </p>
       </details>
 
@@ -188,16 +259,33 @@ function ValuedNaturePage({
         <div className="thematic-insight-row__text">
           <h2 id="value-distribution-title">Fordeling av verdiene</h2>
           <p>
-            Verdisettingen er en egenskap ved de registrerte lokalitetene.
-            Kommunevis fordeling på verdikategori kobles inn når aggregeringen er
-            klar og etterprøvbar.
+            Figuren viser registrert areal fordelt på verdikategori for lokaliteter
+            som krysser kommunegrensen. Summen er basert på lokalitetenes geometri,
+            og overlappende lokaliteter kan derfor telles mer enn én gang.
           </p>
           <p className="thematic-insight-row__source">
             Kilde: Miljødirektoratet, naturtyper med KU-verdi
           </p>
         </div>
-        <div className="thematic-chart-placeholder" role="status">
-          <span>Fordeling per verdikategori er ikke koblet til temasiden ennå.</span>
+        <div className="thematic-value-chart" aria-label="Fordeling av verdikategorier">
+          {statisticsState === 'loading' && <p role="status">Laster verdifordeling…</p>}
+          {statisticsState === 'error' && <p role="alert">Verdifordelingen kunne ikke hentes.</p>}
+          {statistics && statistics.valueMetrics.length === 0 && <p>Ingen registrerte lokaliteter.</p>}
+          {statistics?.valueMetrics.map((metric) => (
+            <div className="thematic-value-chart__row" key={metric.label}>
+              <span className="thematic-value-chart__label">{metric.label}</span>
+              <span className="thematic-value-chart__track" aria-hidden="true">
+                <span
+                  className="thematic-value-chart__bar"
+                  style={{
+                    width: `${Math.max(2, metric.sharePercent)}%`,
+                    backgroundColor: metric.color,
+                  }}
+                />
+              </span>
+              <strong>{dekar(metric.areaKm2)}</strong>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -222,15 +310,41 @@ function ValuedNaturePage({
         <div className="thematic-insight-row__text">
           <h2 id="nature-types-title">Naturtyper etter størrelse</h2>
           <p>
-            En kommunevis rangering på naturtype kan gi nyttig oversikt, men skal
-            først vises når arealberegningen er koblet til med dokumentert metode.
+            Tabellen rangerer registrerte naturtyper etter samlet areal for
+            lokaliteter som krysser kommunegrensen. Den viser også antall lokaliteter.
           </p>
           <p className="thematic-insight-row__source">
             Kilde: Miljødirektoratet, naturtyper med KU-verdi
           </p>
         </div>
-        <div className="thematic-chart-placeholder thematic-chart-placeholder--table" role="status">
-          <span>Arealfordeling per naturtype er ikke koblet til temasiden ennå.</span>
+        <div className="thematic-nature-table-wrap">
+          {statisticsState === 'loading' && <p role="status">Laster naturtyper…</p>}
+          {statisticsState === 'error' && <p role="alert">Naturtypetabellen kunne ikke hentes.</p>}
+          {statistics && (
+            <table className="thematic-nature-table">
+              <thead>
+                <tr>
+                  <th>Naturtype</th>
+                  <th>Registrert areal</th>
+                  <th>Lokaliteter</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topNatureTypes.map((metric) => (
+                  <tr key={metric.label}>
+                    <td>{metric.label}</td>
+                    <td>{dekar(metric.areaKm2)}</td>
+                    <td>{areaFormatter.format(metric.featureCount)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {statistics && statistics.typeMetrics.length > topNatureTypes.length && (
+            <p className="thematic-nature-table__note">
+              Viser de 12 naturtypene med størst registrert areal i kommunen.
+            </p>
+          )}
         </div>
       </section>
 
@@ -273,6 +387,12 @@ export function ThematicDataPage({
   municipalityName,
   thematicCoverage,
   thematicCoverageState = 'idle',
+  valuedNatureStatistics,
+  valuedNatureStatisticsState = 'idle',
+  plannedValuedNature,
+  plannedValuedNatureState = 'idle',
+  plannedCoverageGap,
+  plannedCoverageGapState = 'idle',
   onBack,
   onOpenFutureDevelopmentAnalysis,
   mapContent,
@@ -288,7 +408,12 @@ export function ThematicDataPage({
       <ValuedNaturePage
         municipalityName={municipalityName}
         evaluation={evaluation}
-        state={thematicCoverageState}
+        statistics={valuedNatureStatistics}
+        statisticsState={valuedNatureStatisticsState}
+        plannedValuedNature={plannedValuedNature}
+        plannedValuedNatureState={plannedValuedNatureState}
+        plannedCoverageGap={plannedCoverageGap}
+        plannedCoverageGapState={plannedCoverageGapState}
         onBack={onBack}
         onOpenFutureDevelopmentAnalysis={onOpenFutureDevelopmentAnalysis}
         mapContent={mapContent}
