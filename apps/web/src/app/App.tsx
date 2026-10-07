@@ -8,7 +8,6 @@ import {
 import type { ThematicCoverageResponse } from '../api/thematicCoverage'
 import { MapLegend } from '../components/MapLegend'
 import { MunicipalityCombobox } from '../components/MunicipalityCombobox'
-import { ServiceSidebar } from '../components/ServiceSidebar'
 import { SiteHeader, type SiteView } from '../components/SiteHeader'
 import {
   nationalLandCover2025,
@@ -20,7 +19,6 @@ import {
   loadMunicipalityBoundary,
   loadMunicipalityThematicCoverage,
 } from '../data/municipalityWorkspace'
-import { AccountDistribution } from '../features/account-overview/AccountDistribution'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
@@ -122,7 +120,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [valuedNatureMapSelection, setValuedNatureMapSelection] =
     useState<ValuedNatureMapSelection>({ kind: 'all' })
 
-  const showsMap = activeView === 'oversikt' || activeView === 'utforsk-i-kart'
+  const showsMap = activeView === 'utforsk-i-kart' || activeView === 'tema-valued-nature'
 
   useEffect(() => {
     const onHashChange = () => setActiveView(viewFromHash())
@@ -154,10 +152,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     map.current?.setAccountLayerVisible(
-      activeView === 'oversikt' ? true : accountLayerVisible,
+      activeView === 'utforsk-i-kart' ? accountLayerVisible : false,
     )
     for (const dataset of thematicDatasets) {
-      map.current?.setThematicLayerVisible(dataset.id, false)
+      map.current?.setThematicLayerVisible(
+        dataset.id,
+        activeView === 'tema-valued-nature' && dataset.id === 'valued-nature',
+      )
     }
   }, [accountLayerVisible, activeView, selectedMunicipality])
 
@@ -453,6 +454,50 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     </section>
   )
 
+  function thematicMapWorkspace() {
+    if (!selectedMunicipality) return null
+
+    return (
+      <div className="thematic-map-card">
+        <aside className="thematic-map-card__legend" aria-label="Tegnforklaring">
+          <strong>Verdsatte naturtyper</strong>
+          <span>Verdikategori</span>
+          <MapLegend
+            items={[{
+              id: 'valued-nature',
+              title: 'Naturtyper – verdsatte',
+              visible: true,
+              imageUrl: buildWmsLegendUrl(
+                thematicDatasets.find((dataset) => dataset.id === 'valued-nature')!.visualSource,
+              ),
+            }]}
+          />
+        </aside>
+        <div className="thematic-map-card__map">
+          {mapRuntimeError && (
+            <div className="map-runtime-error" role="alert">
+              Kartet kunne ikke initialiseres: {mapRuntimeError}
+            </div>
+          )}
+          <div
+            ref={mapElement}
+            className="map"
+            role="region"
+            tabIndex={0}
+            aria-label={`Verdsatte naturtyper i ${selectedMunicipality.name}`}
+          />
+          <button
+            type="button"
+            className="thematic-map-card__fit"
+            onClick={() => map.current?.fitToBoundary()}
+          >
+            Tilpass kartet til kommunen
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   function mapWorkspace(
     title: string,
     description: string,
@@ -730,6 +775,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const overview = selectedMunicipality ? (
         <OverviewPage
           onNavigate={navigate}
+          municipalityName={selectedMunicipality.name}
           accountContent={
             accountState === 'loading'
               ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section>
@@ -737,28 +783,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                 ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section>
                 : <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
           }
-          distributionContent={
-            accountState === 'loading'
-              ? <section className="overview-distribution"><p role="status">Laster arealfordeling…</p></section>
-              : accountState === 'error'
-                ? (
-                  <section className="overview-distribution">
-                    <p role="alert">Arealfordelingen kunne ikke hentes nå.</p>
-                  </section>
-                )
-                : (
-                  <AccountDistribution
-                    data={accountData ?? createUnavailableAccountOverview(
-                      selectedMunicipality.number,
-                      selectedMunicipality.name,
-                    )}
-                  />
-                )
-          }
-          mapContent={mapWorkspace(
-            'Hvor ligger arealene?',
-            'Se det heldekkende grunnlaget geografisk. Kartet viser et mer detaljert nivå enn de tre hovedkategoriene.',
-          )}
           provenanceContent={
             accountState === 'idle'
               ? (
@@ -858,6 +882,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               ? openValuedNatureAnalysis
               : undefined
           }
+          mapContent={
+            datasetByThematicView[activeView] === 'valued-nature'
+              ? thematicMapWorkspace()
+              : undefined
+          }
         />
       )}
       {activeView === 'utforsk-i-kart' && mapView}
@@ -867,23 +896,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main-content">Hopp til hovedinnhold</a>
-      <SiteHeader />
-      {selectedMunicipality ? (
-        <div className="service-layout">
-          <ServiceSidebar
-            activeView={activeView}
-            municipalityPicker={municipalityPicker}
-            onNavigate={navigate}
-          />
-          <main id="main-content" className="service-main" tabIndex={-1}>
-            {activeContent}
-          </main>
-        </div>
-      ) : (
-        <main id="main-content" tabIndex={-1}>
-          {overview}
-        </main>
-      )}
+      <SiteHeader
+        activeView={activeView}
+        municipalityPicker={selectedMunicipality ? municipalityPicker : undefined}
+        onNavigate={navigate}
+      />
+      <main id="main-content" className="service-main" tabIndex={-1}>
+        {activeContent}
+      </main>
     </div>
   )
 }
