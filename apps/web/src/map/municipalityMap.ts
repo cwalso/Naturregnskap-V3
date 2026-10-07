@@ -1,4 +1,6 @@
 import GeoJSON from 'ol/format/GeoJSON'
+import MultiPolygon from 'ol/geom/MultiPolygon'
+import Polygon from 'ol/geom/Polygon'
 import type ImageTile from 'ol/ImageTile'
 import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
@@ -12,10 +14,12 @@ import VectorSource from 'ol/source/Vector'
 import { Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 import { fromLonLat } from 'ol/proj'
+import { getRenderPixel } from 'ol/render'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 
 import { buildForestTileUrl } from '../api/forestStatistics'
+import { buildUrbanBuiltTileUrl } from '../api/urbanNature'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
 import { nationalLandCover2025, thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
@@ -89,6 +93,7 @@ export interface MunicipalityMap {
   setAccountLayerVisible(visible: boolean): void
   setForestLayerVisible(visible: boolean): void
   setEcosystemLayer(type: PlannedNatureTypeId | null): void
+  setUrbanLayerVisible(visible: boolean): void
   setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
   setPlannedDevelopmentVisible(visible: boolean): void
   fitToPlannedDevelopmentResult(): void
@@ -140,6 +145,18 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   const ecosystemLayer = new TileLayer({
     visible: false,
     opacity: 0.9,
+  })
+  const urbanLayer = new TileLayer({
+    source: new XYZ({
+      projection: ACCOUNT_CRS,
+      tileGrid: accountTileGrid,
+      tilePixelRatio: 2,
+      transition: 0,
+      tileUrlFunction: (tileCoord) => buildUrbanBuiltTileUrl(tileCoord),
+      attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
+    }),
+    visible: false,
+    opacity: 0.88,
   })
 
   let accountVisible = true
@@ -446,6 +463,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     const handler = featureInfoHandler
     if (!handler) return
 
+    const boundaryGeometry = boundarySource.getFeatures()[0]?.getGeometry()
+    if (boundaryGeometry && !boundaryGeometry.intersectsCoordinate(coordinate)) {
+      handler({ status: 'idle', results: [] })
+      return
+    }
+
     const activeDatasets = thematicDatasets.filter(
       (dataset) => thematicLayers.get(dataset.id)?.getVisible(),
     )
@@ -527,6 +550,48 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   }
 
   const boundarySource = new VectorSource()
+
+  function clipLayerToMunicipality(
+    layer: TileLayer<XYZ> | ImageLayer<ImageWMS>,
+  ) {
+    layer.on('prerender', (event) => {
+      const context = event.context as CanvasRenderingContext2D
+      context.save()
+
+      const geometry = boundarySource.getFeatures()[0]?.getGeometry()
+      if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
+
+      const polygons = geometry instanceof Polygon
+        ? [geometry.getCoordinates()]
+        : geometry.getCoordinates()
+
+      context.beginPath()
+      for (const polygon of polygons) {
+        for (const ring of polygon) {
+          ring.forEach((coordinate, index) => {
+            const pixel = getRenderPixel(event, coordinate)
+            if (index === 0) context.moveTo(pixel[0], pixel[1])
+            else context.lineTo(pixel[0], pixel[1])
+          })
+          context.closePath()
+        }
+      }
+      context.clip('evenodd')
+    })
+
+    layer.on('postrender', (event) => {
+      const context = event.context as CanvasRenderingContext2D
+      context.restore()
+    })
+  }
+
+  clipLayerToMunicipality(forestLayer)
+  clipLayerToMunicipality(ecosystemLayer)
+  clipLayerToMunicipality(urbanLayer)
+  for (const layer of thematicLayers.values()) {
+    clipLayerToMunicipality(layer)
+  }
+
   const boundaryLayer = new VectorLayer({
     source: boundarySource,
     style: new Style({
@@ -564,6 +629,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountDetailLayer,
       forestLayer,
       ecosystemLayer,
+      urbanLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
       analysisHighlightLayer,
@@ -652,6 +718,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
       }))
       ecosystemLayer.setVisible(true)
+    },
+    setUrbanLayerVisible(visible) {
+      urbanLayer.setVisible(visible)
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
