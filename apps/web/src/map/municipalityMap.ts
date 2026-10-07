@@ -29,7 +29,8 @@ import {
   ACCOUNT_DETAIL_MAX_RESOLUTION,
   ACCOUNT_RESOLUTIONS,
   accountTileGrid,
-  buildAccountTileUrl,
+  buildRawAccountTileUrl,
+  loadAccountDisplayTileBlob,
   loadOverviewRaster,
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
@@ -50,9 +51,34 @@ import {
   createPlannedDevelopmentOverviewBlob,
   loadPlannedDevelopmentDetailTile,
 } from './plannedDevelopmentOverlay'
+import { loadSharedImageBlob } from './sharedImageRequests'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
+
+const EMPTY_MAP_TILE =
+  'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E'
+
+function setMapTileBlob(tile: ImageTile, blob: Blob) {
+  const image = tile.getImage() as HTMLImageElement
+  const objectUrl = URL.createObjectURL(blob)
+  const release = () => URL.revokeObjectURL(objectUrl)
+  image.addEventListener('load', release, { once: true })
+  image.addEventListener('error', release, { once: true })
+  image.src = objectUrl
+}
+
+async function loadSharedMapTile(
+  tile: ImageTile,
+  src: string,
+  loader: (url: string) => Promise<Blob> = loadSharedImageBlob,
+) {
+  try {
+    setMapTileBlob(tile, await loader(src))
+  } catch {
+    ;(tile.getImage() as HTMLImageElement).src = EMPTY_MAP_TILE
+  }
+}
 
 export interface MapFeatureInfoField {
   readonly label: string
@@ -133,7 +159,14 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       tileGrid: accountTileGrid,
       tilePixelRatio: 2,
       transition: 0,
-      tileUrlFunction: (tileCoord) => buildAccountTileUrl(accountVisualSource.endpoint, tileCoord),
+      tileUrlFunction: (tileCoord) => buildRawAccountTileUrl(accountVisualSource.endpoint, tileCoord),
+      tileLoadFunction: (tile, src) => {
+        void loadSharedMapTile(
+          tile as ImageTile,
+          src,
+          (url) => loadAccountDisplayTileBlob(url),
+        )
+      },
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse',
     }),
     visible: true,
@@ -146,6 +179,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       tilePixelRatio: 2,
       transition: 0,
       tileUrlFunction: (tileCoord) => buildForestTileUrl(tileCoord),
+      tileLoadFunction: (tile, src) => {
+        void loadSharedMapTile(tile as ImageTile, src)
+      },
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
     }),
     visible: false,
@@ -162,6 +198,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       tilePixelRatio: 2,
       transition: 0,
       tileUrlFunction: (tileCoord) => buildUrbanBuiltTileUrl(tileCoord),
+      tileLoadFunction: (tile, src) => {
+        void loadSharedMapTile(tile as ImageTile, src)
+      },
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
     }),
     visible: false,
@@ -807,6 +846,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         tilePixelRatio: 4,
         transition: 0,
         tileUrlFunction: (tileCoord) => buildSelectedNatureTypeTileUrl(tileCoord, type),
+        tileLoadFunction: (tile, src) => {
+          void loadSharedMapTile(tile as ImageTile, src)
+        },
         attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
       }))
       ecosystemLayer.setVisible(true)

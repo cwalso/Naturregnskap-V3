@@ -1,5 +1,7 @@
 import TileGrid from 'ol/tilegrid/TileGrid'
 
+import { loadSharedImageBlob } from './sharedImageRequests'
+
 export const ACCOUNT_CRS = 'EPSG:25833'
 export const ACCOUNT_ORIGIN = [-2500000, 9045984]
 export const ACCOUNT_RESOLUTIONS = Array.from({ length: 19 }, (_, z) => 21664 / 2 ** z)
@@ -38,17 +40,29 @@ const CLASS_RULES = [
   { values: ['elverBekkerKanaler'], color: '#08519C' },
 ] as const
 
-const ACCOUNT_SLD = (() => {
-  const rules = CLASS_RULES.map(({ values, color }) => {
+const RAW_CLASS_COLORS = [
+  '#FF0000',
+  '#00FF00',
+  '#0000FF',
+  '#FF80FF',
+  '#0080FF',
+  '#FF8080',
+] as const
+
+function buildAccountStyle(colors: readonly string[]): string {
+  const rules = CLASS_RULES.map(({ values }, index) => {
     const comparisons = values
       .map((value) => `<ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>${value}</ogc:Literal></ogc:PropertyIsEqualTo>`)
       .join('')
     const filter = values.length > 1 ? `<ogc:Or>${comparisons}</ogc:Or>` : comparisons
-    return `<Rule><ogc:Filter>${filter}</ogc:Filter><PolygonSymbolizer><Fill><CssParameter name="fill">${color}</CssParameter></Fill></PolygonSymbolizer></Rule>`
+    return `<Rule><ogc:Filter>${filter}</ogc:Filter><PolygonSymbolizer><Fill><CssParameter name="fill">${colors[index]}</CssParameter></Fill></PolygonSymbolizer></Rule>`
   }).join('')
 
   return `<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>${rules}</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`
-})()
+}
+
+const ACCOUNT_SLD = buildAccountStyle(CLASS_RULES.map((rule) => rule.color))
+const RAW_ACCOUNT_SLD = buildAccountStyle(RAW_CLASS_COLORS)
 
 export function buildAccountTileUrl(endpoint: string, tileCoord: number[]): string {
   return endpoint + '?' + new URLSearchParams({
@@ -65,6 +79,49 @@ export function buildAccountTileUrl(endpoint: string, tileCoord: number[]): stri
     transparent: 'true',
     sld_body: ACCOUNT_SLD,
   })
+}
+
+export function buildRawAccountTileUrl(endpoint: string, tileCoord: number[]): string {
+  return endpoint + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: 'okosystemtype',
+    styles: '',
+    crs: ACCOUNT_CRS,
+    bbox: accountTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
+    width: '512',
+    height: '512',
+    format: 'image/png; mode=8bit',
+    transparent: 'true',
+    sld_body: RAW_ACCOUNT_SLD,
+  })
+}
+
+const accountDisplayTileCache = new Map<string, Promise<Blob>>()
+const ACCOUNT_DISPLAY_TILE_CACHE_LIMIT = 180
+
+export function loadAccountDisplayTileBlob(
+  rawUrl: string,
+  signal?: AbortSignal,
+): Promise<Blob> {
+  let request = accountDisplayTileCache.get(rawUrl)
+  if (!request) {
+    request = loadSharedImageBlob(rawUrl, signal)
+      .then(recolorAccountRaster)
+      .catch((error) => {
+        accountDisplayTileCache.delete(rawUrl)
+        throw error
+      })
+    accountDisplayTileCache.set(rawUrl, request)
+
+    while (accountDisplayTileCache.size > ACCOUNT_DISPLAY_TILE_CACHE_LIMIT) {
+      const oldest = accountDisplayTileCache.keys().next().value
+      if (!oldest) break
+      accountDisplayTileCache.delete(oldest)
+    }
+  }
+  return request
 }
 
 interface OverviewRasterEntry {
@@ -103,7 +160,7 @@ export async function loadOverviewRaster(municipalityNumber: string): Promise<Lo
 
   let displayPromise = displayRasterPromises.get(municipalityNumber)
   if (!displayPromise) {
-    displayPromise = rawPromise.then(recolorOverviewRaster)
+    displayPromise = rawPromise.then(recolorAccountRaster)
     displayRasterPromises.set(municipalityNumber, displayPromise)
   }
 
@@ -225,7 +282,7 @@ export function classifyAccountPixel(red: number, green: number, blue: number): 
   return LOOKUP_T[q] >= 128 ? LOOKUP_A[q] : LOOKUP_B[q]
 }
 
-async function recolorOverviewRaster(blob: Blob): Promise<Blob> {
+export async function recolorAccountRaster(blob: Blob): Promise<Blob> {
   const bitmap = await createImageBitmap(blob)
   try {
     const canvas = document.createElement('canvas')
