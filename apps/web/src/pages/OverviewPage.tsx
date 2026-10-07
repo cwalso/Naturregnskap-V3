@@ -3,85 +3,63 @@ import type { SiteView } from '../components/SiteHeader'
 
 interface OverviewPageProps {
   readonly accountContent: ReactNode
-  readonly distributionContent: ReactNode
-  readonly mapContent: ReactNode
   readonly provenanceContent: ReactNode
+  readonly municipalityName: string
   readonly onNavigate: (view: SiteView) => void
 }
 
-const nextSteps: ReadonlyArray<{
-  view: SiteView
-  eyebrow: string
-  title: string
-  text: string
-}> = [
-  {
-    view: 'naturtapet',
-    eyebrow: 'Historisk endring',
-    title: 'Hva har gått tapt?',
-    text: 'Se dokumentert nedbygging og naturtap når datagrunnlaget er tilgjengelig.',
-  },
-  {
-    view: 'utforsk-naturen',
-    eyebrow: 'Dagens natur',
-    title: 'Hva slags natur har vi?',
-    text: 'Gå fra den overordnede arealfordelingen til mer detaljert naturinformasjon og supplerende temadata.',
-  },
-  {
-    view: 'utforsk-i-kart',
-    eyebrow: 'Kart',
-    title: 'Hvor ligger arealene?',
-    text: 'Se regnskapsgrunnlaget og supplerende faglag geografisk.',
-  },
-]
-
 export function OverviewPage({
   accountContent,
-  distributionContent,
-  mapContent,
   provenanceContent,
+  municipalityName,
   onNavigate,
 }: OverviewPageProps) {
   return (
-    <div className="account-workspace">
+    <div className="account-workspace overview-sketch">
       {accountContent}
 
-      <div className="overview-dashboard-grid">
-        {distributionContent}
-        {mapContent}
+      <div className="overview-sketch__actions" aria-label="Videre utforsking">
+        <button type="button" onClick={() => onNavigate('utforsk-naturen')}>
+          Se statistikk for naturen i {municipalityName}
+          <span aria-hidden="true">›</span>
+        </button>
+        <button type="button" onClick={() => onNavigate('utforsk-i-kart')}>
+          Se naturen i {municipalityName} i kart
+          <span aria-hidden="true">›</span>
+        </button>
       </div>
 
-      <div className="overview-provenance">
-        {provenanceContent}
-      </div>
+      <section className="overview-sketch__status" aria-label="Status og utvikling">
+        <button
+          type="button"
+          className="overview-status-card"
+          onClick={() => onNavigate('naturtapet')}
+        >
+          <span className="overview-status-card__heading">
+            <strong>Naturtap</strong>
+            <span>2017–2026</span>
+          </span>
+          <span className="overview-status-card__value">XX</span>
+          <span className="overview-status-card__meta">
+            Åpne siden for dokumentert nedbygging og metode.
+          </span>
+        </button>
 
-      <section className="overview-next" aria-labelledby="overview-next-title">
-        <div className="section-heading">
-          <p className="section-heading__kicker">Neste i fortellingen</p>
-          <h2 id="overview-next-title">Hva vil du vite videre?</h2>
-          <p>
-            Arealfordelingen er utgangspunktet. Derfra kan du se på endring over
-            tid, utforske hva slags natur kommunen har, eller gå til kartet.
-          </p>
-        </div>
-
-        <div className="journey-grid">
-          {nextSteps.map((step) => (
-            <button
-              type="button"
-              className="journey-card"
-              key={step.view}
-              onClick={() => onNavigate(step.view)}
-            >
-              <span className="journey-card__eyebrow">{step.eyebrow}</span>
-              <strong>{step.title}</strong>
-              <span>{step.text}</span>
-              <span className="journey-card__arrow" aria-hidden="true">→</span>
-            </button>
-          ))}
-        </div>
+        <article className="overview-status-card">
+          <span className="overview-status-card__heading">
+            <strong>Kartleggingsgrad</strong>
+            <span>2025</span>
+          </span>
+          <span className="overview-status-card__value">–</span>
+          <span className="overview-status-card__meta">
+            Kommunevis kartleggingsgrad er ikke beregnet i prototypen ennå.
+          </span>
+        </article>
       </section>
 
+      <div className="overview-sketch__provenance">
+        {provenanceContent}
+      </div>
     </div>
   )
 }

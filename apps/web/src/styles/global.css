@@ -2800,3 +2800,1032 @@ body { font-size: 16px; }
 .analysis-result__find-map {
   margin: .55rem 0 .75rem;
 }
+
+
+/* V3.20 – guidet analyseflyt */
+.analysis-step-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  color: var(--color-text-muted);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .025em;
+}
+.analysis-step-label b {
+  display: inline-grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border-radius: 50%;
+  font-size: .72rem;
+}
+.analysis-area-card .analysis-step-label {
+  margin-bottom: .55rem;
+}
+.analysis-target-picker__heading {
+  align-items: flex-start;
+}
+.analysis-target-picker__heading .analysis-step-label {
+  flex: 0 0 auto;
+}
+.analysis-target-picker__heading > small {
+  max-width: 12rem;
+  text-align: right;
+  line-height: 1.35;
+}
+.analysis-target {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.analysis-upcoming {
+  margin-top: .75rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--color-border);
+}
+.analysis-upcoming summary {
+  color: var(--color-accent);
+  font-size: .75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.analysis-upcoming__list {
+  display: grid;
+  gap: .45rem;
+  margin-top: .65rem;
+}
+.analysis-upcoming__item {
+  padding: .6rem .7rem;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-control);
+}
+.analysis-upcoming__item strong,
+.analysis-upcoming__item small {
+  display: block;
+}
+.analysis-upcoming__item strong {
+  font-size: .76rem;
+  line-height: 1.35;
+}
+.analysis-upcoming__item small {
+  margin-top: .18rem;
+  color: var(--color-text-muted);
+  font-size: .72rem;
+  line-height: 1.4;
+}
+.analysis-result__heading .analysis-step-label {
+  flex: 0 0 auto;
+}
+.map-frame__context {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+}
+.map-frame__context-analysis {
+  justify-self: center;
+  min-width: 0;
+  text-align: center;
+}
+.map-frame__context-analysis strong {
+  color: var(--color-accent);
+}
+.map-frame__context-background {
+  text-align: right;
+}
+
+@media (max-width: 52rem) {
+  .map-mobile-jump-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .map-frame__context {
+    grid-template-columns: 1fr;
+    gap: .2rem;
+  }
+
+  .map-frame__context-analysis {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .map-frame__context-background {
+    text-align: left;
+  }
+
+  .analysis-target-picker__heading > small {
+    max-width: none;
+    text-align: left;
+  }
+
+  .analysis-step-label,
+  .analysis-upcoming summary {
+    font-size: .82rem;
+  }
+
+  .analysis-upcoming__item strong,
+  .analysis-upcoming__item small {
+    font-size: .8rem;
+  }
+}
+
+
+/* V3.21 – referansedesign fra skisser */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  color: var(--color-accent);
+  background: #dbe9e9;
+  border-bottom: 1px solid #c8dada;
+}
+.site-header__bar {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  min-height: 3.45rem;
+  padding: .35rem .65rem;
+}
+.site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  padding: .15rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.site-header__logo {
+  width: 7rem;
+}
+.site-header__test {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+.site-header__utilities {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .7rem;
+  margin-left: auto;
+}
+.site-header__municipality {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  min-width: 0;
+}
+.site-header__municipality-label {
+  font-size: .78rem;
+  white-space: nowrap;
+}
+.site-header__municipality .municipality-picker {
+  width: 13rem;
+  margin: 0;
+}
+.site-header__municipality .combobox > label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.site-header__municipality .combobox input {
+  min-height: 2.15rem;
+  padding: .35rem 2rem .35rem .55rem;
+  border-width: 1px;
+  background: rgb(255 255 255 / 72%);
+  font-size: .78rem;
+}
+.site-header__municipality .combobox__clear {
+  top: 0;
+  right: 0;
+  width: 2.15rem;
+  height: 2.15rem;
+  min-width: 2.15rem;
+  min-height: 2.15rem;
+}
+.site-header__municipality .municipality-picker > p {
+  display: none;
+}
+.site-menu {
+  position: relative;
+}
+.site-menu > summary {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  list-style: none;
+  border-radius: 50%;
+  background: #c4dada;
+  cursor: pointer;
+  font-size: 1.05rem;
+}
+.site-menu > summary::-webkit-details-marker {
+  display: none;
+}
+.site-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + .45rem);
+  width: 15rem;
+  padding: .45rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-floating);
+}
+.site-menu__panel a {
+  display: block;
+  padding: .7rem .75rem;
+  color: var(--color-text);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.site-menu__panel a:hover,
+.site-menu__panel a[aria-current='page'] {
+  background: var(--color-brand-surface);
+  border-left-color: var(--color-accent);
+}
+
+.service-main {
+  min-width: 0;
+}
+.service-main .account-workspace,
+.service-main .content-page {
+  width: min(100% - 2rem, 84rem);
+  margin-inline: auto;
+}
+
+/* Kommuneoversikt */
+.overview-sketch {
+  padding: 2rem 0 4rem;
+}
+.overview-sketch .account-overview {
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.overview-sketch .account-overview__header {
+  max-width: none;
+  margin-bottom: 2rem;
+}
+.overview-sketch .account-overview__header h1 {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+.account-overview__meta {
+  margin: .45rem 0 0;
+  color: var(--color-text-muted);
+  font-size: .72rem;
+}
+.overview-sketch .account-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .45rem;
+  margin: 0;
+}
+.overview-sketch .account-metric {
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #d9eaf5;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.account-metric__visual {
+  height: 10.5rem;
+  overflow: hidden;
+  background: #a8c0c2;
+}
+.account-metric__visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.account-metric__body {
+  min-height: 10.5rem;
+  padding: 1rem 1rem 1.1rem;
+}
+.overview-sketch .account-metric h2 {
+  margin: 0 0 1.1rem;
+  font-size: .92rem;
+  font-weight: 700;
+}
+.overview-sketch .account-metric__value {
+  margin: 0 0 1.2rem;
+  color: var(--color-accent);
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1;
+}
+.overview-sketch .account-metric__value span {
+  font-size: .72em;
+}
+.overview-sketch .account-metric__description {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+.overview-sketch__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 20rem));
+  gap: .45rem;
+  margin: 1rem 0 1.05rem;
+}
+.overview-sketch__actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  min-height: 2.7rem;
+  padding: .55rem .8rem;
+  color: #fff;
+  background: #2e817e;
+  border: 0;
+  border-radius: .35rem;
+  font-size: .76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.overview-sketch__actions button:hover {
+  background: var(--color-accent);
+}
+.overview-sketch__actions button span {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.overview-sketch__status {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+}
+.overview-status-card {
+  display: block;
+  min-height: 10rem;
+  padding: 1rem 1.05rem;
+  color: var(--color-accent);
+  text-align: left;
+  background: #eee8da;
+  border: 0;
+}
+button.overview-status-card {
+  cursor: pointer;
+}
+button.overview-status-card:hover {
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+.overview-status-card__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .82rem;
+}
+.overview-status-card__value {
+  display: block;
+  margin: 1.3rem 0 1.25rem;
+  font-size: clamp(2.5rem, 5vw, 3.45rem);
+  line-height: 1;
+}
+.overview-status-card__meta {
+  display: block;
+  color: var(--color-text);
+  font-size: .68rem;
+}
+.overview-sketch__provenance .account-provenance {
+  margin-top: 1.3rem;
+  padding-top: .8rem;
+  border-top-color: #dedbd2;
+}
+
+/* Verdsatte naturtyper – redaksjonell temaside */
+.thematic-page--editorial {
+  width: min(100% - 2rem, 74rem) !important;
+  padding-top: 1.35rem;
+}
+.thematic-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin-bottom: 3.4rem;
+  font-size: .72rem;
+}
+.thematic-breadcrumb button {
+  padding: 0;
+  color: var(--color-accent);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.thematic-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(16rem, .9fr);
+  gap: 2.2rem;
+  align-items: stretch;
+  margin-bottom: 3.9rem;
+}
+.thematic-hero__content {
+  min-width: 0;
+}
+.thematic-hero__title-row {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .9rem;
+}
+.thematic-hero__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3.7rem;
+  width: 3.7rem;
+  height: 3.7rem;
+  color: var(--color-accent);
+  background: #d8eaf5;
+}
+.thematic-hero__icon svg {
+  width: 2rem;
+  height: 2rem;
+}
+.thematic-hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+.thematic-hero__lead {
+  max-width: 42rem;
+  margin: 0 0 .65rem;
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+.thematic-hero__image {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+  border-radius: .65rem;
+  background:
+    url('https://images.unsplash.com/photo-1755268359635-22606be29d0b?auto=format&fit=crop&q=82&w=1400')
+    center / cover no-repeat;
+}
+.thematic-questions {
+  border-top: 1px solid #cfd5d2;
+}
+.thematic-questions details {
+  border-bottom: 1px dashed #cfd5d2;
+}
+.thematic-questions summary {
+  position: relative;
+  padding: .72rem .8rem .72rem 2.4rem;
+  color: var(--color-accent);
+  cursor: pointer;
+  list-style: none;
+}
+.thematic-questions summary::-webkit-details-marker {
+  display: none;
+}
+.thematic-questions summary::before {
+  content: '+';
+  position: absolute;
+  left: .9rem;
+  top: .66rem;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+.thematic-questions details[open] summary::before {
+  content: '×';
+}
+.thematic-questions details p {
+  margin: 0;
+  padding: 0 .9rem .85rem 2.4rem;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+.thematic-kpis,
+.thematic-plan-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+}
+.thematic-kpis article {
+  min-height: 7.2rem;
+  padding: 1.05rem;
+  background: #d8eaf5;
+}
+.thematic-kpis span,
+.thematic-kpis strong {
+  display: block;
+}
+.thematic-kpis span {
+  margin-bottom: .8rem;
+  font-size: .72rem;
+}
+.thematic-kpis strong {
+  color: var(--color-text-muted);
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  font-weight: 400;
+}
+.thematic-plan-cards {
+  margin-top: .45rem;
+}
+.thematic-plan-cards article {
+  min-height: 6.3rem;
+  padding: 1rem 1.05rem;
+  background: #fff0dd;
+}
+.thematic-plan-cards strong,
+.thematic-plan-cards span {
+  display: block;
+  font-size: .75rem;
+  line-height: 1.45;
+}
+.thematic-plan-cards span {
+  margin-top: .55rem;
+  color: var(--color-text-muted);
+}
+.thematic-plan-cards button {
+  margin-top: .8rem;
+  padding: .45rem .65rem;
+  color: #fff;
+  background: var(--color-accent);
+  border: 0;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.thematic-source-accordion {
+  margin: 2.6rem 0 3rem;
+  border-top: 1px solid #cfd5d2;
+  border-bottom: 1px dashed #cfd5d2;
+}
+.thematic-source-accordion summary {
+  padding: .8rem 1rem;
+  cursor: pointer;
+}
+.thematic-source-accordion p {
+  padding: 0 1rem 1rem;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+.thematic-warning {
+  display: flex;
+  gap: .85rem;
+  margin-bottom: 3.5rem;
+  padding: 1rem 1.15rem;
+  background: #fff4e7;
+  border: 1px solid #dd7d20;
+}
+.thematic-warning__icon {
+  flex: 0 0 auto;
+  font-size: 1.25rem;
+}
+.thematic-warning strong {
+  display: block;
+  margin-bottom: .4rem;
+}
+.thematic-warning p {
+  margin: .3rem 0 0;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.thematic-map-section {
+  margin-bottom: 4.4rem;
+}
+.thematic-section-heading {
+  margin-bottom: 1rem;
+}
+.thematic-section-heading h2 {
+  margin-bottom: .25rem;
+  font-size: 1.25rem;
+}
+.thematic-section-heading p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+.thematic-map-card {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  min-height: 32rem;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e0d8;
+  border-radius: .65rem;
+}
+.thematic-map-card__legend {
+  padding: 1rem;
+  background: #faf8f3;
+  border-right: 1px solid #e5e0d8;
+}
+.thematic-map-card__legend > strong,
+.thematic-map-card__legend > span {
+  display: block;
+}
+.thematic-map-card__legend > strong {
+  margin-bottom: .35rem;
+  font-size: .85rem;
+}
+.thematic-map-card__legend > span {
+  margin-bottom: .75rem;
+  color: var(--color-text-muted);
+  font-size: .72rem;
+}
+.thematic-map-card__legend .map-legend {
+  margin: 0;
+  background: transparent;
+}
+.thematic-map-card__map {
+  position: relative;
+  min-width: 0;
+}
+.thematic-map-card__map .map {
+  width: 100%;
+  height: 100%;
+  min-height: 32rem;
+}
+.thematic-map-card__fit {
+  position: absolute;
+  right: .75rem;
+  bottom: .75rem;
+  z-index: 4;
+  padding: .5rem .65rem;
+  color: var(--color-accent);
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid var(--color-accent);
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.thematic-insight-row {
+  display: grid;
+  grid-template-columns: minmax(14rem, .72fr) minmax(0, 1.28fr);
+  gap: 1.25rem;
+  margin: 0 0 2.2rem;
+}
+.thematic-insight-row__text {
+  padding: .5rem .25rem;
+}
+.thematic-insight-row__text h2 {
+  margin-bottom: .65rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--color-accent);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.thematic-insight-row__text p {
+  font-size: .82rem;
+  line-height: 1.55;
+}
+.thematic-insight-row__source {
+  margin-top: 1rem;
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.thematic-chart-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 20rem;
+  padding: 2rem;
+  color: var(--color-text-muted);
+  background: #fff;
+  border-radius: .65rem;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px #f0ece4;
+}
+.thematic-chart-placeholder--table {
+  min-height: 23rem;
+}
+.thematic-questions--wide {
+  margin: 0 0 4rem;
+}
+.thematic-faq {
+  margin-top: 4rem;
+}
+.thematic-faq h2 {
+  margin-bottom: .6rem;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--color-accent);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.thematic-faq details {
+  border-bottom: 1px dashed #cfd5d2;
+}
+.thematic-faq summary {
+  padding: .75rem 1rem;
+  cursor: pointer;
+}
+.thematic-faq details p {
+  padding: 0 1rem 1rem;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+
+/* Utforsk i kart – samme familie, fortsatt analyseflate */
+.map-page {
+  width: min(100% - 2rem, 84rem) !important;
+}
+.map-page__intro {
+  max-width: 58rem;
+  padding-top: 2rem;
+}
+.map-page__intro h1 {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+.map-page__facts > div {
+  border-radius: 0;
+  box-shadow: none;
+}
+.map-workspace--explore .map-workspace__body {
+  border-radius: .55rem;
+  overflow: hidden;
+}
+.map-workspace--explore .map-sidebar {
+  background: #f5f1e8;
+}
+.map-workspace--explore .map-frame__context {
+  background: #f9fbfb;
+}
+
+/* Mobil */
+@media (max-width: 52rem) {
+  .site-header {
+    position: static;
+  }
+  .site-header__bar {
+    min-height: 3.2rem;
+    padding-inline: .55rem;
+  }
+  .site-header__logo {
+    width: 6.25rem;
+  }
+  .site-header__test {
+    display: none;
+  }
+  .site-header__municipality-label {
+    display: none;
+  }
+  .site-header__municipality .municipality-picker {
+    width: min(46vw, 11rem);
+  }
+  .site-header__municipality .combobox input {
+    font-size: .74rem;
+  }
+  .site-menu > summary {
+    width: 2.45rem;
+    height: 2.45rem;
+  }
+  .site-menu__panel {
+    width: min(18rem, calc(100vw - 1rem));
+  }
+
+  .service-main .account-workspace,
+  .service-main .content-page,
+  .thematic-page--editorial,
+  .map-page {
+    width: 100% !important;
+    padding-inline: .75rem;
+  }
+
+  .overview-sketch {
+    padding-top: 1.4rem;
+  }
+  .overview-sketch .account-overview__header {
+    margin-bottom: 1.25rem;
+  }
+  .overview-sketch .account-summary {
+    grid-template-columns: 1fr;
+    gap: .7rem;
+  }
+  .overview-sketch .account-metric {
+    display: grid;
+    grid-template-columns: minmax(8rem, .7fr) minmax(0, 1.3fr);
+  }
+  .account-metric__visual {
+    height: 100%;
+    min-height: 11rem;
+  }
+  .account-metric__body {
+    min-height: 11rem;
+  }
+  .overview-sketch .account-metric__value {
+    font-size: 2rem;
+  }
+  .overview-sketch__actions {
+    grid-template-columns: 1fr;
+  }
+  .overview-sketch__status {
+    grid-template-columns: 1fr;
+  }
+
+  .thematic-breadcrumb {
+    margin-bottom: 1.6rem;
+  }
+  .thematic-hero {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .thematic-hero__image {
+    min-height: 13rem;
+  }
+  .thematic-hero__lead {
+    font-size: 1rem;
+  }
+  .thematic-kpis,
+  .thematic-plan-cards {
+    grid-template-columns: 1fr;
+  }
+  .thematic-warning {
+    margin-bottom: 2.2rem;
+  }
+  .thematic-map-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .thematic-map-card__map {
+    order: -1;
+  }
+  .thematic-map-card__map .map {
+    min-height: 22rem;
+  }
+  .thematic-map-card__legend {
+    border-right: 0;
+    border-top: 1px solid #e5e0d8;
+  }
+  .thematic-insight-row {
+    grid-template-columns: 1fr;
+    gap: .65rem;
+  }
+  .thematic-chart-placeholder,
+  .thematic-chart-placeholder--table {
+    min-height: 13rem;
+  }
+}
+
+@media (max-width: 34rem) {
+  .site-header__municipality .municipality-picker {
+    width: 8.8rem;
+  }
+  .overview-sketch .account-metric {
+    grid-template-columns: 1fr;
+  }
+  .account-metric__visual {
+    height: 9rem;
+    min-height: 9rem;
+  }
+  .account-metric__body {
+    min-height: 0;
+  }
+  .thematic-hero__title-row {
+    align-items: flex-start;
+  }
+  .thematic-hero__icon {
+    flex-basis: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+  .thematic-hero h1 {
+    font-size: 1.9rem;
+  }
+}
+
+
+/* V3.22 – Naturtap i samme designfamilie */
+.naturtap-page {
+  width: min(100% - 2rem, 74rem) !important;
+  padding-top: 1.35rem;
+}
+.naturtap-hero {
+  max-width: 48rem;
+  margin-bottom: 2.3rem;
+}
+.naturtap-hero h1 {
+  margin-bottom: .75rem;
+  color: var(--color-accent);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+.naturtap-hero > p:last-child {
+  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.naturtap-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+  margin-bottom: 1.5rem;
+}
+.naturtap-kpis article {
+  min-height: 11rem;
+  padding: 1rem 1.05rem;
+  color: var(--color-accent);
+  background: #eee8da;
+}
+.naturtap-kpis__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .8rem;
+}
+.naturtap-kpis__value {
+  display: block;
+  margin: 1.4rem 0 1.2rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1;
+}
+.naturtap-kpis__meta {
+  display: block;
+  color: var(--color-text);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+.naturtap-warning {
+  margin-bottom: 3.4rem;
+}
+.naturtap-insight {
+  margin-bottom: 1.4rem;
+}
+.naturtap-questions {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 52rem) {
+  .naturtap-page {
+    width: 100% !important;
+    padding-inline: .75rem;
+  }
+  .naturtap-kpis {
+    grid-template-columns: 1fr;
+  }
+  .naturtap-kpis article {
+    min-height: 9.5rem;
+  }
+  .naturtap-kpis__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .2rem;
+  }
+}
+
+
+/* V3.23 – tettere mot referanseskissene */
+.overview-sketch {
+  max-width: 84rem;
+}
+.overview-sketch .account-overview__header {
+  padding: 1.2rem 0 2.1rem;
+}
+.overview-sketch .account-overview__header h1 {
+  font-size: clamp(1.8rem, 2.8vw, 2.35rem);
+}
+.account-metric__visual {
+  height: 10rem;
+}
+.account-metric__body {
+  min-height: 10.4rem;
+  background: #d7e8f4;
+}
+.overview-sketch .account-metric h2 {
+  color: var(--color-accent);
+  font-size: .88rem;
+}
+.overview-sketch .account-metric__description {
+  min-height: 2.1rem;
+  color: var(--color-accent);
+}
+.overview-sketch__actions {
+  margin-top: 1.15rem;
+}
+.overview-sketch__status {
+  margin-top: .95rem;
+}
+.themapage,
+.thematic-page--editorial {
+  background: transparent;
+}
+.thematic-hero {
+  margin-top: .15rem;
+}
+.thematic-kpis article {
+  background: #d7e8f4;
+}
+.thematic-plan-cards article {
+  background: #fff0df;
+}

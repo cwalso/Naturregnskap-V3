@@ -12,11 +12,11 @@ export const accountCategoryContent: Record<AccountCategoryId, AccountCategoryCo
     description: 'Skog, myr og andre natur- og utmarksarealer i den overordnede grupperingen.',
   },
   built: {
-    label: 'Bebygd',
+    label: 'Bebygd og opparbeidet areal',
     description: 'Bebygd og opparbeidet areal i den overordnede grupperingen.',
   },
   agriculture: {
-    label: 'Dyrket mark',
+    label: 'Fulldyrka jord',
     description: 'Dyrket mark og grasmark i den overordnede grupperingen.',
   },
 }
