@@ -12,7 +12,7 @@ import {
   valuedNature,
   wildReindeerAreas,
 } from '../src/datasets/registry'
-import { forestTypeDefinitions, FOREST_WMS_FILTER } from '../src/api/forestStatistics'
+import { buildForestTileUrl, forestTypeDefinitions } from '../src/api/forestStatistics'
 import { AccountOverview } from '../src/features/account-overview/AccountOverview'
 import { accountCategoryIds, type AccountOverviewData } from '../src/features/account-overview/model'
 import { defaultBasemap } from '../src/map/basemaps'
@@ -225,9 +225,10 @@ describe('grunnkonfigurasjon', () => {
       expect.objectContaining({ label: 'Blandingsskog', sourceValue: 'skogBlanding', rgb: [103, 166, 79] }),
       expect.objectContaining({ label: 'Lauvskog', sourceValue: 'skogLauv', rgb: [158, 204, 115] }),
     ])
-    expect(FOREST_WMS_FILTER).toContain('arealdekkeniva2')
-    expect(FOREST_WMS_FILTER).toContain('skogGran')
-    expect(FOREST_WMS_FILTER).toContain('skogLauv')
+    const url = new URL(buildForestTileUrl([10, 100, 100]))
+    expect(url.searchParams.get('layers')).toBe('arealdekkeniva2')
+    expect(url.searchParams.get('sld_body')).toContain('skogGran')
+    expect(url.searchParams.get('sld_body')).toContain('skogLauv')
   })
 
   it('bruker Kartverkets gråtonekart', () => {

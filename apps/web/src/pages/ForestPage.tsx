@@ -45,9 +45,6 @@ export function ForestPage({
 }: ForestPageProps) {
   const available = statistics?.status === 'available' ? statistics : null
   const plannedForest = plannedNatureBreakdown?.metrics.find((metric) => metric.id === 'skog')
-  const plannedShare = available && plannedForest && available.forestAreaKm2 > 0
-    ? plannedForest.areaKm2 / available.forestAreaKm2 * 100
-    : null
 
   return (
     <section className="content-page thematic-page thematic-page--editorial forest-page" aria-labelledby="forest-page-title">
@@ -64,18 +61,17 @@ export function ForestPage({
             <h1 id="forest-page-title">Skog</h1>
           </div>
           <p className="thematic-hero__lead">
-            Skog er en av hovedøkosystemtypene i Grunnkart for arealanalyse.
-            Her vises hvor mye skog kommunen har, hvor den ligger og hvordan
-            skogarealet fordeler seg på ulike arealdekkeklasser.
+            Her vises skog i Grunnkart for arealanalyse. Hovedtallet og
+            fordelingen på skogtyper bygger på arealdekke, mens analysen mot
+            framtidig utbygging fortsatt bruker økosystemtype skog.
           </p>
 
           <div className="thematic-questions">
             <details>
               <summary>Hva regnes som skog?</summary>
               <p>
-                Hovedtallet følger skog som økosystemtype nivå 1 i Grunnkart for
-                arealanalyse. Det er dette heldekkende grunnlaget som brukes i
-                naturregnskapet.
+                Hovedtallet på denne siden følger skog i arealdekke i Grunnkart
+                for arealanalyse. Dette er et heldekkende grunnlag.
               </p>
             </details>
             <details>
@@ -111,7 +107,7 @@ export function ForestPage({
                   ? dekar(available.forestAreaKm2)
                   : 'Ikke tilgjengelig'}
           </strong>
-          <small>Økosystemtype nivå 1 · Grunnkart 2025</small>
+          <small>Arealdekke · Grunnkart 2025</small>
         </article>
         <article>
           <span>Andel av kartlagt kommuneareal</span>
@@ -148,12 +144,11 @@ export function ForestPage({
         </article>
         <article>
           <strong>Andel av kommunens skog i framtidige utbyggingsområder</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedShare === null ? '–' : percent(plannedShare)}
-          </span>
+          <span className="thematic-plan-cards__value">–</span>
           <span>
-            Prototypeanslag. Sammenligner beregnet overlappsareal med samlet
-            skogareal i denne visningen.
+            Ikke beregnet her, fordi overlappsanalysen bruker økosystemtype skog,
+            mens hovedtallet på siden bruker arealdekke. Disse skal ikke blandes
+            uten en metodisk avklaring.
           </span>
         </article>
       </section>
@@ -162,8 +157,8 @@ export function ForestPage({
         <summary>Hvor er tallene hentet fra?</summary>
         <p>
           Hovedtallene bygger på NIBIOs WMS for Nasjonalt grunnkart for
-          arealanalyse – årsversjon 2025. Skogarealet avgrenses med
-          økosystemtype nivå 1. Fordelingen på skogtyper bruker arealdekke nivå 2.
+          arealanalyse – årsversjon 2025. Skogarealet og fordelingen på
+          skogtyper beregnes fra arealdekke nivå 2.
         </p>
       </details>
 
@@ -194,8 +189,8 @@ export function ForestPage({
           <div className="thematic-section-heading">
             <h2 id="forest-map-title">Skog i {municipalityName}</h2>
             <p>
-              Kartet viser skogtypene i arealdekke nivå 2. Hovedtallet over følger
-              økosystemtype skog på nivå 1.
+              Kartet og hovedtallet bruker samme rutevise Grunnkart-kilde for
+              skogtypene i arealdekke nivå 2.
             </p>
           </div>
           {mapContent}
