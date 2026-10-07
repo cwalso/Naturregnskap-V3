@@ -4,6 +4,7 @@ import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
+import type ImageSource from 'ol/source/Image'
 import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
@@ -26,6 +27,11 @@ import {
   loadOverviewRaster,
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
+import {
+  createAnalysisRasterBlob,
+  maskExtent,
+  type AnalysisRasterOverlay,
+} from './analysisRasterOverlay'
 import {
   buildPlanTileUrl,
   planTileGrid,
@@ -78,8 +84,12 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
+  setFutureDevelopmentArea(overlay: AnalysisRasterOverlay | null): void
+  setFutureDevelopmentAreaVisible(visible: boolean): void
   setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
   setPlannedDevelopmentVisible(visible: boolean): void
+  setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
+  fitToAnalysisHighlight(): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
@@ -158,6 +168,82 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       if (request === accountOverviewRequest) {
         accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
       }
+    }
+  }
+
+  const futureDevelopmentAreaLayer = new ImageLayer({
+    visible: false,
+    opacity: 1,
+  })
+  const analysisHighlightLayer = new ImageLayer({
+    visible: false,
+    opacity: 1,
+  })
+
+  interface RasterLayerState {
+    request: number
+    objectUrl: string | null
+    visible: boolean
+    overlay: AnalysisRasterOverlay | null
+  }
+
+  const futureAreaState: RasterLayerState = {
+    request: 0,
+    objectUrl: null,
+    visible: true,
+    overlay: null,
+  }
+  const highlightState: RasterLayerState = {
+    request: 0,
+    objectUrl: null,
+    visible: true,
+    overlay: null,
+  }
+
+  function configureRasterOverlay(
+    layer: ImageLayer<ImageSource>,
+    state: RasterLayerState,
+    overlay: AnalysisRasterOverlay | null,
+  ) {
+    state.request += 1
+    const request = state.request
+    state.overlay = overlay
+    layer.setSource(null)
+    layer.setVisible(false)
+
+    if (state.objectUrl) {
+      URL.revokeObjectURL(state.objectUrl)
+      state.objectUrl = null
+    }
+    if (!overlay) return
+
+    void createAnalysisRasterBlob(overlay)
+      .then((blob) => {
+        if (request !== state.request) return
+        const url = URL.createObjectURL(blob)
+        state.objectUrl = url
+        layer.setSource(new ImageStatic({
+          url,
+          imageExtent: [...overlay.extent],
+          projection: ACCOUNT_CRS,
+        }))
+        layer.setVisible(state.visible)
+      })
+      .catch(() => {
+        if (request !== state.request) return
+        layer.setSource(null)
+        layer.setVisible(false)
+      })
+  }
+
+  function releaseRasterOverlay(layer: ImageLayer<ImageSource>, state: RasterLayerState) {
+    state.request += 1
+    state.overlay = null
+    layer.setSource(null)
+    layer.setVisible(false)
+    if (state.objectUrl) {
+      URL.revokeObjectURL(state.objectUrl)
+      state.objectUrl = null
     }
   }
 
@@ -462,8 +548,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       }),
       accountOverviewLayer,
       accountDetailLayer,
+      futureDevelopmentAreaLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
+      analysisHighlightLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
       boundaryLayer,
@@ -524,11 +612,22 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountDetailLayer.setExtent(undefined)
       accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
       clearPlannedDevelopmentOverlay()
+      releaseRasterOverlay(futureDevelopmentAreaLayer, futureAreaState)
+      releaseRasterOverlay(analysisHighlightLayer, highlightState)
     },
     setAccountLayerVisible(visible) {
       accountVisible = visible
       accountOverviewLayer.setVisible(visible && accountOverviewLayer.getSource() !== null)
       accountDetailLayer.setVisible(visible)
+    },
+    setFutureDevelopmentArea(overlay) {
+      configureRasterOverlay(futureDevelopmentAreaLayer, futureAreaState, overlay)
+    },
+    setFutureDevelopmentAreaVisible(visible) {
+      futureAreaState.visible = visible
+      futureDevelopmentAreaLayer.setVisible(
+        visible && futureDevelopmentAreaLayer.getSource() !== null,
+      )
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
@@ -537,6 +636,19 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       plannedVisible = visible
       plannedOverviewLayer.setVisible(visible && plannedOverviewLayer.getSource() !== null)
       plannedDetailLayer.setVisible(visible && plannedDetailLayer.getSource() !== null)
+    },
+    setAnalysisHighlight(overlay) {
+      configureRasterOverlay(analysisHighlightLayer, highlightState, overlay)
+    },
+    fitToAnalysisHighlight() {
+      if (!highlightState.overlay) return
+      const extent = maskExtent(highlightState.overlay)
+      if (!extent) return
+      view.fit([...extent], {
+        padding: [72, 72, 72, 72],
+        duration: 350,
+        maxZoom: 14,
+      })
     },
     setThematicLayerVisible(datasetId, visible) {
       featureInfoRequest += 1
@@ -595,6 +707,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountOverviewLayer.setSource(null)
       releaseAccountOverviewUrl()
       clearPlannedDevelopmentOverlay()
+      releaseRasterOverlay(futureDevelopmentAreaLayer, futureAreaState)
+      releaseRasterOverlay(analysisHighlightLayer, highlightState)
       featureInfoHandler = null
       thematicLayerStatusHandler = null
       map.setTarget(undefined)

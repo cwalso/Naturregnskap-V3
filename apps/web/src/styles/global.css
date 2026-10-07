@@ -2723,3 +2723,95 @@ body { font-size: 16px; }
     line-height: 1.5;
   }
 }
+
+
+/* V3.19 – stedfesting av analyseoverlapp */
+.analysis-area-card__toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  margin: .75rem 0 .6rem;
+  padding: .65rem .7rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.analysis-area-card__toggle input {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: .1rem;
+  accent-color: var(--color-accent);
+}
+.analysis-area-card__toggle span {
+  font-size: .74rem;
+  line-height: 1.4;
+}
+
+.valued-nature-map-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .75rem .8rem;
+  background: var(--color-brand-surface);
+  border-left: 4px solid var(--color-accent);
+}
+.valued-nature-map-control strong {
+  display: block;
+  margin-top: .1rem;
+  font-size: .76rem;
+}
+.valued-nature-map-control button,
+.valued-nature-metric__map-action {
+  min-height: 2.35rem;
+  padding: .45rem .6rem;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-control);
+  font-size: .68rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.valued-nature-map-control button:hover,
+.valued-nature-metric__map-action:hover {
+  background: var(--color-brand-surface);
+}
+.valued-nature-metric {
+  padding: .55rem .6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+}
+.valued-nature-metric--selected {
+  background: var(--color-brand-surface);
+  border-color: var(--color-accent);
+}
+.valued-nature-metric__map-action {
+  justify-self: start;
+  margin-top: .15rem;
+}
+.valued-nature-metric__map-action[aria-pressed='true'] {
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+}
+
+@media (max-width: 52rem) {
+  .analysis-area-card__toggle span,
+  .valued-nature-map-control strong,
+  .valued-nature-map-control button,
+  .valued-nature-metric__map-action {
+    font-size: .82rem;
+  }
+
+  .valued-nature-map-control {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .valued-nature-map-control button,
+  .valued-nature-metric__map-action {
+    min-height: 2.75rem;
+  }
+}
