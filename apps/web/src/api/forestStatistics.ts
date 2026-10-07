@@ -26,8 +26,10 @@ export const forestTypeDefinitions: readonly ForestTypeDefinition[] = [
 ] as const
 
 export const FOREST_WMS_ENDPOINT = ACCOUNT_ENDPOINT
-export const FOREST_WMS_LAYER = 'okosystemtype'
-export const FOREST_WMS_STYLE = buildForestEcosystemStyle()
+export const FOREST_WMS_LAYER = 'arealdekkeniva2'
+export const FOREST_WMS_STYLE = buildForestTypeStyle()
+const FOREST_ECOSYSTEM_WMS_LAYER = 'okosystemtype'
+const FOREST_ECOSYSTEM_WMS_STYLE = buildForestEcosystemStyle()
 
 export interface ForestTypeMetric {
   readonly id: string
@@ -119,8 +121,8 @@ async function calculateForestStatistics(
         raster.extent,
         width,
         height,
-        FOREST_WMS_LAYER,
-        FOREST_WMS_STYLE,
+        FOREST_ECOSYSTEM_WMS_LAYER,
+        FOREST_ECOSYSTEM_WMS_STYLE,
       ),
       signal,
     ),
