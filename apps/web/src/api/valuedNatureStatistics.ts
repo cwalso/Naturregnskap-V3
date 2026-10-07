@@ -437,28 +437,57 @@ function markGridCells(
 function projectBoundary(
   boundary: MunicipalityBoundary,
 ): readonly (readonly EsriRing[])[] {
-  const polygons = boundary.geometry.type === 'Polygon'
-    ? [boundary.geometry.coordinates]
-    : boundary.geometry.coordinates
-
-  return polygons.map((polygon) => polygon.map((ring) => ring.map((point) => {
-    const projected = proj4('EPSG:4326', ETRS89_UTM33, [point[0], point[1]])
-    return [projected[0], projected[1]] as const
-  })))
+  return boundaryPolygons(boundary.geometry).map((polygon) => (
+    polygon.map((ring) => ring.map((point) => {
+      const projected = proj4('EPSG:4326', ETRS89_UTM33, [point[0], point[1]])
+      return [projected[0], projected[1]] as const
+    }))
+  ))
 }
 
 function toEsriPolygon(
   geometry: MunicipalityBoundary['geometry'],
 ): { rings: number[][][]; spatialReference: { wkid: 4326 } } {
-  const polygons = geometry.type === 'Polygon'
-    ? [geometry.coordinates]
-    : geometry.coordinates
   return {
-    rings: polygons.flatMap((polygon) => polygon.map((ring) => (
+    rings: boundaryPolygons(geometry).flatMap((polygon) => polygon.map((ring) => (
       ring.map((point) => [point[0], point[1]])
     ))),
     spatialReference: { wkid: 4326 },
   }
+}
+
+function boundaryPolygons(
+  geometry: MunicipalityBoundary['geometry'],
+): readonly (readonly EsriRing[])[] {
+  if (geometry.type === 'Polygon') {
+    return [boundaryPolygon(geometry.coordinates)]
+  }
+  return geometry.coordinates.map((polygon) => boundaryPolygon(polygon))
+}
+
+function boundaryPolygon(value: unknown): readonly EsriRing[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Kommunegeometrien inneholder et ugyldig polygon')
+  }
+  return value.map((ring) => boundaryRing(ring))
+}
+
+function boundaryRing(value: unknown): EsriRing {
+  if (!Array.isArray(value)) {
+    throw new Error('Kommunegeometrien inneholder en ugyldig ring')
+  }
+
+  return value.map((point) => {
+    if (
+      !Array.isArray(point)
+      || point.length < 2
+      || !Number.isFinite(Number(point[0]))
+      || !Number.isFinite(Number(point[1]))
+    ) {
+      throw new Error('Kommunegeometrien inneholder et ugyldig punkt')
+    }
+    return [Number(point[0]), Number(point[1])] as const
+  })
 }
 
 function geometryArea(polygons: readonly (readonly EsriRing[])[]): number {
