@@ -576,14 +576,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return (
       <div className="thematic-map-card forest-map-card">
         <aside className="thematic-map-card__legend" aria-label="Tegnforklaring">
-          <strong>Skog</strong>
-          <span>Økosystemtype nivå 1</span>
-          <div className="forest-map-legend__primary">
-            <i aria-hidden="true" />
-            <span>Skog</span>
-          </div>
+          <strong>Skogtyper</strong>
+          <span>Arealdekke nivå 2</span>
           <div className="forest-map-legend__types">
-            <strong>Arealdekke nivå 2</strong>
             {forestTypeDefinitions.map((item) => (
               <span key={item.id}>
                 <i style={{ backgroundColor: item.color }} aria-hidden="true" />
