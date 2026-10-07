@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
 import {
+  forestTypeDefinitions,
+  getForestStatistics,
+  type ForestStatistics,
+} from '../api/forestStatistics'
+import {
   getMunicipalities,
   type Municipality,
   type MunicipalityBoundary,
@@ -53,6 +58,7 @@ import {
 } from '../map/municipalityMap'
 import { buildWmsLegendUrl } from '../map/wmsLegend'
 import { ExploreNaturePage } from '../pages/ExploreNaturePage'
+import { ForestPage } from '../pages/ForestPage'
 import { ThematicDataPage } from '../pages/ThematicDataPage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
 import { OverviewPage } from '../pages/OverviewPage'
@@ -80,6 +86,7 @@ const validViews: readonly SiteView[] = [
   'naturtapet',
   'utforsk-naturen',
   'utforsk-i-kart',
+  'tema-forest',
   'tema-valued-nature',
   'tema-protected-areas',
   'tema-wild-reindeer-areas',
@@ -108,6 +115,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [accountState, setAccountState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [thematicCoverage, setThematicCoverage] = useState<ThematicCoverageResponse | null>(null)
   const [thematicCoverageState, setThematicCoverageState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [forestStatistics, setForestStatistics] = useState<ForestStatistics | null>(null)
+  const [forestStatisticsState, setForestStatisticsState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureStatistics, setValuedNatureStatistics] = useState<ValuedNatureStatistics | null>(null)
   const [valuedNatureStatisticsState, setValuedNatureStatisticsState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedCoverageGap, setPlannedCoverageGap] = useState<PlannedCoverageGap | null>(null)
@@ -130,7 +139,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [valuedNatureMapSelection, setValuedNatureMapSelection] =
     useState<ValuedNatureMapSelection>({ kind: 'all' })
 
-  const showsMap = activeView === 'utforsk-i-kart' || activeView === 'tema-valued-nature'
+  const showsMap = activeView === 'utforsk-i-kart'
+    || activeView === 'tema-forest'
+    || activeView === 'tema-valued-nature'
 
   useEffect(() => {
     const onHashChange = () => setActiveView(viewFromHash())
@@ -164,6 +175,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     map.current?.setAccountLayerVisible(
       activeView === 'utforsk-i-kart' ? accountLayerVisible : false,
     )
+    map.current?.setForestLayerVisible(activeView === 'tema-forest')
     for (const dataset of thematicDatasets) {
       map.current?.setThematicLayerVisible(
         dataset.id,
@@ -190,7 +202,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     if (
-      (activeView !== 'utforsk-i-kart' && activeView !== 'tema-valued-nature')
+      (activeView !== 'utforsk-i-kart'
+        && activeView !== 'tema-forest'
+        && activeView !== 'tema-valued-nature')
       || !selectedMunicipality
     ) {
       setPlannedDevelopment(null)
@@ -243,11 +257,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   ])
 
   useEffect(() => {
-    if (
-      activeView !== 'utforsk-i-kart'
-      || plannedDevelopmentAnalysisTarget !== 'grunnkart'
-      || plannedDevelopment?.status !== 'available'
-    ) {
+    const needsGrunnkartBreakdown = activeView === 'tema-forest'
+      || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'grunnkart')
+    if (!needsGrunnkartBreakdown || plannedDevelopment?.status !== 'available') {
       setPlannedNatureBreakdown(null)
       setPlannedNatureBreakdownState('idle')
       return
@@ -301,6 +313,37 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     return () => controller.abort()
   }, [activeView, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+
+  useEffect(() => {
+    if (activeView !== 'tema-forest' || !selectedMunicipality) {
+      setForestStatistics(null)
+      setForestStatisticsState('idle')
+      return
+    }
+
+    const controller = new AbortController()
+    setForestStatistics(null)
+    setForestStatisticsState('loading')
+
+    void getForestStatistics(
+      selectedMunicipality.number,
+      selectedMunicipality.name,
+      controller.signal,
+    )
+      .then((result) => {
+        if (controller.signal.aborted) return
+        setForestStatistics(result)
+        setForestStatisticsState('idle')
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setForestStatistics(null)
+        setForestStatisticsState('error')
+      })
+
+    return () => controller.abort()
+  }, [activeView, selectedMunicipality])
 
   useEffect(() => {
     if (activeView !== 'tema-valued-nature' || !boundaryData) {
@@ -398,6 +441,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setSelectedMunicipality(municipality)
     setAccountData(null)
     setThematicCoverage(null)
+    setForestStatistics(null)
+    setForestStatisticsState('idle')
     setValuedNatureStatistics(null)
     setValuedNatureStatisticsState('idle')
     setPlannedCoverageGap(null)
@@ -524,6 +569,48 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       {boundaryState === 'error' && <p role="alert">Kunne ikke hente kommunegrensen. Prøv igjen senere.</p>}
     </section>
   )
+
+  function forestMapWorkspace() {
+    if (!selectedMunicipality) return null
+
+    return (
+      <div className="thematic-map-card forest-map-card">
+        <aside className="thematic-map-card__legend" aria-label="Tegnforklaring">
+          <strong>Skogtyper</strong>
+          <span>Arealdekke nivå 2</span>
+          <div className="forest-map-legend__types">
+            {forestTypeDefinitions.map((item) => (
+              <span key={item.id}>
+                <i style={{ backgroundColor: item.color }} aria-hidden="true" />
+                {item.label}
+              </span>
+            ))}
+          </div>
+        </aside>
+        <div className="thematic-map-card__map">
+          {mapRuntimeError && (
+            <div className="map-runtime-error" role="alert">
+              Kartet kunne ikke initialiseres: {mapRuntimeError}
+            </div>
+          )}
+          <div
+            ref={mapElement}
+            className="map"
+            role="region"
+            tabIndex={0}
+            aria-label={`Kart over skogtyper i ${selectedMunicipality.name}`}
+          />
+          <button
+            type="button"
+            className="thematic-map-card__fit"
+            onClick={() => map.current?.fitToBoundary()}
+          >
+            Tilpass kartet til kommunen
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   function thematicMapWorkspace() {
     if (!selectedMunicipality) return null
@@ -939,6 +1026,22 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           onOpenThemePage={openThematicPage}
+          onOpenForestPage={() => navigate('tema-forest')}
+        />
+      )}
+      {activeView === 'tema-forest' && (
+        <ForestPage
+          municipalityName={selectedMunicipality.name}
+          statistics={forestStatistics}
+          statisticsState={forestStatisticsState}
+          plannedNatureBreakdown={plannedNatureBreakdown}
+          plannedNatureBreakdownState={plannedNatureBreakdownState}
+          onBack={() => navigate('utforsk-naturen')}
+          onOpenMap={() => {
+            setPlannedDevelopmentAnalysisTarget('grunnkart')
+            navigate('utforsk-i-kart')
+          }}
+          mapContent={forestMapWorkspace()}
         />
       )}
       {datasetByThematicView[activeView] && (

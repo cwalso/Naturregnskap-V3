@@ -41,6 +41,7 @@ function mapMock(): MunicipalityMap {
     showBoundary: vi.fn(),
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
+    setForestLayerVisible: vi.fn(),
     setPlannedDevelopmentOverlay: vi.fn(),
     setPlannedDevelopmentVisible: vi.fn(),
     fitToPlannedDevelopmentResult: vi.fn(),
@@ -318,6 +319,8 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Utforsk økosystemene' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Skog/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Verdsatte naturtyper/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
@@ -354,6 +357,23 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('button', { name: /Se statistikk for naturen i Trondheim/ }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('åpner Skog som heldekkende temaside fra Grunnkartet', async () => {
+    const map = mapMock()
+    mockMunicipalityFlow()
+    render(<App createMap={() => map} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
+    fireEvent.click(screen.getByRole('button', { name: /Skog/ }))
+
+    expect(screen.getByRole('heading', { name: 'Skog', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText('Skog er del av det heldekkende regnskapsgrunnlaget')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Fordeling på skogtype' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Skogtyper etter størrelse' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Kart over skogtyper i Trondheim' })).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.setForestLayerVisible).toHaveBeenCalledWith(true))
   })
 
   it('åpner Verdsatte naturtyper som egen temaside og går videre til analyse', async () => {

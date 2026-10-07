@@ -13,6 +13,7 @@ interface ExploreNaturePageProps {
   readonly thematicCoverage?: ThematicCoverageResponse | null
   readonly thematicCoverageState?: 'idle' | 'loading' | 'error'
   readonly onOpenThemePage: (datasetId: ThematicDatasetId) => void
+  readonly onOpenForestPage: () => void
 }
 
 function evaluationLabel(
@@ -32,6 +33,7 @@ export function ExploreNaturePage({
   thematicCoverage,
   thematicCoverageState = 'idle',
   onOpenThemePage,
+  onOpenForestPage,
 }: ExploreNaturePageProps) {
   const place = municipalityName ? ` i ${municipalityName}` : ''
 
@@ -63,6 +65,35 @@ export function ExploreNaturePage({
             første versjon.
           </p>
         </aside>
+      </section>
+
+      <section className="content-page__section account-themes" aria-labelledby="account-themes-title">
+        <div className="section-heading">
+          <span className="section-tag">Regnskapsgrunnlag</span>
+          <h2 id="account-themes-title">Utforsk økosystemene</h2>
+          <p>
+            Disse sidene bygger videre på det heldekkende Grunnkartet og viser
+            regnskapsgrunnlaget mer detaljert for enkelte økosystemtyper.
+          </p>
+        </div>
+
+        <div className="theme-grid theme-grid--account" role="list" aria-label="Økosystemer i regnskapsgrunnlaget">
+          <button
+            type="button"
+            className="theme-card theme-card--page theme-card--account"
+            onClick={onOpenForestPage}
+          >
+            <div className="theme-card__icon" aria-hidden="true">♠</div>
+            <strong>Skog</strong>
+            <span>Skogareal, utbredelse og fordeling basert på Grunnkart for arealanalyse.</span>
+            <span className="theme-card__footer">
+              <span className="status-tag">Grunnkart 2025</span>
+              <span className="theme-card__open">
+                Åpne temaside <span aria-hidden="true">→</span>
+              </span>
+            </span>
+          </button>
+        </div>
       </section>
 
       <section className="content-page__section" aria-labelledby="themes-title">

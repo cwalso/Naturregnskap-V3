@@ -6,6 +6,7 @@ export type SiteView =
   | 'naturtapet'
   | 'utforsk-naturen'
   | 'utforsk-i-kart'
+  | 'tema-forest'
   | 'tema-valued-nature'
   | 'tema-protected-areas'
   | 'tema-wild-reindeer-areas'

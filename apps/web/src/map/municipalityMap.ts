@@ -15,6 +15,11 @@ import { fromLonLat } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 
+import {
+  FOREST_WMS_ENDPOINT,
+  FOREST_WMS_LAYER,
+  FOREST_WMS_STYLE,
+} from '../api/forestStatistics'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
 import { nationalLandCover2025, thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
@@ -84,6 +89,7 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
+  setForestLayerVisible(visible: boolean): void
   setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
   setPlannedDevelopmentVisible(visible: boolean): void
   fitToPlannedDevelopmentResult(): void
@@ -120,6 +126,22 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     visible: true,
     opacity: 0.86,
   })
+  const forestLayer = new ImageLayer({
+    source: new ImageWMS({
+      url: FOREST_WMS_ENDPOINT,
+      params: {
+        LAYERS: FOREST_WMS_LAYER,
+        VERSION: '1.3.0',
+        TRANSPARENT: true,
+        SLD_BODY: FOREST_WMS_STYLE,
+      },
+      ratio: 1,
+      attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
+    }),
+    visible: false,
+    opacity: 0.9,
+  })
+
   let accountVisible = true
   let accountOverviewRequest = 0
   let accountOverviewObjectUrl: string | null = null
@@ -540,6 +562,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       }),
       accountOverviewLayer,
       accountDetailLayer,
+      forestLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
       analysisHighlightLayer,
@@ -609,6 +632,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountVisible = visible
       accountOverviewLayer.setVisible(visible && accountOverviewLayer.getSource() !== null)
       accountDetailLayer.setVisible(visible)
+    },
+    setForestLayerVisible(visible) {
+      forestLayer.setVisible(visible)
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
