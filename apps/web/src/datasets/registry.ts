@@ -101,7 +101,7 @@ export const nationalLandCover2025 = {
 
 export const protectedAreas = {
   id: 'protected-areas',
-  title: 'Naturvernområder',
+  title: 'Verneområder',
   category: 'thematic',
   themeId: 'protected',
   version: 'løpende tjeneste',
