@@ -1,12 +1,16 @@
 import {
   ACCOUNT_CRS,
+  ACCOUNT_RESOLUTIONS,
+  accountTileGrid,
   classifyAccountPixel,
   loadOverviewRaster,
+  type LoadedOverviewRaster,
 } from '../map/accountOverviewRaster'
 
 const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
-const MAX_ANALYSIS_PIXELS = 1_400_000
-const FOREST_CLASS_COLOR = [77, 146, 33] as const
+const FOREST_ANALYSIS_ZOOM = 10
+const FOREST_TILE_PIXELS = 512
+const MAX_CONCURRENT_REQUESTS = 4
 const NATURE_CLASS = 2
 
 export interface ForestTypeDefinition {
@@ -27,15 +31,21 @@ export const forestTypeDefinitions: readonly ForestTypeDefinition[] = [
 
 export const FOREST_WMS_ENDPOINT = ACCOUNT_ENDPOINT
 export const FOREST_WMS_LAYER = 'arealdekkeniva2'
-export const FOREST_WMS_FILTER =
-  '<Filter xmlns="http://www.opengis.net/ogc"><Or>'
-  + forestTypeDefinitions.map((definition) => (
-    '<PropertyIsEqualTo><PropertyName>arealdekkeniva2</PropertyName><Literal>'
+
+const FOREST_STYLE = (() => {
+  const rules = forestTypeDefinitions.map((definition) => (
+    '<Rule><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>arealdekkeniva2</ogc:PropertyName><ogc:Literal>'
     + definition.sourceValue
-    + '</Literal></PropertyIsEqualTo>'
+    + '</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter>'
+    + '<PolygonSymbolizer><Fill><CssParameter name="fill">'
+    + definition.color
+    + '</CssParameter></Fill></PolygonSymbolizer></Rule>'
   )).join('')
-  + '</Or></Filter>'
-const FOREST_ECOSYSTEM_WMS_LAYER = 'arealdekkeniva1'
+
+  return '<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>arealdekkeniva2</Name><UserStyle><FeatureTypeStyle>'
+    + rules
+    + '</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
+})()
 
 export interface ForestTypeMetric {
   readonly id: string
@@ -51,7 +61,7 @@ export interface ForestStatisticsAvailable {
   readonly municipalityName: string
   readonly source: 'NIBIO Grunnkart for arealanalyse'
   readonly sourceVersion: '2025'
-  readonly methodVersion: 'forest-raster-v1'
+  readonly methodVersion: 'forest-tiled-raster-v2'
   readonly forestAreaKm2: number
   readonly municipalityMappedAreaKm2: number
   readonly forestSharePercent: number
@@ -73,6 +83,24 @@ export interface ForestStatisticsUnavailable {
 export type ForestStatistics = ForestStatisticsAvailable | ForestStatisticsUnavailable
 
 const cache = new Map<string, Promise<ForestStatistics>>()
+const tileCache = new Map<string, Promise<Blob>>()
+
+export function buildForestTileUrl(tileCoord: readonly number[]): string {
+  return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: FOREST_WMS_LAYER,
+    styles: '',
+    crs: ACCOUNT_CRS,
+    bbox: accountTileGrid.getTileCoordExtent([...tileCoord]).map((value) => value.toFixed(2)).join(','),
+    width: String(FOREST_TILE_PIXELS),
+    height: String(FOREST_TILE_PIXELS),
+    format: 'image/png; mode=8bit',
+    transparent: 'true',
+    sld_body: FOREST_STYLE,
+  })
+}
 
 export function getForestStatistics(
   municipalityNumber: string,
@@ -82,14 +110,11 @@ export function getForestStatistics(
   const cached = cache.get(municipalityNumber)
   if (cached) return cached
 
-  const request = calculateForestStatistics(
-    municipalityNumber,
-    municipalityName,
-    signal,
-  ).catch((error: unknown) => {
-    cache.delete(municipalityNumber)
-    throw error
-  })
+  const request = calculateForestStatistics(municipalityNumber, municipalityName, signal)
+    .catch((error: unknown) => {
+      cache.delete(municipalityNumber)
+      throw error
+    })
   cache.set(municipalityNumber, request)
   return request
 }
@@ -109,95 +134,42 @@ async function calculateForestStatistics(
     }
   }
 
-  const scale = Math.min(
-    1,
-    Math.sqrt(MAX_ANALYSIS_PIXELS / (raster.width * raster.height)),
-  )
-  const width = Math.max(1, Math.round(raster.width * scale))
-  const height = Math.max(1, Math.round(raster.height * scale))
-  const pixelAreaKm2 =
-    ((raster.extent[2] - raster.extent[0]) / width)
-    * ((raster.extent[3] - raster.extent[1]) / height)
-    / 1_000_000
-  const pixelMetersApprox = Math.sqrt(pixelAreaKm2 * 1_000_000)
+  const tileCoords = forestTileCoordinates(raster.extent)
+  if (tileCoords.length === 0) {
+    return {
+      status: 'not_available',
+      municipalityNumber,
+      municipalityName,
+      reason: 'Fant ingen Grunnkart-ruter for kommunen.',
+    }
+  }
 
-  const [ecosystemBlob, typeBlob] = await Promise.all([
-    fetchWmsRaster(
-      buildWmsUrl(
-        raster.extent,
-        width,
-        height,
-        FOREST_ECOSYSTEM_WMS_LAYER,
-      ),
-      signal,
-    ),
-    fetchWmsRaster(
-      buildWmsUrl(
-        raster.extent,
-        width,
-        height,
-        'arealdekkeniva2',
-      ),
-      signal,
-    ),
-  ])
-
-  const [rawBitmap, ecosystemBitmap, typeBitmap] = await Promise.all([
-    createImageBitmap(raster.rawBlob),
-    createImageBitmap(ecosystemBlob),
-    createImageBitmap(typeBlob),
-  ])
-
+  const overviewBitmap = await createImageBitmap(raster.rawBlob)
   try {
-    const rawPixels = bitmapPixels(rawBitmap, width, height)
-    const ecosystemPixels = bitmapPixels(ecosystemBitmap, width, height)
-    const typePixels = bitmapPixels(typeBitmap, width, height)
+    const partial = await mapWithConcurrency(
+      tileCoords,
+      MAX_CONCURRENT_REQUESTS,
+      (tileCoord) => analyseForestTile(tileCoord, raster, overviewBitmap, signal),
+    )
 
+    const typeCounts = new Array<number>(forestTypeDefinitions.length).fill(0)
     let mappedPixels = 0
     let naturePixels = 0
-    let forestPixels = 0
-    const typeCounts = new Array<number>(forestTypeDefinitions.length).fill(0)
 
-    for (let index = 0; index < width * height; index += 1) {
-      const offset = index * 4
-      if (rawPixels[offset + 3] < 32) continue
-      mappedPixels += 1
-
-      if (
-        classifyAccountPixel(
-          rawPixels[offset],
-          rawPixels[offset + 1],
-          rawPixels[offset + 2],
-        ) === NATURE_CLASS
-      ) {
-        naturePixels += 1
-      }
-
-      if (
-        ecosystemPixels[offset + 3] >= 32
-        && colorDistanceSquared(
-          ecosystemPixels[offset],
-          ecosystemPixels[offset + 1],
-          ecosystemPixels[offset + 2],
-          FOREST_CLASS_COLOR,
-        ) < 500
-      ) {
-        forestPixels += 1
-      }
-
-      if (typePixels[offset + 3] < 32) continue
-      const typeIndex = nearestForestType(
-        typePixels[offset],
-        typePixels[offset + 1],
-        typePixels[offset + 2],
-      )
-      if (typeIndex >= 0) typeCounts[typeIndex] += 1
+    for (const item of partial) {
+      mappedPixels += item.mappedPixels
+      naturePixels += item.naturePixels
+      item.typeCounts.forEach((count, index) => {
+        typeCounts[index] += count
+      })
     }
 
+    const pixelMetersApprox = ACCOUNT_RESOLUTIONS[FOREST_ANALYSIS_ZOOM] / 2
+    const pixelAreaKm2 = pixelMetersApprox * pixelMetersApprox / 1_000_000
+    const forestPixels = typeCounts.reduce((sum, count) => sum + count, 0)
     const forestAreaKm2 = forestPixels * pixelAreaKm2
     const municipalityMappedAreaKm2 = mappedPixels * pixelAreaKm2
     const natureAreaKm2 = naturePixels * pixelAreaKm2
-    const typeAreaTotal = typeCounts.reduce((sum, count) => sum + count, 0) * pixelAreaKm2
 
     const typeMetrics = forestTypeDefinitions
       .map((definition, index) => ({
@@ -205,9 +177,7 @@ async function calculateForestStatistics(
         label: definition.label,
         color: definition.color,
         areaKm2: typeCounts[index] * pixelAreaKm2,
-        sharePercent: typeAreaTotal > 0
-          ? typeCounts[index] * pixelAreaKm2 / typeAreaTotal * 100
-          : 0,
+        sharePercent: forestPixels > 0 ? typeCounts[index] / forestPixels * 100 : 0,
       }))
       .filter((metric) => metric.areaKm2 > 0)
       .sort((a, b) => b.areaKm2 - a.areaKm2)
@@ -218,96 +188,199 @@ async function calculateForestStatistics(
       municipalityName,
       source: 'NIBIO Grunnkart for arealanalyse',
       sourceVersion: '2025',
-      methodVersion: 'forest-raster-v1',
+      methodVersion: 'forest-tiled-raster-v2',
       forestAreaKm2,
       municipalityMappedAreaKm2,
-      forestSharePercent: municipalityMappedAreaKm2 > 0
-        ? forestAreaKm2 / municipalityMappedAreaKm2 * 100
-        : 0,
+      forestSharePercent: mappedPixels > 0 ? forestPixels / mappedPixels * 100 : 0,
       natureAreaKm2,
-      forestShareOfNaturePercent: natureAreaKm2 > 0
-        ? forestAreaKm2 / natureAreaKm2 * 100
-        : null,
+      forestShareOfNaturePercent: naturePixels > 0 ? forestPixels / naturePixels * 100 : null,
       typeMetrics,
       dominantType: typeMetrics[0] ?? null,
       pixelMetersApprox,
       warnings: [
-        'Skogarealet er et prototypeanslag beregnet fra økosystemtype nivå 1 i Grunnkart for arealanalyse, årsversjon 2025.',
-        'Fordelingen på gran, furu, barblanding, blandingsskog og lauvskog er hentet fra arealdekke nivå 2 og er en annen egenskap enn økosystemtypen.',
-        'Beregningen gjøres på et forenklet raster i nettleseren og skal ikke brukes som offisiell arealstatistikk før metode og dataleveranse er kvalitetssikret.',
+        'Skogarealet på denne siden beregnes fra skogklassene i arealdekke nivå 2 i Grunnkart for arealanalyse, årsversjon 2025.',
+        'Fordelingen viser granskog, furuskog, barblandingsskog, blandingsskog og lauvskog.',
+        'Beregningen gjøres rutevis på samme Grunnkart-tjeneste som kartvisningen for å sikre samsvar mellom kart og statistikk.',
       ],
     }
   } finally {
-    rawBitmap.close()
-    ecosystemBitmap.close()
-    typeBitmap.close()
+    overviewBitmap.close()
   }
 }
 
-function buildWmsUrl(
+interface ForestTileAnalysis {
+  readonly mappedPixels: number
+  readonly naturePixels: number
+  readonly typeCounts: readonly number[]
+}
+
+async function analyseForestTile(
+  tileCoord: [number, number, number],
+  raster: LoadedOverviewRaster,
+  overviewBitmap: ImageBitmap,
+  signal?: AbortSignal,
+): Promise<ForestTileAnalysis> {
+  const forestBitmap = await createImageBitmap(await loadForestTile(tileCoord, signal))
+  try {
+    const forestCanvas = createTileCanvas()
+    const forestContext = forestCanvas.getContext('2d', { willReadFrequently: true })
+    if (!forestContext) throw new Error('Kunne ikke lese skogdata i nettleseren')
+    forestContext.drawImage(forestBitmap, 0, 0)
+    const forestPixels = forestContext.getImageData(
+      0, 0, FOREST_TILE_PIXELS, FOREST_TILE_PIXELS,
+    ).data
+
+    const maskCanvas = createTileCanvas()
+    const maskContext = maskCanvas.getContext('2d', { willReadFrequently: true })
+    if (!maskContext) throw new Error('Kunne ikke lese kommunegrensen i nettleseren')
+    const tileExtent = accountTileGrid.getTileCoordExtent(tileCoord)
+    const rasterResolution = (raster.extent[2] - raster.extent[0]) / raster.width
+    drawImageSection(
+      maskContext,
+      overviewBitmap,
+      (tileExtent[0] - raster.extent[0]) / rasterResolution,
+      (raster.extent[3] - tileExtent[3]) / rasterResolution,
+      (tileExtent[2] - tileExtent[0]) / rasterResolution,
+      (tileExtent[3] - tileExtent[1]) / rasterResolution,
+    )
+    const maskPixels = maskContext.getImageData(
+      0, 0, FOREST_TILE_PIXELS, FOREST_TILE_PIXELS,
+    ).data
+
+    let mappedPixels = 0
+    let naturePixels = 0
+    const typeCounts = new Array<number>(forestTypeDefinitions.length).fill(0)
+
+    for (let pixel = 0, rgba = 0; pixel < FOREST_TILE_PIXELS * FOREST_TILE_PIXELS; pixel += 1, rgba += 4) {
+      if (maskPixels[rgba + 3] < 100) continue
+      mappedPixels += 1
+
+      if (classifyAccountPixel(maskPixels[rgba], maskPixels[rgba + 1], maskPixels[rgba + 2]) === NATURE_CLASS) {
+        naturePixels += 1
+      }
+
+      if (forestPixels[rgba + 3] < 100) continue
+      const typeIndex = classifyForestTypePixel(
+        forestPixels[rgba],
+        forestPixels[rgba + 1],
+        forestPixels[rgba + 2],
+      )
+      if (typeIndex >= 0) typeCounts[typeIndex] += 1
+    }
+
+    return { mappedPixels, naturePixels, typeCounts }
+  } finally {
+    forestBitmap.close()
+  }
+}
+
+function forestTileCoordinates(
   extent: readonly [number, number, number, number],
-  width: number,
-  height: number,
-  layer: string,
-): string {
-  return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
-    service: 'WMS',
-    version: '1.3.0',
-    request: 'GetMap',
-    layers: layer,
-    styles: '',
-    crs: ACCOUNT_CRS,
-    bbox: extent.map((value) => value.toFixed(2)).join(','),
-    width: String(width),
-    height: String(height),
-    format: 'image/png; mode=8bit',
-    transparent: 'true',
-  })
+): [number, number, number][] {
+  const result: [number, number, number][] = []
+  accountTileGrid.forEachTileCoord(
+    [...extent],
+    FOREST_ANALYSIS_ZOOM,
+    (tileCoord) => result.push([tileCoord[0], tileCoord[1], tileCoord[2]]),
+  )
+  return result
 }
 
-async function fetchWmsRaster(url: string, signal?: AbortSignal): Promise<Blob> {
-  const response = await fetch(url, { signal })
-  if (!response.ok) {
-    throw new Error(`Kunne ikke hente skogdata fra Grunnkart, HTTP ${response.status}`)
+async function loadForestTile(
+  tileCoord: [number, number, number],
+  signal?: AbortSignal,
+): Promise<Blob> {
+  const url = buildForestTileUrl(tileCoord)
+  let request = tileCache.get(url)
+  if (!request) {
+    request = fetch(url).then((response) => {
+      if (!response.ok) throw new Error(`Grunnkart-tjenesten feilet med HTTP ${response.status}`)
+      const contentType = response.headers.get('content-type') ?? ''
+      if (contentType && !contentType.startsWith('image/')) {
+        throw new Error('Grunnkart-tjenesten returnerte ikke et bilde')
+      }
+      return response.blob()
+    }).catch((error) => {
+      tileCache.delete(url)
+      throw error
+    })
+    tileCache.set(url, request)
   }
-  return response.blob()
+  const blob = await request
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+  return blob
 }
 
-function bitmapPixels(
-  bitmap: ImageBitmap,
-  width: number,
-  height: number,
-): Uint8ClampedArray {
-  const canvas = document.createElement('canvas')
-  canvas.width = width
-  canvas.height = height
-  const context = canvas.getContext('2d', { willReadFrequently: true })
-  if (!context) throw new Error('Nettleseren kunne ikke opprette rasterkontekst')
-  context.drawImage(bitmap, 0, 0, width, height)
-  return context.getImageData(0, 0, width, height).data
-}
-
-function nearestForestType(red: number, green: number, blue: number): number {
-  let bestIndex = -1
+function classifyForestTypePixel(red: number, green: number, blue: number): number {
+  let best = -1
   let bestDistance = Number.POSITIVE_INFINITY
   forestTypeDefinitions.forEach((definition, index) => {
-    const distance = colorDistanceSquared(red, green, blue, definition.rgb)
+    const [r, g, b] = definition.rgb
+    const distance = (red - r) ** 2 + (green - g) ** 2 + (blue - b) ** 2
     if (distance < bestDistance) {
+      best = index
       bestDistance = distance
-      bestIndex = index
     }
   })
-  return bestDistance < 1400 ? bestIndex : -1
+  return bestDistance < 900 ? best : -1
 }
 
-function colorDistanceSquared(
-  red: number,
-  green: number,
-  blue: number,
-  color: readonly [number, number, number],
-): number {
-  return (red - color[0]) ** 2
-    + (green - color[1]) ** 2
-    + (blue - color[2]) ** 2
+function createTileCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas')
+  canvas.width = FOREST_TILE_PIXELS
+  canvas.height = FOREST_TILE_PIXELS
+  return canvas
 }
 
+function drawImageSection(
+  context: CanvasRenderingContext2D,
+  image: CanvasImageSource,
+  sourceX: number,
+  sourceY: number,
+  sourceWidth: number,
+  sourceHeight: number,
+) {
+  const x0 = Math.max(0, sourceX)
+  const y0 = Math.max(0, sourceY)
+  const imageWidth = 'width' in image ? Number(image.width) : 0
+  const imageHeight = 'height' in image ? Number(image.height) : 0
+  const x1 = Math.min(imageWidth, sourceX + sourceWidth)
+  const y1 = Math.min(imageHeight, sourceY + sourceHeight)
+  if (!(x1 > x0 && y1 > y0)) return
+
+  const factorX = FOREST_TILE_PIXELS / sourceWidth
+  const factorY = FOREST_TILE_PIXELS / sourceHeight
+  context.drawImage(
+    image,
+    x0,
+    y0,
+    x1 - x0,
+    y1 - y0,
+    (x0 - sourceX) * factorX,
+    (y0 - sourceY) * factorY,
+    (x1 - x0) * factorX,
+    (y1 - y0) * factorY,
+  )
+}
+
+async function mapWithConcurrency<T, R>(
+  items: readonly T[],
+  concurrency: number,
+  worker: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let nextIndex = 0
+
+  async function run() {
+    while (nextIndex < items.length) {
+      const index = nextIndex
+      nextIndex += 1
+      results[index] = await worker(items[index])
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => run()),
+  )
+  return results
+}
