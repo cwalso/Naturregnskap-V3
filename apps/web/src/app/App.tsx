@@ -404,6 +404,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     navigate('utforsk-i-kart')
   }
 
+  function findGrunnkartResultInMap() {
+    setPlannedDevelopmentVisible(true)
+    map.current?.setPlannedDevelopmentVisible(true)
+    map.current?.fitToPlannedDevelopmentResult()
+    scrollToMapSection('map-canvas-region')
+  }
+
   function showValuedNatureInMap(selection: ValuedNatureMapSelection) {
     setValuedNatureResultVisible(true)
     setValuedNatureMapSelection(selection)
@@ -562,6 +569,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   result={plannedDevelopment}
                   visible={plannedDevelopmentVisible}
                   onVisibleChange={setPlannedDevelopmentVisible}
+                  onFindGrunnkartResultInMap={findGrunnkartResultInMap}
                   natureBreakdown={plannedNatureBreakdown}
                   natureBreakdownState={plannedNatureBreakdownState}
                   analysisTarget={plannedDevelopmentAnalysisTarget}
