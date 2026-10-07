@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature'
 import GeoJSON from 'ol/format/GeoJSON'
 import MultiPolygon from 'ol/geom/MultiPolygon'
 import Polygon from 'ol/geom/Polygon'
@@ -14,7 +15,6 @@ import VectorSource from 'ol/source/Vector'
 import { Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 import { fromLonLat } from 'ol/proj'
-import { getRenderPixel } from 'ol/render'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 
@@ -551,47 +551,46 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   const boundarySource = new VectorSource()
 
-  function clipLayerToMunicipality(
-    layer: TileLayer<XYZ> | ImageLayer<ImageWMS>,
-  ) {
-    layer.on('prerender', (event) => {
-      const geometry = boundarySource.getFeatures()[0]?.getGeometry()
-      if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
+  const municipalityMaskSource = new VectorSource()
+  const municipalityMaskLayer = new VectorLayer({
+    source: municipalityMaskSource,
+    visible: false,
+    style: new Style({
+      fill: new Fill({ color: '#f3f4f3' }),
+    }),
+  })
 
-      const context = event.context as CanvasRenderingContext2D
-      context.save()
+  function updateMunicipalityMask() {
+    municipalityMaskSource.clear()
+    const geometry = boundarySource.getFeatures()[0]?.getGeometry()
+    if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
 
-      const polygons = geometry instanceof Polygon
-        ? [geometry.getCoordinates()]
-        : geometry.getCoordinates()
+    const exteriorRings = geometry instanceof Polygon
+      ? [geometry.getCoordinates()[0]]
+      : geometry.getCoordinates().map((polygon) => polygon[0])
 
-      context.beginPath()
-      for (const polygon of polygons) {
-        for (const ring of polygon) {
-          ring.forEach((coordinate, index) => {
-            const pixel = getRenderPixel(event, coordinate)
-            if (index === 0) context.moveTo(pixel[0], pixel[1])
-            else context.lineTo(pixel[0], pixel[1])
-          })
-          context.closePath()
-        }
-      }
-      context.clip('evenodd')
-    })
+    const worldRing = [
+      [-4_000_000, -1_000_000],
+      [5_000_000, -1_000_000],
+      [5_000_000, 12_000_000],
+      [-4_000_000, 12_000_000],
+      [-4_000_000, -1_000_000],
+    ]
 
-    layer.on('postrender', (event) => {
-      const geometry = boundarySource.getFeatures()[0]?.getGeometry()
-      if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
-      const context = event.context as CanvasRenderingContext2D
-      context.restore()
-    })
+    const maskGeometry = new Polygon([
+      worldRing,
+      ...exteriorRings.map((ring) => [...ring].reverse()),
+    ])
+    municipalityMaskSource.addFeature(new Feature(maskGeometry))
   }
 
-  clipLayerToMunicipality(forestLayer)
-  clipLayerToMunicipality(ecosystemLayer as TileLayer<XYZ>)
-  clipLayerToMunicipality(urbanLayer)
-  for (const layer of thematicLayers.values()) {
-    clipLayerToMunicipality(layer)
+  function updateMunicipalityMaskVisibility() {
+    const thematicVisible =
+      forestLayer.getVisible()
+      || ecosystemLayer.getVisible()
+      || urbanLayer.getVisible()
+      || [...thematicLayers.values()].some((layer) => layer.getVisible())
+    municipalityMaskLayer.setVisible(thematicVisible)
   }
 
   const boundaryLayer = new VectorLayer({
@@ -616,6 +615,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     resolution: ACCOUNT_RESOLUTIONS[4],
     enableRotation: false,
   })
+  let pendingBoundaryFit: [number, number, number, number] | null = null
+
   const map = new OlMap({
     target,
     view,
@@ -637,6 +638,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       analysisHighlightLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
+      municipalityMaskLayer,
       boundaryLayer,
     ],
   })
@@ -644,6 +646,20 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   function refreshMapSize() {
     map.updateSize()
+    const size = map.getSize()
+    if (
+      pendingBoundaryFit
+      && size
+      && size[0] > 100
+      && size[1] > 100
+    ) {
+      view.fit(pendingBoundaryFit, {
+        padding: [48, 48, 48, 48],
+        duration: 0,
+        maxZoom: 12,
+      })
+      pendingBoundaryFit = null
+    }
     map.renderSync()
   }
 
@@ -679,6 +695,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         featureProjection: ACCOUNT_CRS,
       })
       boundarySource.addFeatures(features)
+      updateMunicipalityMask()
       const extent = boundarySource.getExtent()
       if (extent) {
         accountDetailLayer.setExtent(extent)
@@ -686,16 +703,18 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         ecosystemLayer.setExtent(extent)
         urbanLayer.setExtent(extent)
         for (const layer of thematicLayers.values()) layer.setExtent(extent)
-        view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
-        forestLayer.changed()
-        ecosystemLayer.changed()
-        urbanLayer.changed()
-        for (const layer of thematicLayers.values()) layer.changed()
+        pendingBoundaryFit = [...extent] as [number, number, number, number]
+        refreshMapSize()
+        window.requestAnimationFrame(refreshMapSize)
       }
+      updateMunicipalityMaskVisibility()
       void configureAccountOverview(boundary.properties.number)
     },
     clearBoundary() {
       boundarySource.clear()
+      municipalityMaskSource.clear()
+      municipalityMaskLayer.setVisible(false)
+      pendingBoundaryFit = null
       accountOverviewRequest += 1
       accountOverviewLayer.setSource(null)
       accountOverviewLayer.setVisible(false)
@@ -716,11 +735,13 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     setForestLayerVisible(visible) {
       forestLayer.setVisible(visible)
+      updateMunicipalityMaskVisibility()
     },
     setEcosystemLayer(type) {
       if (!type) {
         ecosystemLayer.setVisible(false)
         ecosystemLayer.setSource(null)
+        updateMunicipalityMaskVisibility()
         return
       }
       ecosystemLayer.setSource(new XYZ({
@@ -732,9 +753,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
       }))
       ecosystemLayer.setVisible(true)
+      updateMunicipalityMaskVisibility()
     },
     setUrbanLayerVisible(visible) {
       urbanLayer.setVisible(visible)
+      updateMunicipalityMaskVisibility()
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
@@ -777,6 +800,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       thematicLayers.get(datasetId)?.setVisible(visible)
       if (!visible) setThematicLayerStatus(datasetId, 'idle')
       featureInfoHandler?.({ status: 'idle', results: [] })
+      updateMunicipalityMaskVisibility()
     },
     setThematicLayerStatusHandler(handler) {
       thematicLayerStatusHandler = handler
