@@ -920,6 +920,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     fitToDrawnAnalysisArea() {
       if (drawnAnalysisSource.getFeatures().length === 0) return
       const extent = drawnAnalysisSource.getExtent()
+      if (!extent) return
       view.fit(extent, {
         padding: [72, 72, 72, 72],
         duration: 350,
