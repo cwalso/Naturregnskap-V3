@@ -18,10 +18,10 @@ const NATURE_CLASS = 2
 const AGRICULTURE_CLASS = 1
 const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
 const IMAGE_CACHE_LIMIT = 120
-const NATURE_TYPE_SCALE = 2
-const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
+export const NATURE_TYPE_SCALE = 2
+export const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
 
-const natureTypeDefinitions = [
+export const natureTypeDefinitions = [
   { id: 'skog', label: 'Skog', sourceValue: 'skog', color: [255, 0, 0], displayColor: '#9ECC73' },
   { id: 'hei-buskmark', label: 'Hei og buskmark', sourceValue: 'heiBuskmark', color: [0, 255, 0], displayColor: '#E1C790' },
   { id: 'lite-vegetert-mark', label: 'Lite vegetert mark', sourceValue: 'liteVegetertMark', color: [0, 0, 255], displayColor: '#FFE8C2' },
@@ -294,6 +294,39 @@ export function buildNatureTypeTileUrl(tileCoord: number[]): string {
     format: 'image/png; mode=8bit',
     transparent: 'true',
     sld_body: NATURE_TYPE_STYLE,
+  })
+}
+
+export function buildSelectedNatureTypeTileUrl(
+  tileCoord: number[],
+  id: PlannedNatureTypeId,
+): string {
+  const definition = natureTypeDefinitions.find((item) => item.id === id)
+  if (!definition) return ''
+
+  const style =
+    '<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>'
+    + '<Rule><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>'
+    + definition.sourceValue
+    + '</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter>'
+    + '<PolygonSymbolizer><Fill><CssParameter name="fill">'
+    + definition.displayColor
+    + '</CssParameter></Fill></PolygonSymbolizer></Rule>'
+    + '</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
+
+  return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
+    service: 'WMS',
+    version: '1.3.0',
+    request: 'GetMap',
+    layers: 'okosystemtype',
+    styles: '',
+    crs: ACCOUNT_CRS,
+    bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
+    width: String(NATURE_TYPE_TILE_PIXELS),
+    height: String(NATURE_TYPE_TILE_PIXELS),
+    format: 'image/png; mode=8bit',
+    transparent: 'true',
+    sld_body: style,
   })
 }
 

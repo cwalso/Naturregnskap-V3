@@ -1,3 +1,4 @@
+import type { EcosystemPageId } from '../api/ecosystemStatistics'
 import type {
   ThematicCoverageResponse,
   ThematicDatasetEvaluation,
@@ -14,6 +15,7 @@ interface ExploreNaturePageProps {
   readonly thematicCoverageState?: 'idle' | 'loading' | 'error'
   readonly onOpenThemePage: (datasetId: ThematicDatasetId) => void
   readonly onOpenForestPage: () => void
+  readonly onOpenEcosystemPage: (ecosystemId: EcosystemPageId) => void
 }
 
 function evaluationLabel(
@@ -34,6 +36,7 @@ export function ExploreNaturePage({
   thematicCoverageState = 'idle',
   onOpenThemePage,
   onOpenForestPage,
+  onOpenEcosystemPage,
 }: ExploreNaturePageProps) {
   const place = municipalityName ? ` i ${municipalityName}` : ''
 
@@ -93,6 +96,30 @@ export function ExploreNaturePage({
               </span>
             </span>
           </button>
+
+          {([
+            ['vatmark', 'Våtmark', '≈', 'Utbredelse og arealandel for våtmark i Grunnkartet.'],
+            ['hei-buskmark', 'Hei og buskmark', '⌁', 'Utbredelse og arealandel for hei og buskmark.'],
+            ['lite-vegetert-mark', 'Lite vegetert mark', '△', 'Utbredelse og arealandel for lite vegetert mark.'],
+            ['kyst', 'Kyststrender, svaberg og dyner', '≋', 'Utbredelse og arealandel for kystnatur i Grunnkartet.'],
+          ] as const).map(([id, title, icon, description]) => (
+            <button
+              type="button"
+              className="theme-card theme-card--page theme-card--account"
+              key={id}
+              onClick={() => onOpenEcosystemPage(id)}
+            >
+              <div className="theme-card__icon" aria-hidden="true">{icon}</div>
+              <strong>{title}</strong>
+              <span>{description}</span>
+              <span className="theme-card__footer">
+                <span className="status-tag">Grunnkart 2025</span>
+                <span className="theme-card__open">
+                  Åpne temaside <span aria-hidden="true">→</span>
+                </span>
+              </span>
+            </button>
+          ))}
         </div>
       </section>
 
