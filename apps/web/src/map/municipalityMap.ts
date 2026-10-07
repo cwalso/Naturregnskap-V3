@@ -586,7 +586,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   }
 
   clipLayerToMunicipality(forestLayer)
-  clipLayerToMunicipality(ecosystemLayer)
+  clipLayerToMunicipality(ecosystemLayer as TileLayer<XYZ>)
   clipLayerToMunicipality(urbanLayer)
   for (const layer of thematicLayers.values()) {
     clipLayerToMunicipality(layer)
