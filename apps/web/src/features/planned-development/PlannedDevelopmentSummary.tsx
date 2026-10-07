@@ -28,6 +28,7 @@ interface PlannedDevelopmentSummaryProps {
   readonly result: PlannedDevelopmentResult | null
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
+  readonly onFindGrunnkartResultInMap: () => void
   readonly natureBreakdown: PlannedNatureBreakdown | null
   readonly natureBreakdownState: 'idle' | 'loading' | 'error'
   readonly analysisTarget: PlannedDevelopmentAnalysisTarget
@@ -167,11 +168,11 @@ function ValuedNatureResult({
               : selection.label}
           </strong>
         </div>
-        {selection.kind !== 'all' && (
-          <button type="button" onClick={() => onShowInMap({ kind: 'all' })}>
-            Finn alle overlapper i kart
-          </button>
-        )}
+        <button type="button" onClick={() => onShowInMap({ kind: 'all' })}>
+          {selection.kind === 'all'
+            ? 'Finn alle i kart'
+            : 'Vis alle og finn i kart'}
+        </button>
       </div>
 
       <div className="valued-nature-breakdown">
@@ -292,6 +293,7 @@ export function PlannedDevelopmentSummary({
   result,
   visible,
   onVisibleChange,
+  onFindGrunnkartResultInMap,
   natureBreakdown,
   natureBreakdownState,
   analysisTarget,
@@ -449,6 +451,14 @@ export function PlannedDevelopmentSummary({
                 </small>
               </span>
             </label>
+
+            <button
+              type="button"
+              className="analysis-result__find-map"
+              onClick={onFindGrunnkartResultInMap}
+            >
+              Finn analyseresultatet i kartet <span aria-hidden="true">→</span>
+            </button>
 
             <div className="plan-layer-legend" aria-label="Tegnforklaring for analyseresultatet">
               <div>
