@@ -32,6 +32,7 @@ describe('valued nature × future development', () => {
 
   it('counts only valued-nature pixels inside the generic future-development mask', () => {
     const overlay: PlannedDevelopmentOverlayGrid = {
+      kind: 'planned',
       zoom: 9,
       cx0: 0,
       cy0: 0,
@@ -86,6 +87,7 @@ describe('valued nature × future development', () => {
 
   it('respects holes in polygon geometry', () => {
     const overlay: PlannedDevelopmentOverlayGrid = {
+      kind: 'planned',
       zoom: 9,
       cx0: 0,
       cy0: 0,
@@ -116,6 +118,7 @@ describe('valued nature × future development', () => {
   })
   it('builds a filtered map mask for a selected value category', () => {
     const overlay: PlannedDevelopmentOverlayGrid = {
+      kind: 'planned',
       zoom: 9,
       cx0: 0,
       cy0: 0,
