@@ -1,5 +1,6 @@
 import TileGrid from 'ol/tilegrid/TileGrid'
 
+import { loadSharedImageBlob } from './sharedImageRequests'
 import {
   ACCOUNT_CRS,
   ACCOUNT_ORIGIN,
@@ -17,7 +18,6 @@ const MAX_CONCURRENT_REQUESTS = 4
 const NATURE_CLASS = 2
 const AGRICULTURE_CLASS = 1
 const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
-const IMAGE_CACHE_LIMIT = 120
 export const NATURE_TYPE_SCALE = 2
 export const NATURE_TYPE_TILE_PIXELS = PLAN_TILE_PIXELS * NATURE_TYPE_SCALE
 
@@ -29,7 +29,6 @@ export const natureTypeDefinitions = [
   { id: 'kyst', label: 'Kyststrender, svaberg og dyner', sourceValue: 'kyststrenderSvabergDyner', color: [0, 255, 255], displayColor: '#DCDCDC' },
 ] as const
 
-const imageBlobCache = new Map<string, Promise<Blob>>()
 const plannedDevelopmentCache = new Map<string, PlannedDevelopmentResult>()
 const natureBreakdownCache = new Map<string, PlannedNatureBreakdown>()
 
@@ -284,7 +283,7 @@ export function buildPlanTileUrl(tileCoord: number[]): string {
 }
 
 export function loadPlanTileBlobByUrl(url: string, signal?: AbortSignal): Promise<Blob> {
-  return loadCachedImageBlob(url, signal)
+  return loadSharedImageBlob(url, signal)
 }
 
 const NATURE_TYPE_STYLE = (() => {
@@ -401,36 +400,6 @@ export async function calculatePlannedNatureBreakdown(
   return result
 }
 
-async function loadCachedImageBlob(url: string, signal?: AbortSignal): Promise<Blob> {
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-
-  let promise = imageBlobCache.get(url)
-  if (!promise) {
-    promise = fetch(url)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Karttjenesten feilet med HTTP ${response.status}`)
-        const contentType = response.headers.get('content-type') ?? ''
-        if (contentType && !contentType.startsWith('image/')) {
-          throw new Error('Karttjenesten returnerte ikke et bilde')
-        }
-        return response.blob()
-      })
-      .catch((error) => {
-        imageBlobCache.delete(url)
-        throw error
-      })
-    imageBlobCache.set(url, promise)
-    if (imageBlobCache.size > IMAGE_CACHE_LIMIT) {
-      const oldest = imageBlobCache.keys().next().value
-      if (oldest) imageBlobCache.delete(oldest)
-    }
-  }
-
-  const blob = await promise
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-  return blob
-}
-
 function overlayTilesWithNature(
   overlay: PlannedDevelopmentOverlayGrid,
 ): [number, number, number][] {
@@ -473,7 +442,7 @@ async function countNatureTypesInTile(
   overlay: PlannedDevelopmentOverlayGrid,
   signal?: AbortSignal,
 ): Promise<{ counts: number[]; unclassified: number }> {
-  const blob = await loadCachedImageBlob(buildNatureTypeTileUrl(tileCoord), signal)
+  const blob = await loadSharedImageBlob(buildNatureTypeTileUrl(tileCoord), signal)
   const bitmap = await createImageBitmap(blob)
 
   try {
