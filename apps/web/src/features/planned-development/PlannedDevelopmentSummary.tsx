@@ -87,6 +87,9 @@ const analysisTargets: readonly {
   },
 ]
 
+const readyAnalysisTargets = analysisTargets.filter((target) => target.status === 'ready')
+const plannedAnalysisTargets = analysisTargets.filter((target) => target.status === 'next')
+
 function dekar(km2: number): string {
   return `${areaFormatter.format(km2 * 1000)} dekar`
 }
@@ -322,7 +325,10 @@ export function PlannedDevelopmentSummary({
       </div>
 
       <div className="analysis-area-card">
-        <span className="analysis-workspace__label">Analyseområde</span>
+        <span className="analysis-step-label">
+          <b aria-hidden="true">1</b>
+          Analyseområde
+        </span>
         <strong>Områder satt av til framtidig utbygging</strong>
         <p>
           Kommuneplanområder med framtidig arealbruk brukes som analyseområde.
@@ -333,12 +339,15 @@ export function PlannedDevelopmentSummary({
 
       <div className="analysis-target-picker">
         <div className="analysis-target-picker__heading">
-          <span className="analysis-workspace__label">Analyser mot</span>
-          <small>Ett analysegrunnlag om gangen</small>
+          <span className="analysis-step-label">
+            <b aria-hidden="true">2</b>
+            Velg analysegrunnlag
+          </span>
+          <small>Hva skal utbyggingsområdene krysses med?</small>
         </div>
 
         <div className="analysis-target-list" role="radiogroup" aria-label="Analysegrunnlag">
-          {analysisTargets.map((target) => (
+          {readyAnalysisTargets.map((target) => (
             <button
               type="button"
               className={
@@ -356,21 +365,29 @@ export function PlannedDevelopmentSummary({
                 <strong>{target.label}</strong>
                 <small>{target.description}</small>
               </span>
-              <span className={
-                target.status === 'ready'
-                  ? 'analysis-target__status analysis-target__status--ready'
-                  : 'analysis-target__status'
-              }>
-                {target.status === 'ready' ? 'Klar' : 'Neste steg'}
-              </span>
             </button>
           ))}
         </div>
+
+        <details className="analysis-upcoming">
+          <summary>Flere analyser planlegges</summary>
+          <div className="analysis-upcoming__list">
+            {plannedAnalysisTargets.map((target) => (
+              <div className="analysis-upcoming__item" key={target.id}>
+                <strong>{target.label}</strong>
+                <small>{target.description}</small>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
 
       <div className="analysis-result">
         <div className="analysis-result__heading">
-          <span className="analysis-workspace__label">Resultat</span>
+          <span className="analysis-step-label">
+            <b aria-hidden="true">3</b>
+            Resultat
+          </span>
           <strong>{selectedTarget.label}</strong>
         </div>
 
