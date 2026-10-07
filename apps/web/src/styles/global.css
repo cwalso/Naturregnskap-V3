@@ -3979,3 +3979,114 @@ button.overview-status-card:hover {
     min-width: 31rem;
   }
 }
+
+
+/* V3.25 – skogside */
+.account-themes {
+  margin-top: 2.2rem;
+}
+.theme-grid--account {
+  display: grid;
+  grid-template-columns: minmax(16rem, 23rem);
+}
+.theme-card--account {
+  min-height: 12rem;
+  background: #f4f7f1;
+  border-color: #d9e2d4;
+}
+.theme-card--account .theme-card__icon {
+  background: #dcebd8;
+  color: #315c3b;
+}
+.forest-hero__image {
+  background:
+    linear-gradient(rgb(24 55 35 / 12%), rgb(24 55 35 / 12%)),
+    url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.forest-account-note {
+  display: flex;
+  gap: .85rem;
+  margin-bottom: 3.2rem;
+  padding: 1rem 1.15rem;
+  background: #edf5ea;
+  border-left: 4px solid #4f7f51;
+}
+.forest-account-note > span {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: .05rem;
+  color: #fff;
+  background: #4f7f51;
+  border-radius: 50%;
+  font-size: .8rem;
+  font-weight: 700;
+}
+.forest-account-note strong {
+  display: block;
+  margin-bottom: .35rem;
+}
+.forest-account-note p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.forest-map-legend__primary {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin: .75rem 0 1.25rem;
+  font-size: .78rem;
+}
+.forest-map-legend__primary i {
+  display: inline-block;
+  width: 1.05rem;
+  height: 1.05rem;
+  background: #1f6e49;
+}
+.forest-map-legend__types {
+  display: grid;
+  gap: .5rem;
+  padding-top: .85rem;
+  border-top: 1px solid #e0ddd5;
+}
+.forest-map-legend__types > strong {
+  margin-bottom: .15rem;
+  font-size: .72rem;
+}
+.forest-map-legend__types > span {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--color-text-muted);
+  font-size: .72rem;
+}
+.forest-map-legend__types i {
+  display: inline-block;
+  flex: 0 0 .9rem;
+  width: .9rem;
+  height: .9rem;
+}
+.forest-page__method {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid #d9ddd8;
+  font-size: .72rem;
+}
+.forest-type-chart .thematic-value-chart__track {
+  background: #edf2e9;
+}
+
+@media (max-width: 52rem) {
+  .theme-grid--account {
+    grid-template-columns: 1fr;
+  }
+  .forest-account-note {
+    margin-bottom: 2.2rem;
+  }
+}
