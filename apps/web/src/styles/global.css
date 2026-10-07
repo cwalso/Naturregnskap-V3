@@ -4809,3 +4809,53 @@ button.overview-status-card:hover {
     text-align: left;
   }
 }
+
+
+/* V3.30 – tegnet analyseområde */
+.analysis-draw-controls {
+  margin-top: .55rem;
+  padding: .65rem;
+  background: #eef6f4;
+  border: 1px solid #b7d4cf;
+  border-radius: .4rem;
+}
+.analysis-draw-controls p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .64rem;
+  line-height: 1.45;
+}
+.analysis-draw-controls > div,
+.analysis-drawn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .55rem;
+}
+.analysis-draw-controls button,
+.analysis-drawn-actions button {
+  min-height: 2.15rem;
+  padding: .4rem .55rem;
+  color: var(--color-accent);
+  background: #fff;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-control);
+  font-size: .64rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.analysis-draw-controls button:nth-child(2) {
+  color: #fff;
+  background: var(--color-accent);
+}
+.analysis-draw-controls button:hover,
+.analysis-drawn-actions button:hover {
+  background: var(--color-brand-surface);
+}
+.analysis-draw-controls button:nth-child(2):hover {
+  background: var(--color-accent);
+  filter: brightness(.92);
+}
+.analysis-drawn-actions {
+  margin-top: .45rem;
+}
