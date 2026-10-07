@@ -12,7 +12,10 @@ import {
   PLANNED_AGRICULTURE_COLOR,
   PLANNED_NATURE_COLOR,
 } from '../../map/plannedDevelopmentOverlay'
-import type { PlannedValuedNatureAnalysis } from '../../map/plannedValuedNature'
+import type {
+  PlannedValuedNatureAnalysis,
+  ValuedNatureMapSelection,
+} from '../../map/plannedValuedNature'
 
 export type PlannedDevelopmentAnalysisTarget =
   | 'grunnkart'
@@ -23,6 +26,8 @@ export type PlannedDevelopmentAnalysisTarget =
 interface PlannedDevelopmentSummaryProps {
   readonly state: 'idle' | 'loading' | 'error'
   readonly result: PlannedDevelopmentResult | null
+  readonly futureAreaVisible: boolean
+  readonly onFutureAreaVisibleChange: (visible: boolean) => void
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
   readonly natureBreakdown: PlannedNatureBreakdown | null
@@ -31,6 +36,8 @@ interface PlannedDevelopmentSummaryProps {
   readonly onAnalysisTargetChange: (target: PlannedDevelopmentAnalysisTarget) => void
   readonly valuedNatureAnalysis: PlannedValuedNatureAnalysis | null
   readonly valuedNatureAnalysisState: 'idle' | 'loading' | 'error'
+  readonly valuedNatureMapSelection: ValuedNatureMapSelection
+  readonly onShowValuedNatureInMap: (selection: ValuedNatureMapSelection) => void
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', {
@@ -85,8 +92,12 @@ function dekar(km2: number): string {
 
 function ValuedNatureResult({
   analysis,
+  selection,
+  onShowInMap,
 }: {
   readonly analysis: PlannedValuedNatureAnalysis
+  readonly selection: ValuedNatureMapSelection
+  readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
 }) {
   if (analysis.affectedFeatureCount === 0) {
     return (
@@ -128,11 +139,33 @@ function ValuedNatureResult({
         </div>
       </div>
 
+      <div className="valued-nature-map-control" aria-live="polite">
+        <div>
+          <span className="analysis-workspace__label">Kart viser</span>
+          <strong>
+            {selection.kind === 'all'
+              ? 'Alle beregnede overlapper'
+              : selection.label}
+          </strong>
+        </div>
+        {selection.kind !== 'all' && (
+          <button type="button" onClick={() => onShowInMap({ kind: 'all' })}>
+            Vis alle overlapper
+          </button>
+        )}
+      </div>
+
       <div className="valued-nature-breakdown">
         <p className="map-sidebar__eyebrow">Fordelt på verdikategori</p>
         <div className="valued-nature-breakdown__list">
           {analysis.valueMetrics.map((metric) => (
-            <ValuedNatureMetricRow metric={metric} key={metric.label} showColor />
+            <ValuedNatureMetricRow
+              metric={metric}
+              key={metric.label}
+              showColor
+              selected={selection.kind === 'value' && selection.label === metric.label}
+              onShowInMap={() => onShowInMap({ kind: 'value', label: metric.label })}
+            />
           ))}
         </div>
       </div>
@@ -141,7 +174,12 @@ function ValuedNatureResult({
         <p className="map-sidebar__eyebrow">Fordelt på naturtype</p>
         <div className="valued-nature-breakdown__list">
           {primaryTypes.map((metric) => (
-            <ValuedNatureMetricRow metric={metric} key={metric.label} />
+            <ValuedNatureMetricRow
+              metric={metric}
+              key={metric.label}
+              selected={selection.kind === 'type' && selection.label === metric.label}
+              onShowInMap={() => onShowInMap({ kind: 'type', label: metric.label })}
+            />
           ))}
         </div>
 
@@ -150,7 +188,12 @@ function ValuedNatureResult({
             <summary>Vis alle {analysis.typeMetrics.length} naturtyper</summary>
             <div className="valued-nature-breakdown__list">
               {remainingTypes.map((metric) => (
-                <ValuedNatureMetricRow metric={metric} key={metric.label} />
+                <ValuedNatureMetricRow
+                  metric={metric}
+                  key={metric.label}
+                  selected={selection.kind === 'type' && selection.label === metric.label}
+                  onShowInMap={() => onShowInMap({ kind: 'type', label: metric.label })}
+                />
               ))}
             </div>
           </details>
@@ -178,12 +221,16 @@ function ValuedNatureResult({
 function ValuedNatureMetricRow({
   metric,
   showColor = false,
+  selected = false,
+  onShowInMap,
 }: {
   readonly metric: PlannedValuedNatureAnalysis['valueMetrics'][number]
   readonly showColor?: boolean
+  readonly selected?: boolean
+  readonly onShowInMap: () => void
 }) {
   return (
-    <div className="valued-nature-metric">
+    <div className={selected ? 'valued-nature-metric valued-nature-metric--selected' : 'valued-nature-metric'}>
       <div className="valued-nature-metric__labels">
         <strong>
           {showColor && (
@@ -209,6 +256,14 @@ function ValuedNatureMetricRow({
           }}
         />
       </div>
+      <button
+        type="button"
+        className="valued-nature-metric__map-action"
+        aria-pressed={selected}
+        onClick={onShowInMap}
+      >
+        {selected ? 'Vises i kart' : 'Vis i kart'} <span aria-hidden="true">→</span>
+      </button>
     </div>
   )
 }
@@ -216,6 +271,8 @@ function ValuedNatureMetricRow({
 export function PlannedDevelopmentSummary({
   state,
   result,
+  futureAreaVisible,
+  onFutureAreaVisibleChange,
   visible,
   onVisibleChange,
   natureBreakdown,
@@ -224,6 +281,8 @@ export function PlannedDevelopmentSummary({
   onAnalysisTargetChange,
   valuedNatureAnalysis,
   valuedNatureAnalysisState,
+  valuedNatureMapSelection,
+  onShowValuedNatureInMap,
 }: PlannedDevelopmentSummaryProps) {
   const selectedTarget = analysisTargets.find((target) => target.id === analysisTarget)
     ?? analysisTargets[0]
@@ -248,6 +307,14 @@ export function PlannedDevelopmentSummary({
           Kommuneplanområder med framtidig arealbruk som inngår i
           prototypeberegningen.
         </p>
+        <label className="analysis-area-card__toggle">
+          <input
+            type="checkbox"
+            checked={futureAreaVisible}
+            onChange={(event) => onFutureAreaVisibleChange(event.target.checked)}
+          />
+          <span>Vis framtidige utbyggingsområder i kartet</span>
+        </label>
         <small>Kilde: DiBK kommuneplaner</small>
       </div>
 
@@ -305,7 +372,11 @@ export function PlannedDevelopmentSummary({
               Dette skal ikke tolkes som manglende treff.
             </p>
           ) : valuedNatureAnalysis ? (
-            <ValuedNatureResult analysis={valuedNatureAnalysis} />
+            <ValuedNatureResult
+              analysis={valuedNatureAnalysis}
+              selection={valuedNatureMapSelection}
+              onShowInMap={onShowValuedNatureInMap}
+            />
           ) : result?.status === 'not_available' ? (
             <>
               <p className="plan-analysis__status">
@@ -322,8 +393,8 @@ export function PlannedDevelopmentSummary({
               skal resultatet vise {selectedTarget.futureResult}.
             </p>
             <small>
-              Kartlaget kan fortsatt slås av og på separat under Kartlag. Synlighet
-              i kartet betyr ikke at laget inngår i analysen.
+              Temadataene har egne temasider. Et datasett vises i denne kartflaten
+              når det inngår i en konkret overlayanalyse.
             </small>
           </div>
         ) : state === 'loading' ? (
