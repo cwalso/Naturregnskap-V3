@@ -16,6 +16,7 @@ interface ExploreNaturePageProps {
   readonly onOpenThemePage: (datasetId: ThematicDatasetId) => void
   readonly onOpenForestPage: () => void
   readonly onOpenEcosystemPage: (ecosystemId: EcosystemPageId) => void
+  readonly onOpenUrbanNaturePage: () => void
 }
 
 function evaluationLabel(
@@ -37,6 +38,7 @@ export function ExploreNaturePage({
   onOpenThemePage,
   onOpenForestPage,
   onOpenEcosystemPage,
+  onOpenUrbanNaturePage,
 }: ExploreNaturePageProps) {
   const place = municipalityName ? ` i ${municipalityName}` : ''
 
@@ -80,7 +82,21 @@ export function ExploreNaturePage({
           </p>
         </div>
 
-        <div className="theme-grid theme-grid--account" role="list" aria-label="Økosystemer i regnskapsgrunnlaget">
+        <div className="theme-grid theme-grid--account" role="list" aria-label="Temasider i regnskapsgrunnlaget">
+          <button
+            type="button"
+            className="theme-card theme-card--page theme-card--account"
+            onClick={() => onOpenEcosystemPage('vatmark')}
+          >
+            <div className="theme-card__icon" aria-hidden="true">≈</div>
+            <strong>Myr (våtmark)</strong>
+            <span>Utbredelse og arealandel for våtmark basert på Grunnkart for arealanalyse.</span>
+            <span className="theme-card__footer">
+              <span className="status-tag">Grunnkart 2025</span>
+              <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
+            </span>
+          </button>
+
           <button
             type="button"
             className="theme-card theme-card--page theme-card--account"
@@ -91,35 +107,23 @@ export function ExploreNaturePage({
             <span>Skogareal, utbredelse og fordeling basert på Grunnkart for arealanalyse.</span>
             <span className="theme-card__footer">
               <span className="status-tag">Grunnkart 2025</span>
-              <span className="theme-card__open">
-                Åpne temaside <span aria-hidden="true">→</span>
-              </span>
+              <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
             </span>
           </button>
 
-          {([
-            ['vatmark', 'Våtmark', '≈', 'Utbredelse og arealandel for våtmark i Grunnkartet.'],
-            ['hei-buskmark', 'Hei og buskmark', '⌁', 'Utbredelse og arealandel for hei og buskmark.'],
-            ['lite-vegetert-mark', 'Lite vegetert mark', '△', 'Utbredelse og arealandel for lite vegetert mark.'],
-            ['kyst', 'Kyststrender, svaberg og dyner', '≋', 'Utbredelse og arealandel for kystnatur i Grunnkartet.'],
-          ] as const).map(([id, title, icon, description]) => (
-            <button
-              type="button"
-              className="theme-card theme-card--page theme-card--account"
-              key={id}
-              onClick={() => onOpenEcosystemPage(id)}
-            >
-              <div className="theme-card__icon" aria-hidden="true">{icon}</div>
-              <strong>{title}</strong>
-              <span>{description}</span>
-              <span className="theme-card__footer">
-                <span className="status-tag">Grunnkart 2025</span>
-                <span className="theme-card__open">
-                  Åpne temaside <span aria-hidden="true">→</span>
-                </span>
-              </span>
-            </button>
-          ))}
+          <button
+            type="button"
+            className="theme-card theme-card--page theme-card--account"
+            onClick={onOpenUrbanNaturePage}
+          >
+            <div className="theme-card__icon" aria-hidden="true">▦</div>
+            <strong>Bynaturen (grå arealer)</strong>
+            <span>Bebygde og opparbeidede arealer som inngang til bynatur og gjenbruk av grå arealer.</span>
+            <span className="theme-card__footer">
+              <span className="status-tag">Grunnkart / grå arealer</span>
+              <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
+            </span>
+          </button>
         </div>
       </section>
 
