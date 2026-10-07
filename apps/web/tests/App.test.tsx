@@ -260,10 +260,8 @@ describe('sidestruktur og Oversikt', () => {
     expect(
       await screen.findByText('Kunne ikke hente arealbalansen. Prøv igjen senere.'),
     ).toBeInTheDocument()
-    expect(screen.getByText('Arealfordelingen kunne ikke hentes nå.')).toBeInTheDocument()
-    expect(screen.queryByText(
-      'Arealfordelingen vises når Level0-resultatet er klargjort for kommunen.',
-    )).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Se statistikk for naturen i Trondheim/ })).toBeInTheDocument()
+    expect(screen.getByText('Kommunevis kartleggingsgrad er ikke beregnet i prototypen ennå.')).toBeInTheDocument()
   })
 
   it('viser dashboardnavigasjon etter kommunevalg og Oversikt som standard', async () => {
@@ -272,13 +270,13 @@ describe('sidestruktur og Oversikt', () => {
     await chooseTrondheim()
 
     const navigation = screen.getByRole('navigation', { name: 'Hovednavigasjon' })
-    expect(navigation).toHaveTextContent('Oversikt')
+    expect(navigation).toHaveTextContent('Kommuneoversikt')
     expect(navigation).toHaveTextContent('Naturtapet')
-    expect(navigation).toHaveTextContent('Hva slags natur har vi?')
+    expect(navigation).toHaveTextContent('Naturtema')
     expect(navigation).toHaveTextContent('Utforsk i kart')
-    expect(screen.getByRole('link', { name: 'Oversikt' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Kommuneoversikt' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('img', { name: 'Miljødirektoratet' })).toHaveAttribute('src', agencyLogo)
-    expect(screen.getByRole('banner')).toHaveTextContent('Kommunalt naturregnskap')
+    expect(screen.getByRole('banner')).toHaveTextContent('TEST')
   })
 
   it('viser faglig avgrensede flater for Naturtapet og Utforsk naturen', async () => {
@@ -304,7 +302,7 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    expect(await screen.findByRole('heading', { name: 'Hvor mye natur har Trondheim?' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
 
     expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim')
@@ -366,7 +364,7 @@ describe('sidestruktur og Oversikt', () => {
     mockMunicipalityFlow()
     render(<App createMap={createMap} />)
     await chooseTrondheim()
-    await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(1))
+    expect(createMap).not.toHaveBeenCalled()
 
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
 
@@ -398,28 +396,27 @@ describe('sidestruktur og Oversikt', () => {
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
     expect(screen.getByText(/Verdsatte naturtyper × framtidig utbygging/)).toBeInTheDocument()
 
-    await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(2))
+    await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(1))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
 
     fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
   })
 
-  it('viser Level0, proveniens og kart på Oversikt uten syntetiske endringer', async () => {
+  it('viser enkel kommuneoversikt med hovedkategorier og innganger videre', async () => {
     mockMunicipalityFlow()
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    expect(await screen.findByRole('heading', { name: 'Hvor mye natur har Trondheim?' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Arealfordeling i Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Hva vil du vite videre?' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Hva har gått tapt/ })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Hvor ligger arealene?' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Kart over Trondheim')).toBeInTheDocument()
-    expect(screen.queryByText('Natur → Bebygd')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Se statistikk for naturen i Trondheim/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Se naturen i Trondheim i kart/ })).toBeInTheDocument()
+    expect(screen.getByText('Naturtap')).toBeInTheDocument()
+    expect(screen.getByText('Kartleggingsgrad')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Kart over Trondheim')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByText('Om datagrunnlaget', { selector: 'summary' }))
     expect(screen.getByRole('heading', { name: 'Om datagrunnlaget' })).toBeInTheDocument()
