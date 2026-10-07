@@ -3110,10 +3110,11 @@ body { font-size: 16px; }
   overflow: hidden;
   background: #a8c0c2;
 }
-.account-metric__visual svg {
+.account-metric__visual img {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .account-metric__body {
   min-height: 10.5rem;
@@ -3276,33 +3277,8 @@ button.overview-status-card:hover {
   overflow: hidden;
   border-radius: .65rem;
   background:
-    radial-gradient(circle at 22% 64%, #975a75 0 7%, transparent 8%),
-    radial-gradient(circle at 42% 55%, #ba7e8d 0 8%, transparent 9%),
-    radial-gradient(circle at 70% 66%, #774e65 0 7%, transparent 8%),
-    linear-gradient(165deg, transparent 0 48%, rgb(255 255 255 / 22%) 49% 51%, transparent 52%),
-    linear-gradient(#91c5de 0 39%, #d9d8c5 40% 45%, #8a8d70 46% 100%);
-}
-.thematic-hero__image::before,
-.thematic-hero__image::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  background: rgb(255 255 255 / 23%);
-}
-.thematic-hero__image::before {
-  width: 12rem;
-  height: 3rem;
-  top: 2rem;
-  left: 2rem;
-  filter: blur(10px);
-}
-.thematic-hero__image::after {
-  width: 18rem;
-  height: 7rem;
-  right: -3rem;
-  bottom: -2rem;
-  background: #5d704d;
-  transform: rotate(-9deg);
+    url('https://images.unsplash.com/photo-1755268359635-22606be29d0b?auto=format&fit=crop&q=82&w=1400')
+    center / cover no-repeat;
 }
 .thematic-questions {
   border-top: 1px solid #cfd5d2;
@@ -3806,4 +3782,50 @@ button.overview-status-card:hover {
     flex-direction: column;
     gap: .2rem;
   }
+}
+
+
+/* V3.23 – tettere mot referanseskissene */
+.overview-sketch {
+  max-width: 84rem;
+}
+.overview-sketch .account-overview__header {
+  padding: 1.2rem 0 2.1rem;
+}
+.overview-sketch .account-overview__header h1 {
+  font-size: clamp(1.8rem, 2.8vw, 2.35rem);
+}
+.account-metric__visual {
+  height: 10rem;
+}
+.account-metric__body {
+  min-height: 10.4rem;
+  background: #d7e8f4;
+}
+.overview-sketch .account-metric h2 {
+  color: var(--color-accent);
+  font-size: .88rem;
+}
+.overview-sketch .account-metric__description {
+  min-height: 2.1rem;
+  color: var(--color-accent);
+}
+.overview-sketch__actions {
+  margin-top: 1.15rem;
+}
+.overview-sketch__status {
+  margin-top: .95rem;
+}
+.themapage,
+.thematic-page--editorial {
+  background: transparent;
+}
+.thematic-hero {
+  margin-top: .15rem;
+}
+.thematic-kpis article {
+  background: #d7e8f4;
+}
+.thematic-plan-cards article {
+  background: #fff0df;
 }
