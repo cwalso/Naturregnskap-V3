@@ -297,6 +297,18 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
 
+  it('går alltid til Oversikt når en kommune velges', async () => {
+    mockMunicipalityFlow()
+    window.location.hash = '#naturtapet'
+    render(<App createMap={() => mapMock()} />)
+
+    expect(screen.getByRole('heading', { name: 'Naturtapet' })).toBeInTheDocument()
+    await chooseTrondheim()
+
+    expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim' })).toBeInTheDocument()
+    expect(window.location.hash).toBe('#oversikt')
+  })
+
   it('beholder valgt kommune ved navigasjon', async () => {
     mockMunicipalityFlow()
     render(<App createMap={() => mapMock()} />)
@@ -410,8 +422,8 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Fulldyrka jord' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Bebygd og opparbeidet areal' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Se statistikk for naturen i Trondheim/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Se naturen i Trondheim i kart/ })).toBeInTheDocument()
     expect(screen.getByText('Naturtap')).toBeInTheDocument()
@@ -430,7 +442,7 @@ describe('Level0-regnskap', () => {
     render(<AccountOverview data={data} />)
 
     expect(screen.getByText(/12.000/)).toHaveTextContent('12 000 dekar')
-    expect(screen.getByRole('heading', { name: 'Dyrket mark' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Fulldyrka jord' })).toBeInTheDocument()
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
     expect(screen.queryByText(/Arealregnskap 2025/)).not.toBeInTheDocument()
     expect(screen.getByText('Arealbasert naturregnskap · 2025')).toBeInTheDocument()
