@@ -53,6 +53,7 @@ export interface ValuedNatureBreakdownMetric {
   readonly featureCount: number
   readonly areaKm2: number
   readonly sharePercent: number
+  readonly mapPixelIndices: Uint32Array
 }
 
 export interface PlannedValuedNatureAnalysis {
@@ -66,6 +67,7 @@ export interface PlannedValuedNatureAnalysis {
   readonly uniqueOverlapAreaKm2: number
   readonly registeredOverlapAreaKm2: number
   readonly hasOverlappingRegistrations: boolean
+  readonly allOverlapPixelIndices: Uint32Array
   readonly valueMetrics: readonly ValuedNatureBreakdownMetric[]
   readonly typeMetrics: readonly ValuedNatureBreakdownMetric[]
 }
@@ -109,6 +111,7 @@ async function runAnalysis(
     registeredOverlapAreaKm2,
     hasOverlappingRegistrations:
       registeredOverlapAreaKm2 > uniqueOverlapAreaKm2 + pixelAreaKm2,
+    allOverlapPixelIndices: summary.uniquePixelIndices,
     valueMetrics: buildMetrics(
       summary.byValue,
       summary.affectedFeatureCount,
@@ -192,12 +195,14 @@ async function fetchValuedNatureFeatures(
 interface GroupCounter {
   featureCount: number
   pixelCount: number
+  pixelIndices: Set<number>
 }
 
 interface FeatureSummary {
   affectedFeatureCount: number
   featurePixelTotal: number
   uniquePixelCount: number
+  uniquePixelIndices: Uint32Array
   byValue: Map<string, GroupCounter>
   byType: Map<string, GroupCounter>
 }
@@ -224,39 +229,40 @@ function summarizeFeatures(
     const rings = normalizeRings(feature.geometry?.rings)
     if (rings.length === 0) continue
 
-    const pixelCount = countFeaturePixels(rings, overlay, uniqueOverlap)
-    if (pixelCount === 0) continue
+    const pixelIndices = featurePixelIndices(rings, overlay, uniqueOverlap)
+    if (pixelIndices.length === 0) continue
 
     affectedFeatureCount += 1
-    featurePixelTotal += pixelCount
+    featurePixelTotal += pixelIndices.length
 
     const value = attributeText(feature.attributes, 'Verdikategori')
     const natureType = attributeText(feature.attributes, 'Naturtype')
-    incrementGroup(byValue, value, pixelCount)
-    incrementGroup(byType, natureType, pixelCount)
+    incrementGroup(byValue, value, pixelIndices)
+    incrementGroup(byType, natureType, pixelIndices)
   }
 
-  let uniquePixelCount = 0
-  for (const value of uniqueOverlap) {
-    if (value) uniquePixelCount += 1
+  const uniquePixelIndices: number[] = []
+  for (let index = 0; index < uniqueOverlap.length; index += 1) {
+    if (uniqueOverlap[index]) uniquePixelIndices.push(index)
   }
 
   return {
     affectedFeatureCount,
     featurePixelTotal,
-    uniquePixelCount,
+    uniquePixelCount: uniquePixelIndices.length,
+    uniquePixelIndices: Uint32Array.from(uniquePixelIndices),
     byValue,
     byType,
   }
 }
 
-function countFeaturePixels(
+function featurePixelIndices(
   rings: readonly (readonly [number, number])[][],
   overlay: PlannedDevelopmentOverlayGrid,
   uniqueOverlap: Uint8Array,
-): number {
+): number[] {
   const bounds = polygonBounds(rings)
-  if (!bounds) return 0
+  if (!bounds) return []
 
   const [minX, minY, maxX, maxY] = bounds
   const [extentMinX, extentMinY, extentMaxX, extentMaxY] = overlay.extent
@@ -274,10 +280,10 @@ function countFeaturePixels(
     || maxY < extentMinY
     || minY > extentMaxY
   ) {
-    return 0
+    return []
   }
 
-  let pixelCount = 0
+  const pixelIndices: number[] = []
   for (let row = minRow; row <= maxRow; row += 1) {
     const y = extentMaxY - (row + 0.5) * resolutionY
     const rowStart = row * overlay.width
@@ -289,12 +295,12 @@ function countFeaturePixels(
       const x = extentMinX + (column + 0.5) * resolutionX
       if (!pointInPolygon(x, y, rings)) continue
 
-      pixelCount += 1
+      pixelIndices.push(index)
       uniqueOverlap[index] = 1
     }
   }
 
-  return pixelCount
+  return pixelIndices
 }
 
 function normalizeRings(
@@ -378,12 +384,18 @@ function attributeText(attributes: Record<string, unknown>, field: string): stri
 function incrementGroup(
   groups: Map<string, GroupCounter>,
   label: string,
-  pixelCount: number,
+  pixelIndices: readonly number[],
 ) {
-  const current = groups.get(label) ?? { featureCount: 0, pixelCount: 0 }
+  const current = groups.get(label) ?? {
+    featureCount: 0,
+    pixelCount: 0,
+    pixelIndices: new Set<number>(),
+  }
+  for (const index of pixelIndices) current.pixelIndices.add(index)
   groups.set(label, {
     featureCount: current.featureCount + 1,
-    pixelCount: current.pixelCount + pixelCount,
+    pixelCount: current.pixelCount + pixelIndices.length,
+    pixelIndices: current.pixelIndices,
   })
 }
 
@@ -404,6 +416,7 @@ function buildMetrics(
       : affectedFeatureCount > 0
         ? counter.featureCount / affectedFeatureCount * 100
         : 0,
+    mapPixelIndices: Uint32Array.from(counter.pixelIndices),
   }))
 
   if (useValueColors) {
