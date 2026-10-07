@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type {
   ThematicCoverageResponse,
   ThematicDatasetEvaluation,
@@ -15,6 +17,7 @@ interface ThematicDataPageProps {
   readonly thematicCoverageState?: 'idle' | 'loading' | 'error'
   readonly onBack: () => void
   readonly onOpenFutureDevelopmentAnalysis?: () => void
+  readonly mapContent?: ReactNode
 }
 
 function evaluationText(
@@ -38,6 +41,233 @@ function evaluationText(
   return `Treffstatus kunne ikke vurderes nå. ${evaluation.note}`
 }
 
+function TreeIcon() {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 6v34M24 12 15 21h6l-9 9h9l-7 8h20l-7-8h9l-9-9h6Z" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ValuedNaturePage({
+  municipalityName,
+  evaluation,
+  state,
+  onBack,
+  onOpenFutureDevelopmentAnalysis,
+  mapContent,
+}: {
+  readonly municipalityName?: string
+  readonly evaluation?: ThematicDatasetEvaluation
+  readonly state: 'idle' | 'loading' | 'error'
+  readonly onBack: () => void
+  readonly onOpenFutureDevelopmentAnalysis?: () => void
+  readonly mapContent?: ReactNode
+}) {
+  const featureCount = evaluation?.status === 'hit' ? evaluation.featureCount : null
+  const municipality = municipalityName ?? 'kommunen'
+
+  return (
+    <section className="content-page thematic-page thematic-page--editorial" aria-labelledby="thematic-page-title">
+      <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
+        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <span aria-hidden="true">›</span>
+        <span>Verdsatte naturtyper</span>
+      </nav>
+
+      <header className="thematic-hero">
+        <div className="thematic-hero__content">
+          <div className="thematic-hero__title-row">
+            <span className="thematic-hero__icon"><TreeIcon /></span>
+            <h1 id="thematic-page-title">Verdsatte naturtyper</h1>
+          </div>
+          <p className="thematic-hero__lead">
+            Verdsatte naturtyper er registrerte naturtypelokaliteter som er kartlagt
+            og vurdert etter Miljødirektoratets instruks. De kan gi viktig kunnskap
+            om naturverdier i konkrete områder.
+          </p>
+
+          <div className="thematic-questions">
+            <details>
+              <summary>Hvilke naturtyper er verdsatte?</summary>
+              <p>
+                Datasettet viser registrerte naturtypelokaliteter som er gitt en
+                KU-verdi. Verdisettingen brukes som supplerende innsikt og er ikke
+                et heldekkende naturregnskap.
+              </p>
+            </details>
+            <details>
+              <summary>Hvordan kartlegges naturtypene?</summary>
+              <p>
+                Lokalitetene kommer fra Miljødirektoratets løpende karttjeneste.
+                Metode, registreringsår og dekning kan variere mellom områder.
+              </p>
+            </details>
+            <details>
+              <summary>Datagrunnlaget bak verdsatte naturtyper</summary>
+              <p>
+                Kilden er Miljødirektoratets datasett for naturtyper med KU-verdi.
+                Manglende registrering betyr ikke nødvendigvis at naturverdier mangler.
+              </p>
+            </details>
+          </div>
+        </div>
+
+        <div className="thematic-hero__image thematic-hero__image--valued" role="img" aria-label="Illustrasjon av kyst- og lyngnatur">
+          <span aria-hidden="true" />
+        </div>
+      </header>
+
+      <section className="thematic-kpis" aria-label="Nøkkeltall for verdsatte naturtyper">
+        <article>
+          <span>Registrerte objekter i {municipality}</span>
+          <strong>
+            {state === 'loading'
+              ? '…'
+              : state === 'error'
+                ? 'Ikke tilgjengelig'
+                : featureCount ?? 'Ingen registrerte treff'}
+          </strong>
+        </article>
+        <article>
+          <span>Dekning</span>
+          <strong>Ikke heldekkende</strong>
+        </article>
+      </section>
+
+      <section className="thematic-plan-cards" aria-label="Framtidig utbygging">
+        <article>
+          <strong>Verdsatte naturtyper i områder satt av til framtidig utbygging</strong>
+          <span>Beregn overlapp i analyseflaten.</span>
+          {onOpenFutureDevelopmentAnalysis && municipalityName && (
+            <button type="button" onClick={onOpenFutureDevelopmentAnalysis}>
+              Åpne analyse i kart <span aria-hidden="true">→</span>
+            </button>
+          )}
+        </article>
+        <article>
+          <strong>Områder uten registrert kartlegging i framtidige utbyggingsområder</strong>
+          <span>Ikke beregnet i denne versjonen.</span>
+        </article>
+      </section>
+
+      <details className="thematic-source-accordion">
+        <summary>Hvor er tallene hentet fra?</summary>
+        <p>
+          Kommunevis treffstatus hentes fra Miljødirektoratets løpende
+          feature-tjeneste. Datasettet er ikke heldekkende.
+        </p>
+      </details>
+
+      <aside className="thematic-warning">
+        <span className="thematic-warning__icon" aria-hidden="true">△</span>
+        <div>
+          <strong>Datasettet er ikke heldekkende</strong>
+          <p>
+            Kartleggingen kan være mangelfull i {municipality}. Tomme områder i
+            kartet betyr derfor ikke nødvendigvis at det ikke finnes verdifull natur
+            der, men kan bety at området ikke er kartlagt.
+          </p>
+          <p>
+            Dette må tas med i vurderingen når dataene brukes i arealplanlegging.
+          </p>
+        </div>
+      </aside>
+
+      {mapContent && (
+        <section className="thematic-map-section" aria-labelledby="valued-map-title">
+          <div className="thematic-section-heading">
+            <h2 id="valued-map-title">Verdsatte naturtyper i {municipality}</h2>
+            <p>Se registrerte lokaliteter og verdikategorier geografisk.</p>
+          </div>
+          {mapContent}
+        </section>
+      )}
+
+      <section className="thematic-insight-row" aria-labelledby="value-distribution-title">
+        <div className="thematic-insight-row__text">
+          <h2 id="value-distribution-title">Fordeling av verdiene</h2>
+          <p>
+            Verdisettingen er en egenskap ved de registrerte lokalitetene.
+            Kommunevis fordeling på verdikategori kobles inn når aggregeringen er
+            klar og etterprøvbar.
+          </p>
+          <p className="thematic-insight-row__source">
+            Kilde: Miljødirektoratet, naturtyper med KU-verdi
+          </p>
+        </div>
+        <div className="thematic-chart-placeholder" role="status">
+          <span>Fordeling per verdikategori er ikke koblet til temasiden ennå.</span>
+        </div>
+      </section>
+
+      <div className="thematic-questions thematic-questions--wide">
+        <details>
+          <summary>Hva betyr verdiene?</summary>
+          <p>
+            Verdikategoriene beskriver egenskaper ved registrerte lokaliteter.
+            De må tolkes sammen med metode, dekning og øvrig planfaglig kunnskap.
+          </p>
+        </details>
+        <details>
+          <summary>Hvor er tallene fra?</summary>
+          <p>
+            Dataene kommer fra Miljødirektoratets løpende tjeneste for naturtyper
+            med KU-verdi.
+          </p>
+        </details>
+      </div>
+
+      <section className="thematic-insight-row" aria-labelledby="nature-types-title">
+        <div className="thematic-insight-row__text">
+          <h2 id="nature-types-title">Naturtyper etter størrelse</h2>
+          <p>
+            En kommunevis rangering på naturtype kan gi nyttig oversikt, men skal
+            først vises når arealberegningen er koblet til med dokumentert metode.
+          </p>
+          <p className="thematic-insight-row__source">
+            Kilde: Miljødirektoratet, naturtyper med KU-verdi
+          </p>
+        </div>
+        <div className="thematic-chart-placeholder thematic-chart-placeholder--table" role="status">
+          <span>Arealfordeling per naturtype er ikke koblet til temasiden ennå.</span>
+        </div>
+      </section>
+
+      <div className="thematic-questions thematic-questions--wide">
+        <details>
+          <summary>Hvorfor passe på sjeldne naturtyper i kommunen?</summary>
+          <p>
+            Sjeldne eller sårbare naturtyper kan være viktige i konkrete
+            arealvurderinger. Temadataene bør brukes sammen med øvrig kunnskapsgrunnlag.
+          </p>
+        </details>
+        <details>
+          <summary>Hvor er tallene fra?</summary>
+          <p>Se metadata og metode hos Miljødirektoratet.</p>
+        </details>
+      </div>
+
+      <section className="thematic-faq" aria-labelledby="valued-faq-title">
+        <h2 id="valued-faq-title">Ofte stilte spørsmål</h2>
+        <details>
+          <summary>Hva er naturtyper?</summary>
+          <p>
+            Naturtyper beskriver områder med bestemte naturforhold og artssammensetning.
+          </p>
+        </details>
+        <details>
+          <summary>Betyr et tomt kartområde at naturen ikke er verdifull?</summary>
+          <p>
+            Nei. Datasettet er ikke heldekkende, og tomme områder kan være områder
+            som ikke er kartlagt.
+          </p>
+        </details>
+      </section>
+    </section>
+  )
+}
+
 export function ThematicDataPage({
   datasetId,
   municipalityName,
@@ -45,12 +275,27 @@ export function ThematicDataPage({
   thematicCoverageState = 'idle',
   onBack,
   onOpenFutureDevelopmentAnalysis,
+  mapContent,
 }: ThematicDataPageProps) {
   const dataset = thematicDatasets.find((item) => item.id === datasetId)
   if (!dataset) return null
 
   const content = getThematicPageContent(datasetId)
   const evaluation = thematicCoverage?.results.find((item) => item.datasetId === dataset.id)
+
+  if (dataset.id === 'valued-nature') {
+    return (
+      <ValuedNaturePage
+        municipalityName={municipalityName}
+        evaluation={evaluation}
+        state={thematicCoverageState}
+        onBack={onBack}
+        onOpenFutureDevelopmentAnalysis={onOpenFutureDevelopmentAnalysis}
+        mapContent={mapContent}
+      />
+    )
+  }
+
   const status = dataset.sourceStatus === 'visual-only'
     ? 'Kartlaget er koblet som visualisering. Kommunevis treffstatus beregnes ikke i denne versjonen.'
     : evaluationText(evaluation, thematicCoverageState, municipalityName)
@@ -107,21 +352,6 @@ export function ThematicDataPage({
           </dl>
         </aside>
       </div>
-
-      {dataset.id === 'valued-nature' && onOpenFutureDevelopmentAnalysis && municipalityName && (
-        <section className="thematic-page__analysis" aria-labelledby="thematic-analysis-title">
-          <p className="content-page__eyebrow">Analyse</p>
-          <h2 id="thematic-analysis-title">Hva overlapper framtidige utbyggingsområder?</h2>
-          <p>
-            Kryss registrerte verdsatte naturtyper mot kommuneplanområder satt av til
-            framtidig utbygging. Resultatet viser berørte lokaliteter, areal,
-            verdikategori og naturtype.
-          </p>
-          <button type="button" onClick={onOpenFutureDevelopmentAnalysis}>
-            Åpne analyse <span aria-hidden="true">→</span>
-          </button>
-        </section>
-      )}
 
       <section className="thematic-page__source" aria-labelledby="thematic-source-title">
         <h2 id="thematic-source-title">Kilde og metadata</h2>
