@@ -391,3 +391,11 @@
   }
 }
 
+
+
+/* V3.20 – mer plass til analysepanelet på desktop */
+@media (min-width: 60.01rem) {
+  .map-workspace--explore .map-workspace__body {
+    grid-template-columns: minmax(21rem, 23rem) minmax(0, 1fr);
+  }
+}
