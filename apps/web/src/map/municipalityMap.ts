@@ -84,8 +84,6 @@ export interface MunicipalityMap {
   showBoundary(boundary: MunicipalityBoundary): void
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
-  setFutureDevelopmentArea(overlay: AnalysisRasterOverlay | null): void
-  setFutureDevelopmentAreaVisible(visible: boolean): void
   setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
   setPlannedDevelopmentVisible(visible: boolean): void
   setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
@@ -171,10 +169,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }
   }
 
-  const futureDevelopmentAreaLayer = new ImageLayer({
-    visible: false,
-    opacity: 1,
-  })
   const analysisHighlightLayer = new ImageLayer({
     visible: false,
     opacity: 1,
@@ -187,12 +181,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     overlay: AnalysisRasterOverlay | null
   }
 
-  const futureAreaState: RasterLayerState = {
-    request: 0,
-    objectUrl: null,
-    visible: true,
-    overlay: null,
-  }
   const highlightState: RasterLayerState = {
     request: 0,
     objectUrl: null,
@@ -548,7 +536,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       }),
       accountOverviewLayer,
       accountDetailLayer,
-      futureDevelopmentAreaLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
       analysisHighlightLayer,
@@ -612,22 +599,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountDetailLayer.setExtent(undefined)
       accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
       clearPlannedDevelopmentOverlay()
-      releaseRasterOverlay(futureDevelopmentAreaLayer, futureAreaState)
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
     },
     setAccountLayerVisible(visible) {
       accountVisible = visible
       accountOverviewLayer.setVisible(visible && accountOverviewLayer.getSource() !== null)
       accountDetailLayer.setVisible(visible)
-    },
-    setFutureDevelopmentArea(overlay) {
-      configureRasterOverlay(futureDevelopmentAreaLayer, futureAreaState, overlay)
-    },
-    setFutureDevelopmentAreaVisible(visible) {
-      futureAreaState.visible = visible
-      futureDevelopmentAreaLayer.setVisible(
-        visible && futureDevelopmentAreaLayer.getSource() !== null,
-      )
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
@@ -707,7 +684,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountOverviewLayer.setSource(null)
       releaseAccountOverviewUrl()
       clearPlannedDevelopmentOverlay()
-      releaseRasterOverlay(futureDevelopmentAreaLayer, futureAreaState)
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
       featureInfoHandler = null
       thematicLayerStatusHandler = null
