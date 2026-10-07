@@ -64,10 +64,9 @@ describe('shared image request pipeline', () => {
         headers: { 'content-type': 'image/png' },
       }),
     ))
-    await Promise.resolve()
-    await Promise.resolve()
-
-    expect(fetchSpy).toHaveBeenCalledTimes(6)
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(6)
+    })
     resolvers.forEach((resolve) => resolve(
       new Response(new Uint8Array([1]), {
         status: 200,
