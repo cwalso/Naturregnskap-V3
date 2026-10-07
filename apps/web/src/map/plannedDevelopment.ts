@@ -104,6 +104,8 @@ export interface PlannedDevelopmentAnalysis {
   readonly agricultureWithNarrowStripsKm2: number
   readonly natureSharePercent: number | null
   readonly agricultureSharePercent: number | null
+  readonly natureShareOfAnalysisAreaPercent: number | null
+  readonly agricultureShareOfAnalysisAreaPercent: number | null
   readonly tileCount: number
   readonly pixelMeters: number
   readonly source: 'DiBK kommuneplaner' | 'Eget tegnet område'
@@ -229,6 +231,12 @@ export async function calculatePlannedDevelopment(
       natureSharePercent: totalNature > 0 ? cleaned.nature / totalNature * 100 : null,
       agricultureSharePercent: totalAgriculture > 0
         ? cleaned.agriculture / totalAgriculture * 100
+        : null,
+      natureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
+        ? cleaned.nature / cleanedAnalysisMask.nature * 100
+        : null,
+      agricultureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
+        ? cleaned.agriculture / cleanedAnalysisMask.nature * 100
         : null,
       tileCount: tileResults.length,
       pixelMeters: PLAN_PIXEL_METERS,
