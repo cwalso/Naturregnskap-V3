@@ -80,7 +80,6 @@ function TreeIcon() {
 function ValuedNaturePage({
   municipalityName,
   evaluation,
-  state,
   statistics,
   statisticsState,
   plannedValuedNature,
@@ -93,7 +92,6 @@ function ValuedNaturePage({
 }: {
   readonly municipalityName?: string
   readonly evaluation?: ThematicDatasetEvaluation
-  readonly state: 'idle' | 'loading' | 'error'
   readonly statistics?: ValuedNatureStatistics | null
   readonly statisticsState: 'idle' | 'loading' | 'error'
   readonly plannedValuedNature?: PlannedValuedNatureAnalysis | null
@@ -410,7 +408,6 @@ export function ThematicDataPage({
       <ValuedNaturePage
         municipalityName={municipalityName}
         evaluation={evaluation}
-        state={thematicCoverageState}
         statistics={valuedNatureStatistics}
         statisticsState={valuedNatureStatisticsState}
         plannedValuedNature={plannedValuedNature}
