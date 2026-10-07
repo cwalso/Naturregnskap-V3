@@ -11,9 +11,14 @@ interface UrbanNaturePageProps {
 }
 
 const areaFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
+const percentFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 })
 
 function dekar(areaKm2: number): string {
   return `${areaFormatter.format(areaKm2 * 1000)} dekar`
+}
+
+function percent(value: number): string {
+  return `${percentFormatter.format(value)} %`
 }
 
 export function UrbanNaturePage({
@@ -25,6 +30,13 @@ export function UrbanNaturePage({
 }: UrbanNaturePageProps) {
   const built = accountData?.metrics.find((metric) => metric.id === 'built')
   const builtArea = built?.areaKm2 ?? null
+  const classifiedArea = accountData?.metrics.reduce(
+    (sum, metric) => sum + (metric.areaKm2 ?? 0),
+    0,
+  ) ?? 0
+  const builtShare = builtArea !== null && classifiedArea > 0
+    ? builtArea / classifiedArea * 100
+    : null
 
   return (
     <section className="content-page thematic-page thematic-page--editorial urban-nature-page" aria-labelledby="urban-nature-title">
@@ -42,34 +54,34 @@ export function UrbanNaturePage({
           </div>
           <p className="thematic-hero__lead">
             Grå arealer er områder som allerede er tatt i bruk eller sterkt
-            påvirket av bygge- og anleggsaktivitet. I denne prototypen brukes
-            bebygd og opparbeidet areal fra Grunnkartet som en enkel inngang til
-            temaet.
+            påvirket av bygge- og anleggsaktivitet. Temaet er særlig relevant når
+            kommunen skal vurdere fortetting, transformasjon og gjenbruk framfor
+            ny nedbygging av natur- og jordbruksarealer.
           </p>
 
           <div className="thematic-questions">
             <details>
               <summary>Hva er grå arealer?</summary>
               <p>
-                Begrepet omfatter blant annet bebyggelse, veger, parkeringsplasser
-                og andre permanente eller sterkt opparbeidede flater.
+                Grå arealer omfatter blant annet bebyggelse, veger, gater,
+                parkeringsplasser, konstruksjoner og andre permanente eller sterkt
+                opparbeidede flater.
               </p>
             </details>
             <details>
-              <summary>Hvorfor er dette relevant for naturregnskapet?</summary>
+              <summary>Hva viser Kart over grå arealer?</summary>
               <p>
-                Oversikt over allerede utbygde og opparbeidede arealer kan støtte
-                vurderinger av fortetting og gjenbruk, og dermed redusere presset
-                på natur- og jordbruksarealer.
+                Det landsdekkende datasettet viser hvor de grå arealene ligger.
+                Det har også egenskaper for andel grønt, andel grått og andel
+                bygninger innenfor de grå polygonene.
               </p>
             </details>
             <details>
-              <summary>Hva viser prototypen nå?</summary>
+              <summary>Hvordan skiller dette seg fra naturregnskapet?</summary>
               <p>
-                Kart og hovedtall bruker foreløpig bebygd og opparbeidet areal i
-                Grunnkart for arealanalyse. Det landsdekkende Kart over grå
-                arealer kan senere gi mer detaljert innsikt i blant annet andel
-                grønt og grått innenfor de grå arealene.
+                Naturregnskapets bebygde og opparbeidede areal og Kart over grå
+                arealer er beslektede, men ikke identiske størrelser. Gråarealkartet
+                bør derfor brukes som supplerende innsikt og beslutningsstøtte.
               </p>
             </details>
           </div>
@@ -78,7 +90,7 @@ export function UrbanNaturePage({
         <div className="thematic-hero__image urban-nature__hero" role="img" aria-label="Illustrasjon av by og bebygde arealer" />
       </header>
 
-      <section className="thematic-kpis" aria-label="Nøkkeltall for grå arealer">
+      <section className="thematic-kpis" aria-label="Nøkkeltall for bynaturen">
         <article>
           <span>Bebygd og opparbeidet areal i {municipalityName}</span>
           <strong>
@@ -90,26 +102,45 @@ export function UrbanNaturePage({
                   ? '–'
                   : dekar(builtArea)}
           </strong>
-          <small>Foreløpig inngang fra Grunnkart / arealbasert kommuneoversikt</small>
+          <small>
+            Kommuneoversiktens arealkategori. Dette er ikke det samme som samlet
+            areal i Kart over grå arealer.
+          </small>
         </article>
         <article>
-          <span>Kart over grå arealer</span>
-          <strong>Supplerende innsikt</strong>
+          <span>Andel av klassifisert kommuneareal</span>
+          <strong>
+            {accountState === 'loading'
+              ? '…'
+              : builtShare === null
+                ? '–'
+                : percent(builtShare)}
+          </strong>
           <small>
-            Eget landsdekkende datasett med mer detaljert informasjon om grå,
-            grønne og bebygde flater.
+            Beregnet fra natur, jordbruk og bebygd/opparbeidet areal i
+            kommuneoversikten.
           </small>
         </article>
       </section>
 
+      <details className="thematic-source-accordion">
+        <summary>Hva bygger Kart over grå arealer på?</summary>
+        <p>
+          Hovedkilden er Grunnkart for arealanalyse. Informasjon om vegetasjon
+          kommer fra FKB-Grønnstruktur, mens informasjon om bygninger bygger på
+          SSBs bygningsdata. Første versjon er et eget landsdekkende datasett og
+          skal ikke blandes direkte med regnskapets bebygde areal.
+        </p>
+      </details>
+
       <aside className="urban-nature__note">
         <span aria-hidden="true">i</span>
         <div>
-          <strong>Bynaturen er ikke en egen økosystemtype i regnskapet</strong>
+          <strong>Bynaturen er analyse- og beslutningsstøtte rundt den utbygde delen av kommunen</strong>
           <p>
-            Siden samler kunnskap om den utbygde delen av kommunen. Det bør
-            skilles mellom regnskapets bebygde/opparbeidede areal og supplerende
-            analyser av grå og grønne flater i byområdene.
+            Det sentrale er å synliggjøre hvor arealer allerede er påvirket, og
+            hvor det kan være aktuelt å undersøke fortetting, transformasjon eller
+            gjenbruk. Dette er ikke en egen økosystemtype i naturregnskapet.
           </p>
         </div>
       </aside>
@@ -117,34 +148,109 @@ export function UrbanNaturePage({
       {mapContent && (
         <section className="thematic-map-section" aria-labelledby="urban-map-title">
           <div className="thematic-section-heading">
-            <h2 id="urban-map-title">Grå arealer i {municipalityName}</h2>
+            <h2 id="urban-map-title">Bebygd og opparbeidet areal i {municipalityName}</h2>
             <p>
-              Prototypen viser foreløpig bebygd og opparbeidet areal fra
-              Grunnkart for arealanalyse, avgrenset til kommunen.
+              Kartet viser foreløpig regnskapsgrunnlagets bebygde og opparbeidede
+              areal. Visningen er avgrenset til valgt kommune.
             </p>
           </div>
           {mapContent}
         </section>
       )}
 
+      <section className="urban-nature__metrics" aria-labelledby="grey-map-contents-title">
+        <div className="thematic-insight-row__text">
+          <h2 id="grey-map-contents-title">Hva kan Kart over grå arealer fortelle?</h2>
+          <p>
+            Det separate gråarealkartet er laget for å beskrive allerede påvirkede
+            arealer mer detaljert enn naturregnskapets overordnede bebygd-kategori.
+          </p>
+        </div>
+        <div className="urban-nature__metric-grid">
+          <article>
+            <strong>Andel grønt</strong>
+            <p>Hvor stor del av et grått område som har bakke-, busk- eller trevegetasjon.</p>
+          </article>
+          <article>
+            <strong>Andel grått</strong>
+            <p>Hvor stor del av området som er vegetasjonsløst eller har permanente overflater.</p>
+          </article>
+          <article>
+            <strong>Andel bygg</strong>
+            <p>Hvor stor del av det grå området som er dekket av bygningsgrunnflate.</p>
+          </article>
+        </div>
+      </section>
+
       <section className="thematic-insight-row">
         <div className="thematic-insight-row__text">
-          <h2>Videre bruk i arealplanlegging</h2>
+          <h2>Bruk i kommunal arealplanlegging</h2>
           <p>
-            Kart over grå arealer kan brukes som supplerende beslutningsstøtte
-            for å identifisere allerede påvirkede arealer og undersøke muligheter
-            for gjenbruk eller fortetting.
+            Kartet kan brukes til å lete etter allerede påvirkede arealer før nye
+            natur- eller jordbruksarealer vurderes for utbygging. Det kan være
+            relevant i planvask, rullering av kommuneplanens arealdel og tidlige
+            vurderinger av transformasjons- og fortettingsmuligheter.
+          </p>
+          <p className="thematic-insight-row__source">
+            Kilde: Miljødirektoratet, Kart over grå arealer
           </p>
         </div>
         <div className="urban-nature__facts">
-          <strong>Videre utvikling</strong>
-          <p>Aktuelle videre steg er kommunevise nøkkeltall for:</p>
+          <strong>Det kommunen kan undersøke videre</strong>
           <ul>
-            <li>andel grått areal</li>
-            <li>andel grønt innenfor grå arealer</li>
-            <li>andel bebygd areal</li>
+            <li>hvor de grå arealene ligger</li>
+            <li>hvilke områder som har stor andel grått eller liten andel grønt</li>
+            <li>om arealene kan være aktuelle for gjenbruk eller transformasjon</li>
+            <li>hvordan de ligger i forhold til planreserve og framtidige utbyggingsområder</li>
           </ul>
         </div>
+      </section>
+
+      <div className="thematic-questions thematic-questions--wide">
+        <details>
+          <summary>Er alt bebygd areal et grått areal?</summary>
+          <p>
+            Ikke nødvendigvis. Kart over grå arealer følger egne utvalgsregler og
+            kombinerer flere egenskaper. Kommuneoversiktens bebygd-kategori må
+            derfor ikke brukes som direkte erstatning for gråarealkartet.
+          </p>
+        </details>
+        <details>
+          <summary>Viser kartet planstatus eller eierskap?</summary>
+          <p>
+            Nei. Første versjon av Kart over grå arealer inneholder ikke
+            informasjon om planstatus eller eierskap. Slike vurderinger krever
+            kobling mot andre datakilder.
+          </p>
+        </details>
+      </div>
+
+      <section className="thematic-faq" aria-labelledby="urban-source-title">
+        <h2 id="urban-source-title">Kilder og metode</h2>
+        <details>
+          <summary>Hvor finner jeg Kart over grå arealer?</summary>
+          <p>
+            <a
+              href="https://www.miljodirektoratet.no/ansvarsomrader/overvaking-arealplanlegging/arealplanlegging/kart-over-gra-arealer/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Les om Kart over grå arealer hos Miljødirektoratet
+            </a>
+          </p>
+        </details>
+        <details>
+          <summary>Hvor finner jeg datasettet?</summary>
+          <p>
+            <a
+              href="https://kartkatalog.geonorge.no/metadata/uuid/c5f09d79-1546-495c-8b36-91efd4008bd7"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Se datasettet i Geonorge
+            </a>
+          </p>
+        </details>
       </section>
     </section>
   )

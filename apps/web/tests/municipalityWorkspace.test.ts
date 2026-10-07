@@ -63,7 +63,7 @@ describe('shared municipality data core', () => {
       if (url.endsWith('/kommuner/5001/omrade')) {
         return Promise.resolve(new Response(JSON.stringify(boundarySource), { status: 200 }))
       }
-      if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+      if (url.includes('miljodirektoratet.no/arcgis/rest/services/')) {
         return Promise.resolve(new Response(JSON.stringify({ count: 1 }), { status: 200 }))
       }
       throw new Error(`Uventet URL i test: ${url}`)
@@ -91,7 +91,7 @@ describe('shared municipality data core', () => {
         }
         return Promise.resolve(new Response(JSON.stringify({ count: 0 }), { status: 200 }))
       }
-      if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+      if (url.includes('miljodirektoratet.no/arcgis/rest/services/')) {
         return Promise.resolve(new Response(JSON.stringify({ count: 0 }), { status: 200 }))
       }
       throw new Error(`Uventet URL i test: ${url}`)

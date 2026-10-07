@@ -160,11 +160,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     useState<ValuedNatureMapSelection>({ kind: 'all' })
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
+  const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
   const showsMap = activeView === 'utforsk-i-kart'
     || activeView === 'tema-forest'
     || activeEcosystemId !== null
     || activeView === 'tema-urban-nature'
-    || activeView === 'tema-valued-nature'
+    || activeThematicDatasetId !== null
 
   useEffect(() => {
     const onHashChange = () => setActiveView(viewFromHash())
@@ -204,10 +205,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     for (const dataset of thematicDatasets) {
       map.current?.setThematicLayerVisible(
         dataset.id,
-        activeView === 'tema-valued-nature' && dataset.id === 'valued-nature',
+        activeThematicDatasetId === dataset.id,
       )
     }
-  }, [accountLayerVisible, activeEcosystemId, activeView, selectedMunicipality])
+  }, [
+    accountLayerVisible,
+    activeEcosystemId,
+    activeThematicDatasetId,
+    activeView,
+    selectedMunicipality,
+  ])
 
   useEffect(() => {
     if (!map.current) return
@@ -750,22 +757,28 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     )
   }
 
-  function thematicMapWorkspace() {
+  function thematicMapWorkspace(datasetId: ThematicDatasetId) {
     if (!selectedMunicipality) return null
+    const dataset = thematicDatasets.find((item) => item.id === datasetId)
+    if (!dataset) return null
+
+    const legendLabel = datasetId === 'wild-reindeer-areas'
+      ? 'Leveområde for villrein'
+      : datasetId === 'infrastructure-free-nature'
+        ? 'Status inngrepsfri natur 2023'
+        : dataset.visualSource.title
 
     return (
       <div className="thematic-map-card">
         <aside className="thematic-map-card__legend" aria-label="Tegnforklaring">
-          <strong>Verdsatte naturtyper</strong>
-          <span>Verdikategori</span>
+          <strong>{dataset.title}</strong>
+          <span>{legendLabel}</span>
           <MapLegend
             items={[{
-              id: 'valued-nature',
-              title: 'Naturtyper – verdsatte',
+              id: dataset.id,
+              title: legendLabel,
               visible: true,
-              imageUrl: buildWmsLegendUrl(
-                thematicDatasets.find((dataset) => dataset.id === 'valued-nature')!.visualSource,
-              ),
+              imageUrl: buildWmsLegendUrl(dataset.visualSource),
             }]}
           />
         </aside>
@@ -780,7 +793,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             className="map"
             role="region"
             tabIndex={0}
-            aria-label={`Verdsatte naturtyper i ${selectedMunicipality.name}`}
+            aria-label={`Kartvisning: ${dataset.title} i ${selectedMunicipality.name}`}
           />
           <button
             type="button"
@@ -1227,11 +1240,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               ? openValuedNatureAnalysis
               : undefined
           }
-          mapContent={
-            datasetByThematicView[activeView] === 'valued-nature'
-              ? thematicMapWorkspace()
-              : undefined
-          }
+          mapContent={thematicMapWorkspace(datasetByThematicView[activeView]!)}
         />
       )}
       {activeView === 'utforsk-i-kart' && mapView}

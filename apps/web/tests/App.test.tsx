@@ -132,7 +132,7 @@ function mockMunicipalityFlow(areaKm2: number | null = 12) {
     if (url.startsWith('https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?')) {
       return Promise.resolve(new Response(JSON.stringify(ssbAccountSource(areaKm2)), { status: 200 }))
     }
-    if (url.includes('kart.miljodirektoratet.no/arcgis/rest/services/')) {
+    if (url.includes('miljodirektoratet.no/arcgis/rest/services/')) {
       const body = init?.body instanceof URLSearchParams ? init.body : null
       if (body?.get('returnCountOnly') === 'true') {
         return Promise.resolve(new Response(JSON.stringify({
@@ -203,6 +203,9 @@ describe('grunnkonfigurasjon', () => {
       themeId: 'reindeer',
       attribution: 'Kilde: Villreinbasen, Miljødirektoratet',
       coverage: { scope: 'regional', municipalityEvaluation: 'spatial_query' },
+      visualSource: {
+        endpoint: 'https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer',
+      },
     })
     expect(valuedNature).toMatchObject({
       category: 'thematic',
@@ -425,7 +428,7 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('button', { name: /Bynaturen \(grå arealer\)/ }))
 
     expect(screen.getByRole('heading', { name: 'Bynaturen (grå arealer)', level: 1 })).toBeInTheDocument()
-    expect(screen.getByText(/Bynaturen er ikke en egen økosystemtype/)).toBeInTheDocument()
+    expect(screen.getByText(/Bynaturen er analyse- og beslutningsstøtte/)).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Kart over grå arealer i Trondheim' })).toBeInTheDocument()
     await vi.waitFor(() => expect(map.setUrbanLayerVisible).toHaveBeenCalledWith(true))
   })
@@ -455,9 +458,10 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('radio', { name: /Verdsatte naturtyper/ })).toHaveAttribute('aria-checked', 'true')
   })
 
-  it('åpner øvrige naturtema som egne sider med kommunespesifikk status', async () => {
+  it('åpner Villreinområder med kart og faglig innhold', async () => {
+    const map = mapMock()
     mockMunicipalityFlow()
-    render(<App createMap={() => mapMock()} />)
+    render(<App createMap={() => map} />)
     await chooseTrondheim()
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
@@ -467,10 +471,26 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('heading', { name: 'Villreinområder', level: 1 })).toBeInTheDocument()
     expect(screen.getByText(/Ingen registrerte treff i Trondheim/)).toBeInTheDocument()
-    expect(screen.getByText('Sør-Norge')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Funksjonsområder i kildetjenesten' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Kartvisning: Villreinområder i Trondheim' })).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.setThematicLayerVisible).toHaveBeenCalledWith('wild-reindeer-areas', true))
+  })
 
-    fireEvent.click(screen.getByRole('button', { name: /Tilbake til naturtema/ }))
-    expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
+  it('åpner Inngrepsfri natur med statusår, historikk og kart', async () => {
+    const map = mapMock()
+    mockMunicipalityFlow()
+    render(<App createMap={() => map} />)
+    await chooseTrondheim()
+
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
+    fireEvent.click(screen.getByRole('button', { name: /Inngrepsfri natur/ }))
+
+    expect(screen.getByRole('heading', { name: 'Inngrepsfri natur', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText('2023')).toBeInTheDocument()
+    expect(screen.getByText('1988–2023')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Tidsserie og endring' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Kartvisning: Inngrepsfri natur i Trondheim' })).toBeInTheDocument()
+    await vi.waitFor(() => expect(map.setThematicLayerVisible).toHaveBeenCalledWith('infrastructure-free-nature', true))
   })
 
   it('viser kartet som egen analyseflate uten generell kartlagliste', async () => {

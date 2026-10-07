@@ -555,11 +555,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     layer: TileLayer<XYZ> | ImageLayer<ImageWMS>,
   ) {
     layer.on('prerender', (event) => {
-      const context = event.context as CanvasRenderingContext2D
-      context.save()
-
       const geometry = boundarySource.getFeatures()[0]?.getGeometry()
       if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
+
+      const context = event.context as CanvasRenderingContext2D
+      context.save()
 
       const polygons = geometry instanceof Polygon
         ? [geometry.getCoordinates()]
@@ -580,6 +580,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     })
 
     layer.on('postrender', (event) => {
+      const geometry = boundarySource.getFeatures()[0]?.getGeometry()
+      if (!(geometry instanceof Polygon) && !(geometry instanceof MultiPolygon)) return
       const context = event.context as CanvasRenderingContext2D
       context.restore()
     })
@@ -680,7 +682,15 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       const extent = boundarySource.getExtent()
       if (extent) {
         accountDetailLayer.setExtent(extent)
+        forestLayer.setExtent(extent)
+        ecosystemLayer.setExtent(extent)
+        urbanLayer.setExtent(extent)
+        for (const layer of thematicLayers.values()) layer.setExtent(extent)
         view.fit(extent, { padding: [48, 48, 48, 48], duration: 350, maxZoom: 12 })
+        forestLayer.changed()
+        ecosystemLayer.changed()
+        urbanLayer.changed()
+        for (const layer of thematicLayers.values()) layer.changed()
       }
       void configureAccountOverview(boundary.properties.number)
     },
@@ -692,6 +702,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       releaseAccountOverviewUrl()
       accountDetailLayer.setExtent(undefined)
       accountDetailLayer.setMaxResolution(Number.POSITIVE_INFINITY)
+      forestLayer.setExtent(undefined)
+      ecosystemLayer.setExtent(undefined)
+      urbanLayer.setExtent(undefined)
+      for (const layer of thematicLayers.values()) layer.setExtent(undefined)
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
     },
