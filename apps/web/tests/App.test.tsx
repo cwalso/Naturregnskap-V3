@@ -287,7 +287,7 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
     expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
     expect(screen.getByText('XX dekar')).toBeInTheDocument()
-    expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
+    expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig som statistikk/)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
