@@ -1,3 +1,4 @@
+import { loadSharedImageBlob } from '../map/sharedImageRequests'
 import {
   ACCOUNT_CRS,
   ACCOUNT_RESOLUTIONS,
@@ -83,7 +84,6 @@ export interface ForestStatisticsUnavailable {
 export type ForestStatistics = ForestStatisticsAvailable | ForestStatisticsUnavailable
 
 const cache = new Map<string, Promise<ForestStatistics>>()
-const tileCache = new Map<string, Promise<Blob>>()
 
 export function buildForestTileUrl(tileCoord: readonly number[]): string {
   return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
@@ -290,25 +290,7 @@ async function loadForestTile(
   tileCoord: [number, number, number],
   signal?: AbortSignal,
 ): Promise<Blob> {
-  const url = buildForestTileUrl(tileCoord)
-  let request = tileCache.get(url)
-  if (!request) {
-    request = fetch(url).then((response) => {
-      if (!response.ok) throw new Error(`Grunnkart-tjenesten feilet med HTTP ${response.status}`)
-      const contentType = response.headers.get('content-type') ?? ''
-      if (contentType && !contentType.startsWith('image/')) {
-        throw new Error('Grunnkart-tjenesten returnerte ikke et bilde')
-      }
-      return response.blob()
-    }).catch((error) => {
-      tileCache.delete(url)
-      throw error
-    })
-    tileCache.set(url, request)
-  }
-  const blob = await request
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-  return blob
+  return loadSharedImageBlob(buildForestTileUrl(tileCoord), signal)
 }
 
 function classifyForestTypePixel(red: number, green: number, blue: number): number {
