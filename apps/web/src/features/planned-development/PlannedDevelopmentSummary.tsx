@@ -26,8 +26,6 @@ export type PlannedDevelopmentAnalysisTarget =
 interface PlannedDevelopmentSummaryProps {
   readonly state: 'idle' | 'loading' | 'error'
   readonly result: PlannedDevelopmentResult | null
-  readonly futureAreaVisible: boolean
-  readonly onFutureAreaVisibleChange: (visible: boolean) => void
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
   readonly natureBreakdown: PlannedNatureBreakdown | null
@@ -36,6 +34,8 @@ interface PlannedDevelopmentSummaryProps {
   readonly onAnalysisTargetChange: (target: PlannedDevelopmentAnalysisTarget) => void
   readonly valuedNatureAnalysis: PlannedValuedNatureAnalysis | null
   readonly valuedNatureAnalysisState: 'idle' | 'loading' | 'error'
+  readonly valuedNatureResultVisible: boolean
+  readonly onValuedNatureResultVisibleChange: (visible: boolean) => void
   readonly valuedNatureMapSelection: ValuedNatureMapSelection
   readonly onShowValuedNatureInMap: (selection: ValuedNatureMapSelection) => void
 }
@@ -92,10 +92,14 @@ function dekar(km2: number): string {
 
 function ValuedNatureResult({
   analysis,
+  visible,
+  onVisibleChange,
   selection,
   onShowInMap,
 }: {
   readonly analysis: PlannedValuedNatureAnalysis
+  readonly visible: boolean
+  readonly onVisibleChange: (visible: boolean) => void
   readonly selection: ValuedNatureMapSelection
   readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
 }) {
@@ -139,9 +143,24 @@ function ValuedNatureResult({
         </div>
       </div>
 
+      <label className="plan-layer-toggle">
+        <input
+          type="checkbox"
+          checked={visible}
+          onChange={(event) => onVisibleChange(event.target.checked)}
+        />
+        <span>
+          <strong>Vis analyseresultatet i kartet</strong>
+          <small>
+            Kartlaget viser registrerte verdsatte naturtyper som overlapper
+            framtidige utbyggingsområder.
+          </small>
+        </span>
+      </label>
+
       <div className="valued-nature-map-control" aria-live="polite">
         <div>
-          <span className="analysis-workspace__label">Kart viser</span>
+          <span className="analysis-workspace__label">Stedfest resultat</span>
           <strong>
             {selection.kind === 'all'
               ? 'Alle beregnede overlapper'
@@ -150,7 +169,7 @@ function ValuedNatureResult({
         </div>
         {selection.kind !== 'all' && (
           <button type="button" onClick={() => onShowInMap({ kind: 'all' })}>
-            Vis alle overlapper
+            Finn alle overlapper i kart
           </button>
         )}
       </div>
@@ -262,7 +281,7 @@ function ValuedNatureMetricRow({
         aria-pressed={selected}
         onClick={onShowInMap}
       >
-        {selected ? 'Vises i kart' : 'Vis i kart'} <span aria-hidden="true">→</span>
+        {selected ? 'Funnet i kart' : 'Finn i kart'} <span aria-hidden="true">→</span>
       </button>
     </div>
   )
@@ -271,8 +290,6 @@ function ValuedNatureMetricRow({
 export function PlannedDevelopmentSummary({
   state,
   result,
-  futureAreaVisible,
-  onFutureAreaVisibleChange,
   visible,
   onVisibleChange,
   natureBreakdown,
@@ -281,6 +298,8 @@ export function PlannedDevelopmentSummary({
   onAnalysisTargetChange,
   valuedNatureAnalysis,
   valuedNatureAnalysisState,
+  valuedNatureResultVisible,
+  onValuedNatureResultVisibleChange,
   valuedNatureMapSelection,
   onShowValuedNatureInMap,
 }: PlannedDevelopmentSummaryProps) {
@@ -304,17 +323,9 @@ export function PlannedDevelopmentSummary({
         <span className="analysis-workspace__label">Analyseområde</span>
         <strong>Områder satt av til framtidig utbygging</strong>
         <p>
-          Kommuneplanområder med framtidig arealbruk som inngår i
-          prototypeberegningen.
+          Kommuneplanområder med framtidig arealbruk brukes som analyseområde.
+          Kartet viser resultatet av kryssingen mot valgt analysegrunnlag.
         </p>
-        <label className="analysis-area-card__toggle">
-          <input
-            type="checkbox"
-            checked={futureAreaVisible}
-            onChange={(event) => onFutureAreaVisibleChange(event.target.checked)}
-          />
-          <span>Vis framtidige utbyggingsområder i kartet</span>
-        </label>
         <small>Kilde: DiBK kommuneplaner</small>
       </div>
 
@@ -374,6 +385,8 @@ export function PlannedDevelopmentSummary({
           ) : valuedNatureAnalysis ? (
             <ValuedNatureResult
               analysis={valuedNatureAnalysis}
+              visible={valuedNatureResultVisible}
+              onVisibleChange={onValuedNatureResultVisibleChange}
               selection={valuedNatureMapSelection}
               onShowInMap={onShowValuedNatureInMap}
             />
