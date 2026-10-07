@@ -50,6 +50,13 @@ function mapMock(): MunicipalityMap {
     fitToPlannedDevelopmentResult: vi.fn(),
     setAnalysisHighlight: vi.fn(),
     fitToAnalysisHighlight: vi.fn(),
+    startDrawnAnalysisArea: vi.fn(),
+    finishDrawnAnalysisArea: vi.fn(),
+    undoDrawnAnalysisPoint: vi.fn(),
+    cancelDrawnAnalysisArea: vi.fn(),
+    clearDrawnAnalysisArea: vi.fn(),
+    setDrawnAnalysisAreaVisible: vi.fn(),
+    fitToDrawnAnalysisArea: vi.fn(),
     setThematicLayerVisible: vi.fn(),
     setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
@@ -519,7 +526,7 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('heading', { name: 'Hva blir berørt?' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Framtidig utbygging/ })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByRole('button', { name: /Tegn eget område/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Eget område/ })).toBeEnabled()
     expect(screen.getByText('Flere datalag')).toBeInTheDocument()
     expect(screen.queryByRole('radio', { name: /Verneområder/ })).not.toBeInTheDocument()
     expect(screen.getByText('Kartet viser')).toBeInTheDocument()
