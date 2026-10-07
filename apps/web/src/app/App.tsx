@@ -41,8 +41,13 @@ import { getAccountProvenanceContent } from '../features/account-overview/conten
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
 import {
   PlannedDevelopmentSummary,
+  type AnalysisAreaMode,
   type PlannedDevelopmentAnalysisTarget,
 } from '../features/planned-development/PlannedDevelopmentSummary'
+import {
+  calculateDrawnAreaAnalysis,
+  type DrawnAnalysisArea,
+} from '../map/drawnAnalysis'
 import {
   calculatePlannedDevelopment,
   calculatePlannedNatureBreakdown,
@@ -149,6 +154,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
+  const [analysisAreaMode, setAnalysisAreaMode] = useState<AnalysisAreaMode>('planned')
+  const [drawnAnalysisArea, setDrawnAnalysisArea] = useState<DrawnAnalysisArea | null>(null)
+  const [drawingAnalysisArea, setDrawingAnalysisArea] = useState(false)
+  const [drawnAnalysis, setDrawnAnalysis] = useState<PlannedDevelopmentResult | null>(null)
+  const [drawnAnalysisState, setDrawnAnalysisState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureResultVisible, setValuedNatureResultVisible] = useState(true)
   const [plannedDevelopmentAnalysisTarget, setPlannedDevelopmentAnalysisTarget] =
     useState<PlannedDevelopmentAnalysisTarget>('grunnkart')
@@ -158,6 +168,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [plannedValuedNatureState, setPlannedValuedNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureMapSelection, setValuedNatureMapSelection] =
     useState<ValuedNatureMapSelection>({ kind: 'all' })
+
+  const mapAnalysisResult = analysisAreaMode === 'drawn' ? drawnAnalysis : plannedDevelopment
+  const mapAnalysisState = analysisAreaMode === 'drawn' ? drawnAnalysisState : plannedDevelopmentState
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
   const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
