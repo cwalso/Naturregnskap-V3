@@ -2,6 +2,7 @@ import Feature from 'ol/Feature'
 import GeoJSON from 'ol/format/GeoJSON'
 import MultiPolygon from 'ol/geom/MultiPolygon'
 import Polygon from 'ol/geom/Polygon'
+import Draw from 'ol/interaction/Draw'
 import type ImageTile from 'ol/ImageTile'
 import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
@@ -12,7 +13,7 @@ import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
 import VectorSource from 'ol/source/Vector'
-import { Fill, Stroke, Style } from 'ol/style'
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 import { fromLonLat } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
@@ -32,6 +33,7 @@ import {
   loadOverviewRaster,
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
+import type { DrawnAnalysisArea } from './drawnAnalysis'
 import {
   createAnalysisRasterBlob,
   maskExtent,
@@ -99,6 +101,13 @@ export interface MunicipalityMap {
   fitToPlannedDevelopmentResult(): void
   setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
   fitToAnalysisHighlight(): void
+  startDrawnAnalysisArea(handler: (area: DrawnAnalysisArea) => void): void
+  finishDrawnAnalysisArea(): void
+  undoDrawnAnalysisPoint(): void
+  cancelDrawnAnalysisArea(): void
+  clearDrawnAnalysisArea(): void
+  setDrawnAnalysisAreaVisible(visible: boolean): void
+  fitToDrawnAnalysisArea(): void
   setThematicLayerVisible(datasetId: ThematicDatasetId, visible: boolean): void
   setThematicLayerStatusHandler(handler: ThematicLayerStatusHandler | null): void
   setFeatureInfoHandler(handler: MapFeatureInfoHandler | null): void
