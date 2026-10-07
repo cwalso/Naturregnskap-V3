@@ -200,7 +200,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   }
 
   function configureRasterOverlay(
-    layer: ImageLayer<ImageStatic>,
+    layer: ImageLayer,
     state: RasterLayerState,
     overlay: AnalysisRasterOverlay | null,
   ) {
@@ -235,7 +235,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       })
   }
 
-  function releaseRasterOverlay(layer: ImageLayer<ImageStatic>, state: RasterLayerState) {
+  function releaseRasterOverlay(layer: ImageLayer, state: RasterLayerState) {
     state.request += 1
     state.overlay = null
     layer.setSource(null)
