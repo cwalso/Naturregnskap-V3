@@ -289,7 +289,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText('XX dekar')).toBeInTheDocument()
     expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig/)).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
@@ -314,9 +314,9 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    fireEvent.click(screen.getByRole('button', { name: /Hva slags natur har vi/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Se statistikk for naturen i Trondheim/ }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Hva slags natur har vi?' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
   })
 
   it('åpner Verdsatte naturtyper som egen temaside og går videre til analyse', async () => {
@@ -325,15 +325,15 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => map} />)
     await chooseTrondheim()
 
-    fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     const valuedTheme = await screen.findByRole('button', { name: /Verdsatte naturtyper/ })
     await vi.waitFor(() => expect(valuedTheme).toHaveTextContent('Treff i kommunen'))
     fireEvent.click(valuedTheme)
 
     expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper', level: 1 })).toBeInTheDocument()
-    expect(screen.getByText(/3 registrerte objekter i Trondheim/)).toBeInTheDocument()
+    expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText(/Datasettet er ikke heldekkende/)).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Hva slags natur har vi?' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
     fireEvent.click(screen.getByRole('button', { name: /Åpne analyse/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
@@ -345,7 +345,7 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
 
-    fireEvent.click(screen.getByRole('link', { name: 'Hva slags natur har vi?' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     const reindeer = screen.getByRole('button', { name: /Villreinområder/ })
     await vi.waitFor(() => expect(reindeer).toHaveTextContent('Ingen registrerte treff'))
     fireEvent.click(reindeer)
