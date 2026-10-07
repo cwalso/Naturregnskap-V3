@@ -1,3 +1,4 @@
+import { loadSharedImageBlob } from '../map/sharedImageRequests'
 import {
   classifyAccountPixel,
   loadOverviewRaster,
@@ -16,7 +17,6 @@ import {
 
 const NATURE_CLASS = 2
 const MAX_CONCURRENT_REQUESTS = 4
-const IMAGE_CACHE_LIMIT = 100
 
 export type EcosystemPageId = Extract<PlannedNatureTypeId, 'vatmark'>
 
@@ -55,7 +55,6 @@ export type EcosystemStatistics =
   | EcosystemStatisticsUnavailable
 
 const resultCache = new Map<string, Promise<EcosystemStatistics>>()
-const imageBlobCache = new Map<string, Promise<Blob>>()
 
 export function getEcosystemStatistics(
   municipalityNumber: string,
@@ -175,7 +174,7 @@ async function analyseTile(
   overviewBitmap: ImageBitmap,
   signal?: AbortSignal,
 ): Promise<TileResult> {
-  const blob = await loadImageBlob(buildNatureTypeTileUrl(tileCoord), signal)
+  const blob = await loadSharedImageBlob(buildNatureTypeTileUrl(tileCoord), signal)
   const natureBitmap = await createImageBitmap(blob)
 
   try {
@@ -287,39 +286,6 @@ function drawImageSection(
     (x1 - x0) * factorX,
     (y1 - y0) * factorY,
   )
-}
-
-async function loadImageBlob(url: string, signal?: AbortSignal): Promise<Blob> {
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-
-  let promise = imageBlobCache.get(url)
-  if (!promise) {
-    promise = fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Grunnkart-tjenesten feilet med HTTP ${response.status}`)
-        }
-        const contentType = response.headers.get('content-type') ?? ''
-        if (contentType && !contentType.startsWith('image/')) {
-          throw new Error('Grunnkart-tjenesten returnerte ikke et bilde')
-        }
-        return response.blob()
-      })
-      .catch((error) => {
-        imageBlobCache.delete(url)
-        throw error
-      })
-
-    imageBlobCache.set(url, promise)
-    if (imageBlobCache.size > IMAGE_CACHE_LIMIT) {
-      const oldest = imageBlobCache.keys().next().value
-      if (oldest) imageBlobCache.delete(oldest)
-    }
-  }
-
-  const blob = await promise
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-  return blob
 }
 
 async function mapWithConcurrency<T, R>(
