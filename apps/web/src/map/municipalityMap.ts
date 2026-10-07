@@ -35,8 +35,10 @@ import {
 } from './analysisRasterOverlay'
 import {
   buildPlanTileUrl,
+  buildSelectedNatureTypeTileUrl,
   planTileGrid,
   type PlannedDevelopmentOverlayGrid,
+  type PlannedNatureTypeId,
 } from './plannedDevelopment'
 import {
   createPlannedDevelopmentOverviewBlob,
@@ -86,6 +88,7 @@ export interface MunicipalityMap {
   clearBoundary(): void
   setAccountLayerVisible(visible: boolean): void
   setForestLayerVisible(visible: boolean): void
+  setEcosystemLayer(type: PlannedNatureTypeId | null): void
   setPlannedDevelopmentOverlay(overlay: PlannedDevelopmentOverlayGrid | null): void
   setPlannedDevelopmentVisible(visible: boolean): void
   fitToPlannedDevelopmentResult(): void
@@ -131,6 +134,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       tileUrlFunction: (tileCoord) => buildForestTileUrl(tileCoord),
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
     }),
+    visible: false,
+    opacity: 0.9,
+  })
+  const ecosystemLayer = new TileLayer({
     visible: false,
     opacity: 0.9,
   })
@@ -556,6 +563,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       accountOverviewLayer,
       accountDetailLayer,
       forestLayer,
+      ecosystemLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
       analysisHighlightLayer,
@@ -628,6 +636,22 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     setForestLayerVisible(visible) {
       forestLayer.setVisible(visible)
+    },
+    setEcosystemLayer(type) {
+      if (!type) {
+        ecosystemLayer.setVisible(false)
+        ecosystemLayer.setSource(null)
+        return
+      }
+      ecosystemLayer.setSource(new XYZ({
+        projection: ACCOUNT_CRS,
+        tileGrid: planTileGrid,
+        tilePixelRatio: 4,
+        transition: 0,
+        tileUrlFunction: (tileCoord) => buildSelectedNatureTypeTileUrl(tileCoord, type),
+        attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
+      }))
+      ecosystemLayer.setVisible(true)
     },
     setPlannedDevelopmentOverlay(overlay) {
       configurePlannedDevelopmentOverlay(overlay)
