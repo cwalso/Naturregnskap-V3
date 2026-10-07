@@ -532,14 +532,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     if (
       activeView === 'utforsk-i-kart'
       && plannedDevelopmentAnalysisTarget === 'valued-nature'
-      && plannedDevelopment?.status === 'available'
+      && mapAnalysisResult?.status === 'available'
       && plannedValuedNature
       && valuedNatureResultVisible
     ) {
       map.current.setAnalysisHighlight(
         buildValuedNatureMapOverlay(
           plannedValuedNature,
-          plannedDevelopment.overlay,
+          mapAnalysisResult.overlay,
           valuedNatureMapSelection,
         ),
       )
@@ -548,7 +548,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     }
   }, [
     activeView,
-    plannedDevelopment,
+    mapAnalysisResult,
     plannedDevelopmentAnalysisTarget,
     plannedValuedNature,
     valuedNatureMapSelection,
@@ -580,6 +580,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedDevelopment(null)
     setPlannedDevelopmentState('idle')
     setPlannedDevelopmentVisible(true)
+    setAnalysisAreaMode('planned')
+    setDrawnAnalysisArea(null)
+    setDrawingAnalysisArea(false)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
     setValuedNatureResultVisible(true)
     setPlannedDevelopmentAnalysisTarget('grunnkart')
     setPlannedNatureBreakdown(null)
@@ -646,8 +651,68 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function openValuedNatureAnalysis() {
+    setAnalysisAreaMode('planned')
     setPlannedDevelopmentAnalysisTarget('valued-nature')
+    map.current?.setDrawnAnalysisAreaVisible(false)
     navigate('utforsk-i-kart')
+  }
+
+  function usePlannedAnalysisArea() {
+    setAnalysisAreaMode('planned')
+    setDrawingAnalysisArea(false)
+    map.current?.cancelDrawnAnalysisArea()
+    map.current?.setDrawnAnalysisAreaVisible(false)
+  }
+
+  function useDrawnAnalysisArea() {
+    if (!drawnAnalysisArea) {
+      startDrawingAnalysisArea()
+      return
+    }
+    setAnalysisAreaMode('drawn')
+    setDrawingAnalysisArea(false)
+    map.current?.cancelDrawnAnalysisArea()
+    map.current?.setDrawnAnalysisAreaVisible(true)
+  }
+
+  function startDrawingAnalysisArea() {
+    setAnalysisAreaMode('drawn')
+    setDrawnAnalysisArea(null)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
+    setDrawingAnalysisArea(true)
+    map.current?.clearDrawnAnalysisArea()
+    map.current?.startDrawnAnalysisArea((area) => {
+      setDrawnAnalysisArea(area)
+      setAnalysisAreaMode('drawn')
+      setDrawingAnalysisArea(false)
+      map.current?.setDrawnAnalysisAreaVisible(true)
+      map.current?.fitToDrawnAnalysisArea()
+    })
+    scrollToMapSection('map-canvas-region')
+  }
+
+  function finishDrawingAnalysisArea() {
+    map.current?.finishDrawnAnalysisArea()
+  }
+
+  function undoDrawingAnalysisPoint() {
+    map.current?.undoDrawnAnalysisPoint()
+  }
+
+  function cancelDrawingAnalysisArea() {
+    map.current?.cancelDrawnAnalysisArea()
+    setDrawingAnalysisArea(false)
+    if (!drawnAnalysisArea) setAnalysisAreaMode('planned')
+  }
+
+  function clearDrawnAnalysisArea() {
+    map.current?.clearDrawnAnalysisArea()
+    setDrawnAnalysisArea(null)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
+    setDrawingAnalysisArea(false)
+    setAnalysisAreaMode('planned')
   }
 
   function findGrunnkartResultInMap() {
@@ -662,12 +727,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setValuedNatureMapSelection(selection)
 
     if (
-      plannedDevelopment?.status === 'available'
+      mapAnalysisResult?.status === 'available'
       && plannedValuedNature
     ) {
       const overlay = buildValuedNatureMapOverlay(
         plannedValuedNature,
-        plannedDevelopment.overlay,
+        mapAnalysisResult.overlay,
         selection,
       )
       map.current?.setAnalysisHighlight(overlay)
