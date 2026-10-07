@@ -49,6 +49,7 @@ export function SiteHeader({
         <div className="site-header__utilities">
           {municipalityPicker && (
             <div className="site-header__municipality">
+              <span className="site-header__municipality-label">Velg kommune:</span>
               {municipalityPicker}
             </div>
           )}
