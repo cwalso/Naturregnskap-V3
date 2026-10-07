@@ -4,6 +4,7 @@ import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
+import type ImageSource from 'ol/source/Image'
 import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
@@ -200,7 +201,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   }
 
   function configureRasterOverlay(
-    layer: ImageLayer,
+    layer: ImageLayer<ImageSource>,
     state: RasterLayerState,
     overlay: AnalysisRasterOverlay | null,
   ) {
@@ -235,7 +236,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       })
   }
 
-  function releaseRasterOverlay(layer: ImageLayer, state: RasterLayerState) {
+  function releaseRasterOverlay(layer: ImageLayer<ImageSource>, state: RasterLayerState) {
     state.request += 1
     state.overlay = null
     layer.setSource(null)
