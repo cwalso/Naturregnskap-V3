@@ -2726,29 +2726,6 @@ body { font-size: 16px; }
 
 
 /* V3.19 – stedfesting av analyseoverlapp */
-.analysis-area-card__toggle {
-  display: flex;
-  align-items: flex-start;
-  gap: .55rem;
-  margin: .75rem 0 .6rem;
-  padding: .65rem .7rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  cursor: pointer;
-}
-.analysis-area-card__toggle input {
-  flex: 0 0 auto;
-  width: 1.1rem;
-  height: 1.1rem;
-  margin-top: .1rem;
-  accent-color: var(--color-accent);
-}
-.analysis-area-card__toggle span {
-  font-size: .74rem;
-  line-height: 1.4;
-}
-
 .valued-nature-map-control {
   display: flex;
   align-items: center;
@@ -2764,7 +2741,8 @@ body { font-size: 16px; }
   font-size: .76rem;
 }
 .valued-nature-map-control button,
-.valued-nature-metric__map-action {
+.valued-nature-metric__map-action,
+.analysis-result__find-map {
   min-height: 2.35rem;
   padding: .45rem .6rem;
   color: var(--color-accent);
@@ -2776,7 +2754,8 @@ body { font-size: 16px; }
   cursor: pointer;
 }
 .valued-nature-map-control button:hover,
-.valued-nature-metric__map-action:hover {
+.valued-nature-metric__map-action:hover,
+.analysis-result__find-map:hover {
   background: var(--color-brand-surface);
 }
 .valued-nature-metric {
@@ -2798,10 +2777,10 @@ body { font-size: 16px; }
 }
 
 @media (max-width: 52rem) {
-  .analysis-area-card__toggle span,
   .valued-nature-map-control strong,
   .valued-nature-map-control button,
-  .valued-nature-metric__map-action {
+  .valued-nature-metric__map-action,
+  .analysis-result__find-map {
     font-size: .82rem;
   }
 
@@ -2811,7 +2790,13 @@ body { font-size: 16px; }
   }
 
   .valued-nature-map-control button,
-  .valued-nature-metric__map-action {
+  .valued-nature-metric__map-action,
+  .analysis-result__find-map {
     min-height: 2.75rem;
   }
+}
+
+
+.analysis-result__find-map {
+  margin: .55rem 0 .75rem;
 }
