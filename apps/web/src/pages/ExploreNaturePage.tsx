@@ -75,10 +75,10 @@ export function ExploreNaturePage({
       <section className="content-page__section account-themes" aria-labelledby="account-themes-title">
         <div className="section-heading">
           <span className="section-tag">Regnskapsgrunnlag</span>
-          <h2 id="account-themes-title">Utforsk økosystemene</h2>
+          <h2 id="account-themes-title">Temasider fra regnskapsgrunnlaget</h2>
           <p>
-            Disse sidene bygger videre på det heldekkende Grunnkartet og viser
-            regnskapsgrunnlaget mer detaljert for enkelte økosystemtyper.
+            Her kan du gå videre til myr, skog og bynaturen. Sidene bygger på
+            heldekkende arealgrunnlag, men har ulike roller i naturregnskapet.
           </p>
         </div>
 
