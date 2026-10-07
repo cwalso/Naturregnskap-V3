@@ -6,7 +6,7 @@ import {
 
 const ACCOUNT_ENDPOINT = 'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse'
 const MAX_ANALYSIS_PIXELS = 1_400_000
-const FOREST_CLASS_COLOR = [31, 110, 73] as const
+const FOREST_CLASS_COLOR = [77, 146, 33] as const
 const NATURE_CLASS = 2
 
 export interface ForestTypeDefinition {
@@ -18,18 +18,24 @@ export interface ForestTypeDefinition {
 }
 
 export const forestTypeDefinitions: readonly ForestTypeDefinition[] = [
-  { id: 'gran', label: 'Granskog', sourceValue: 'skogGran', color: '#315C3B', rgb: [49, 92, 59] },
-  { id: 'furu', label: 'Furuskog', sourceValue: 'skogFuru', color: '#557C45', rgb: [85, 124, 69] },
-  { id: 'barblanding', label: 'Barblandingsskog', sourceValue: 'skogBarblanding', color: '#759B58', rgb: [117, 155, 88] },
-  { id: 'blanding', label: 'Blandingsskog', sourceValue: 'skogBlanding', color: '#9DB86B', rgb: [157, 184, 107] },
-  { id: 'lauv', label: 'Lauvskog', sourceValue: 'skogLauv', color: '#C4D58B', rgb: [196, 213, 139] },
+  { id: 'gran', label: 'Granskog', sourceValue: 'skogGran', color: '#66C2A4', rgb: [102, 194, 164] },
+  { id: 'furu', label: 'Furuskog', sourceValue: 'skogFuru', color: '#A5BA1B', rgb: [165, 186, 27] },
+  { id: 'barblanding', label: 'Barblandingsskog', sourceValue: 'skogBarblanding', color: '#1C8548', rgb: [28, 133, 72] },
+  { id: 'blanding', label: 'Blandingsskog', sourceValue: 'skogBlanding', color: '#67A64F', rgb: [103, 166, 79] },
+  { id: 'lauv', label: 'Lauvskog', sourceValue: 'skogLauv', color: '#9ECC73', rgb: [158, 204, 115] },
 ] as const
 
 export const FOREST_WMS_ENDPOINT = ACCOUNT_ENDPOINT
 export const FOREST_WMS_LAYER = 'arealdekkeniva2'
-export const FOREST_WMS_STYLE = buildForestTypeStyle()
-const FOREST_ECOSYSTEM_WMS_LAYER = 'okosystemtype'
-const FOREST_ECOSYSTEM_WMS_STYLE = buildForestEcosystemStyle()
+export const FOREST_WMS_FILTER =
+  '<Filter xmlns="http://www.opengis.net/ogc"><Or>'
+  + forestTypeDefinitions.map((definition) => (
+    '<PropertyIsEqualTo><PropertyName>arealdekkeniva2</PropertyName><Literal>'
+    + definition.sourceValue
+    + '</Literal></PropertyIsEqualTo>'
+  )).join('')
+  + '</Or></Filter>'
+const FOREST_ECOSYSTEM_WMS_LAYER = 'arealdekkeniva1'
 
 export interface ForestTypeMetric {
   readonly id: string
@@ -122,7 +128,6 @@ async function calculateForestStatistics(
         width,
         height,
         FOREST_ECOSYSTEM_WMS_LAYER,
-        FOREST_ECOSYSTEM_WMS_STYLE,
       ),
       signal,
     ),
@@ -132,7 +137,6 @@ async function calculateForestStatistics(
         width,
         height,
         'arealdekkeniva2',
-        buildForestTypeStyle(),
       ),
       signal,
     ),
@@ -240,35 +244,11 @@ async function calculateForestStatistics(
   }
 }
 
-function buildForestEcosystemStyle(): string {
-  const color = rgbToHex(FOREST_CLASS_COLOR)
-  return '<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>'
-    + '<Rule><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>skog</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter>'
-    + '<PolygonSymbolizer><Fill><CssParameter name="fill">' + color + '</CssParameter></Fill></PolygonSymbolizer></Rule>'
-    + '</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
-}
-
-function buildForestTypeStyle(): string {
-  const rules = forestTypeDefinitions.map((definition) => (
-    '<Rule><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>arealdekkeniva2</ogc:PropertyName><ogc:Literal>'
-    + definition.sourceValue
-    + '</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter>'
-    + '<PolygonSymbolizer><Fill><CssParameter name="fill">'
-    + definition.color
-    + '</CssParameter></Fill></PolygonSymbolizer></Rule>'
-  )).join('')
-
-  return '<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>arealdekkeniva2</Name><UserStyle><FeatureTypeStyle>'
-    + rules
-    + '</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
-}
-
 function buildWmsUrl(
   extent: readonly [number, number, number, number],
   width: number,
   height: number,
   layer: string,
-  sld: string,
 ): string {
   return ACCOUNT_ENDPOINT + '?' + new URLSearchParams({
     service: 'WMS',
@@ -282,7 +262,6 @@ function buildWmsUrl(
     height: String(height),
     format: 'image/png; mode=8bit',
     transparent: 'true',
-    sld_body: sld,
   })
 }
 
@@ -332,6 +311,3 @@ function colorDistanceSquared(
     + (blue - color[2]) ** 2
 }
 
-function rgbToHex(color: readonly [number, number, number]): string {
-  return '#' + color.map((value) => value.toString(16).padStart(2, '0')).join('')
-}

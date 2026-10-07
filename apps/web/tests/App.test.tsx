@@ -12,6 +12,7 @@ import {
   valuedNature,
   wildReindeerAreas,
 } from '../src/datasets/registry'
+import { forestTypeDefinitions, FOREST_WMS_FILTER } from '../src/api/forestStatistics'
 import { AccountOverview } from '../src/features/account-overview/AccountOverview'
 import { accountCategoryIds, type AccountOverviewData } from '../src/features/account-overview/model'
 import { defaultBasemap } from '../src/map/basemaps'
@@ -214,6 +215,19 @@ describe('grunnkonfigurasjon', () => {
       analysisSource: null,
       coverage: { municipalityEvaluation: 'visual_only' },
     })
+  })
+
+  it('bruker dokumenterte Grunnkart-klasser for skog', () => {
+    expect(forestTypeDefinitions).toEqual([
+      expect.objectContaining({ label: 'Granskog', sourceValue: 'skogGran', rgb: [102, 194, 164] }),
+      expect.objectContaining({ label: 'Furuskog', sourceValue: 'skogFuru', rgb: [165, 186, 27] }),
+      expect.objectContaining({ label: 'Barblandingsskog', sourceValue: 'skogBarblanding', rgb: [28, 133, 72] }),
+      expect.objectContaining({ label: 'Blandingsskog', sourceValue: 'skogBlanding', rgb: [103, 166, 79] }),
+      expect.objectContaining({ label: 'Lauvskog', sourceValue: 'skogLauv', rgb: [158, 204, 115] }),
+    ])
+    expect(FOREST_WMS_FILTER).toContain('arealdekkeniva2')
+    expect(FOREST_WMS_FILTER).toContain('skogGran')
+    expect(FOREST_WMS_FILTER).toContain('skogLauv')
   })
 
   it('bruker Kartverkets gråtonekart', () => {
