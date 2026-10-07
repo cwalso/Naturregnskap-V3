@@ -69,6 +69,7 @@ import { ForestPage } from '../pages/ForestPage'
 import { ThematicDataPage } from '../pages/ThematicDataPage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
 import { OverviewPage } from '../pages/OverviewPage'
+import { UrbanNaturePage } from '../pages/UrbanNaturePage'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
 
@@ -90,16 +91,10 @@ const datasetByThematicView: Partial<Record<SiteView, ThematicDatasetId>> = {
 
 const ecosystemViewById: Record<EcosystemPageId, SiteView> = {
   vatmark: 'tema-vatmark',
-  'hei-buskmark': 'tema-hei-buskmark',
-  'lite-vegetert-mark': 'tema-lite-vegetert-mark',
-  kyst: 'tema-kyst',
 }
 
 const ecosystemByView: Partial<Record<SiteView, EcosystemPageId>> = {
   'tema-vatmark': 'vatmark',
-  'tema-hei-buskmark': 'hei-buskmark',
-  'tema-lite-vegetert-mark': 'lite-vegetert-mark',
-  'tema-kyst': 'kyst',
 }
 
 const validViews: readonly SiteView[] = [
@@ -109,9 +104,7 @@ const validViews: readonly SiteView[] = [
   'utforsk-i-kart',
   'tema-forest',
   'tema-vatmark',
-  'tema-hei-buskmark',
-  'tema-lite-vegetert-mark',
-  'tema-kyst',
+  'tema-urban-nature',
   'tema-valued-nature',
   'tema-protected-areas',
   'tema-wild-reindeer-areas',
@@ -170,6 +163,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const showsMap = activeView === 'utforsk-i-kart'
     || activeView === 'tema-forest'
     || activeEcosystemId !== null
+    || activeView === 'tema-urban-nature'
     || activeView === 'tema-valued-nature'
 
   useEffect(() => {
@@ -206,6 +200,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     )
     map.current?.setForestLayerVisible(activeView === 'tema-forest')
     map.current?.setEcosystemLayer(activeEcosystemId)
+    map.current?.setUrbanLayerVisible(activeView === 'tema-urban-nature')
     for (const dataset of thematicDatasets) {
       map.current?.setThematicLayerVisible(
         dataset.id,
@@ -717,6 +712,44 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     )
   }
 
+  function urbanNatureMapWorkspace() {
+    if (!selectedMunicipality) return null
+
+    return (
+      <div className="thematic-map-card urban-map-card">
+        <aside className="thematic-map-card__legend" aria-label="Tegnforklaring">
+          <strong>Bebygd og opparbeidet areal</strong>
+          <span>Prototypeinngang til grå arealer</span>
+          <div className="ecosystem-map-legend">
+            <i style={{ backgroundColor: '#8f8f8f' }} aria-hidden="true" />
+            <span>Bebygd og opparbeidet areal</span>
+          </div>
+        </aside>
+        <div className="thematic-map-card__map">
+          {mapRuntimeError && (
+            <div className="map-runtime-error" role="alert">
+              Kartet kunne ikke initialiseres: {mapRuntimeError}
+            </div>
+          )}
+          <div
+            ref={mapElement}
+            className="map"
+            role="region"
+            tabIndex={0}
+            aria-label={`Kart over grå arealer i ${selectedMunicipality.name}`}
+          />
+          <button
+            type="button"
+            className="thematic-map-card__fit"
+            onClick={() => map.current?.fitToBoundary()}
+          >
+            Tilpass kartet til kommunen
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   function thematicMapWorkspace() {
     if (!selectedMunicipality) return null
 
@@ -1133,6 +1166,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           onOpenThemePage={openThematicPage}
           onOpenForestPage={() => navigate('tema-forest')}
           onOpenEcosystemPage={(ecosystemId) => navigate(ecosystemViewById[ecosystemId])}
+          onOpenUrbanNaturePage={() => navigate('tema-urban-nature')}
         />
       )}
       {activeView === 'tema-forest' && (
@@ -1164,6 +1198,15 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             navigate('utforsk-i-kart')
           }}
           mapContent={ecosystemMapWorkspace(activeEcosystemId)}
+        />
+      )}
+      {activeView === 'tema-urban-nature' && (
+        <UrbanNaturePage
+          municipalityName={selectedMunicipality.name}
+          accountData={accountData}
+          accountState={accountState}
+          onBack={() => navigate('utforsk-naturen')}
+          mapContent={urbanNatureMapWorkspace()}
         />
       )}
       {datasetByThematicView[activeView] && (

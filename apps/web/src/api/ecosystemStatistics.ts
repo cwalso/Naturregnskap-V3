@@ -18,7 +18,7 @@ const NATURE_CLASS = 2
 const MAX_CONCURRENT_REQUESTS = 4
 const IMAGE_CACHE_LIMIT = 100
 
-export type EcosystemPageId = Exclude<PlannedNatureTypeId, 'skog'>
+export type EcosystemPageId = Extract<PlannedNatureTypeId, 'vatmark'>
 
 export interface EcosystemMetric {
   readonly id: PlannedNatureTypeId
