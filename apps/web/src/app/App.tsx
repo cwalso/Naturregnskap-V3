@@ -353,6 +353,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       return
     }
 
+    navigate('oversikt')
+
     setBoundaryState('loading')
     setAccountState('loading')
     setThematicCoverageState('loading')
