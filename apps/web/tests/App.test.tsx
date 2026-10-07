@@ -372,7 +372,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByText('Skog er del av det heldekkende regnskapsgrunnlaget')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Fordeling på skogtype' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Skogtyper etter størrelse' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Skog i Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Kart over skogtyper i Trondheim' })).toBeInTheDocument()
     await vi.waitFor(() => expect(map.setForestLayerVisible).toHaveBeenCalledWith(true))
   })
 
