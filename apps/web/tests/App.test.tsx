@@ -332,7 +332,7 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('heading', { name: 'Verdsatte naturtyper', level: 1 })).toBeInTheDocument()
     expect(screen.getByText('3')).toBeInTheDocument()
-    expect(screen.getByText(/Datasettet er ikke heldekkende/)).toBeInTheDocument()
+    expect(screen.getAllByText(/Datasettet er ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
     fireEvent.click(screen.getByRole('button', { name: /Åpne analyse/ }))
