@@ -13,10 +13,10 @@ afterEach(() => {
 
 describe('shared image request pipeline', () => {
   it('shares an in-flight request and reuses the cached image', async () => {
-    let resolveFetch: ((response: Response) => void) | null = null
+    const resolvers: Array<(response: Response) => void> = []
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(
       () => new Promise<Response>((resolve) => {
-        resolveFetch = resolve
+        resolvers.push(resolve)
       }),
     )
 
@@ -25,7 +25,7 @@ describe('shared image request pipeline', () => {
     const second = loadSharedImageBlob(url)
 
     expect(fetchSpy).toHaveBeenCalledTimes(1)
-    resolveFetch?.(new Response(new Uint8Array([1, 2, 3]), {
+    resolvers[0](new Response(new Uint8Array([1, 2, 3]), {
       status: 200,
       headers: { 'content-type': 'image/png' },
     }))
