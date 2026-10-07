@@ -100,17 +100,19 @@ export function ExploreNaturePage({
                 <div className="theme-card__icon" aria-hidden="true">{theme.icon}</div>
                 <strong>{dataset.title}</strong>
                 <span>{theme.description}</span>
-                <span
-                  className={
-                    evaluation?.status === 'hit'
-                      ? 'status-tag'
-                      : 'status-tag status-tag--muted'
-                  }
-                >
-                  {statusLabel}
-                </span>
-                <span className="theme-card__open">
-                  Åpne temaside <span aria-hidden="true">→</span>
+                <span className="theme-card__footer">
+                  <span
+                    className={
+                      evaluation?.status === 'hit'
+                        ? 'status-tag'
+                        : 'status-tag status-tag--muted'
+                    }
+                  >
+                    {statusLabel}
+                  </span>
+                  <span className="theme-card__open">
+                    Åpne temaside <span aria-hidden="true">→</span>
+                  </span>
                 </span>
               </button>
             )
