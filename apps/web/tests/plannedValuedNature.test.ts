@@ -70,14 +70,16 @@ describe('valued nature × future development', () => {
     expect(summary.affectedFeatureCount).toBe(2)
     expect(summary.featurePixelTotal).toBe(8)
     expect(summary.uniquePixelCount).toBe(7)
-    expect(summary.byValue.get('Svært stor verdi')).toEqual({
+    expect(summary.byValue.get('Svært stor verdi')).toMatchObject({
       featureCount: 1,
       pixelCount: 4,
     })
-    expect(summary.byType.get('Rik edellauvskog')).toEqual({
+    expect(summary.byType.get('Rik edellauvskog')).toMatchObject({
       featureCount: 1,
       pixelCount: 4,
     })
+    expect(summary.uniquePixelIndices).toHaveLength(7)
+    expect(summary.byValue.get('Svært stor verdi')?.pixelIndices.size).toBe(4)
   })
 
   it('respects holes in polygon geometry', () => {
