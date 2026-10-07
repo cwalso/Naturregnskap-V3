@@ -529,6 +529,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     const legend = <MapLegend items={legendItems} />
 
+    const analysisMapStatus = plannedDevelopmentAnalysisTarget === 'valued-nature'
+      ? !valuedNatureResultVisible
+        ? 'Analyseresultatet er skjult'
+        : valuedNatureMapSelection.kind === 'all'
+          ? 'Verdsatte naturtyper × framtidig utbygging'
+          : `${valuedNatureMapSelection.label} × framtidig utbygging`
+      : !plannedDevelopmentVisible
+        ? 'Analyseresultatet er skjult'
+        : 'Natur og jordbruk × framtidig utbygging'
+
     return (
       <section
         className={`map-workspace ${variant === 'explore' ? 'map-workspace--explore' : ''}`}
@@ -622,9 +632,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             )}
             {variant === 'explore' && (
               <div className="map-frame__context" aria-live="polite">
-                <span><strong>{selectedMunicipality.name}</strong></span>
-                <span>
-                  {accountLayerVisible ? 'Regnskapsgrunnlag vises' : 'Regnskapsgrunnlag er skjult'}
+                <span className="map-frame__context-municipality">
+                  <strong>{selectedMunicipality.name}</strong>
+                </span>
+                <span className="map-frame__context-analysis">
+                  <strong>Kart viser nå:</strong> {analysisMapStatus}
+                </span>
+                <span className="map-frame__context-background">
+                  Bakgrunn: {accountLayerVisible ? 'Grunnkart vises' : 'Grunnkart er skjult'}
                 </span>
               </div>
             )}
