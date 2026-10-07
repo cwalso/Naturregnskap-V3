@@ -1010,15 +1010,18 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
     const legend = <MapLegend items={legendItems} />
 
+    const analysisAreaLabel = analysisAreaMode === 'drawn'
+      ? 'Eget tegnet område'
+      : 'Framtidig utbygging'
     const analysisMapStatus = plannedDevelopmentAnalysisTarget === 'valued-nature'
       ? !valuedNatureResultVisible
         ? 'Analyseresultatet er skjult'
         : valuedNatureMapSelection.kind === 'all'
-          ? 'Verdsatte naturtyper × framtidig utbygging'
-          : `${valuedNatureMapSelection.label} × framtidig utbygging`
+          ? `Verdsatte naturtyper × ${analysisAreaLabel.toLowerCase()}`
+          : `${valuedNatureMapSelection.label} × ${analysisAreaLabel.toLowerCase()}`
       : !plannedDevelopmentVisible
         ? 'Analyseresultatet er skjult'
-        : 'Natur og jordbruk × framtidig utbygging'
+        : `Natur og jordbruk × ${analysisAreaLabel.toLowerCase()}`
 
     return (
       <section
@@ -1056,8 +1059,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             {variant === 'explore' ? (
               <>
                 <PlannedDevelopmentSummary
-                  state={plannedDevelopmentState}
-                  result={plannedDevelopment}
+                  state={mapAnalysisState}
+                  result={mapAnalysisResult}
                   visible={plannedDevelopmentVisible}
                   onVisibleChange={setPlannedDevelopmentVisible}
                   onFindGrunnkartResultInMap={findGrunnkartResultInMap}
@@ -1071,6 +1074,16 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   onValuedNatureResultVisibleChange={setValuedNatureResultVisible}
                   valuedNatureMapSelection={valuedNatureMapSelection}
                   onShowValuedNatureInMap={showValuedNatureInMap}
+                  analysisAreaMode={analysisAreaMode}
+                  drawnArea={drawnAnalysisArea}
+                  drawing={drawingAnalysisArea}
+                  onUsePlannedArea={usePlannedAnalysisArea}
+                  onUseDrawnArea={useDrawnAnalysisArea}
+                  onStartDrawing={startDrawingAnalysisArea}
+                  onFinishDrawing={finishDrawingAnalysisArea}
+                  onUndoDrawing={undoDrawingAnalysisPoint}
+                  onCancelDrawing={cancelDrawingAnalysisArea}
+                  onClearDrawnArea={clearDrawnAnalysisArea}
                 />
 
                 <details className="analysis-map-options">
@@ -1117,7 +1130,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
               <div className="map-frame__context" aria-live="polite">
                 <span className="map-frame__context-municipality">
                   <small>Analyseområde</small>
-                  <strong>Framtidig utbygging · {selectedMunicipality.name}</strong>
+                  <strong>{analysisAreaLabel} · {selectedMunicipality.name}</strong>
                 </span>
                 <span className="map-frame__context-analysis">
                   <small>Kartet viser</small>
