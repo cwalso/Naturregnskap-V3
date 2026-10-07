@@ -517,14 +517,15 @@ describe('sidestruktur og Oversikt', () => {
     expect(interactiveMap).toHaveAttribute('tabindex', '0')
     expect(interactiveMap).toHaveAttribute('aria-describedby', 'map-accessibility-description')
 
-    expect(screen.getByRole('heading', { name: 'Framtidig utbygging' })).toBeInTheDocument()
-    expect(
-      screen.queryByRole('checkbox', { name: 'Vis framtidige utbyggingsområder i kartet' }),
-    ).not.toBeInTheDocument()
-    expect(screen.getByText(/brukes som analyseområde/)).toBeInTheDocument()
-    expect(screen.getByText('Flere analyser planlegges')).toBeInTheDocument()
-    expect(screen.queryByRole('radio', { name: /Naturvernområder/ })).not.toBeInTheDocument()
-    expect(screen.getByText(/Kart viser nå:/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Hva blir berørt?' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Framtidig utbygging/ })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /Tegn eget område/ })).toBeDisabled()
+    expect(screen.getByText('Flere datalag')).toBeInTheDocument()
+    expect(screen.queryByRole('radio', { name: /Verneområder/ })).not.toBeInTheDocument()
+    expect(screen.getByText('Kartet viser')).toBeInTheDocument()
+    expect(screen.getByText('Velg område')).toBeInTheDocument()
+    expect(screen.getByText('Velg datagrunnlag')).toBeInTheDocument()
+    expect(screen.getByText('Les og stedfest resultatet')).toBeInTheDocument()
 
     const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
     fireEvent.click(valuedNatureAnalysis)
@@ -534,7 +535,7 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(createMap).toHaveBeenCalledTimes(1))
     await vi.waitFor(() => expect(map.showBoundary).toHaveBeenCalled())
 
-    fireEvent.click(screen.getByRole('button', { name: 'Tilpass kartet til kommunen' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Hele kommunen' }))
     expect(map.fitToBoundary).toHaveBeenCalledTimes(1)
   })
 
