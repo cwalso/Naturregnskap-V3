@@ -5,7 +5,6 @@ import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import type ImageSource from 'ol/source/Image'
-import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
 import XYZ from 'ol/source/XYZ'
 import VectorSource from 'ol/source/Vector'
@@ -15,11 +14,7 @@ import { fromLonLat } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 
-import {
-  FOREST_WMS_ENDPOINT,
-  FOREST_WMS_FILTER,
-  FOREST_WMS_LAYER,
-} from '../api/forestStatistics'
+import { buildForestTileUrl } from '../api/forestStatistics'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import type { ChangeFeature } from '../features/changes/model'
 import { nationalLandCover2025, thematicDatasets, type ThematicDatasetId } from '../datasets/registry'
@@ -126,16 +121,13 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     visible: true,
     opacity: 0.86,
   })
-  const forestLayer = new ImageLayer({
-    source: new ImageWMS({
-      url: FOREST_WMS_ENDPOINT,
-      params: {
-        LAYERS: FOREST_WMS_LAYER,
-        VERSION: '1.3.0',
-        TRANSPARENT: true,
-        FILTER: FOREST_WMS_FILTER,
-      },
-      ratio: 1,
+  const forestLayer = new TileLayer({
+    source: new XYZ({
+      projection: ACCOUNT_CRS,
+      tileGrid: accountTileGrid,
+      tilePixelRatio: 2,
+      transition: 0,
+      tileUrlFunction: (tileCoord) => buildForestTileUrl(tileCoord),
       attributions: 'Kilde: NIBIO, Grunnkart for arealanalyse 2025',
     }),
     visible: false,
