@@ -4,6 +4,7 @@ import { loadSharedImageBlob } from './sharedImageRequests'
 import {
   ACCOUNT_CRS,
   ACCOUNT_ORIGIN,
+  buildRawAccountTileUrl,
   ACCOUNT_RESOLUTIONS,
   classifyAccountPixel,
   loadOverviewRaster,
@@ -510,42 +511,8 @@ export function classifyNatureTypePixel(red: number, green: number, blue: number
   return best
 }
 
-const RAW_ACCOUNT_STYLE = (() => {
-  const rules = [
-    [['bebygdOpparbeidetAreal'], '#FF0000'],
-    [['dyrketmark', 'grasmark'], '#00FF00'],
-    [['skog', 'heiBuskmark', 'liteVegetertMark', 'vatmark', 'kyststrenderSvabergDyner'], '#0000FF'],
-    [['hav'], '#FF80FF'],
-    [['innsjoerVannmagasiner'], '#0080FF'],
-    [['elverBekkerKanaler'], '#FF8080'],
-  ].map(([values, color]) => {
-    const comparisons = (values as string[])
-      .map((value) => `<ogc:PropertyIsEqualTo><ogc:PropertyName>okosystemtypeniva1</ogc:PropertyName><ogc:Literal>${value}</ogc:Literal></ogc:PropertyIsEqualTo>`)
-      .join('')
-    const filter = (values as string[]).length > 1
-      ? `<ogc:Or>${comparisons}</ogc:Or>`
-      : comparisons
-    return `<Rule><ogc:Filter>${filter}</ogc:Filter><PolygonSymbolizer><Fill><CssParameter name="fill">${color}</CssParameter></Fill></PolygonSymbolizer></Rule>`
-  }).join('')
-
-  return `<StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>okosystemtype</Name><UserStyle><FeatureTypeStyle>${rules}</FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`
-})()
-
 export function buildRawAccountPlanTileUrl(endpoint: string, tileCoord: number[]): string {
-  return endpoint + '?' + new URLSearchParams({
-    service: 'WMS',
-    version: '1.3.0',
-    request: 'GetMap',
-    layers: 'okosystemtype',
-    styles: '',
-    crs: ACCOUNT_CRS,
-    bbox: planTileGrid.getTileCoordExtent(tileCoord).map((value) => value.toFixed(2)).join(','),
-    width: String(PLAN_TILE_PIXELS),
-    height: String(PLAN_TILE_PIXELS),
-    format: 'image/png; mode=8bit',
-    transparent: 'true',
-    sld_body: RAW_ACCOUNT_STYLE,
-  })
+  return buildRawAccountTileUrl(endpoint, tileCoord)
 }
 
 export function isPlannedDevelopmentCellKept(
