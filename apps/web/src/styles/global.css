@@ -4160,3 +4160,73 @@ button.overview-status-card:hover {
     min-height: 13rem;
   }
 }
+
+
+/* V3.27 – bynatur og korrigert temastruktur */
+.urban-nature__icon {
+  font-size: 1.55rem;
+  font-weight: 500;
+}
+.urban-nature__hero {
+  background:
+    linear-gradient(rgb(58 66 68 / 12%), rgb(58 66 68 / 12%)),
+    url('https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&q=84&w=1400')
+    center / cover no-repeat;
+}
+.urban-nature__note {
+  display: flex;
+  gap: .85rem;
+  margin-bottom: 3.2rem;
+  padding: 1rem 1.15rem;
+  background: #f1f2f2;
+  border-left: 4px solid #6f7778;
+}
+.urban-nature__note > span {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: .05rem;
+  color: #fff;
+  background: #6f7778;
+  border-radius: 50%;
+  font-size: .8rem;
+  font-weight: 700;
+}
+.urban-nature__note strong {
+  display: block;
+  margin-bottom: .35rem;
+}
+.urban-nature__note p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.urban-nature__facts {
+  min-height: 15rem;
+  padding: 1.4rem 1.5rem;
+  background: #fff;
+  border-radius: .65rem;
+  box-shadow: inset 0 0 0 1px #e7e5e0;
+}
+.urban-nature__facts p {
+  margin-bottom: .65rem;
+}
+.urban-nature__facts ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.urban-nature__facts li + li {
+  margin-top: .35rem;
+}
+
+@media (max-width: 52rem) {
+  .urban-nature__note {
+    margin-bottom: 2.2rem;
+  }
+  .urban-nature__facts {
+    min-height: 0;
+  }
+}
