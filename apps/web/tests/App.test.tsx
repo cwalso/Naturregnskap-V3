@@ -42,8 +42,12 @@ function mapMock(): MunicipalityMap {
     showBoundary: vi.fn(),
     clearBoundary: vi.fn(),
     setAccountLayerVisible: vi.fn(),
+    setFutureDevelopmentArea: vi.fn(),
+    setFutureDevelopmentAreaVisible: vi.fn(),
     setPlannedDevelopmentOverlay: vi.fn(),
     setPlannedDevelopmentVisible: vi.fn(),
+    setAnalysisHighlight: vi.fn(),
+    fitToAnalysisHighlight: vi.fn(),
     setThematicLayerVisible: vi.fn(),
     setThematicLayerStatusHandler: vi.fn(),
     setFeatureInfoHandler: vi.fn(),
@@ -382,6 +386,11 @@ describe('sidestruktur og Oversikt', () => {
     expect(interactiveMap).toHaveAttribute('aria-describedby', 'map-accessibility-description')
 
     expect(screen.getByRole('heading', { name: 'Framtidig utbygging' })).toBeInTheDocument()
+    const futureAreaToggle = screen.getByRole('checkbox', { name: 'Vis framtidige utbyggingsområder i kartet' })
+    expect(futureAreaToggle).toBeChecked()
+    fireEvent.click(futureAreaToggle)
+    expect(futureAreaToggle).not.toBeChecked()
+
     const valuedNatureAnalysis = screen.getByRole('radio', { name: /Verdsatte naturtyper/ })
     fireEvent.click(valuedNatureAnalysis)
     expect(valuedNatureAnalysis).toHaveAttribute('aria-checked', 'true')
