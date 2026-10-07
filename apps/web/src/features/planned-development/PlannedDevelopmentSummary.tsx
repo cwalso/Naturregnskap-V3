@@ -8,10 +8,6 @@ import type {
   PlannedDevelopmentResult,
   PlannedNatureBreakdown,
 } from '../../map/plannedDevelopment'
-import {
-  PLANNED_AGRICULTURE_COLOR,
-  PLANNED_NATURE_COLOR,
-} from '../../map/plannedDevelopmentOverlay'
 import type {
   PlannedValuedNatureAnalysis,
   ValuedNatureMapSelection,
