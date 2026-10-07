@@ -4,6 +4,7 @@ import {
   type PlannedDevelopmentAnalysis,
   type PlannedDevelopmentOverlayGrid,
 } from './plannedDevelopment'
+import type { AnalysisRasterOverlay } from './analysisRasterOverlay'
 
 const PAGE_SIZE = 1000
 
@@ -55,6 +56,11 @@ export interface ValuedNatureBreakdownMetric {
   readonly sharePercent: number
   readonly mapPixelIndices: Uint32Array
 }
+
+export type ValuedNatureMapSelection =
+  | { readonly kind: 'all' }
+  | { readonly kind: 'value'; readonly label: string }
+  | { readonly kind: 'type'; readonly label: string }
 
 export interface PlannedValuedNatureAnalysis {
   readonly municipalityNumber: string
@@ -127,6 +133,59 @@ async function runAnalysis(
       false,
     ),
   }
+}
+
+export function buildValuedNatureMapOverlay(
+  analysis: PlannedValuedNatureAnalysis,
+  planOverlay: PlannedDevelopmentOverlayGrid,
+  selection: ValuedNatureMapSelection,
+): AnalysisRasterOverlay | null {
+  let indices: Uint32Array
+  let fillColor = '#6F3FA0'
+  let strokeColor = '#3D1463'
+
+  if (selection.kind === 'all') {
+    indices = analysis.allOverlapPixelIndices
+  } else {
+    const metrics = selection.kind === 'value'
+      ? analysis.valueMetrics
+      : analysis.typeMetrics
+    const metric = metrics.find((item) => item.label === selection.label)
+    if (!metric) return null
+    indices = metric.mapPixelIndices
+
+    if (selection.kind === 'value' && metric.color) {
+      fillColor = metric.color
+      strokeColor = darkenHex(metric.color)
+    }
+  }
+
+  if (indices.length === 0) return null
+
+  const mask = new Uint8Array(planOverlay.analysisMask.length)
+  for (const index of indices) {
+    if (index < mask.length) mask[index] = 1
+  }
+
+  return {
+    width: planOverlay.width,
+    height: planOverlay.height,
+    extent: planOverlay.extent,
+    mask,
+    fillColor,
+    strokeColor,
+  }
+}
+
+function darkenHex(hex: string): string {
+  const normalized = hex.replace('#', '')
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return '#3D1463'
+
+  const channels = [0, 2, 4].map((offset) => (
+    Math.max(0, Math.round(Number.parseInt(normalized.slice(offset, offset + 2), 16) * 0.62))
+  ))
+
+  return `#${channels.map((channel) => channel.toString(16).padStart(2, '0')).join('')}`
 }
 
 export function buildValuedNatureQueryBody(
