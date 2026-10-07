@@ -1,6 +1,7 @@
 import ImageTile from 'ol/ImageTile'
 
 import { classifyAccountPixel } from './accountOverviewRaster'
+import { loadSharedImageBlob } from './sharedImageRequests'
 import {
   buildRawAccountPlanTileUrl,
   isPlannedDevelopmentCellKept,
@@ -69,17 +70,13 @@ export async function loadPlannedDevelopmentDetailTile(
   }
 
   try {
-    const [accountResponse, planBlob] = await Promise.all([
-      fetch(buildRawAccountPlanTileUrl(accountEndpoint, tileCoord)),
+    const [accountBlob, planBlob] = await Promise.all([
+      loadSharedImageBlob(buildRawAccountPlanTileUrl(accountEndpoint, tileCoord)),
       loadPlanTileBlobByUrl(planUrl),
     ])
 
-    if (!accountResponse.ok) {
-      throw new Error('Kartflis kunne ikke hentes')
-    }
-
     const [accountBitmap, planBitmap] = await Promise.all([
-      createImageBitmap(await accountResponse.blob()),
+      createImageBitmap(accountBlob),
       createImageBitmap(planBlob),
     ])
 
