@@ -51,19 +51,18 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 Arbeidsflyten er:
 
 ```text
-velg analyseområde
+framtidig utbygging (fast analyseområde)
         ↓
-velg datagrunnlag
+velg ett analysetema
         ↓
 les resultat
         ↓
-finn resultatet i kartet
+se resultatet automatisk i kartet
 ```
 
-Analyseområder som er implementert:
-
-- områder satt av til framtidig utbygging i kommuneplan
-- eget polygon tegnet i kartet
+Arbeidsflaten bruker framtidig utbygging i kommuneplan som fast analyseområde.
+Tegne- og polygonanalysemodulene beholdes, men inngangen er midlertidig skjult.
+Temabytte, resultatfilter og objektvalg beholder kartutsnittet.
 
 Analysegrunnlag som er implementert:
 
@@ -200,6 +199,8 @@ cd apps/web
 npm test
 npm run lint
 npm run build
+npx playwright install chromium
+npm run test:browser
 ```
 
 Backend/preparation:
@@ -228,3 +229,10 @@ Start her:
 Gamle ADR-er er historiske beslutningslogger og skal normalt ikke omskrives.
 Nyere ADR-er og dagens eksplisitte levende dokumentasjon gjelder når retningen
 er endret.
+
+Browserregresjonen bruker kontrollerte masker og geometrier og verifiserer
+faktiske OpenLayers-canvaspiksler. Skjermbilder og målinger lagres i
+`apps/web/.browser-results/` (overstyres med `BROWSER_OUTPUT_DIR`).
+Installer systemavhengigheter med `npx playwright install --with-deps chromium`
+der det er nødvendig; `CHROMIUM_PATH` kan peke på en installert Chromium.
+Denne testen erstatter ikke visuell acceptance med reelle Trondheim-data.

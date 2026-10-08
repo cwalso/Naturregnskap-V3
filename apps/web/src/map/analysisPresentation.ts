@@ -4,7 +4,7 @@ import type { AnalysisRasterOverlay } from './analysisRasterOverlay'
 
 export type GrunnkartMapSelection = 'all' | 'nature' | 'agriculture'
 export type AnalysisMapRenderState = 'idle' | 'loading' | 'ready' | 'error'
-export const analysisColors = { area: '#566B63', nature: '#006B57', agriculture: '#B85A0D', valued: '#6F3FA0' } as const
+export const analysisColors = { area: '#315B93', nature: '#006B57', agriculture: '#B85A0D', valued: '#6F3FA0' } as const
 
 export function grunnkartSelectionLabel(selection: GrunnkartMapSelection): string {
   return selection === 'nature' ? 'Natur' : selection === 'agriculture' ? 'Jordbruk' : 'Natur og jordbruk'
@@ -22,7 +22,7 @@ export function buildGrunnkartMapOverlay(
     width: overlay.width, height: overlay.height, extent: overlay.extent, mask,
     fillColor: analysisColors.nature,
     palette: { 1: analysisColors.nature, 2: analysisColors.agriculture },
-    calm: true,
+    strong: true,
   }
 }
 
@@ -58,9 +58,9 @@ export function analysisPresentation(input: {
     return state('error', 'Analysen kunne ikke beregnes', 'Teknisk feil. Dette skal ikke tolkes som null treff.')
   }
   if (input.result?.status === 'not_available') return state('unavailable', 'Analysegrunnlaget er ikke tilgjengelig', input.result.reason)
-  if (!input.result) return state('not_started', 'Analysen er ikke kjørt', 'Velg et analyseområde og datagrunnlag. Tegn et område hvis du vil undersøke en egen flate.')
+  if (!input.result) return state('not_started', 'Analysen er ikke kjørt', 'Velg kommune og analysetema for framtidig utbygging.')
   if (valuedBasis && !input.valued) return state('loading', 'Analysen beregnes', 'Henter registrerte naturtyper for analyseområdet.')
-  if (!input.visible) return state('hidden', 'Resultatet er skjult', 'Tallene gjelder fortsatt. Vis resultatlaget eller bruk Zoom til treff.')
+  if (!input.visible) return state('hidden', 'Resultatet er skjult', 'Tallene gjelder fortsatt.')
   if (input.renderState === 'error') return state('error', 'Kartresultatet kunne ikke vises', 'Tallene er beregnet, men kartvisningen feilet. Dette er ikke null treff.')
   const valuedSelection = input.valuedSelection
   const hasHits = valuedBasis

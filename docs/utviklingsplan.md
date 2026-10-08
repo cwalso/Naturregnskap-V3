@@ -19,7 +19,7 @@ GitHub Pages-prototype med:
 - prioriterte temasider
 - analyseverksted i kart
 - framtidig utbygging som analyseområde
-- eget tegnet polygon som analyseområde
+- bevarte polygonmoduler med midlertidig skjult inngang
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
 - delt request-/flispipeline for bedre ytelse
 
@@ -47,7 +47,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Utforsk i kart – analyseverksted | ✅ prototype | Område → datagrunnlag → resultat → stedfesting |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
-| Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
+| Tegn eget polygon | Midlertidig skjult | Moduler/metode beholdes; arbeidsflaten bruker fast framtidig utbygging |
 | Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Felles UTM-korreksjon er innført; autoritativ kildevalidering og entydig naturtypefordeling gjenstår |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
@@ -71,10 +71,9 @@ Ikke legg til nye temasider uten eksplisitt beslutning.
 
 ## Analyseverkstedet
 
-Gjeldende analyseområder:
-
-- framtidig utbygging
-- eget tegnet polygon
+Arbeidsflaten bruker **framtidig utbygging** som fast analyseområde.
+Eget tegnet polygon er et bevart framtidig behov med implementerte moduler,
+men inngangen er midlertidig skjult.
 
 Gjeldende analysegrunnlag:
 
@@ -98,33 +97,33 @@ ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 | Brukerbehov | Status | Konkret TODO / avgrensning |
 | --- | --- | --- |
 | Framtidig utbygging som analyseområde | Allerede dekket | Behold gjeldende DiBK-filter og prototypeforbehold; tall er bare klargjort for Trondheim |
-| Ett eget tegnet polygon | Allerede dekket | Tegn, angre, ferdig, avbryt, tegn på nytt og fjern; samme analysegrunnlag som plan |
-| Flere egne områder og områdehåndtering | Delvis dekket | Ett område finnes. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
+| Ett eget tegnet polygon | Moduler bevart, inngang skjult | Bevisst produktavgrensning; ikke gjeninnfør uten beslutning |
+| Flere egne områder og områdehåndtering | Framtidig behov | Polygonmoduler finnes; inngangen er skjult. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
 | Overlay mot Natur/Jordbruk og Verdsatte naturtyper | Allerede dekket | Behold skillet mellom heldekkende basis og supplerende registreringer; kart og tall skal dele identitet/mask |
-| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og faktiske lokaliteter med kategori-/naturtypefilter. Zoom-handlingen beholder aktivt valg; status og tegnforklaring følger kartet |
+| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og faktiske lokaliteter med kategori-/naturtypefilter. Ingen zoomhandlinger; filter og objektvalg beholder manuell navigasjon |
 | Objektinformasjon for aktiv analyse | Dekket for Verdsatte naturtyper | Kildepolygoner, kategori-/naturtypefilter, liste ↔ kartvalg, detaljer og registrert dekning. Andre objektflyter er fortsatt TODO |
 | Flere relevante overlaytema | Mangler | Verneområder og villrein finnes som temasider, men ikke som analysegrunnlag. Avklar kilde, mål, dekning og usikkerhet før kobling; inngrepsfri natur trenger særskilt metode for avstand/soner og kan ikke fremstilles som beregnet konsekvens av enkel overlapp |
 | Grå arealer og mulig arealgjenbruk | Mangler | Bynaturen gir kontekst, men direkte gråareal-overlay i verkstedet mangler. Avklar data/metode; grått betyr ikke ledig areal og er ikke regnskapets Bebygd-kategori |
-| Panorering, zoom, kommuneutsnitt og tegnemodus | Dekket i prototype | Polygonet gjenopprettes etter sidenavigasjon i samme økt. Mobil har kart/resultat-snarveier og tegnekontroller ved kartet; ikke lagring mellom økter |
+| Panorering, zoom og kommuneutsnitt | Dekket i kode / renderfixture | Brukeren navigerer selv; filter/objektvalg/temabytte flytter ikke kartet. Mobil har kart/resultat-snarveier; tegneinngangen er skjult |
 | Opplasting av egne arealer/planer | Mangler | Vurder validering av geometri, koordinatsystem, format, størrelsesgrenser, kilde og lagring; ikke implementert |
 | Sammenligning av gjeldende/forslått plan eller områdealternativer | Mangler | Krever eksplisitt faglig beslutning om sammenligningsgrunnlag, endringer og overlapp; ingen automatisk erstatning av gjeldende plan |
 | Plan-/datadekning og tilstand forklart i arbeidsflaten | Delvis dekket | Prototypeforbehold, feil og utilgjengelig raster finnes. Tydeliggjør manglende/ufullstendig plan og tematisk kartlegging; null treff skal ikke forveksles med ukjent dekning |
 | Generell lagkatalog og tekniske debug-kontroller som brukerfunksjon | Ikke relevant for V3 | Kartkontroller skal støtte analyseoppgaven, ikke gjøre verkstedet til en generell GIS-klient |
 | Antatt framtidig naturtap som autoritativ regnskapsendring | Ikke relevant for V3 | Overlay er prototypebeslutningsstøtte. Utbygging eller egen tegning bokføres ikke som faktisk endring |
 
-**Implementert produktløft: kildegeometri og objektflyt.** Analyseområdet vises som
-dempet ramme, treff som sterke flater. «Zoom til treff» viser og
-stedfester aktivt delresultat, også ved spredte treff. Valg/filtrering, status
-og tegnforklaring følger samme analyseidentitet og utvalg; Natur/Jordbruk
-bruker raster, Verdsatte naturtyper kildepolygoner med visningsklipp. Null treff, skjult resultat og
-teknisk feil har egne tilstander. Natur/Jordbruk-klassifisering, analysegrid og DiBK-filter er uendret; arealene målestokkskorrigeres. Verdsatte naturtyper
-bruker fire kategorier og høyeste verdi ved overlapp (metodeversjon v2). Se
-[akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
-og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).
+**Pågående reparasjon: framtidig utbygging × ett tema.** Temakontekst fra WMS,
+moderate REST-kildepolygoner og separat sterk rasteroverlapp erstatter svak
+kontekst og canvas-klipping. Automatisk zoom, resultatlagets skjulknapper,
+wizard og tegneinngang er fjernet. Korrekthetsmetode, UTM-korreksjon,
+DiBK-filter og fire verdikategorier er beholdt.
 
-Videre arbeid skal bevare flyten analyseområde → datagrunnlag → resultat →
-stedfesting, bruke eksisterende V3-designmønstre og verifiseres på mobil med
-berøring. Ingen nye temasider eller analysefamilier innføres uten beslutning.
+**Acceptance er ikke godkjent ennå.** Kontrollerte Chromium-pixeltester viser
+alle kartroller og navigasjonsbevaring. Reelt Trondheim-temakart vises, men
+DiBK HTTP 403 i utviklingsmiljøet blokkerer planmask og reell overlapp.
+Ingen PR opprettes før visuell acceptance med reelle data er bestått.
+
+Se [akseptansekriteriene](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
+Flere tema, opplasting og plansammenligning er fortsatt framtidige behov.
 
 ## Prinsipper for videre utvikling
 
@@ -153,7 +152,8 @@ Gjenstående prioritering:
 
 - validering av rasteranslag mot et faglig godkjent kontrollgrunnlag
 - videre objektflyt for andre grunnlag; Verdsatte naturtyper har koblet liste/kartvalg
-- videre brukerprøving av mobil tegnemodus og stedfesting i faktiske plansaker
+- fullføre visuell plan-/tema-/overlapp-acceptance i faktiske plansaker
+- eventuell gjeninnføring av tegneinngang bare etter produktbeslutning
 - behold regresjonsdekning for områdebytte, prosentnevnere og cache
 
 ### 2. Stabilitet og ytelse

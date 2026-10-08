@@ -113,7 +113,9 @@ som et sikkert framtidig naturtap.
 
 ## 8. Eget tegnet område
 
-Brukeren kan tegne et polygon og bruke dette som analyseområde.
+Tegne-/analysemodulene finnes, men inngangen til eget område er midlertidig
+skjult. Dagens arbeidsflate bruker fast framtidig utbygging × ett tema.
+Eget område er fortsatt et framtidig brukerbehov.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 
@@ -133,7 +135,8 @@ lesbart som tekst/tall uten at brukeren må tolke kartet.
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat,
 kommune og analyseidentitet. Beregningsrepresentasjon og kartrepresentasjon
 er forskjellige: tall kan beregnes på rastergrid mens kartet viser faktiske
-kildepolygoner innenfor samme gyldige analysemask. Når analysen finnes, er
+hele kildepolygoner som kontekst og separat rasteroverlapp innenfor den
+gyldige analysemasken. Når analysen finnes, er
 kartet hovedarbeidsflaten med et kompakt resultat-/objektpanel.
 
 ## 10. Prototypeberegninger

@@ -157,7 +157,8 @@ en autoritativ analysekilde eller nøyaktig vektoravgrensning.
 
 ## Tegnet polygon
 
-Brukeren kan tegne eget polygon i kartet.
+Tegne- og polygonanalysemodulene finnes fortsatt, men inngangen er midlertidig
+skjult fra arbeidsflaten. Metoden nedenfor beskriver de bevarte modulene.
 
 Polygonet:
 
@@ -208,9 +209,10 @@ Middels verdi og Noe verdi. Ved overlapp får hver rute høyeste verdi.
 - `mapPixelIndices` per verdi beskriver vinnende ruter; per naturtype er det
   union av de registrerte objektenes ruter.
 
-Kildegeometrien beholdes separat for kartet. Svake hele lokaliteter gir
-kontekst; sterke polygonflater klippes med eksisterende rastermasker. Dette
-gir faktiske konturer, men et omtrentlig klipp ved analyse-/verdigrensene.
+Kildegeometrien beholdes separat for kartet og vises som moderat kontekst.
+Ordinær WMS viser temaet; et separat rasterlag viser beregnet overlapp fra
+pixelindekser. Ingen canvas-klipping av kildepolygonene brukes. Rastertreff
+er omtrentlig avgrensning på analysegrid, ikke eksakt vektorinterseksjon.
 Ingen polygonarealer brukes til å erstatte beregnede rastertall. Resultatcache
 er begrenset til 16 fullførte analyser, med gjenbruk av nylig brukte resultater.
 

@@ -170,7 +170,7 @@ describe('active result map layers', () => {
     const drawn = layers[drawnIndex] as VectorLayer
     expect(drawn.getSource()!.getFeatures()[0].getGeometry()!.getExtent()).toEqual([...area.extent])
     expect(drawn.getVisible()).toBe(true)
-    expect(layers[drawnIndex - 1].getClassName()).toBe('valued-localities-hits')
+    expect(layers[drawnIndex - 1].getClassName()).toBe('valued-localities-selection')
     recreated.setDrawnAnalysisArea(null)
     expect(drawn.getSource()!.getFeatures()).toHaveLength(0)
     recreated.destroy()
@@ -228,15 +228,15 @@ describe('active result map layers', () => {
     expect(draw).toHaveBeenCalledTimes(2)
   })
 
-  it('uses distinct tile queue keys for the area and hit layers', () => {
+  it('uses distinct tile queue keys for the area, boundary and hit layers', () => {
     vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas').mockReturnValue(document.createElement('canvas'))
     const map = createMunicipalityMap(document.createElement('div'))
     map.setAnalysisArea({ kind: 'planned', zoom: 9, cx0: 0, cy0: 0, ...overlay, cleaned: overlay.mask, analysisMask: overlay.mask })
     map.setAnalysisHighlight(overlay)
     const sources = mapInstances[0].layers.filter((layer) => layer instanceof TileLayer && layer.getSource()?.getKey().startsWith('analysis:'))
       .map((layer) => (layer as TileLayer<TileImage>).getSource()!)
-    expect(sources).toHaveLength(2)
-    expect(new Set(sources.map((source) => source.getTile(0, 0, 0, 1, source.getProjection()!).getKey())).size).toBe(2)
+    expect(sources).toHaveLength(3)
+    expect(new Set(sources.map((source) => source.getTile(0, 0, 0, 1, source.getProjection()!).getKey())).size).toBe(3)
     map.destroy()
   })
 

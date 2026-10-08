@@ -20,3 +20,6 @@ __pycache__/
 
 # Lokale analysedata og midlertidige Geonorge-nedlastinger
 .data/
+
+# Lokale skjermbilder og målinger fra browser-regresjon
+.browser-results/

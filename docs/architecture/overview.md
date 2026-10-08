@@ -85,7 +85,7 @@ UI-komponenter skal ikke eie datakildekunnskap eller skjulte fagregler.
 
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat
 og identitet. Beregningsgrid og presentasjonsgeometri skilles; kildepolygoner
-kan klippes visuelt til den gyldige analysemasken uten å beregne nye tall.
+vises som kontekst, mens separat rasteroverlapp følger analysemasken.
 
 ## Dagens datatilgang
 
@@ -131,12 +131,11 @@ Gjeldende arbeidsflyt:
 
 ```text
 analyseområde
-  ├─ framtidig utbygging
-  └─ eget tegnet polygon
+  └─ framtidig utbygging (fast område i arbeidsflaten)
         ↓
 analysegrunnlag
   ├─ Natur og jordbruk
-  └─ Verdsatte naturtyper
+  └─ Verdsatte naturtyper (ett tema om gangen)
         ↓
 resultat
         ↓
@@ -188,28 +187,27 @@ for projiserte nettleserarealer på tvers av analyse og temasider. Ferdige
 SSB-arealer korrigeres ikke på nytt. Se data-/metodedokumentet for formel,
 versjoner og avgrensningen mot preparation.
 
-I analyseverkstedet vises gyldig `analysisMask` som en dempet rasterramme.
-Natur/Jordbruk-treff bygges fortsatt fra `overlay.cleaned` og vises med
-`TileImage` på beregnet analysegrid, også ved nær zoom. Verdsatte naturtyper
-beholder i stedet berørte kildepolygoner og attributter i `localities`.
-`valuedNaturePresentation.ts` filtrerer de samme objektene for liste og kart;
-`valuedNatureMap.ts` tegner svake hele lokaliteter og sterke kildepolygoner
-klippet til gyldige masker på eget Canvas. Hele utvalget tegner høyeste verdi
-øverst; ved verdifilter klippes sterkt fyll til kategoriens vinnende ruter.
-Det er ikke eksakt vektorinterseksjon. Naturtypefilter viser registrerte
-objekter, uten ny entydig fordeling mellom overlappende naturtyper. Det eldre
-planens detaljlag er ikke aktivt i analyseverkstedet. Delresultatvalg filtrerer
-bare presentasjonen; det beregner ikke nye tall eller endrer analysemasken.
-Kartutsnitt beregnes fra aktiv rastermaske eller filtrerte kildegeometrier.
-Objektvalg deles mellom kart og liste, knyttet til kommune og `analysisId`,
-og er deaktivert under tegning. Grunnkart tones ned under synlige resultater. Bare forespurte visningsfliser på
-256 × 256 piksler tegnes direkte i Canvas, med nabopiksler lest fra hele
-masken for sømløs kantmarkering. Visningslagene
-bruker OpenLayers sin fliscache (målstørrelse 32; kan økes for synlige fliser),
-uten heldekkende PNG-er eller nye object URLs. Lokale visningsfliser venter
-ikke på eksterne kartkall i nettverkskøen. Fliscachen tømmes ved bytte eller
-destruksjon. Generering og statusmeldinger er beskyttet mot sene svar med en egen
-request-versjon per visningslag, og visningsfeil formidles til brukerflaten.
+Gyldig `analysisMask` vises som rolig blått område med tydelig kant.
+Natur/Jordbruk bruker dempet Grunnkart-bakgrunn og sterke treff fra
+`overlay.cleaned`. Verdsatte naturtyper bruker ordinær WMS til temakontekst,
+REST-kildepolygoner i et vanlig vektorlag til berørte objekter, et separat
+rasterlag fra beregnede pixelindekser til lilla overlapp, og eget vektorlag til
+valgt objekts outline. Lagrekkefølgen er bakgrunn → tema → plan → berørte
+kildepolygoner → overlapp → planområdets kant → objektvalg → kommunemask/grense.
+
+`valuedNaturePresentation.ts` filtrerer de samme objektene for liste og kart.
+`valuedNatureMap.ts` bruker ingen `prerender`/`postrender`-klipping eller
+koordinat-til-render-pixel-transformasjoner. Kildegeometriene beholdes, inkludert
+hull og multipart. Vektorlagene har separate kilder for kontekst og valgt objekt.
+Ved verdifilter følger rastertreff kategoriens vinnende ruter; naturtypefilter
+bruker union av registrerte ruter. Tall/metode endres ikke.
+
+Appen holder plananalyse og ett tema aktive. Resultat-/objektvalg og temabytte
+flytter ikke kartutsnittet. `Vis hele kommunen` er eksplisitt navigasjon.
+Områdemask og treff bruker ordinær `TileImage`-pipeline: bare forespurte
+256 × 256 Canvas-fliser tegnes, med nabopiksler fra hele masken. Fliscachen
+har målstørrelse 32 og tømmes ved bytte/destruksjon; ingen heldekkende PNG-er
+eller nye object URLs. Request-versjon per lag verner mot sene statussvar.
 
 ## Tegnet polygon
 
@@ -225,10 +223,9 @@ Polygonet:
 - får egen `analysisId`
 - bruker samme overordnede overlaypipeline som plananalysen
 
-Den opprinnelige tegnede geometrien beholdes i appens tilstand i samme økt.
-Ved ny kartinstans gjenopprettes den i et dempet vektorlag med transparent
-fylling over trefflaget, slik at rammen også synes ved heldekkende treff.
-Dette er visning og øktstilstand, ikke varig lagring eller en ny klippemetode.
+Tegne- og polygonanalysemodulene er bevart, men Appen eksponerer dem ikke i
+dagens faste plananalyse. Tidligere øktstilstand og tegnehandlinger i Appen er
+fjernet sammen med automatisk zoom. Gjeninnføring er en framtidig produktoppgave.
 
 Cache og resultater bruker `analysisId`. Fullført tegning får
 `drawn:<UUID>` fra `crypto.randomUUID()`, uavhengig av kartinstans; planområdet

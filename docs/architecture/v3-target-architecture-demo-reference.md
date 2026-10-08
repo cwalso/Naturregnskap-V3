@@ -38,13 +38,13 @@ Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 | Kommune som felles kontekst | Implementert | Kommunevalg og kommunegrense deles på tvers av sider |
 | Oversiktsraster ved grov zoom | Implementert for prototypekommune | Prepared Grunnkart-raster + detaljerte fliser |
 | Flisbasert analyse | Implementert for prototypekommune | Fast rastergrid for plan/polygonoverlay; tall krever klargjort raster som nå bare finnes for Trondheim |
-| Tegne eget polygon | Implementert, analyse for prototypekommune | OpenLayers Draw er generell; tall/overlay krever klargjort raster |
+| Tegne eget polygon | Moduler bevart; inngang midlertidig skjult | Arbeidsflaten bruker fast framtidig utbygging |
 | Gjenbruk av data mellom kart/analyse | Implementert delvis | Felles råfliser der URL/datagrunnlag er identisk |
 | Begrenset samtidighet | Implementert | Maks 4 kall per datakilde |
 | Deling av pågående identiske kall | Implementert | `sharedImageRequests.ts` |
 | Begrenset browsercache | Implementert | 400 råbilder per kilde i dagens prototype |
 | Kart + tall fra samme analysemask | Implementert i prototypeanalysen | Overlayresultater bruker felles rastermask for klargjort kommune |
-| Objektinformasjon | Delvis teknisk grunnlag; brukerflyt mangler | Tematisk feature-info finnes i kartmotoren, men aktiv analyse og tilgjengelig popup er ikke koblet sammen i arbeidsflaten |
+| Objektinformasjon | Verdsatte naturtyper har liste ↔ kartvalg uten zoom | Andre objektflyter gjenstår |
 
 ## Dagens analyseverksted
 
@@ -53,11 +53,9 @@ Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 Primærflyten er:
 
 ```text
-1. velg analyseområde
-   ├─ framtidig utbygging
-   └─ eget polygon
+1. framtidig utbygging (fast analyseområde)
 
-2. kryss området med
+2. velg ett tema
    ├─ Natur og jordbruk
    └─ Verdsatte naturtyper
 
@@ -89,7 +87,7 @@ generell planreserveapplikasjon.
 
 ## Tegnet område
 
-Brukerdefinert polygon er implementert som samme konseptuelle type
+Inngangen er midlertidig skjult. Polygonmodulene er bevart som samme konseptuelle type
 analyseområde som framtidig utbygging.
 
 Det betyr at:

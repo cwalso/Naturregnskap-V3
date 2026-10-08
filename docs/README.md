@@ -59,6 +59,7 @@ senere beslutninger har endret retningen.
 - delt request-/flispipeline
 - temasidesett og kommuneavgrensning
 - kildegeometri, objektvalg og høyeste verdi ved overlapp i analyseverkstedet
+- fast plananalyse med ett tema, separat rasteroverlapp og navigasjon uten automatisk zoom
 
 Se `decisions/`.
 

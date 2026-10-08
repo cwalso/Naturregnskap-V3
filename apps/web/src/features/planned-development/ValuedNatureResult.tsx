@@ -10,12 +10,10 @@ const dekar = (km2: number) => {
   return `${area > 0 && area < .1 ? 'under 0,1' : (area < 100 ? number : whole).format(area)} dekar`
 }
 
-export function ValuedNatureResult({ analysis, visible, onVisibleChange, selection, onShowInMap, selectedId, onSelectLocality, coverage, coverageState }: {
+export function ValuedNatureResult({ analysis, selection, onShowInMap, selectedId, onSelectLocality, coverage, coverageState }: {
   readonly coverage: PlannedCoverageGap | null
   readonly coverageState: 'idle' | 'loading' | 'error'
   readonly analysis: PlannedValuedNatureAnalysis
-  readonly visible: boolean
-  readonly onVisibleChange: (visible: boolean) => void
   readonly selection: ValuedNatureMapSelection
   readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
   readonly selectedId: string | null
@@ -43,18 +41,12 @@ export function ValuedNatureResult({ analysis, visible, onVisibleChange, selecti
       <div><strong>{analysis.affectedFeatureCount}</strong><span>Berørte lokaliteter</span></div>
       <div><strong>ca. {dekar(analysis.uniqueOverlapAreaKm2)}</strong><span>Unikt overlappsareal</span></div>
     </div>
-    <div className="analysis-result__map-actions">
-      <button type="button" className="analysis-result__primary-action" onClick={() => onShowInMap(selection)}>Zoom til treff</button>
-      <label className="analysis-result__visibility"><input type="checkbox" checked={visible} onChange={(event) => onVisibleChange(event.target.checked)} />Vis resultatlaget</label>
-    </div>
-    <p className="locality-coverage"><strong>{coverageState === 'loading' ? 'Henter kartleggingsdekning…' : coverageState === 'error' ? 'Dekningsdata kunne ikke hentes. Registrert dekning er ukjent.' : coverage ? coverage.mappedPlannedAreaKm2 > 0 ? `Ca. ${number.format(coverage.mappedSharePercent)} % av analysemasken har registrert kartlegging.` : 'Ingen kartlegging registrert i dekningskilden for analysemasken.' : 'Registrert dekning: ukjent for analyseområdet.'}</strong>
-      {coverage && <span>Ca. {dekar(coverage.unmappedPlannedAreaKm2)} uten registrert dekning. Dette er andel av hele den gyldige analysemasken, inkludert vann og bebygd areal, ikke kommunens kartleggingsgrad av landarealet. </span>} Datasettet er ikke heldekkende. Ingen registrerte treff betyr ikke fravær av naturverdi. Areal uten treff kan være ukartlagt.</p>
     {analysis.affectedFeatureCount > 0 && <>
       <div className="locality-filters" aria-label="Filtrer berørte lokaliteter">
         <div className="locality-filters__values">
           <button type="button" aria-pressed={selection.kind === 'all'} onClick={() => onShowInMap({ kind: 'all' })}>Vis alle</button>
           {analysis.valueMetrics.map((metric) => <button type="button" key={metric.label} aria-pressed={selection.kind === 'value' && selection.label === metric.label} onClick={() => onShowInMap({ kind: 'value', label: metric.label })}>
-            <i style={{ background: metric.color }} aria-hidden="true" />{metric.label}<small>{metric.featureCount}</small>
+            <i style={{ background: metric.color }} aria-hidden="true" />{metric.label}<small>{dekar(metric.areaKm2)} · {number.format(metric.sharePercent)} %</small>
           </button>)}
         </div>
         <label>Naturtype<select value={selection.kind === 'type' ? selection.label : ''} onChange={(event) => onShowInMap(event.target.value ? { kind: 'type', label: event.target.value } : { kind: 'all' })}>
@@ -80,9 +72,12 @@ export function ValuedNatureResult({ analysis, visible, onVisibleChange, selecti
         <p>Ca. {dekar(selected.overlapAreaKm2)} registrert overlapp. Kan overlappe andre lokaliteter. Kilde-ID: {selected.id}.</p>
       </section>}
     </>}
-    <details className="analysis-method"><summary>Metode og forbehold</summary>
+    <details className="analysis-method"><summary>Metode, dekning og forbehold</summary>
+    <p className="locality-coverage"><strong>{coverageState === 'loading' ? 'Henter kartleggingsdekning…' : coverageState === 'error' ? 'Dekningsdata kunne ikke hentes. Registrert dekning er ukjent.' : coverage ? coverage.mappedPlannedAreaKm2 > 0 ? `Ca. ${number.format(coverage.mappedSharePercent)} % av analysemasken har registrert kartlegging.` : 'Ingen kartlegging registrert i dekningskilden for analysemasken.' : 'Registrert dekning: ukjent for analyseområdet.'}</strong>
+      {coverage && <span>Ca. {dekar(coverage.unmappedPlannedAreaKm2)} uten registrert dekning. Dette er andel av hele den gyldige analysemasken, inkludert vann og bebygd areal, ikke kommunens kartleggingsgrad av landarealet. </span>} Datasettet er ikke heldekkende. Ingen registrerte treff betyr ikke fravær av naturverdi. Areal uten treff kan være ukartlagt.</p>
+
       <p>Tallene er prototypebeslutningsstøtte på ca. 21,16 m analysegrid. Unikt areal teller hver rute én gang. Fire verdikategorier inngår: svært stor, stor, middels og noe verdi. Høyeste verdi vinner i overlappende ruter; verdifordelingen summerer til unikt areal. Registrert areal per lokalitet og naturtype kan overlappe og summerer derfor ikke nødvendigvis til unikt areal. Små treff uten et gyldig rutemidtpunkt telles ikke. UTM-arealer er målestokkskorrigert ved kommunemidtpunktet.</p>
-      <p>Kartet viser kildepolygoner. Svake flater er hele berørte lokaliteter; sterkt fyll er avgrenset til den gyldige rastermasken, ikke en eksakt vektorinterseksjon. Ved verdifilter fylles bare ruter tilordnet denne verdien; lokalitetens øvrige geometri er svak kontekst. Høyeste verdi tegnes øverst når alle vises. Tegnet område beholdes som stiplet ramme.</p>
+      <p>Temakartet viser registrerte naturtypelokaliteter. Berørte kildepolygoner gir kontekst; lilla fyll viser beregnet overlapp på den gyldige rastermasken, ikke en eksakt vektorinterseksjon. Ved verdifilter fremheves bare ruter tilordnet denne verdien. Valgt lokalitet får hvit og mørk kant. Kartutsnittet endres ikke ved valg.</p>
       <p>Registrert overlappsareal: ca. {dekar(analysis.registeredOverlapAreaKm2)}. {analysis.hasOverlappingRegistrations && 'Registreringene overlapper hverandre.'} Verdifordelingen nedenfor gjelder unikt areal med høyeste verdi; naturtypefordelingen gjelder registrert areal.</p>
       <dl className="locality-method-metrics">{analysis.valueMetrics.map((metric) => <div key={metric.label}><dt>{metric.label}</dt><dd>{dekar(metric.areaKm2)} · {number.format(metric.sharePercent)} %</dd></div>)}</dl>
       <dl className="locality-method-metrics">{analysis.typeMetrics.map((metric) => <div key={metric.label}><dt>{metric.label}</dt><dd>{dekar(metric.areaKm2)} registrert overlapp · {metric.featureCount} lokaliteter</dd></div>)}</dl>

@@ -1,6 +1,5 @@
-import BaseEvent from 'ol/events/Event'
-import { describe, expect, it, vi } from 'vitest'
-import { analysisMaskRectangles, filterValuedLocalities, localityFeature } from '../src/map/valuedNaturePresentation'
+import { describe, expect, it } from 'vitest'
+import { filterValuedLocalities, localityFeature } from '../src/map/valuedNaturePresentation'
 import { createValuedNatureLayers } from '../src/map/valuedNatureMap'
 import { summarizeValuedNatureFeaturesForTest } from '../src/map/plannedValuedNature'
 import type { PlannedDevelopmentOverlayGrid } from '../src/map/plannedDevelopment'
@@ -29,27 +28,26 @@ describe('source locality presentation independent of area calculations', () => 
     expect(summary.localities[0].overlapAreaKm2).toBeCloseTo(9 * 21.15625 ** 2 / 1e6)
   })
 
-  it('filters the same source objects by value/type/all and fits one or dispersed objects', () => {
+  it('filters source objects without changing geometry and clears selection on theme reset', () => {
     const localities = summarizeValuedNatureFeaturesForTest(features, overlay).localities
     expect(filterValuedLocalities(localities, { kind: 'value', label: 'Stor verdi' }).map((l) => l.id)).toEqual(['1'])
     expect(filterValuedLocalities(localities, { kind: 'type', label: 'Eng' }).map((l) => l.id)).toEqual(['2'])
     expect(filterValuedLocalities(localities, { kind: 'all' })).toHaveLength(2)
-    const layers = createValuedNatureLayers((coordinate) => coordinate)
+    const layers = createValuedNatureLayers()
     const model = { municipalityNumber: '5001', analysisId: 'drawn:A', overlay, localities, valueMetrics: [], selectedId: '2', selection: { kind: 'all' as const } }
     layers.set(model)
-    expect(layers.extent()).toEqual([.1, .1, 3.9, 3.9])
-    expect(layers.extent(true)).toEqual([1.1, 1.1, 3.9, 3.9])
-    const sourceFeatures = layers.hitLayer.getSource()!.getFeatures()
+    expect(layers.selectionLayer.getSource()!.getFeatures().map((feature) => feature.getId())).toEqual(['2'])
+    const sourceFeatures = layers.contextLayer.getSource()!.getFeatures()
     layers.set({ ...model, selection: { kind: 'value', label: 'Stor verdi' }, selectedId: null })
-    expect(layers.extent()).toEqual([.1, .1, 2.9, 2.9])
-    expect(layers.hitLayer.getSource()!.getFeatures()).toEqual(sourceFeatures)
-    const style = layers.hitLayer.getStyleFunction()!
+    expect(layers.selectionLayer.getSource()!.getFeatures()).toHaveLength(0)
+    expect(layers.contextLayer.getSource()!.getFeatures()).toEqual(sourceFeatures)
+    const style = layers.contextLayer.getStyleFunction()!
     expect(style(sourceFeatures.find((f) => f.getId() === '2')!, 1)).toBeUndefined()
     expect(style(sourceFeatures.find((f) => f.getId() === '1')!, 1)).toBeDefined()
     layers.set(null)
-    expect(layers.extent()).toBeNull()
-    expect(layers.hitLayer.getSource()!.getFeatures()).toHaveLength(0)
-    expect(layers.hitLayer.getVisible()).toBe(false)
+    expect(layers.selectionLayer.getVisible()).toBe(false)
+    expect(layers.contextLayer.getSource()!.getFeatures()).toHaveLength(0)
+    expect(layers.contextLayer.getVisible()).toBe(false)
   })
 
   it('preserves source holes and disjoint polygons rather than tracing raster cells', () => {
@@ -66,24 +64,16 @@ describe('source locality presentation independent of area calculations', () => 
     expect(geometry.intersectsCoordinate([10.5, 10.5])).toBe(true)
   })
 
-  it('clips only its own source-geometry canvas to valid mask cells, including holes', () => {
-    const masked = { ...overlay, analysisMask: Uint8Array.from([1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1]) }
-    expect(analysisMaskRectangles(masked)).toEqual([[0, 2, 2, 4], [3, 2, 4, 4], [0, 0, 1, 1], [2, 0, 4, 1]])
-    const layers = createValuedNatureLayers((coordinate) => coordinate)
-    const model = { municipalityNumber: '5001', analysisId: 'drawn:A', overlay: masked, valueMetrics: [], localities: summarizeValuedNatureFeaturesForTest(features, masked).localities, selectedId: null, selection: { kind: 'all' as const } }
-    layers.set(model)
-    class Context { save = vi.fn(); beginPath = vi.fn(); moveTo = vi.fn(); lineTo = vi.fn(); closePath = vi.fn(); clip = vi.fn(); restore = vi.fn() }
-    vi.stubGlobal('CanvasRenderingContext2D', Context)
-    try {
-      const context = new Context()
-      const event = Object.assign(new BaseEvent('prerender'), { context, inversePixelTransform: [1, 0, 0, 1, 0, 0] })
-      layers.contextLayer.dispatchEvent(event)
-      expect(context.clip).not.toHaveBeenCalled()
-      layers.hitLayer.dispatchEvent(event)
-      expect(context.moveTo).toHaveBeenCalledTimes(4)
-      expect(context.clip).toHaveBeenCalledOnce()
-      layers.hitLayer.dispatchEvent(Object.assign(new BaseEvent('postrender'), { context }))
-      expect(context.restore).toHaveBeenCalledOnce()
-    } finally { vi.unstubAllGlobals() }
+  it('renders context without canvas clipping and keeps selection above overlap', () => {
+    const layers = createValuedNatureLayers()
+    const localities = summarizeValuedNatureFeaturesForTest(features, overlay).localities
+    layers.set({ municipalityNumber: '5001', analysisId: 'planned:5001', overlay, valueMetrics: [], localities, selectedId: '1', selection: { kind: 'all' } })
+    expect(layers.contextLayer.hasListener('prerender')).toBe(false)
+    expect(layers.contextLayer.hasListener('postrender')).toBe(false)
+    expect(layers.selectionLayer.hasListener('prerender')).toBe(false)
+    expect(layers.contextLayer.getSource()!.getFeatureById('1')!.getGeometry()!.getExtent()).toEqual([.1, .1, 2.9, 2.9])
+    expect(layers.selectionLayer.getSource()!.getFeatureById('1')).not.toBeNull()
+    layers.set(null)
+    expect(layers.selectionLayer.getSource()!.getFeatures()).toHaveLength(0)
   })
 })

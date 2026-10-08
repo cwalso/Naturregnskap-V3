@@ -110,26 +110,13 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 
 `Utforsk i kart` skal være et analyseverksted, ikke en lagkatalog.
 
-Hovedhierarkiet er:
+Modellen er **framtidig utbygging × ett valgt tema**. Analyseområdet er fast;
+Natur og jordbruk og Verdsatte naturtyper velges med radio, ikke lagpanel.
+Ingen wizard, inngang til tegning eller framtidige temavalg i arbeidsflaten.
 
-1. **Velg analyseområde**
-2. **Kryss området med**
-3. **Resultat**
-4. **Les og stedfest resultatet**
-
-På desktop:
-
-- kartet er hovedflate
-- analysepanelet ligger ved siden av
-- resultatkortene skal være lett skannbare
-- sekundære kartinnstillinger kan ligge i sammenleggbart felt
-
-På mobil:
-
-- kart og analyse skal kunne brukes uten horisontal scrolling
-- knapper skal ha tilstrekkelig størrelse og luft
-- tegnemodus skal være tydelig
-- resultatet skal kunne leses uten at kartet er synlig samtidig
+Kartet er hovedflate på desktop, med kompakt resultatpanel ved siden av.
+På mobil brukes kart-/resultatsnarveier, minst 44 px kontroller, tastaturfokus
+og ingen horisontal scrolling. Resultatet skal også kunne leses uten kart.
 
 ## Resultatdesign
 
@@ -144,71 +131,24 @@ Eksempel:
 
 Detaljfordeling kommer etter hovedtallet.
 
-Etter resultatet skal kartet være hovedflate. «Zoom til treff» er en kompakt
-handling som beholder aktivt filter; brukeren skal ellers se treffene direkte.
-Område/datagrunnlag er sammenleggbart etter beregning, med lett tilgang til
-endre, tegn på nytt og fjern.
+Kartet viser resultatet automatisk. Ingen zoom til treff eller objekt, og
+resultatvalg flytter ikke utsnittet. Brukeren zoomer/panorerer selv eller
+velger `Vis hele kommunen`.
 
-Prototypen skiller analyseområde fra treff med en dempet ramme og sterk
-treffmarkering med lys kant. Eget polygon bruker en dempet stiplet ramme med
-transparent innside over treffene. Kommunegrensen ligger fortsatt øverst. Resultatkort for
-Natur/Jordbruk styrer rastertreff; kategori-/naturtypevalg for Verdsatte
-naturtyper styrer faktiske lokaliteter i både kart og liste.
-Valgt delresultat markeres i panelet og kartets status/tegnforklaring.
-«Zoom til treff» beholder valget og viser alle valgte treff;
-«Vis alle» nullstiller Verdsatte naturtyper; «Vis alle treff» nullstiller Natur/Jordbruk. Null treff, skjult resultat, lasting og teknisk
-feil har forskjellige tekstlige tilstander. Akseptansekriteriene står i
-[brukerhistorien om tydelige overlaytreff](analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
-Videre kontroller skal følge eksisterende V3-komponenter og flyten område →
-datagrunnlag → resultat → stedfesting. Mobil bruk må prøves med berøring og
-lesbare resultater, uten at kartkontroller dominerer oppgaven.
+Faste roller:
 
-Kontekst og tegnforklaring ligger utenfor selve kartflaten, med kortere status
-på mobil. Mobil har snarveier mellom kart og resultat, trykkbare resultatkort
-og Angre punkt/Ferdig/Avbryt under kartflaten under tegning. Tegneknappene
-skal ikke dekke steder der brukeren setter punkter. Primærhandling og
-mobilkontroller skal ha minst 44 px høyde.
+- nøytralt bakgrunnskart; dempet Grunnkart bare når Natur/Jordbruk er valgt
+- framtidig utbygging: rolig blått fyll og tydelig kant
+- naturtypelokaliteter: ordinært temakart og moderate berørte kildepolygoner
+- overlapp: sterkest fyll, mørk kant og lys ytterkant; lilla for Verdsatte naturtyper
+- valgt lokalitet: ekstra hvit og mørk outline uten zoom
 
-## Tegnemodus
+Tegnforklaringen beskriver bare aktive roller. Ved temabytte skjules gammelt
+tema og overlapp; nytt resultat vises med samme kommune og analyseidentitet.
+Hovedtall, enkel verdifordeling og lokalitetsliste prioriteres. Metode og dekning
+ligger sekundært; status gjentas ikke i kart og panel.
 
-Når brukeren tegner polygon:
-
-- det skal være åpenbart at kartet er i tegnemodus
-- kontrollene Angre punkt, Ferdig og Avbryt skal være tilgjengelige
-- tegnet polygon skal være visuelt tydelig
-- brukeren skal kunne tegne på nytt eller fjerne området
-- kartklikk for objektinformasjon skal ikke konkurrere med tegning
-
-## Kart og kommuneavgrensning
-
-Temadata på temasider skal ikke vises utenfor valgt kommune.
-
-Dagens mønster er:
-
-- temalag tegnes normalt
-- området utenfor kommunen maskeres visuelt
-- kommunegrensen ligger tydelig over
-- kartlaget begrenses til kommunens utstrekning der det er hensiktsmessig
-
-Ikke gjeninnfør sårbar canvas-klipping uten dokumentert behov.
-
-## Tegnforklaring
-
-Aktive faglag skal ha forståelig tegnforklaring.
-
-For WMS skal tjenestens `GetLegendGraphic` foretrekkes når den er korrekt og
-forståelig. Manuell symbolikk skal ikke gjettes.
-
-Analyseverkstedets egen resultatmaske har en separat tegnforklaring fra
-visningskoden: dempet ramme for analyseområde, mørk grønn for Natur, oransje
-for Jordbruk og valgt resultatfarge for Verdsatte naturtyper. Den beskriver
-prototypeoverlapp og erstatter ikke datakildenes faglige tegnforklaringer.
-
-## Tilgjengelighet
-
-- hovedresultater skal være tilgjengelige som tekst, ikke bare kart
-- interaktivt kart skal ha tilgjengelig navn
-- feilmeldinger og lastestatus skal være semantiske
-- tastaturfokus skal være synlig
-- farge skal ikke være eneste bærer av informasjon
-- mobilvisning skal være reelt brukbar, ikke bare teknisk responsiv
+Obligatorisk acceptance i virkelig Chromium med reelle Trondheim-data krever
+synlig planområde, naturtypelokaliteter og overlapp, tilsvarende Natur/Jordbruk,
+ryddig temabytte og stabil manuell navigasjon. Kontrollerte pixeltester er
+regresjonsdekning og kan ikke erstatte dette.

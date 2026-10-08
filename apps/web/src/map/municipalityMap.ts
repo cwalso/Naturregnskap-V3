@@ -137,7 +137,6 @@ export interface MunicipalityMap {
   fitToAnalysisHighlight(): void
   setValuedNaturePresentation(model: ValuedNaturePresentation | null): void
   setValuedNatureSelectionHandler(handler: ((id: string | null) => void) | null): void
-  fitToValuedNatureResults(selectedOnly?: boolean): void
   setAnalysisFocus(active: boolean): void
   setAnalysisArea(overlay: PlannedDevelopmentOverlayGrid | null): void
   setAnalysisLayerStatusHandler(handler: ((state: AnalysisMapRenderState) => void) | null): void
@@ -274,8 +273,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   // Only visible 256 px windows are drawn; the analysis masks stay unchanged.
   const analysisTileSize = 256
-  const analysisHighlightLayer = new TileLayer<TileImage>({ visible: false, opacity: 1, cacheSize: 32 })
-  const analysisAreaLayer = new TileLayer<TileImage>({ visible: false, opacity: 1, cacheSize: 32 })
+  const analysisHighlightLayer = new TileLayer<TileImage>({ className: 'analysis-overlap', visible: false, opacity: 1, cacheSize: 32 })
+  const analysisAreaLayer = new TileLayer<TileImage>({ className: 'analysis-area', visible: false, opacity: 1, cacheSize: 32 })
+  const analysisAreaBoundaryLayer = new TileLayer<TileImage>({ className: 'analysis-area-boundary', visible: false, opacity: 1, cacheSize: 32 })
   let analysisLayerStatusHandler: ((state: AnalysisMapRenderState) => void) | null = null
 
   interface RasterLayerState {
@@ -286,8 +286,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   }
   const highlightState: RasterLayerState = { key: 'analysis:hits', request: 0, overlay: null, status: 'idle' }
   const areaState: RasterLayerState = { key: 'analysis:area', request: 0, overlay: null, status: 'idle' }
+  const areaBoundaryState: RasterLayerState = { key: 'analysis:area-boundary', request: 0, overlay: null, status: 'idle' }
   function notifyAnalysisLayerStatus() {
-    const states = [highlightState.status, areaState.status]
+    const states = [highlightState.status, areaState.status, areaBoundaryState.status]
     analysisLayerStatusHandler?.(states.includes('error') ? 'error' : states.includes('loading') ? 'loading' : states.includes('ready') ? 'ready' : 'idle')
   }
 
@@ -742,7 +743,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   let pendingBoundaryFit: [number, number, number, number] | null = null
   let drawnAreaFactor = 1
   let localitySelectionHandler: ((id: string | null) => void) | null = null
-  const valuedLayers = createValuedNatureLayers((coordinate) => map.getPixelFromCoordinate(coordinate))
+  const valuedLayers = createValuedNatureLayers()
 
   const map = new OlMap({
     target,
@@ -762,12 +763,13 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       urbanLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
-      analysisAreaLayer,
-      analysisHighlightLayer,
-      valuedLayers.contextLayer,
-      valuedLayers.hitLayer,
-      drawnAnalysisLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
+      analysisAreaLayer,
+      valuedLayers.contextLayer,
+      analysisHighlightLayer,
+      analysisAreaBoundaryLayer,
+      valuedLayers.selectionLayer,
+      drawnAnalysisLayer,
       changesLayer,
       municipalityMaskLayer,
       boundaryLayer,
@@ -815,7 +817,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         return
       }
       const id = map.forEachFeatureAtPixel(event.pixel, (feature) => String(feature.getId()), {
-        layerFilter: (layer) => layer === valuedLayers.contextLayer || layer === valuedLayers.hitLayer,
+        layerFilter: (layer) => layer === valuedLayers.contextLayer || layer === valuedLayers.selectionLayer,
         hitTolerance: 6,
       })
       localitySelectionHandler?.(id ?? null)
@@ -874,6 +876,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
       releaseRasterOverlay(analysisAreaLayer, areaState)
+      releaseRasterOverlay(analysisAreaBoundaryLayer, areaBoundaryState)
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
       currentDrawnArea = null
@@ -944,24 +947,19 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       updateMunicipalityMaskVisibility()
     },
     setValuedNatureSelectionHandler(handler) { localitySelectionHandler = handler },
-    fitToValuedNatureResults(selectedOnly = false) {
-      const extent = valuedLayers.extent(selectedOnly)
-      if (!extent) return
-      view.fit(extent, {
-        padding: new Array(4).fill(Math.min(48, Math.max(16, (map.getSize()?.[0] ?? 400) * 0.06))),
-        duration: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : 350,
-        maxZoom: 13,
-      })
-    },
     setAnalysisFocus(active) {
-      accountOverviewLayer.setOpacity(active ? 0.27 : 0.86)
-      accountDetailLayer.setOpacity(active ? 0.27 : 0.86)
+      for (const layer of thematicLayers.values()) layer.setOpacity(active ? 0.65 : 1)
+      accountOverviewLayer.setOpacity(active ? 0.2 : 0.86)
+      accountDetailLayer.setOpacity(active ? 0.2 : 0.86)
     },
     setAnalysisArea(overlay) {
-      configureRasterOverlay(analysisAreaLayer, areaState, overlay ? {
+      const area = overlay ? {
         width: overlay.width, height: overlay.height, extent: overlay.extent,
-        mask: overlay.analysisMask, fillColor: analysisColors.area, outlineOnly: true,
-      } : null)
+        mask: overlay.analysisMask, fillColor: analysisColors.area,
+      } : null
+      configureRasterOverlay(analysisAreaLayer, areaState, area ? { ...area, area: true } : null)
+      // Keep the plan boundary visible even when every valid pixel is a hit.
+      configureRasterOverlay(analysisAreaBoundaryLayer, areaBoundaryState, area ? { ...area, outlineOnly: true } : null)
     },
     setAnalysisLayerStatusHandler(handler) {
       analysisLayerStatusHandler = handler
@@ -1124,6 +1122,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
       releaseRasterOverlay(analysisAreaLayer, areaState)
+      releaseRasterOverlay(analysisAreaBoundaryLayer, areaBoundaryState)
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
       featureInfoHandler = null

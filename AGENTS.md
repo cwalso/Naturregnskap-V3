@@ -92,37 +92,32 @@ Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et 
 
 `#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
 
-Primærflyten er:
+Primærflyten er nå **framtidig utbygging × ett valgt tema**:
 
-1. **Velg analyseområde**
-2. **Velg hva området skal krysses med**
-3. **Les resultat**
-4. **Finn resultatet i kartet**
+1. velg kommune
+2. velg Natur og jordbruk eller Verdsatte naturtyper (ett radio-valg)
+3. se automatisk analyseområde, temakontekst og overlapp i kartet
+4. les hovedresultat og eventuelt filtrer eller velg lokalitet
 
-Analyseområder som er implementert:
+Inngangen til eget tegnet område er midlertidig skjult. Tegne- og analysemodulene
+beholdes for framtidig bruk; dette er en produktavgrensning, ikke slettet behov.
+Ikke gjeninnfør inngangen eller nye tema uten eksplisitt beslutning.
 
-- framtidig utbygging fra kommuneplan
-- eget polygon tegnet i kartet
+Rasterbaserte tallanalyser er bare klargjort for Trondheim (5001).
+Resultatene er prototypebeslutningsstøtte, ikke autoritative regnskapstall.
+`Vis hele kommunen` er tillatt; resultat-/objektvalg og temabytte skal ikke
+endre kartets zoom eller sentrum. Brukeren navigerer selv.
 
-Analysegrunnlag som er implementert i analyseverkstedet:
-
-- Natur og jordbruk fra Grunnkart
-- Verdsatte naturtyper
-
-De tallbaserte overlayanalysene er per 08.10.2026 bare klargjort for Trondheim
-(5001), fordi `overview/index.json` bare inneholder et kommunevis
-oversiktsraster for Trondheim. Ikke beskriv arbeidsflyten som nasjonalt
-beregningsklar før tilsvarende grunnlag finnes og er validert for flere
-kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
-rasteranalysene.
-
-Resultatet skal være lesbart som tall uten karttolking. Når resultatet finnes, er kartet hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste. Ikke erstatt analyseflyten med en stor lagvelger.
+Verdsatte naturtyper bruker ordinær WMS som temakontekst, REST-kildepolygoner
+som berørte objekter og separat rasterlag for beregnet overlapp.
+Ingen egendefinert canvas-klipping av lokalitetene. Natur/Jordbruk viser
+dempet Grunnkart-bakgrunn og sterke rastertreff innenfor planmasken.
 
 ## 8. Tegnet polygon
 
 Eget polygon skal behandles som et analyseområde på samme måte som framtidig utbygging, ikke som en separat analysefamilie.
 
-Gjeldende implementasjon støtter:
+Underliggende moduler støtter følgende, men inngangen er skjult i arbeidsflaten:
 
 - start tegning
 - punkter/hjørner i kart
@@ -143,7 +138,7 @@ Ved endringer i polygonanalysen skal følgende verifiseres eksplisitt:
 - at arealet gjelder hele analyseområdet
 - at prosentnevneren er riktig
 - at gammel cache/overlay ikke gjenbrukes etter områdebytte
-- at tall og kart gjelder samme analyseidentitet og gyldige avgrensning; kartet kan vise kildegeometri som klippes mot analysemasken
+- at tall og kart gjelder samme analyseidentitet og gyldige avgrensning; kartet kan vise hele kildegeometrien som kontekst og separat rasteroverlapp
 
 ## 9. Ytelse og flispipeline
 

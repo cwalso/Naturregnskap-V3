@@ -5029,3 +5029,13 @@ button.overview-status-card:hover {
 .locality-method-metrics > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem; }
 .locality-method-metrics dd { margin: 0; }
 .analysis-map-legend__selected { font-weight: 700; }
+
+/* Fixed plan analysis with one theme; controls remain keyboard and touch friendly. */
+.analysis-fixed-area { margin: .6rem 0; font-size: .8rem; color: var(--color-text-muted); }
+.analysis-theme-choice { margin: .6rem 0 1rem; padding: 0; border: 0; min-width: 0; }
+.analysis-theme-choice legend { margin-bottom: .4rem; font-size: .8rem; font-weight: 700; }
+.analysis-theme-choice .analysis-target { grid-template-columns: 1rem 1fr; cursor: pointer; min-height: 2.75rem; }
+.analysis-theme-choice input { margin: 0; accent-color: var(--color-accent); }
+.analysis-theme-choice .analysis-target:focus-within { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.locality-filters__values button { flex-wrap: wrap; }
+.locality-filters__values button small { flex-basis: 100%; padding-left: 1.15rem; }
