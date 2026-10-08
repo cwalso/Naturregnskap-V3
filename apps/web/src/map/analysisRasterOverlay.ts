@@ -5,6 +5,9 @@ export interface AnalysisRasterOverlay {
   readonly mask: Uint8Array
   readonly fillColor: string
   readonly strokeColor?: string
+  readonly palette?: Readonly<Record<number, string>>
+  readonly outlineOnly?: boolean
+  readonly strong?: boolean
 }
 
 export async function createAnalysisRasterBlob(
@@ -27,12 +30,28 @@ export async function createAnalysisRasterBlob(
 
     const rgba = index * 4
     const edge = isEdge(index, overlay.mask, overlay.width, overlay.height)
-    const color = edge ? stroke : fill
+    if (overlay.outlineOnly && !edge) continue
+    const color = overlay.palette?.[overlay.mask[index]]
+      ? hexToRgb(overlay.palette[overlay.mask[index]])
+      : edge ? stroke : fill
 
     pixels[rgba] = color[0]
     pixels[rgba + 1] = color[1]
     pixels[rgba + 2] = color[2]
-    pixels[rgba + 3] = edge ? 235 : 92
+    pixels[rgba + 3] = overlay.outlineOnly ? 170 : overlay.strong ? (edge ? 255 : 210) : edge ? 235 : 92
+  }
+
+  if (overlay.strong) {
+    // A light edge separates the result from both Grunnkart and the basemap.
+    for (let index = 0; index < overlay.mask.length; index += 1) {
+      if (overlay.mask[index]) continue
+      const x = index % overlay.width
+      const y = Math.floor(index / overlay.width)
+      if ((x > 0 && overlay.mask[index - 1]) || (x < overlay.width - 1 && overlay.mask[index + 1])
+        || (y > 0 && overlay.mask[index - overlay.width]) || (y < overlay.height - 1 && overlay.mask[index + overlay.width])) {
+        pixels.set([255, 255, 255, 240], index * 4)
+      }
+    }
   }
 
   context.putImageData(image, 0, 0)

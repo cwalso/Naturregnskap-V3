@@ -71,6 +71,12 @@ Det tegnede området:
 - kan krysses med Natur og jordbruk
 - kan krysses med Verdsatte naturtyper
 
+Den tegnede geometrien vises som en dempet, stiplet ramme og beholdes når
+kartet opprettes på nytt ved sidenavigasjon i samme økt. Rammen ligger over
+trefflaget, med transparent innside, slik at den fortsatt synes også når hele
+polygonet gir treff. «Tegn på nytt» starter en ny tegning; «Fjern område» fjerner området
+og går tilbake til framtidig utbygging. Dette er ikke lagring mellom økter.
+
 Ved endringer skal det testes at gammel analyse/cache ikke følger med når
 brukeren bytter mellom framtidig utbygging og eget polygon.
 
@@ -210,13 +216,12 @@ Analyseverktøyet skal:
 
 ## 11. Tydelige overlaytreff i kartet
 
-**Status: TODO – eksisterende stedfesting og filtre dekker behovet delvis**
+**Status: implementert prototype for de to eksisterende analysegrunnlagene**
 
 Som bruker ønsker jeg umiddelbart å forstå hvor analysen gir treff og hvordan
-treffene forholder seg til valgt analyseområde. Eksisterende kartknapper og
-resultatlag er et utgangspunkt; endelig visuell løsning er ikke bestemt.
+treffene forholder seg til valgt analyseområde.
 
-Akseptansekriterier for en senere forbedring:
+Gjeldende interaksjon og akseptansekriterier:
 
 1. Analyseområdet og treffområdet kan skilles visuelt, også uten bare å tolke
    farge. Brukeren kan se både områdets ramme og hvilke deler som gir treff.
@@ -235,6 +240,26 @@ Akseptansekriterier for en senere forbedring:
    desktop. Tegnekontroller, resultatvalg, kartutsnitt og status prøves i en
    virkelig nettleser med berøring og tastatur; små enhetstester erstatter
    ikke denne kontrollen.
+
+Natur- og Jordbruk-kortene velger tilhørende treffmaske og finner den i kartet.
+Verdikategori og naturtype bruker eksisterende delresultater og pikselindekser.
+«Finn resultatet i kartet» beholder aktivt delresultat, gjør det synlig og
+tilpasser utsnittet til alle valgte treff. «Vis alle treff» nullstiller
+filteret. Område- og datagrunnlagsbytte nullstiller filter og skjult resultat.
+Uten treff flyttes ikke kartet til en tom maske; statusen forklarer null treff
+og analyseområdets ramme beholdes.
+
+Kartet har en kompakt kontekst med område, datagrunnlag, aktivt valg, status og
+egen tegnforklaring for resultatmasken. Analyseområdet vises dempet, mens
+treff vises med sterk fyllfarge og lys kant. Kartmasken for Natur/Jordbruk
+beholder det beregnede analysegridet også ved nær zoom; visningen henter ikke
+en annen treffmaske fra mer detaljerte kartfliser. Dette endrer ingen tall,
+rastermetode eller kommuneavgrensning.
+
+På mobil finnes snarveier mellom kart og resultat og tegnehandlinger ved
+kartet. Beregningsfeil, visningsfeil, lasting, utilgjengelig grunnlag, null
+treff og skjult resultat forklares som forskjellige tilstander. Videre
+objektinformasjon, flere tema og plansammenligning er fortsatt framtidige behov.
 
 ## 12. Objektinformasjon for aktiv analyse
 

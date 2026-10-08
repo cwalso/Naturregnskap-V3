@@ -195,6 +195,7 @@ export function buildValuedNatureMapOverlay(
     mask,
     fillColor,
     strokeColor,
+    strong: true,
   }
 }
 

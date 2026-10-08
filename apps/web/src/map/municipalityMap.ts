@@ -35,6 +35,7 @@ import {
 } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
 import type { DrawnAnalysisArea } from './drawnAnalysis'
+import { analysisColors, type AnalysisMapRenderState } from './analysisPresentation'
 import {
   createAnalysisRasterBlob,
   maskExtent,
@@ -127,6 +128,9 @@ export interface MunicipalityMap {
   fitToPlannedDevelopmentResult(): void
   setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
   fitToAnalysisHighlight(): void
+  setAnalysisArea(overlay: PlannedDevelopmentOverlayGrid | null): void
+  setAnalysisLayerStatusHandler(handler: ((state: AnalysisMapRenderState) => void) | null): void
+  setDrawnAnalysisArea(area: DrawnAnalysisArea | null): void
   startDrawnAnalysisArea(handler: (area: DrawnAnalysisArea) => void): void
   finishDrawnAnalysisArea(): void
   undoDrawnAnalysisPoint(): void
@@ -261,12 +265,15 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     visible: false,
     opacity: 1,
   })
+  const analysisAreaLayer = new ImageLayer({ visible: false, opacity: 1 })
+  let analysisLayerStatusHandler: ((state: AnalysisMapRenderState) => void) | null = null
 
   interface RasterLayerState {
     request: number
     objectUrl: string | null
     visible: boolean
     overlay: AnalysisRasterOverlay | null
+    status: AnalysisMapRenderState
   }
 
   const highlightState: RasterLayerState = {
@@ -274,6 +281,12 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     objectUrl: null,
     visible: true,
     overlay: null,
+    status: 'idle',
+  }
+  const areaState: RasterLayerState = { request: 0, objectUrl: null, visible: true, overlay: null, status: 'idle' }
+  function notifyAnalysisLayerStatus() {
+    const states = [highlightState.status, areaState.status]
+    analysisLayerStatusHandler?.(states.includes('error') ? 'error' : states.includes('loading') ? 'loading' : states.includes('ready') ? 'ready' : 'idle')
   }
 
   function configureRasterOverlay(
@@ -284,6 +297,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     state.request += 1
     const request = state.request
     state.overlay = overlay
+    state.status = overlay ? 'loading' : 'idle'
+    notifyAnalysisLayerStatus()
     layer.setSource(null)
     layer.setVisible(false)
 
@@ -298,23 +313,39 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         if (request !== state.request) return
         const url = URL.createObjectURL(blob)
         state.objectUrl = url
-        layer.setSource(new ImageStatic({
+        const source = new ImageStatic({
           url,
           imageExtent: [...overlay.extent],
           projection: ACCOUNT_CRS,
-        }))
+          interpolate: false,
+        })
+        source.on('imageloadend', () => {
+          if (request !== state.request) return
+          state.status = 'ready'
+          notifyAnalysisLayerStatus()
+        })
+        source.on('imageloaderror', () => {
+          if (request !== state.request) return
+          state.status = 'error'
+          notifyAnalysisLayerStatus()
+        })
+        layer.setSource(source)
         layer.setVisible(state.visible)
       })
       .catch(() => {
         if (request !== state.request) return
         layer.setSource(null)
         layer.setVisible(false)
+        state.status = 'error'
+        notifyAnalysisLayerStatus()
       })
   }
 
   function releaseRasterOverlay(layer: ImageLayer<ImageSource>, state: RasterLayerState) {
     state.request += 1
     state.overlay = null
+    state.status = 'idle'
+    notifyAnalysisLayerStatus()
     layer.setSource(null)
     layer.setVisible(false)
     if (state.objectUrl) {
@@ -608,12 +639,13 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
   const boundarySource = new VectorSource()
 
   const drawnAnalysisSource = new VectorSource()
+  let currentDrawnArea: DrawnAnalysisArea | null = null
   const drawnAnalysisLayer = new VectorLayer({
     source: drawnAnalysisSource,
     visible: false,
     style: new Style({
-      stroke: new Stroke({ color: '#005b42', width: 3 }),
-      fill: new Fill({ color: 'rgba(0, 91, 66, 0.13)' }),
+      stroke: new Stroke({ color: analysisColors.area, width: 2, lineDash: [8, 5] }),
+      fill: new Fill({ color: 'rgba(86, 107, 99, 0)' }),
     }),
   })
   let drawInteraction: Draw | null = null
@@ -725,10 +757,11 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       urbanLayer,
       plannedOverviewLayer,
       plannedDetailLayer,
+      analysisAreaLayer,
       analysisHighlightLayer,
+      drawnAnalysisLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
-      drawnAnalysisLayer,
       municipalityMaskLayer,
       boundaryLayer,
     ],
@@ -819,8 +852,10 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       for (const layer of thematicLayers.values()) layer.setExtent(undefined)
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
+      releaseRasterOverlay(analysisAreaLayer, areaState)
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
+      currentDrawnArea = null
       drawnAnalysisLayer.setVisible(false)
     },
     setAccountLayerVisible(visible) {
@@ -883,17 +918,34 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     setAnalysisHighlight(overlay) {
       configureRasterOverlay(analysisHighlightLayer, highlightState, overlay)
     },
+    setAnalysisArea(overlay) {
+      configureRasterOverlay(analysisAreaLayer, areaState, overlay ? {
+        width: overlay.width, height: overlay.height, extent: overlay.extent,
+        mask: overlay.analysisMask, fillColor: analysisColors.area, outlineOnly: true,
+      } : null)
+    },
+    setAnalysisLayerStatusHandler(handler) {
+      analysisLayerStatusHandler = handler
+    },
+    setDrawnAnalysisArea(area) {
+      if (currentDrawnArea?.id === area?.id) return
+      currentDrawnArea = area
+      drawnAnalysisSource.clear()
+      if (area) drawnAnalysisSource.addFeature(new Feature(new Polygon(area.rings.map((ring) => ring.map((point) => [...point])))))
+      updateDrawnAreaMaskVisibility()
+    },
     fitToAnalysisHighlight() {
       if (!highlightState.overlay) return
       const extent = maskExtent(highlightState.overlay)
       if (!extent) return
       view.fit([...extent], {
-        padding: [72, 72, 72, 72],
-        duration: 350,
+        padding: new Array(4).fill(Math.min(48, Math.max(16, (map.getSize()?.[0] ?? 400) * 0.06))),
+        duration: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : 350,
         maxZoom: 14,
       })
     },
     startDrawnAnalysisArea(handler) {
+      currentDrawnArea = null
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
       drawnAnalysisLayer.setVisible(true)
@@ -927,6 +979,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           if (drawInteraction !== interaction) return
           map.removeInteraction(interaction)
           drawInteraction = null
+          currentDrawnArea = area
           drawnAnalysisLayer.setVisible(true)
           updateDrawnAreaMaskVisibility()
           handler(area)
@@ -949,6 +1002,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       updateDrawnAreaMaskVisibility()
     },
     clearDrawnAnalysisArea() {
+      currentDrawnArea = null
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
       drawnAnalysisLayer.setVisible(false)
@@ -1016,6 +1070,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     clearChanges() { changesSource.clear() },
     destroy() {
+      analysisLayerStatusHandler = null
       resizeObserver?.disconnect()
       window.cancelAnimationFrame(firstFrame)
       window.clearTimeout(delayedRefresh)
@@ -1027,6 +1082,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       releaseAccountOverviewUrl()
       clearPlannedDevelopmentOverlay()
       releaseRasterOverlay(analysisHighlightLayer, highlightState)
+      releaseRasterOverlay(analysisAreaLayer, areaState)
       stopDrawInteraction(true)
       drawnAnalysisSource.clear()
       featureInfoHandler = null

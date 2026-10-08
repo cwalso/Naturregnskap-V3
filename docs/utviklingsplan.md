@@ -101,23 +101,22 @@ ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 | Ett eget tegnet polygon | Allerede dekket | Tegn, angre, ferdig, avbryt, tegn på nytt og fjern; samme analysegrunnlag som plan |
 | Flere egne områder og områdehåndtering | Delvis dekket | Ett område finnes. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
 | Overlay mot Natur/Jordbruk og Verdsatte naturtyper | Allerede dekket | Behold skillet mellom heldekkende basis og supplerende registreringer; kart og tall skal dele identitet/mask |
-| Tydelig stedfesting og delresultatvalg | Delvis dekket | Kartknapper, verdikategori-/naturtypefilter og utsnitt finnes. Prioriter tydeligere skille mellom analyseområde og treff, forståelig utsnitt og synkronisert status; se akseptansekriteriene under |
+| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og eksisterende verdikategori-/naturtypevalg. Finn-handlingen beholder aktivt valg; status og tegnforklaring følger kartet |
 | Objektinformasjon for aktiv analyse | Mangler | Eksisterende tematisk feature-info er ikke en tilgjengelig objektflyt i arbeidsflaten. Koble kart-/resultatvalg til relevante opplysninger, kilde og dekning uten å konkurrere med tegning |
 | Flere relevante overlaytema | Mangler | Verneområder og villrein finnes som temasider, men ikke som analysegrunnlag. Avklar kilde, mål, dekning og usikkerhet før kobling; inngrepsfri natur trenger særskilt metode for avstand/soner og kan ikke fremstilles som beregnet konsekvens av enkel overlapp |
 | Grå arealer og mulig arealgjenbruk | Mangler | Bynaturen gir kontekst, men direkte gråareal-overlay i verkstedet mangler. Avklar data/metode; grått betyr ikke ledig areal og er ikke regnskapets Bebygd-kategori |
-| Panorering, zoom, kommuneutsnitt og tegnemodus | Allerede dekket | OpenLayers og tegningskontroller finnes; vedvarende polygonvisning etter kartgjenoppretting og reell mobil-/tastaturbruk må kvalitetssikres |
+| Panorering, zoom, kommuneutsnitt og tegnemodus | Dekket i prototype | Polygonet gjenopprettes etter sidenavigasjon i samme økt. Mobil har kart/resultat-snarveier og tegnekontroller ved kartet; ikke lagring mellom økter |
 | Opplasting av egne arealer/planer | Mangler | Vurder validering av geometri, koordinatsystem, format, størrelsesgrenser, kilde og lagring; ikke implementert |
 | Sammenligning av gjeldende/forslått plan eller områdealternativer | Mangler | Krever eksplisitt faglig beslutning om sammenligningsgrunnlag, endringer og overlapp; ingen automatisk erstatning av gjeldende plan |
 | Plan-/datadekning og tilstand forklart i arbeidsflaten | Delvis dekket | Prototypeforbehold, feil og utilgjengelig raster finnes. Tydeliggjør manglende/ufullstendig plan og tematisk kartlegging; null treff skal ikke forveksles med ukjent dekning |
 | Generell lagkatalog og tekniske debug-kontroller som brukerfunksjon | Ikke relevant for V3 | Kartkontroller skal støtte analyseoppgaven, ikke gjøre verkstedet til en generell GIS-klient |
 | Antatt framtidig naturtap som autoritativ regnskapsendring | Ikke relevant for V3 | Overlay er prototypebeslutningsstøtte. Utbygging eller egen tegning bokføres ikke som faktisk endring |
 
-**Prioritert produkt-TODO: tydelige overlaytreff.** Brukeren skal umiddelbart
-se hvor analysen gir treff, kunne skille analyseområde fra treffområde og
-få relevant treff fram ved «Finn resultatet i kartet». Valg/filtrering skal
-gjenspeiles i kartet; tegnforklaring/status og tall skal være synkronisert.
-Null treff, skjult resultat og teknisk feil må ha ulike tilstander.
-Endelig visuell løsning er ikke bestemt. Se
+**Implementert produktløft: tydelige overlaytreff.** Analyseområdet vises som
+dempet ramme, treff som sterke flater. «Finn resultatet i kartet» viser og
+stedfester aktivt delresultat, også ved spredte treff. Valg/filtrering, status
+og tegnforklaring følger samme resultatmaske. Null treff, skjult resultat og
+teknisk feil har egne tilstander. Beregninger og faglig metode er uendret. Se
 [akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
 og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).
 
@@ -151,9 +150,8 @@ endret. Nye tester kontrollerer også ny kartinstans og avbrutte kall.
 Gjenstående prioritering:
 
 - validering av rasteranslag mot et faglig godkjent kontrollgrunnlag
-- tydeligere overlaytreff etter produktkravene over
 - objektinformasjon for aktiv analyse
-- mobil tegnemodus og polygonvisning etter kartgjenoppretting
+- videre brukerprøving av mobil tegnemodus og stedfesting i faktiske plansaker
 - behold regresjonsdekning for områdebytte, prosentnevnere og cache
 
 ### 2. Stabilitet og ytelse
