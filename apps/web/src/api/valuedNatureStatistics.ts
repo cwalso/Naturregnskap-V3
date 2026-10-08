@@ -77,6 +77,8 @@ export interface ValuedNatureStatistics {
 }
 
 export interface PlannedCoverageGap {
+  readonly analysisId: string
+  readonly municipalityNumber: string
   readonly status: 'available'
   readonly methodVersion: 'planned-coverage-gap-v1'
   readonly plannedAreaKm2: number
@@ -86,7 +88,7 @@ export interface PlannedCoverageGap {
 }
 
 const statisticsCache = new Map<string, Promise<ValuedNatureStatistics>>()
-const coverageGapCache = new Map<string, Promise<PlannedCoverageGap>>()
+const coverageGapCache = new Map<string, { request: Promise<PlannedCoverageGap>; signal?: AbortSignal; completed: boolean }>()
 
 export function getValuedNatureStatistics(
   boundary: MunicipalityBoundary,
@@ -104,18 +106,35 @@ export function getValuedNatureStatistics(
   return request
 }
 
-export function getPlannedCoverageGap(
+export async function getPlannedCoverageGap(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedCoverageGap> {
-  const cached = coverageGapCache.get(analysis.municipalityNumber)
-  if (cached) return cached
-
-  const request = runPlannedCoverageGap(analysis, signal).catch((error: unknown) => {
-    coverageGapCache.delete(analysis.municipalityNumber)
+  signal?.throwIfAborted()
+  const key = `${analysis.municipalityNumber}:${analysis.analysisId}`
+  const cached = coverageGapCache.get(key)
+  if (cached && (cached.completed || !cached.signal?.aborted)) {
+    coverageGapCache.delete(key)
+    coverageGapCache.set(key, cached)
+    const result = await cached.request
+    signal?.throwIfAborted()
+    return result
+  }
+  const request = runPlannedCoverageGap(analysis, signal).then((result) => {
+    signal?.throwIfAborted()
+    entry.completed = true
+    let count = [...coverageGapCache.values()].filter((item) => item.completed).length
+    for (const [oldKey, old] of coverageGapCache) {
+      if (count <= 16) break
+      if (old.completed) { coverageGapCache.delete(oldKey); count -= 1 }
+    }
+    return result
+  }).catch((error: unknown) => {
+    if (coverageGapCache.get(key) === entry) coverageGapCache.delete(key)
     throw error
   })
-  coverageGapCache.set(analysis.municipalityNumber, request)
+  const entry = { request, signal, completed: false }
+  coverageGapCache.set(key, entry)
   return request
 }
 
@@ -220,6 +239,8 @@ async function runPlannedCoverageGap(
   return {
     status: 'available',
     methodVersion: 'planned-coverage-gap-v1',
+    analysisId: analysis.analysisId,
+    municipalityNumber: analysis.municipalityNumber,
     plannedAreaKm2,
     mappedPlannedAreaKm2,
     unmappedPlannedAreaKm2: Math.max(0, plannedAreaKm2 - mappedPlannedAreaKm2),
@@ -301,7 +322,9 @@ async function fetchFeatures(
       throw new Error(data.error.message ?? 'Temadatatjenesten returnerte en feil')
     }
 
-    const page = Array.isArray(data.features) ? data.features : []
+    if (!Array.isArray(data.features)) throw new Error('Deknings-/temadatatjenesten ga et ugyldig svar')
+    const page = data.features
+    if (data.exceededTransferLimit && page.length === 0) throw new Error('Deknings-/temadatatjenesten ga et ufullstendig svar')
     features.push(...page)
 
     if (!data.exceededTransferLimit && page.length < PAGE_SIZE) break

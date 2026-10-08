@@ -183,6 +183,25 @@ describe('analysis cache isolation', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(3)
   })
 
+  it('partitions unique area by highest value and keeps registration totals separate', async () => {
+    const base = await valuedResponse().json() as { features: { attributes: Record<string, unknown>; geometry: unknown }[] }
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ features: [
+      { ...base.features[0], attributes: { OBJECTID: 101, Verdikategori: 'Stor verdi', Naturtype: 'Skog' } },
+      { ...base.features[0], attributes: { OBJECTID: 102, Verdikategori: 'Svært stor verdi', Naturtype: 'Eng' } },
+    ] })))
+    const plan = available(await calculatePlannedDevelopment('exclusive-value-area'))
+    const result = await calculatePlannedValuedNatureAnalysis(plan)
+    expect(result.methodVersion).toBe('planned-valued-nature-v2')
+    expect(result.uniqueOverlapAreaKm2).toBeCloseTo(14 * pixelAreaKm2, 12)
+    expect(result.registeredOverlapAreaKm2).toBeCloseTo(28 * pixelAreaKm2, 12)
+    expect(result.hasOverlappingRegistrations).toBe(true)
+    expect(result.affectedFeatureCount).toBe(2)
+    expect(result.valueMetrics.find((metric) => metric.label === 'Stor verdi')).toMatchObject({ areaKm2: 0, featureCount: 1, sharePercent: 0 })
+    expect(result.valueMetrics.find((metric) => metric.label === 'Svært stor verdi')?.sharePercent).toBe(100)
+    expect(result.valueMetrics.reduce((sum, metric) => sum + metric.areaKm2, 0)).toBeCloseTo(result.uniqueOverlapAreaKm2, 12)
+    expect(result.typeMetrics.reduce((sum, metric) => sum + metric.areaKm2, 0)).toBeCloseTo(result.registeredOverlapAreaKm2, 12)
+  })
+
   it('restarts an aborted pending request and prevents its late rejection from evicting the replacement', async () => {
     const pending: { resolve: (value: Response) => void }[] = []
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(() => new Promise<Response>((resolve) => {
@@ -211,5 +230,20 @@ describe('analysis cache isolation', () => {
     controller.abort()
     await expect(calculatePlannedValuedNatureAnalysis(plan, controller.signal))
       .rejects.toMatchObject({ name: 'AbortError' })
+  })
+
+  it('bounds retained geometry results while keeping recently used analyses cached', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => valuedResponse())
+    const plan = available(await calculatePlannedDevelopment('geometry-cache-limit'))
+    const first = { ...plan, analysisId: 'drawn:geometry-cache-first' }
+    await calculatePlannedValuedNatureAnalysis(first)
+    for (let index = 0; index < 16; index += 1) {
+      await calculatePlannedValuedNatureAnalysis({ ...plan, analysisId: `drawn:geometry-cache-${index}` })
+    }
+    expect(fetchSpy).toHaveBeenCalledTimes(17)
+    await calculatePlannedValuedNatureAnalysis({ ...plan, analysisId: 'drawn:geometry-cache-15' })
+    expect(fetchSpy).toHaveBeenCalledTimes(17)
+    await calculatePlannedValuedNatureAnalysis(first)
+    expect(fetchSpy).toHaveBeenCalledTimes(18)
   })
 })

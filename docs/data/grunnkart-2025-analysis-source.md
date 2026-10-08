@@ -189,16 +189,53 @@ automatisk behandles som et eget regnskap.
 
 Verdsatte naturtyper er supplerende temadata.
 
-Overlay mot analyseområdet henter vektorgeometri fra ArcGIS REST, rasteriserer
-geometrien til plan-/polygonanalysens ca. 21,16-metersgrid og caches per
-`analysisId`.
+Overlay henter ArcGIS REST-geometri og bruker rutemidtpunkt innenfor den
+gyldige plan-/polygonmasken på ca. 21,15625 m grid. Metodeversjon
+`planned-valued-nature-v2` inkluderer bare Svært stor verdi, Stor verdi,
+Middels verdi og Noe verdi. Ved overlapp får hver rute høyeste verdi.
+
+- `uniqueOverlapAreaKm2`: union av berørte ruter, hver rute én gang.
+- `valueMetrics`: gjensidig utelukkende ruter per vinnende verdi; arealene
+  summerer til unikt areal. Andel har unikt areal som nevner.
+- `registeredOverlapAreaKm2`: sum registrert overlapp per lokalitet; kan
+  dobbelttelle og har et annet formål enn unikt areal.
+- `typeMetrics`: registrert areal og andel av registrert sum; kan dobbelttelle.
+  Ingen entydig regel for tilordning mellom naturtyper er vedtatt.
+- Antall berørte lokaliteter teller kildeobjekter med minst ett rutemidtpunkt
+  i masken, også når hele lokalitetens overlapp får en høyere verdi. Små
+  geometriske treff uten et rutemidtpunkt kan derfor falle utenfor.
+- `mapPixelIndices` per verdi beskriver vinnende ruter; per naturtype er det
+  union av de registrerte objektenes ruter.
+
+Kildegeometrien beholdes separat for kartet. Svake hele lokaliteter gir
+kontekst; sterke polygonflater klippes med eksisterende rastermasker. Dette
+gir faktiske konturer, men et omtrentlig klipp ved analyse-/verdigrensene.
+Ingen polygonarealer brukes til å erstatte beregnede rastertall. Resultatcache
+er begrenset til 16 fullførte analyser, med gjenbruk av nylig brukte resultater.
+
+Dekningskilden er dekningsflatene for kartlegging etter Miljødirektoratets
+instruks. Verkstedet gjenbruker union på gyldig analysegrid i
+`getPlannedCoverageGap`, nå isolert per kommune og `analysisId`. Panelet
+viser andel av hele gyldige analysemasken (inkludert bebygd/vann), **ikke**
+kommunens kartleggingsgrad av SSB-landarealet. Ingen registrert dekning
+betyr ukjent naturverdi; teknisk feil betyr at dekning ikke kan vurderes.
+Dekning innebærer heller ikke at alle naturverdier er registrert.
+Dekningslag i kartet er foreløpig ikke implementert.
+
+Metodisk kontroll har bekreftet de fire kategoriene, høyeste verdi ved
+overlapp og forskjellen mellom unik union og registrert sum. Følgende er
+fortsatt begrensninger: V3 bruker projisert UTM-ruteareal uten målestokks-
+korreksjon; naturtypefordeling er ikke entydig bokføring; rasterisert
+kommuneavgrensning er ikke eksakt vektorklipp. Kommunale temasidestatistikker
+er ikke endret av verkstedets nye verdifordeling.
 
 Dette er viktig fordi samme kommune kan ha flere sekvensielle analyseområder.
 Tegnet område får `drawn:<UUID>` ved fullført tegning, uavhengig av kartinstans.
 Resultatet bærer samme `analysisId` som basisanalysen, og Appen sjekker ID og
 kommune før tall og kart brukes. Regresjonstester dekker plan → polygon A →
 polygon B → plan, sen respons etter områdebytte og erstatning av avbrutte
-pågående kall. Dette endrer ikke rastermetoden eller datadekningen.
+pågående kall. Grid, Natur/Jordbruk og DiBK-filter er uendret; verdiregelen
+er oppdatert i metodeversjon v2.
 
 ## Delt request-/cachepipeline
 

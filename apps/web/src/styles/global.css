@@ -4988,3 +4988,44 @@ button.overview-status-card:hover {
 @media (max-width: 52rem) {
   .map-workspace--explore .map-mobile-jump-nav { top: 0; }
 }
+
+/* The result list and the map share locality selection, without covering the map. */
+.analysis-setup > summary { padding: .75rem 0; font-size: .8rem; font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
+.analysis-setup > summary span { color: var(--color-accent); margin-left: .5rem; }
+.analysis-setup:not([open]) { border-bottom: 1px solid var(--color-border); }
+.map-workspace--explore .analysis-step-label b { display: none; }
+.map-workspace--explore .analysis-result-notice--hits { padding: .35rem 0; background: transparent; border: 0; }
+.map-workspace--explore .analysis-result-notice--hits p { display: none; }
+.map-workspace--explore .map-result-status:empty { display: none; }
+.map-workspace--explore .analysis-result__map-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .65rem; margin-block: .65rem; }
+.map-workspace--explore .analysis-result__primary-action { background: #fff; color: var(--color-accent); border: 1px solid var(--color-border); padding: .5rem .7rem; width: auto; }
+.locality-result__totals { display: grid; grid-template-columns: 1fr 1.4fr; gap: .65rem; margin-block: .8rem; }
+.locality-result__totals > div { display: flex; flex-direction: column; }
+.locality-result__totals strong { font-size: 1.15rem; overflow-wrap: anywhere; }
+.locality-result__totals span { font-size: .72rem; color: var(--color-text-muted); }
+.locality-coverage { font-size: .73rem; line-height: 1.45; color: var(--color-text-muted); padding: .65rem; background: #f6f4ed; border-radius: .3rem; }
+.locality-coverage strong { display: block; color: var(--color-text); }
+.locality-filters { margin-block: .8rem; }
+.locality-filters__values { display: flex; flex-wrap: wrap; gap: .3rem; }
+.locality-filters__values button { display: inline-flex; gap: .4rem; align-items: center; min-height: 2.75rem; padding: .4rem .55rem; font: inherit; font-size: .73rem; background: white; border: 1px solid var(--color-border); border-radius: .3rem; cursor: pointer; text-align: left; }
+.locality-filters__values button[aria-pressed=true] { border-color: var(--color-accent); background: #e9f3ef; box-shadow: inset 0 0 0 1px var(--color-accent); }
+.locality-filters__values i, .locality-list__swatch { width: .75rem; height: .75rem; border: 1px solid #303f3750; border-radius: .15rem; flex: none; }
+.locality-filters label { display: flex; flex-direction: column; font-size: .75rem; gap: .25rem; margin-top: .65rem; }
+.locality-filters select { width: 100%; min-width: 0; min-height: 2.75rem; font: inherit; color: var(--color-text); background: #fff; border: 1px solid var(--color-border); padding: .4rem; border-radius: .3rem; }
+.locality-list__heading { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font-size: .8rem; }
+.locality-list { padding: 0; margin: .4rem 0; list-style: none; max-height: 22rem; overflow-y: auto; scroll-margin-top: 1rem; }
+.locality-list li + li { border-top: 1px solid var(--color-border); }
+.locality-list button { display: flex; align-items: start; gap: .6rem; width: 100%; min-height: 3rem; padding: .65rem .5rem; background: white; border: 2px solid transparent; font: inherit; text-align: left; cursor: pointer; }
+.locality-list button[aria-pressed=true] { border-color: var(--color-accent); background: #e9f3ef; }
+.locality-list button > span { min-width: 0; }
+.locality-list strong { display: block; font-size: .8rem; overflow-wrap: anywhere; }
+.locality-list small { display: block; font-size: .71rem; color: var(--color-text-muted); overflow-wrap: anywhere; line-height: 1.5; }
+.locality-list__swatch { margin-top: .2rem; }
+.locality-detail { border-left: 3px solid var(--color-accent); background: #e9f3ef; padding: .65rem; margin-block: .65rem; font-size: .75rem; overflow-wrap: anywhere; }
+.locality-detail > div { display: flex; align-items: center; justify-content: space-between; gap: .3rem; }
+.locality-detail button { min-height: 2.75rem; background: white; color: var(--color-accent); border: 1px solid var(--color-border); font: inherit; border-radius: .3rem; }
+.locality-detail h4 { margin: .3rem 0; }
+.locality-method-metrics { font-size: .72rem; }
+.locality-method-metrics > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem; }
+.locality-method-metrics dd { margin: 0; }
+.analysis-map-legend__selected { font-weight: 700; }

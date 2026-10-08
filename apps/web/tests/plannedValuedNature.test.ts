@@ -19,6 +19,7 @@ describe('valued nature × future development', () => {
     expect(body.get('returnGeometry')).toBe('true')
     expect(body.get('outFields')).toContain('Verdikategori')
     expect(body.get('outFields')).toContain('Naturtype')
+    expect(body.get('where')).toBe("Verdikategori IN ('Svært stor verdi','Stor verdi','Middels verdi','Noe verdi')")
 
     const geometry = JSON.parse(body.get('geometry') ?? '{}')
     expect(geometry).toMatchObject({
@@ -83,6 +84,24 @@ describe('valued nature × future development', () => {
     })
     expect(summary.uniquePixelIndices).toHaveLength(7)
     expect(summary.byValue.get('Svært stor verdi')?.pixelIndices.size).toBe(4)
+    expect(summary.byValue.get('Stor verdi')?.pixelIndices.size).toBe(3)
+    expect(summary.byValue.get('Stor verdi')?.pixelCount).toBe(3)
+  })
+
+  it('excludes other categories and unknown values and gives the highest value every overlapping cell', () => {
+    const overlay: PlannedDevelopmentOverlayGrid = { kind: 'drawn', zoom: 9, cx0: 0, cy0: 0, width: 2, height: 2, extent: [0, 0, 2, 2], cleaned: new Uint8Array(4), analysisMask: new Uint8Array(4).fill(1) }
+    const geometry = { rings: [[[0, 0], [0, 2], [2, 2], [2, 0], [0, 0]]] as [number, number][][] }
+    const summary = summarizeValuedNatureFeaturesForTest(['Noe verdi', 'Ikke gitt verdi', 'Stor verdi', 'Svært stor verdi', 'Middels verdi', 'Vurderes per lokalitet'].map((value, id) => ({ attributes: { OBJECTID: id, Verdikategori: value, Naturtype: 'Samme type' }, geometry })), overlay)
+    expect(summary.affectedFeatureCount).toBe(4)
+    expect(summary.uniquePixelCount).toBe(4)
+    expect(summary.featurePixelTotal).toBe(16)
+    expect(summary.byValue.get('Svært stor verdi')?.pixelCount).toBe(4)
+    for (const category of ['Stor verdi', 'Middels verdi', 'Noe verdi']) {
+      expect(summary.byValue.get(category)).toMatchObject({ pixelCount: 0, featureCount: 1 })
+    }
+    expect([...summary.byValue.values()].reduce((sum, metric) => sum + metric.pixelCount, 0)).toBe(summary.uniquePixelCount)
+    expect(summary.byType.get('Samme type')?.pixelCount).toBe(16)
+    expect(summary.localities).toHaveLength(4)
   })
 
   it('respects holes in polygon geometry', () => {
@@ -134,7 +153,7 @@ describe('valued nature × future development', () => {
       analysisId: 'planned:5001',
       status: 'available',
       source: 'Miljødirektoratet – naturtyper med KU-verdi',
-      methodVersion: 'planned-valued-nature-v1',
+      methodVersion: 'planned-valued-nature-v2',
       pixelMeters: 21,
       candidateFeatureCount: 2,
       affectedFeatureCount: 2,
@@ -150,7 +169,7 @@ describe('valued nature × future development', () => {
         sharePercent: 50,
         mapPixelIndices: Uint32Array.from([1, 5]),
       }],
-      typeMetrics: [],
+      typeMetrics: [], localities: [],
     } satisfies PlannedValuedNatureAnalysis
 
     const result = buildValuedNatureMapOverlay(

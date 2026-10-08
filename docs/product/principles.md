@@ -130,8 +130,11 @@ pipeline kan gjenbrukes.
 Kartet er et hjelpemiddel for stedfesting. Hovedresultatet i analyser skal være
 lesbart som tekst/tall uten at brukeren må tolke kartet.
 
-Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme
-analyseresultat/analysemask.
+Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat,
+kommune og analyseidentitet. Beregningsrepresentasjon og kartrepresentasjon
+er forskjellige: tall kan beregnes på rastergrid mens kartet viser faktiske
+kildepolygoner innenfor samme gyldige analysemask. Når analysen finnes, er
+kartet hovedarbeidsflaten med et kompakt resultat-/objektpanel.
 
 ## 10. Prototypeberegninger
 

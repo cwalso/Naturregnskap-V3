@@ -116,7 +116,7 @@ beregningsklar før tilsvarende grunnlag finnes og er validert for flere
 kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
 rasteranalysene.
 
-Resultatet skal være lesbart som tall først. Kartet brukes primært til stedfesting. Ikke erstatt denne flyten med en stor lagvelger.
+Resultatet skal være lesbart som tall uten karttolking. Når resultatet finnes, er kartet hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste. Ikke erstatt analyseflyten med en stor lagvelger.
 
 ## 8. Tegnet polygon
 
@@ -143,7 +143,7 @@ Ved endringer i polygonanalysen skal følgende verifiseres eksplisitt:
 - at arealet gjelder hele analyseområdet
 - at prosentnevneren er riktig
 - at gammel cache/overlay ikke gjenbrukes etter områdebytte
-- at analyse og kart bruker samme analysemask
+- at tall og kart gjelder samme analyseidentitet og gyldige avgrensning; kartet kan vise kildegeometri som klippes mot analysemasken
 
 ## 9. Ytelse og flispipeline
 
@@ -202,7 +202,7 @@ Ingen av disse skal presenteres som samme tilstand.
 3. Ikke opprett nye temasider eller analysefamilier uten faglig avklaring.
 4. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov.
 5. Legg fagregler og analysemetode utenfor presentasjonskomponenter.
-6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat/analysemask.
+6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt; Verdsatte naturtyper vises som kildepolygoner.
 7. Kjør relevante tester, lint og build før avslutning.
 8. Oppdater levende dokumentasjon og legg til ADR når en reell arkitekturbeslutning tas.
 9. Gamle ADR-er er historikk og skal normalt ikke omskrives.
