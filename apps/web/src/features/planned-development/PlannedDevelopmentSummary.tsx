@@ -1,10 +1,13 @@
+import { useId } from 'react'
+
 import {
-  nationalLandCover2025,
   protectedAreas,
   valuedNature,
   wildReindeerAreas,
 } from '../../datasets/registry'
 import type { DrawnAnalysisArea } from '../../map/drawnAnalysis'
+import type { AnalysisPresentation, GrunnkartMapSelection } from '../../map/analysisPresentation'
+import { AnalysisResultNotice } from './AnalysisResultNotice'
 import type {
   PlannedDevelopmentResult,
   PlannedNatureBreakdown,
@@ -28,6 +31,9 @@ interface PlannedDevelopmentSummaryProps {
   readonly visible: boolean
   readonly onVisibleChange: (visible: boolean) => void
   readonly onFindGrunnkartResultInMap: () => void
+  readonly grunnkartMapSelection: GrunnkartMapSelection
+  readonly onSelectGrunnkartInMap: (selection: GrunnkartMapSelection) => void
+  readonly presentation: AnalysisPresentation
   readonly natureBreakdown: PlannedNatureBreakdown | null
   readonly natureBreakdownState: 'idle' | 'loading' | 'error'
   readonly analysisTarget: PlannedDevelopmentAnalysisTarget
@@ -118,6 +124,18 @@ function ValuedNatureResult({
   readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
   readonly analysisAreaLabel: string
 }) {
+  const mapActions = (
+    <div className="analysis-result__map-actions">
+      <button type="button" className="analysis-result__primary-action" onClick={() => onShowInMap(selection)}>
+        Finn resultatet i kartet <span aria-hidden="true">→</span>
+      </button>
+      <label className="analysis-result__visibility">
+        <input type="checkbox" checked={visible} onChange={(event) => onVisibleChange(event.target.checked)} />
+        <span>Vis resultatlaget</span>
+      </label>
+      {selection.kind !== 'all' && <button type="button" className="analysis-result__clear-filter" onClick={() => onShowInMap({ kind: 'all' })}>Vis alle treff</button>}
+    </div>
+  )
   if (analysis.affectedFeatureCount === 0) {
     return (
       <div className="valued-nature-result">
@@ -129,6 +147,7 @@ function ValuedNatureResult({
             fravær av naturverdi.
           </small>
         </div>
+        {mapActions}
         <p className="plan-nature-breakdown__note">
           Analysen er gjort mot registrerte lokaliteter i Miljødirektoratets
           løpende tjeneste, med samme ca. {Math.round(analysis.pixelMeters)} m
@@ -159,24 +178,7 @@ function ValuedNatureResult({
         </div>
       </div>
 
-      <div className="analysis-result__map-actions" aria-live="polite">
-        <button
-          type="button"
-          className="analysis-result__primary-action"
-          onClick={() => onShowInMap({ kind: 'all' })}
-        >
-          {selection.kind === 'all' ? 'Finn resultatet i kartet' : 'Vis alle og finn i kartet'}
-          <span aria-hidden="true">→</span>
-        </button>
-        <label className="analysis-result__visibility">
-          <input
-            type="checkbox"
-            checked={visible}
-            onChange={(event) => onVisibleChange(event.target.checked)}
-          />
-          <span>Vis resultatlaget</span>
-        </label>
-      </div>
+      {mapActions}
 
       {selection.kind !== 'all' && (
         <p className="analysis-result__active-filter">
@@ -257,9 +259,10 @@ function ValuedNatureMetricRow({
   readonly selected?: boolean
   readonly onShowInMap: () => void
 }) {
+  const labelId = useId()
   return (
     <div className={selected ? 'valued-nature-metric valued-nature-metric--selected' : 'valued-nature-metric'}>
-      <div className="valued-nature-metric__labels">
+      <div className="valued-nature-metric__labels" id={labelId}>
         <strong>
           {showColor && (
             <i
@@ -288,6 +291,7 @@ function ValuedNatureMetricRow({
         type="button"
         className="valued-nature-metric__map-action"
         aria-pressed={selected}
+        aria-describedby={labelId}
         onClick={onShowInMap}
       >
         {selected ? 'Funnet i kart' : 'Finn i kart'} <span aria-hidden="true">→</span>
@@ -302,6 +306,9 @@ export function PlannedDevelopmentSummary({
   visible,
   onVisibleChange,
   onFindGrunnkartResultInMap,
+  grunnkartMapSelection,
+  onSelectGrunnkartInMap,
+  presentation,
   natureBreakdown,
   natureBreakdownState,
   analysisTarget,
@@ -476,17 +483,9 @@ export function PlannedDevelopmentSummary({
           </strong>
         </div>
 
+        <AnalysisResultNotice presentation={presentation} />
         {analysisTarget === 'valued-nature' ? (
-          state === 'loading' || valuedNatureAnalysisState === 'loading' ? (
-            <p className="plan-analysis__status" role="status">
-              Beregner overlapp med verdsatte naturtyper…
-            </p>
-          ) : state === 'error' || valuedNatureAnalysisState === 'error' ? (
-            <p className="plan-analysis__status plan-analysis__status--error" role="alert">
-              Overlayanalysen mot verdsatte naturtyper kunne ikke beregnes nå.
-              Dette skal ikke tolkes som manglende treff.
-            </p>
-          ) : valuedNatureAnalysis ? (
+          state !== 'idle' || valuedNatureAnalysisState !== 'idle' ? null : valuedNatureAnalysis ? (
             <ValuedNatureResult
               analysis={valuedNatureAnalysis}
               visible={valuedNatureResultVisible}
@@ -506,35 +505,41 @@ export function PlannedDevelopmentSummary({
             <strong>{selectedTarget.label}</strong>
             <p>Denne overlayanalysen er ikke koblet til ennå.</p>
           </div>
-        ) : state === 'loading' ? (
-          <p className="plan-analysis__status" role="status">
-            Beregner kryss mellom {nationalLandCover2025.title} og kommuneplan…
-          </p>
-        ) : state === 'error' ? (
-          <p className="plan-analysis__status plan-analysis__status--error" role="alert">
-            Analysen kunne ikke beregnes nå. Dette skal ikke tolkes som 0.
-          </p>
-        ) : result?.status === 'available' ? (
+        ) : state !== 'idle' ? null : result?.status === 'available' ? (
           <>
             <div className="analysis-result__summary-grid">
-              <div className="analysis-result__metric analysis-result__metric--nature">
+              <button type="button"
+                className={`analysis-result__metric analysis-result__metric--nature ${grunnkartMapSelection === 'nature' ? 'analysis-result__metric--selected' : ''}`}
+                aria-label="Vis Natur i kartet"
+                aria-describedby="nature-overlap-area nature-overlap-share"
+                aria-pressed={grunnkartMapSelection === 'nature'}
+                onClick={() => onSelectGrunnkartInMap('nature')}
+              >
                 <span>Natur som overlapper</span>
-                <strong>ca. {dekar(result.natureKm2)}</strong>
-                <small>
+                <strong id="nature-overlap-area">ca. {dekar(result.natureKm2)}</strong>
+                <small id="nature-overlap-share">
                   {result.natureShareOfAnalysisAreaPercent !== null
                     ? `${percentFormatter.format(result.natureShareOfAnalysisAreaPercent)} % av analyseområdet`
                     : 'Andel kan ikke beregnes sikkert'}
                 </small>
-              </div>
-              <div className="analysis-result__metric analysis-result__metric--agriculture">
+                <em>{grunnkartMapSelection === 'nature' ? 'Valgt i kartet' : 'Vis i kartet →'}</em>
+              </button>
+              <button type="button"
+                className={`analysis-result__metric analysis-result__metric--agriculture ${grunnkartMapSelection === 'agriculture' ? 'analysis-result__metric--selected' : ''}`}
+                aria-label="Vis Jordbruk i kartet"
+                aria-describedby="agriculture-overlap-area agriculture-overlap-share"
+                aria-pressed={grunnkartMapSelection === 'agriculture'}
+                onClick={() => onSelectGrunnkartInMap('agriculture')}
+              >
                 <span>Jordbruk som overlapper</span>
-                <strong>ca. {dekar(result.agricultureKm2)}</strong>
-                <small>
+                <strong id="agriculture-overlap-area">ca. {dekar(result.agricultureKm2)}</strong>
+                <small id="agriculture-overlap-share">
                   {result.agricultureShareOfAnalysisAreaPercent !== null
                     ? `${percentFormatter.format(result.agricultureShareOfAnalysisAreaPercent)} % av analyseområdet`
                     : 'Berørt jordbruksareal i analyseområdet'}
                 </small>
-              </div>
+                <em>{grunnkartMapSelection === 'agriculture' ? 'Valgt i kartet' : 'Vis i kartet →'}</em>
+              </button>
             </div>
 
             <div className="analysis-result__map-actions">
@@ -553,6 +558,7 @@ export function PlannedDevelopmentSummary({
                 />
                 <span>Vis resultatlaget</span>
               </label>
+              {grunnkartMapSelection !== 'all' && <button type="button" className="analysis-result__clear-filter" onClick={() => onSelectGrunnkartInMap('all')}>Vis alle treff</button>}
             </div>
 
             <div className="plan-nature-breakdown analysis-result__breakdown">

@@ -180,6 +180,23 @@ Cachegrensen i requestlaget er 400 råbilder per kilde. Et abortsignal stopper e
 konsument fra å bruke resultatet før eller etter lasting, men avbryter ikke et
 delt nettverkskall som allerede er startet.
 
+## Treffvisning i analyseverkstedet
+
+I analyseverkstedet vises områdets gyldige `analysisMask` som egen dempet
+rasterramme. Natur/Jordbruk-treff bygges fra `overlay.cleaned`, mens Verdsatte
+naturtyper bruker resultatets pikselindekser. Begge trefflag vises med samme
+`TileImage`-pipeline og beregnede analysegrid også ved nær zoom. Det eldre
+planens detaljlag er ikke aktivt i analyseverkstedet. Delresultatvalg filtrerer
+bare visningsmasken; det beregner ikke nye tall eller endrer analysemasken.
+Kartutsnitt beregnes fra aktiv treffmaske. Bare forespurte visningsfliser på
+256 × 256 piksler tegnes direkte i Canvas, med nabopiksler lest fra hele
+masken for sømløs kantmarkering. Visningslagene
+bruker OpenLayers sin fliscache (målstørrelse 32; kan økes for synlige fliser),
+uten heldekkende PNG-er eller nye object URLs. Lokale visningsfliser venter
+ikke på eksterne kartkall i nettverkskøen. Fliscachen tømmes ved bytte eller
+destruksjon. Generering og statusmeldinger er beskyttet mot sene svar med en egen
+request-versjon per visningslag, og visningsfeil formidles til brukerflaten.
+
 ## Tegnet polygon
 
 OpenLayers `Draw` brukes for eget analyseområde.
@@ -193,6 +210,11 @@ Polygonet:
   kommunevise oversiktsrasteret
 - får egen `analysisId`
 - bruker samme overordnede overlaypipeline som plananalysen
+
+Den opprinnelige tegnede geometrien beholdes i appens tilstand i samme økt.
+Ved ny kartinstans gjenopprettes den i et dempet vektorlag med transparent
+fylling over trefflaget, slik at rammen også synes ved heldekkende treff.
+Dette er visning og øktstilstand, ikke varig lagring eller en ny klippemetode.
 
 Cache og resultater bruker `analysisId`. Fullført tegning får
 `drawn:<UUID>` fra `crypto.randomUUID()`, uavhengig av kartinstans; planområdet

@@ -147,14 +147,24 @@ Detaljfordeling kommer etter hovedtallet.
 «Finn resultatet i kartet» skal være en tydelig primærhandling når resultatet
 kan stedfestes.
 
-Tydeligere overlaytreff er en prioritert TODO, ikke en ferdig visuell løsning.
-Analyseområde og treff må kunne skilles, valgt delresultat må gjenkjennes i
-kartet, og tegnforklaring/status må forklare hva som vises. Null treff, skjult
-resultat og teknisk feil skal ikke se like ut. Akseptansekriteriene står i
+Prototypen skiller analyseområde fra treff med en dempet ramme og sterk
+treffmarkering med lys kant. Eget polygon bruker en dempet stiplet ramme med
+transparent innside over treffene. Kommunegrensen ligger fortsatt øverst. Resultatkort for
+Natur/Jordbruk og eksisterende kategori-/naturtypevalg styrer treffmasken.
+Valgt delresultat markeres i panelet og kartets status/tegnforklaring.
+«Finn resultatet i kartet» beholder valget og viser alle valgte treff;
+«Vis alle treff» nullstiller. Null treff, skjult resultat, lasting og teknisk
+feil har forskjellige tekstlige tilstander. Akseptansekriteriene står i
 [brukerhistorien om tydelige overlaytreff](analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
 Videre kontroller skal følge eksisterende V3-komponenter og flyten område →
 datagrunnlag → resultat → stedfesting. Mobil bruk må prøves med berøring og
 lesbare resultater, uten at kartkontroller dominerer oppgaven.
+
+Kontekst og tegnforklaring ligger utenfor selve kartflaten, med kortere status
+på mobil. Mobil har snarveier mellom kart og resultat, trykkbare resultatkort
+og Angre punkt/Ferdig/Avbryt under kartflaten under tegning. Tegneknappene
+skal ikke dekke steder der brukeren setter punkter. Primærhandling og
+mobilkontroller skal ha minst 44 px høyde.
 
 ## Tegnemodus
 
@@ -185,6 +195,11 @@ Aktive faglag skal ha forståelig tegnforklaring.
 
 For WMS skal tjenestens `GetLegendGraphic` foretrekkes når den er korrekt og
 forståelig. Manuell symbolikk skal ikke gjettes.
+
+Analyseverkstedets egen resultatmaske har en separat tegnforklaring fra
+visningskoden: dempet ramme for analyseområde, mørk grønn for Natur, oransje
+for Jordbruk og valgt resultatfarge for Verdsatte naturtyper. Den beskriver
+prototypeoverlapp og erstatter ikke datakildenes faglige tegnforklaringer.
 
 ## Tilgjengelighet
 
