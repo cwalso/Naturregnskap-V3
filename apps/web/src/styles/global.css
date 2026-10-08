@@ -4965,11 +4965,8 @@ button.overview-status-card:hover {
   .map-drawing-toolbar {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    position: absolute;
-    bottom: .7rem;
-    left: .7rem;
-    right: .7rem;
-    z-index: 2;
+    flex: none;
+    margin: .5rem .7rem;
     gap: .35rem;
     padding: .6rem;
     background: rgba(255,255,255,.96);

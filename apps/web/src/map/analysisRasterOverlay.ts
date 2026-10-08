@@ -10,52 +10,67 @@ export interface AnalysisRasterOverlay {
   readonly strong?: boolean
 }
 
-export async function createAnalysisRasterBlob(
+export interface AnalysisRasterWindow {
+  readonly x: number
+  readonly y: number
+  readonly width: number
+  readonly height: number
+}
+
+export function createAnalysisRasterCanvas(
   overlay: AnalysisRasterOverlay,
-): Promise<Blob> {
+  window: AnalysisRasterWindow = { x: 0, y: 0, width: overlay.width, height: overlay.height },
+): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
-  canvas.width = overlay.width
-  canvas.height = overlay.height
+  canvas.width = window.width
+  canvas.height = window.height
 
   const context = canvas.getContext('2d')
   if (!context) throw new Error('Nettleseren kunne ikke opprette analyseoverlay')
 
-  const image = context.createImageData(overlay.width, overlay.height)
+  const image = context.createImageData(window.width, window.height)
   const pixels = image.data
   const fill = hexToRgb(overlay.fillColor)
   const stroke = hexToRgb(overlay.strokeColor ?? overlay.fillColor)
+  const palette = Object.fromEntries(Object.entries(overlay.palette ?? {}).map(([value, color]) => [value, hexToRgb(color)]))
 
-  for (let index = 0; index < overlay.mask.length; index += 1) {
-    if (!overlay.mask[index]) continue
-
-    const rgba = index * 4
-    const edge = isEdge(index, overlay.mask, overlay.width, overlay.height)
-    if (overlay.outlineOnly && !edge) continue
-    const color = overlay.palette?.[overlay.mask[index]]
-      ? hexToRgb(overlay.palette[overlay.mask[index]])
-      : edge ? stroke : fill
-
-    pixels[rgba] = color[0]
-    pixels[rgba + 1] = color[1]
-    pixels[rgba + 2] = color[2]
-    pixels[rgba + 3] = overlay.outlineOnly ? 170 : overlay.strong ? (edge ? 255 : 210) : edge ? 235 : 92
-  }
-
-  if (overlay.strong) {
-    // A light edge separates the result from both Grunnkart and the basemap.
-    for (let index = 0; index < overlay.mask.length; index += 1) {
-      if (overlay.mask[index]) continue
-      const x = index % overlay.width
-      const y = Math.floor(index / overlay.width)
-      if ((x > 0 && overlay.mask[index - 1]) || (x < overlay.width - 1 && overlay.mask[index + 1])
-        || (y > 0 && overlay.mask[index - overlay.width]) || (y < overlay.height - 1 && overlay.mask[index + overlay.width])) {
-        pixels.set([255, 255, 255, 240], index * 4)
+  for (let y = 0; y < window.height; y += 1) {
+    const row = window.y + y
+    if (row < 0 || row >= overlay.height) continue
+    for (let x = 0; x < window.width; x += 1) {
+      const column = window.x + x
+      if (column < 0 || column >= overlay.width) continue
+      const index = row * overlay.width + column
+      const rgba = (y * window.width + x) * 4
+      const value = overlay.mask[index]
+      if (value) {
+        // Neighbours come from the full mask, so tile borders do not become edges.
+        const edge = isEdge(index, overlay.mask, overlay.width, overlay.height)
+        if (overlay.outlineOnly && !edge) continue
+        const color = palette[value] ?? (edge ? stroke : fill)
+        pixels[rgba] = color[0]
+        pixels[rgba + 1] = color[1]
+        pixels[rgba + 2] = color[2]
+        pixels[rgba + 3] = overlay.outlineOnly ? 170 : overlay.strong ? (edge ? 255 : 210) : edge ? 235 : 92
+      } else if (overlay.strong && (
+        (column > 0 && overlay.mask[index - 1]) || (column < overlay.width - 1 && overlay.mask[index + 1])
+        || (row > 0 && overlay.mask[index - overlay.width]) || (row < overlay.height - 1 && overlay.mask[index + overlay.width])
+      )) {
+        pixels.set([255, 255, 255, 240], rgba)
       }
     }
   }
 
   context.putImageData(image, 0, 0)
 
+  return canvas
+}
+
+export async function createAnalysisRasterBlob(
+  overlay: AnalysisRasterOverlay,
+  window?: AnalysisRasterWindow,
+): Promise<Blob> {
+  const canvas = createAnalysisRasterCanvas(overlay, window)
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob) resolve(blob)

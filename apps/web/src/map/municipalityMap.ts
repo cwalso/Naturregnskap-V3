@@ -3,14 +3,16 @@ import GeoJSON from 'ol/format/GeoJSON'
 import MultiPolygon from 'ol/geom/MultiPolygon'
 import Polygon from 'ol/geom/Polygon'
 import Draw from 'ol/interaction/Draw'
-import type ImageTile from 'ol/ImageTile'
+import ImageTile from 'ol/ImageTile'
 import OlMap from 'ol/Map'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
-import type ImageSource from 'ol/source/Image'
 import ImageWMS from 'ol/source/ImageWMS'
 import ImageStatic from 'ol/source/ImageStatic'
+import TileImage from 'ol/source/TileImage'
+import TileGrid from 'ol/tilegrid/TileGrid'
+import TileState from 'ol/TileState'
 import XYZ from 'ol/source/XYZ'
 import VectorSource from 'ol/source/Vector'
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style'
@@ -37,7 +39,7 @@ import { defaultBasemap } from './basemaps'
 import type { DrawnAnalysisArea } from './drawnAnalysis'
 import { analysisColors, type AnalysisMapRenderState } from './analysisPresentation'
 import {
-  createAnalysisRasterBlob,
+  createAnalysisRasterCanvas,
   maskExtent,
   type AnalysisRasterOverlay,
 } from './analysisRasterOverlay'
@@ -261,97 +263,87 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }
   }
 
-  const analysisHighlightLayer = new ImageLayer({
-    visible: false,
-    opacity: 1,
-  })
-  const analysisAreaLayer = new ImageLayer({ visible: false, opacity: 1 })
+  // Only visible 256 px windows are drawn; the analysis masks stay unchanged.
+  const analysisTileSize = 256
+  const analysisHighlightLayer = new TileLayer<TileImage>({ visible: false, opacity: 1, cacheSize: 32 })
+  const analysisAreaLayer = new TileLayer<TileImage>({ visible: false, opacity: 1, cacheSize: 32 })
   let analysisLayerStatusHandler: ((state: AnalysisMapRenderState) => void) | null = null
 
   interface RasterLayerState {
+    key: string
     request: number
-    objectUrl: string | null
-    visible: boolean
     overlay: AnalysisRasterOverlay | null
     status: AnalysisMapRenderState
   }
-
-  const highlightState: RasterLayerState = {
-    request: 0,
-    objectUrl: null,
-    visible: true,
-    overlay: null,
-    status: 'idle',
-  }
-  const areaState: RasterLayerState = { request: 0, objectUrl: null, visible: true, overlay: null, status: 'idle' }
+  const highlightState: RasterLayerState = { key: 'analysis:hits', request: 0, overlay: null, status: 'idle' }
+  const areaState: RasterLayerState = { key: 'analysis:area', request: 0, overlay: null, status: 'idle' }
   function notifyAnalysisLayerStatus() {
     const states = [highlightState.status, areaState.status]
     analysisLayerStatusHandler?.(states.includes('error') ? 'error' : states.includes('loading') ? 'loading' : states.includes('ready') ? 'ready' : 'idle')
   }
 
-  function configureRasterOverlay(
-    layer: ImageLayer<ImageSource>,
-    state: RasterLayerState,
-    overlay: AnalysisRasterOverlay | null,
-  ) {
-    state.request += 1
-    const request = state.request
-    state.overlay = overlay
-    state.status = overlay ? 'loading' : 'idle'
-    notifyAnalysisLayerStatus()
-    layer.setSource(null)
-    layer.setVisible(false)
-
-    if (state.objectUrl) {
-      URL.revokeObjectURL(state.objectUrl)
-      state.objectUrl = null
-    }
-    if (!overlay) return
-
-    void createAnalysisRasterBlob(overlay)
-      .then((blob) => {
-        if (request !== state.request) return
-        const url = URL.createObjectURL(blob)
-        state.objectUrl = url
-        const source = new ImageStatic({
-          url,
-          imageExtent: [...overlay.extent],
-          projection: ACCOUNT_CRS,
-          interpolate: false,
-        })
-        source.on('imageloadend', () => {
-          if (request !== state.request) return
-          state.status = 'ready'
-          notifyAnalysisLayerStatus()
-        })
-        source.on('imageloaderror', () => {
-          if (request !== state.request) return
-          state.status = 'error'
-          notifyAnalysisLayerStatus()
-        })
-        layer.setSource(source)
-        layer.setVisible(state.visible)
-      })
-      .catch(() => {
-        if (request !== state.request) return
-        layer.setSource(null)
-        layer.setVisible(false)
-        state.status = 'error'
-        notifyAnalysisLayerStatus()
-      })
-  }
-
-  function releaseRasterOverlay(layer: ImageLayer<ImageSource>, state: RasterLayerState) {
+  function releaseRasterOverlay(layer: TileLayer<TileImage>, state: RasterLayerState) {
     state.request += 1
     state.overlay = null
     state.status = 'idle'
-    notifyAnalysisLayerStatus()
+    if (layer.hasRenderer()) layer.getRenderer()?.getTileCache().clear()
+    layer.getSource()?.dispose()
     layer.setSource(null)
     layer.setVisible(false)
-    if (state.objectUrl) {
-      URL.revokeObjectURL(state.objectUrl)
-      state.objectUrl = null
+    notifyAnalysisLayerStatus()
+  }
+
+  function configureRasterOverlay(
+    layer: TileLayer<TileImage>,
+    state: RasterLayerState,
+    overlay: AnalysisRasterOverlay | null,
+  ) {
+    releaseRasterOverlay(layer, state)
+    if (!overlay) return
+    const request = state.request
+    state.overlay = overlay
+    state.status = 'loading'
+    notifyAnalysisLayerStatus()
+    // Local canvases are already loaded tiles. They must not wait behind network
+    // basemap requests in OpenLayers' shared tile queue or allocate full-grid PNGs.
+    class AnalysisCanvasTile extends ImageTile {
+      constructor(...args: ConstructorParameters<typeof ImageTile>) {
+        super(...args)
+        if (request !== state.request) { this.setState(TileState.EMPTY); return }
+        if (args[1] === TileState.EMPTY) return
+        const [, x, y] = this.getTileCoord()
+        try {
+          this.setImage(createAnalysisRasterCanvas(overlay!, {
+            x: x * analysisTileSize, y: y * analysisTileSize, width: analysisTileSize, height: analysisTileSize,
+          }))
+          if (state.status !== 'error') state.status = 'ready'
+        } catch {
+          this.setState(TileState.ERROR)
+          state.status = 'error'
+        }
+        // Do not publish a completed render after a newer selection or destroy.
+        queueMicrotask(() => {
+          if (request === state.request) notifyAnalysisLayerStatus()
+        })
+      }
+      override load() {} // These tiles never fetch their synthetic URL.
     }
+    layer.setSource(new TileImage({
+      projection: ACCOUNT_CRS,
+      interpolate: false,
+      wrapX: false,
+      transition: 0,
+      tileClass: AnalysisCanvasTile,
+      tileGrid: new TileGrid({
+        extent: [...overlay.extent],
+        origin: [overlay.extent[0], overlay.extent[3]],
+        resolutions: [(overlay.extent[2] - overlay.extent[0]) / overlay.width],
+        tileSize: analysisTileSize,
+      }),
+      key: `${state.key}:${request}`,
+      tileUrlFunction: ([z, x, y]) => `${state.key}:${request}/${z}/${x}/${y}`,
+    }))
+    layer.setVisible(true)
   }
 
   const plannedOverviewLayer = new ImageLayer({

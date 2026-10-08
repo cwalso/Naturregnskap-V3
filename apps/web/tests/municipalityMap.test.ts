@@ -1,10 +1,11 @@
 import Feature from 'ol/Feature'
 import Polygon from 'ol/geom/Polygon'
 import type BaseLayer from 'ol/layer/Base'
-import ImageLayer from 'ol/layer/Image'
+import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import type View from 'ol/View'
-import ImageStatic from 'ol/source/ImageStatic'
+import TileImage from 'ol/source/TileImage'
+import TileState from 'ol/TileState'
 import { DrawEvent, type default as Draw } from 'ol/interaction/Draw'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -89,7 +90,7 @@ describe('active result map layers', () => {
   }
 
   it('fits the active mask including dispersed hits and ignores an empty result', () => {
-    vi.spyOn(rasterOverlay, 'createAnalysisRasterBlob').mockImplementation(() => new Promise(() => {}))
+    vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas').mockReturnValue(document.createElement('canvas'))
     const map = createMunicipalityMap(document.createElement('div'))
     const fit = vi.spyOn(mapInstances[0].view, 'fit').mockImplementation(() => {})
     map.setAnalysisHighlight(overlay)
@@ -117,57 +118,93 @@ describe('active result map layers', () => {
     const drawn = layers[drawnIndex] as VectorLayer
     expect(drawn.getSource()!.getFeatures()[0].getGeometry()!.getExtent()).toEqual([...area.extent])
     expect(drawn.getVisible()).toBe(true)
-    expect(layers[drawnIndex - 1]).toBeInstanceOf(ImageLayer)
+    expect(layers[drawnIndex - 1]).toBeInstanceOf(TileLayer)
     recreated.setDrawnAnalysisArea(null)
     expect(drawn.getSource()!.getFeatures()).toHaveLength(0)
     recreated.destroy()
   })
 
-  it('ignores a late raster failure after replacing its result', async () => {
-    let rejectOld: (error: Error) => void = () => {}
-    vi.spyOn(rasterOverlay, 'createAnalysisRasterBlob')
-      .mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectOld = reject }))
-      .mockImplementation(() => new Promise(() => {}))
+  function activeSource() {
+    return (mapInstances[0].layers.find((layer) => layer instanceof TileLayer && layer.getSource()?.getKey().startsWith('analysis:')) as TileLayer<TileImage>).getSource()!
+  }
+  function getTile(source: TileImage, x = 0) {
+    return source.getTile(0, x, 0, 1, source.getProjection()!)
+  }
+
+  it('draws only requested 256 px tiles without waiting for the network queue', async () => {
+    const draw = vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas').mockReturnValue(document.createElement('canvas'))
     const map = createMunicipalityMap(document.createElement('div'))
     const status = vi.fn()
     map.setAnalysisLayerStatusHandler(status)
-    map.setAnalysisHighlight(overlay)
-    map.setAnalysisHighlight({ ...overlay, fillColor: '#B85A0D' })
-    rejectOld(new Error('Old rendering failed'))
+    const large = { ...overlay, width: 2048, height: 2048, extent: [0, 0, 20480, 20480] as const, mask: new Uint8Array(2048 * 2048) }
+    map.setAnalysisHighlight(large)
+    expect(draw).not.toHaveBeenCalled()
+    const tile = getTile(activeSource(), 3)
+    expect(tile.getState()).toBe(TileState.LOADED)
+    expect(tile.getImage()).toBeInstanceOf(HTMLCanvasElement)
+    expect(draw).toHaveBeenCalledExactlyOnceWith(large, { x: 768, y: 0, width: 256, height: 256 })
     await Promise.resolve()
-    await Promise.resolve()
-    expect(status).toHaveBeenLastCalledWith('loading')
-    expect(status).not.toHaveBeenCalledWith('error')
-    map.setAnalysisHighlight(null)
-    expect(status).toHaveBeenLastCalledWith('idle')
+    expect(status).toHaveBeenLastCalledWith('ready')
     map.destroy()
   })
 
-  it('releases result URLs and ignores image events belonging to an old result', async () => {
-    let nextUrl = 0
-    const revoke = vi.fn()
-    vi.stubGlobal('URL', class extends URL {
-      static createObjectURL() { return `blob:result-${++nextUrl}` }
-      static revokeObjectURL = revoke
-    })
-    vi.spyOn(rasterOverlay, 'createAnalysisRasterBlob').mockResolvedValue(new Blob())
+  it('ignores queued render status and tile requests from an old selection or destroyed map', async () => {
+    const draw = vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas').mockReturnValue(document.createElement('canvas'))
     const map = createMunicipalityMap(document.createElement('div'))
     const status = vi.fn()
     map.setAnalysisLayerStatusHandler(status)
     map.setAnalysisHighlight(overlay)
-    await Promise.resolve()
-    const layer = mapInstances[0].layers.find((candidate) => candidate instanceof ImageLayer && candidate.getSource() instanceof ImageStatic) as ImageLayer<ImageStatic>
-    const oldSource = layer.getSource()!
-    oldSource.dispatchEvent('imageloadend')
-    expect(status).toHaveBeenLastCalledWith('ready')
+    const oldSource = activeSource()
+    const oldTile = getTile(oldSource)
+    const layer = mapInstances[0].layers.find((item) => item instanceof TileLayer && item.getSource() === oldSource) as TileLayer<TileImage>
+    const cache = layer.getRenderer()!.getTileCache()
+    cache.set('old', oldTile)
     map.setAnalysisHighlight({ ...overlay, fillColor: '#B85A0D' })
     await Promise.resolve()
-    expect(revoke).toHaveBeenCalledWith('blob:result-1')
-    oldSource.dispatchEvent('imageloaderror')
     expect(status).toHaveBeenLastCalledWith('loading')
-    layer.getSource()!.dispatchEvent('imageloadend')
-    expect(status).toHaveBeenLastCalledWith('ready')
+    expect(cache.getCount()).toBe(0)
+    expect(oldTile.getImage()).toBeNull()
+    expect(getTile(oldSource).getState()).toBe(TileState.EMPTY)
+    expect(draw).toHaveBeenCalledTimes(1)
+    const source = activeSource()
+    getTile(source)
     map.destroy()
-    expect(revoke).toHaveBeenCalledWith('blob:result-2')
+    status.mockClear()
+    await Promise.resolve()
+    expect(status).not.toHaveBeenCalled()
+    expect(getTile(source).getState()).toBe(TileState.EMPTY)
+    expect(draw).toHaveBeenCalledTimes(2)
+  })
+
+  it('uses distinct tile queue keys for the area and hit layers', () => {
+    vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas').mockReturnValue(document.createElement('canvas'))
+    const map = createMunicipalityMap(document.createElement('div'))
+    map.setAnalysisArea({ kind: 'planned', zoom: 9, cx0: 0, cy0: 0, ...overlay, cleaned: overlay.mask, analysisMask: overlay.mask })
+    map.setAnalysisHighlight(overlay)
+    const sources = mapInstances[0].layers.filter((layer) => layer instanceof TileLayer && layer.getSource()?.getKey().startsWith('analysis:'))
+      .map((layer) => (layer as TileLayer<TileImage>).getSource()!)
+    expect(sources).toHaveLength(2)
+    expect(new Set(sources.map((source) => source.getTile(0, 0, 0, 1, source.getProjection()!).getKey())).size).toBe(2)
+    map.destroy()
+  })
+
+  it('reports a local rendering failure and resets it after replacing the result', async () => {
+    vi.spyOn(rasterOverlay, 'createAnalysisRasterCanvas')
+      .mockImplementationOnce(() => { throw new Error('Canvas failed') })
+      .mockReturnValue(document.createElement('canvas'))
+    const map = createMunicipalityMap(document.createElement('div'))
+    const status = vi.fn()
+    map.setAnalysisLayerStatusHandler(status)
+    map.setAnalysisHighlight(overlay)
+    expect(getTile(activeSource()).getState()).toBe(TileState.ERROR)
+    await Promise.resolve()
+    expect(status).toHaveBeenLastCalledWith('error')
+    map.setAnalysisHighlight(overlay)
+    getTile(activeSource())
+    await Promise.resolve()
+    expect(status).toHaveBeenLastCalledWith('ready')
+    map.setAnalysisHighlight(null)
+    expect(status).toHaveBeenLastCalledWith('idle')
+    map.destroy()
   })
 })

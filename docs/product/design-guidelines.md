@@ -162,7 +162,8 @@ lesbare resultater, uten at kartkontroller dominerer oppgaven.
 
 Kontekst og tegnforklaring ligger utenfor selve kartflaten, med kortere status
 på mobil. Mobil har snarveier mellom kart og resultat, trykkbare resultatkort
-og Angre punkt/Ferdig/Avbryt ved kartet under tegning. Primærhandling og
+og Angre punkt/Ferdig/Avbryt under kartflaten under tegning. Tegneknappene
+skal ikke dekke steder der brukeren setter punkter. Primærhandling og
 mobilkontroller skal ha minst 44 px høyde.
 
 ## Tegnemodus
