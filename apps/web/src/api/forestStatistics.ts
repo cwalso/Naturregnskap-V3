@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from '../map/utmArea'
 import { loadSharedImageBlob } from '../map/sharedImageRequests'
 import {
   ACCOUNT_CRS,
@@ -62,7 +63,7 @@ export interface ForestStatisticsAvailable {
   readonly municipalityName: string
   readonly source: 'NIBIO Grunnkart for arealanalyse'
   readonly sourceVersion: '2025'
-  readonly methodVersion: 'forest-tiled-raster-v2'
+  readonly methodVersion: 'forest-tiled-raster-v3'
   readonly forestAreaKm2: number
   readonly municipalityMappedAreaKm2: number
   readonly forestSharePercent: number
@@ -166,6 +167,7 @@ async function calculateForestStatistics(
 
     const pixelMetersApprox = ACCOUNT_RESOLUTIONS[FOREST_ANALYSIS_ZOOM] / 2
     const pixelAreaKm2 = pixelMetersApprox * pixelMetersApprox / 1_000_000
+      * await getMunicipalityAreaFactor(municipalityNumber, signal)
     const forestPixels = typeCounts.reduce((sum, count) => sum + count, 0)
     const forestAreaKm2 = forestPixels * pixelAreaKm2
     const municipalityMappedAreaKm2 = mappedPixels * pixelAreaKm2
@@ -188,7 +190,7 @@ async function calculateForestStatistics(
       municipalityName,
       source: 'NIBIO Grunnkart for arealanalyse',
       sourceVersion: '2025',
-      methodVersion: 'forest-tiled-raster-v2',
+      methodVersion: 'forest-tiled-raster-v3',
       forestAreaKm2,
       municipalityMappedAreaKm2,
       forestSharePercent: mappedPixels > 0 ? forestPixels / mappedPixels * 100 : 0,

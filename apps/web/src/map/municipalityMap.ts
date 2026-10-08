@@ -57,6 +57,7 @@ import {
 import { loadSharedImageBlob } from './sharedImageRequests'
 import { createValuedNatureLayers } from './valuedNatureMap'
 import type { ValuedNaturePresentation } from './valuedNaturePresentation'
+import { municipalityAreaFactor } from './utmArea'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -739,6 +740,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     enableRotation: false,
   })
   let pendingBoundaryFit: [number, number, number, number] | null = null
+  let drawnAreaFactor = 1
   let localitySelectionHandler: ((id: string | null) => void) | null = null
   const valuedLayers = createValuedNatureLayers((coordinate) => map.getPixelFromCoordinate(coordinate))
 
@@ -831,6 +833,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   return {
     showBoundary(boundary) {
+      drawnAreaFactor = municipalityAreaFactor(boundary)
       boundarySource.clear()
       const features = new GeoJSON().readFeatures(JSON.stringify(boundary), {
         dataProjection: 'EPSG:4326',
@@ -1007,7 +1010,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           id: `drawn:${crypto.randomUUID()}`,
           rings,
           extent: [extent[0], extent[1], extent[2], extent[3]],
-          areaKm2: geometry.getArea() / 1_000_000,
+          areaKm2: geometry.getArea() / 1_000_000 * drawnAreaFactor,
         }
 
         window.setTimeout(() => {

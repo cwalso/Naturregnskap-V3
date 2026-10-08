@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor, terrainAreaKm2 } from '../src/map/utmArea'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { loadOverviewRaster } from '../src/map/accountOverviewRaster'
@@ -49,6 +50,7 @@ function available(result: Awaited<ReturnType<typeof calculatePlannedDevelopment
 }
 
 beforeEach(() => {
+  vi.mocked(getMunicipalityAreaFactor).mockResolvedValue(1)
   classes = new Uint8ClampedArray(512 * 512 * 4)
   planPixels = new Uint8ClampedArray(classes.length)
   polygonPixels = new Uint8ClampedArray(classes.length)
@@ -245,5 +247,50 @@ describe('analysis cache isolation', () => {
     expect(fetchSpy).toHaveBeenCalledTimes(17)
     await calculatePlannedValuedNatureAnalysis(first)
     expect(fetchSpy).toHaveBeenCalledTimes(18)
+  })
+})
+
+vi.mock('../src/map/utmArea', async (original) => ({ ...await original<typeof import('../src/map/utmArea')>(), getMunicipalityAreaFactor: vi.fn(async () => 1) }))
+
+
+describe('consistent UTM terrain areas on the existing valid analysis mask', () => {
+  it('corrects plan, polygon, ecosystem, locality and coverage areas once while preserving all percent denominators', async () => {
+    const factor = terrainAreaKm2(1_000_000, 268_106.35)
+    vi.mocked(getMunicipalityAreaFactor).mockResolvedValue(factor)
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => valuedResponse())
+    const plan = available(await calculatePlannedDevelopment('utm-corrected-plan'))
+    const drawn = available(await calculateDrawnAreaAnalysis('utm-corrected-plan', polygon('drawn:utm-corrected')))
+    for (const area of [plan, drawn]) {
+      expect(area.analysisAreaKm2).toBeCloseTo(14 * pixelAreaKm2 * factor, 12)
+      expect(area.natureKm2).toBeCloseTo(6 * pixelAreaKm2 * factor, 12)
+      expect(area.agricultureKm2).toBeCloseTo(3 * pixelAreaKm2 * factor, 12)
+      expect(area.natureShareOfAnalysisAreaPercent).toBeCloseTo(6 / 14 * 100)
+      expect(area.agricultureShareOfAnalysisAreaPercent).toBeCloseTo(3 / 14 * 100)
+      const nature = await calculatePlannedNatureBreakdown(area)
+      expect(nature.classifiedAreaKm2).toBeCloseTo(area.natureKm2, 12)
+      expect(nature.metrics[0].sharePercent).toBeCloseTo(100)
+      const valued = await calculatePlannedValuedNatureAnalysis(area)
+      expect(valued.uniqueOverlapAreaKm2).toBeCloseTo(area.analysisAreaKm2!, 12)
+      expect(valued.localities[0].overlapAreaKm2).toBeCloseTo(valued.uniqueOverlapAreaKm2, 12)
+      expect(valued.valueMetrics.reduce((sum, item) => sum + item.areaKm2, 0)).toBeCloseTo(valued.uniqueOverlapAreaKm2, 12)
+      const { getPlannedCoverageGap } = await import('../src/api/valuedNatureStatistics')
+      const coverage = await getPlannedCoverageGap(area)
+      expect(coverage.plannedAreaKm2).toBeCloseTo(area.analysisAreaKm2!, 12)
+      expect(coverage.mappedSharePercent).toBeCloseTo(100)
+    }
+  })
+
+  it('isolates identical analysis IDs from different municipalities', async () => {
+    const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => valuedResponse())
+    const plan = available(await calculatePlannedDevelopment('municipality-cache-first'))
+    const first = await calculatePlannedValuedNatureAnalysis({ ...plan, analysisId: 'shared-id' })
+    const second = await calculatePlannedValuedNatureAnalysis({ ...plan, municipalityNumber: 'municipality-cache-second', analysisId: 'shared-id' })
+    expect(second.municipalityNumber).toBe('municipality-cache-second')
+    expect(second).not.toBe(first)
+    expect(fetch).toHaveBeenCalledTimes(2)
+    const natureA = await calculatePlannedNatureBreakdown({ ...plan, analysisId: 'shared-nature-id' })
+    const natureB = await calculatePlannedNatureBreakdown({ ...plan, municipalityNumber: 'municipality-cache-second', analysisId: 'shared-nature-id' })
+    expect(natureB.municipalityNumber).toBe('municipality-cache-second')
+    expect(natureB).not.toBe(natureA)
   })
 })

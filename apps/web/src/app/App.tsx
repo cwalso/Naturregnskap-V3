@@ -1249,7 +1249,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                     </>
                   ) : <>
                     {plannedValuedNature?.valueMetrics.filter((metric) => valuedPresentation && filterValuedLocalities(valuedPresentation.localities, valuedPresentation.selection).some((locality) => locality.value === metric.label)).map((metric) => <span key={metric.label}><i style={{ backgroundColor: metric.color }} />{metric.label}</span>)}
-                    <span>Svagt: hel lokalitet · fyll: innenfor analysemasken</span>
+                    <span>Svakt: hel lokalitet · fyll: innenfor analysemasken</span>
                     {selectedLocalityId && <span className="analysis-map-legend__selected">Hvit kant: valgt lokalitet</span>}
                   </>)}
                 </div>

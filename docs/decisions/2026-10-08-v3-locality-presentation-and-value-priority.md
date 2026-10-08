@@ -12,13 +12,20 @@ tematiske kildepolygoner tegnes som rasterceller. Historiske ADR-er beholdes.
 
 - Naturregnskap, supplerende registreringer, beslutningsstøtte og formidling
   holdes adskilt. Ingen nye analysegrunnlag eller temasider innføres.
+- Projiserte nettleserarealer bruker felles målestokkskorreksjon i `utmArea.ts`:
+  areal deles på k² ved midten av kommunegrensens UTM33-utstrekning.
+  Regnskapsoversiktens ferdige SSB-arealer korrigeres ikke på nytt.
+  Analysegrid og klassifisering endres ikke. Metodeversjoner oppdateres.
 - Beregningsrepresentasjon og kartrepresentasjon skilles. Verdsatte naturtyper
   beholder geometri, kilde-ID, navn, type og verdi for berørte objekter.
-  Natur/Jordbruk beholder ekte rastervisning og uendrede beregninger.
+  Natur/Jordbruk beholder ekte rastervisning, klassifisering og gyldig mask.
+  Alle projiserte nettleserarealer målestokkskorrigeres med felles metode.
 - Metodekontroll bekrefter fire verdikategorier og høyeste verdi ved overlapp.
   `planned-valued-nature-v2` gir hver berørt rute én vinnende verdi.
   Verdifordelingen summerer til unik union; registrert areal per lokalitet og
-  naturtype er et separat mål som kan dobbelttelle. Antall berørte objekter
+  naturtype er et separat mål som kan dobbelttelle. Naturtypevisningen viser
+  registrert areal og antall, uten prosentfordeling. Én kildeobjekt-ID teller
+  én lokalitet; multipart-geometri eller gjentatt kilde-ID gir ikke flere objekter. Antall berørte objekter
   krever minst ett gyldig rutemidtpunkt, også for helt overskyggede lokaliteter.
 - Kartet viser svake hele berørte kildepolygoner og sterkere fyll innenfor
   gyldige visningsmasker på eget Canvas. Det er ikke eksakt vektorinterseksjon.
@@ -42,10 +49,7 @@ tematiske kildepolygoner tegnes som rasterceller. Historiske ADR-er beholdes.
 ## Begrensninger og avklaringer
 
 Løpende tjenester er ikke versjonslåst. Maskens kommunegrense er fortsatt
-rasterbasert, og veldig små geometriske treff kan overses. UTM-arealene er
-foreløpig ikke målestokkskorrigert. Kontrollgrunnlaget beskriver en slik
-korreksjon, men felles arealbehandling på tvers av regnskap/Grunnkart/temasider
-er ikke innført i dette produktløftet. Naturtypefordelingen har ingen avklart
+rasterbasert, og veldig små geometriske treff kan overses. Naturtypefordelingen har ingen avklart
 entydig bokføringsregel ved overlapp eller lik verdi. Kommunale temasidestatistikker
 bruker fortsatt sin eksisterende metode og er ikke harmonisert med verkstedets
 vinnende verdifordeling. Autoritativ kilde, nasjonal preparation og endelige

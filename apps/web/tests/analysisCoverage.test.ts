@@ -9,7 +9,7 @@ function analysis(id: string, x = 0): PlannedDevelopmentAnalysis {
     natureWithNarrowStripsKm2: .000003, agricultureWithNarrowStripsKm2: 0,
     natureSharePercent: null, agricultureSharePercent: null,
     natureShareOfAnalysisAreaPercent: 75, agricultureShareOfAnalysisAreaPercent: 0,
-    source: 'Eget tegnet område', methodVersion: 'drawn-area-raster-v1', pixelMeters: 1, tileCount: 1,
+    source: 'Eget tegnet område', methodVersion: 'drawn-area-raster-v2', pixelMeters: 1, tileCount: 1,
     overlay: { kind: 'drawn', zoom: 9, cx0: 0, cy0: 0, width: 2, height: 2, extent: [x, 0, x + 2, 2], analysisMask: new Uint8Array(4).fill(1), cleaned: new Uint8Array(4).fill(1) },
   }
 }
@@ -58,3 +58,5 @@ describe('coverage of the active valid analysis mask', () => {
     await expect(getPlannedCoverageGap(analysis('drawn:coverage-invalid'))).rejects.toThrow('ugyldig svar')
   })
 })
+
+vi.mock('../src/map/utmArea', async (original) => ({ ...await original<typeof import('../src/map/utmArea')>(), getMunicipalityAreaFactor: vi.fn(async () => 1) }))

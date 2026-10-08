@@ -183,6 +183,11 @@ delt nettverkskall som allerede er startet.
 
 ## Treffvisning i analyseverkstedet
 
+`utmArea.ts` eier felles UTM33-målestokkskorreksjon ved kommunemidtpunktet
+for projiserte nettleserarealer på tvers av analyse og temasider. Ferdige
+SSB-arealer korrigeres ikke på nytt. Se data-/metodedokumentet for formel,
+versjoner og avgrensningen mot preparation.
+
 I analyseverkstedet vises gyldig `analysisMask` som en dempet rasterramme.
 Natur/Jordbruk-treff bygges fortsatt fra `overlay.cleaned` og vises med
 `TileImage` på beregnet analysegrid, også ved nær zoom. Verdsatte naturtyper

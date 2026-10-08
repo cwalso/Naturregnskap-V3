@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from './utmArea'
 import { valuedNature } from '../datasets/registry'
 import {
   PLAN_PIXEL_METERS,
@@ -110,7 +111,7 @@ export async function calculatePlannedValuedNatureAnalysis(
   signal?: AbortSignal,
 ): Promise<PlannedValuedNatureAnalysis> {
   signal?.throwIfAborted()
-  const cacheKey = analysis.analysisId
+  const cacheKey = `${analysis.municipalityNumber}:${analysis.analysisId}`
   const cached = analysisCache.get(cacheKey)
   if (cached && (cached.completed || !cached.signal?.aborted)) {
     analysisCache.delete(cacheKey)
@@ -141,8 +142,9 @@ async function runAnalysis(
 ): Promise<PlannedValuedNatureAnalysis> {
   const features = await fetchValuedNatureFeatures(analysis.overlay.extent, signal)
   signal?.throwIfAborted()
-  const summary = summarizeFeatures(features, analysis.overlay)
-  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+  const factor = await getMunicipalityAreaFactor(analysis.municipalityNumber, signal)
+  const summary = summarizeFeatures(features, analysis.overlay, factor)
+  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000 * factor
   const registeredOverlapAreaKm2 = summary.featurePixelTotal * pixelAreaKm2
   const uniqueOverlapAreaKm2 = summary.uniquePixelCount * pixelAreaKm2
 
@@ -323,12 +325,14 @@ export function summarizeValuedNatureFeaturesForTest(
 function summarizeFeatures(
   features: readonly EsriValuedNatureFeature[],
   overlay: PlannedDevelopmentOverlayGrid,
+  areaFactor = 1,
 ): FeatureSummary {
   const byValue = new Map<string, GroupCounter>()
   const byType = new Map<string, GroupCounter>()
   const uniqueOverlap = new Uint8Array(overlay.analysisMask.length)
   const winningValue = new Uint8Array(overlay.analysisMask.length)
   const localities: ValuedNatureLocality[] = []
+  const seenIds = new Set<string>()
 
   let affectedFeatureCount = 0
   let featurePixelTotal = 0
@@ -337,6 +341,11 @@ function summarizeFeatures(
     const value = attributeText(feature.attributes, 'Verdikategori')
     const rank = valueCategoryOrder.indexOf(value)
     if (rank < 0) continue
+    const id = feature.attributes.OBJECTID
+    if (id === undefined || id === null) throw new Error('Verdsatte naturtyper mangler kildeobjekt-ID')
+    const sourceId = String(id)
+    if (seenIds.has(sourceId)) continue
+    seenIds.add(sourceId)
     const rings = normalizeRings(feature.geometry?.rings)
     if (rings.length === 0) continue
 
@@ -348,10 +357,10 @@ function summarizeFeatures(
 
     const natureType = attributeText(feature.attributes, 'Naturtype')
     localities.push({
-      id: String(feature.attributes.OBJECTID ?? `feature:${localities.length}`),
+      id: sourceId,
       name: attributeText(feature.attributes, 'Områdenavn'),
       natureType, value, color: valueCategoryColors[value] ?? '#D8DDDA', rings,
-      overlapAreaKm2: pixelIndices.length * PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000,
+      overlapAreaKm2: pixelIndices.length * PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000 * areaFactor,
     })
     incrementGroup(byValue, value, pixelIndices)
     incrementGroup(byType, natureType, pixelIndices)

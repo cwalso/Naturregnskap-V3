@@ -199,7 +199,8 @@ Middels verdi og Noe verdi. Ved overlapp får hver rute høyeste verdi.
   summerer til unikt areal. Andel har unikt areal som nevner.
 - `registeredOverlapAreaKm2`: sum registrert overlapp per lokalitet; kan
   dobbelttelle og har et annet formål enn unikt areal.
-- `typeMetrics`: registrert areal og andel av registrert sum; kan dobbelttelle.
+- `typeMetrics`: registrert areal og intern andel av registrert sum; kan dobbelttelle.
+  Brukerflaten viser areal og antall lokaliteter, uten naturtypeprosenter.
   Ingen entydig regel for tilordning mellom naturtyper er vedtatt.
 - Antall berørte lokaliteter teller kildeobjekter med minst ett rutemidtpunkt
   i masken, også når hele lokalitetens overlapp får en høyere verdi. Små
@@ -224,8 +225,7 @@ Dekningslag i kartet er foreløpig ikke implementert.
 
 Metodisk kontroll har bekreftet de fire kategoriene, høyeste verdi ved
 overlapp og forskjellen mellom unik union og registrert sum. Følgende er
-fortsatt begrensninger: V3 bruker projisert UTM-ruteareal uten målestokks-
-korreksjon; naturtypefordeling er ikke entydig bokføring; rasterisert
+fortsatt begrensninger: naturtypefordeling er ikke entydig bokføring; rasterisert
 kommuneavgrensning er ikke eksakt vektorklipp. Kommunale temasidestatistikker
 er ikke endret av verkstedets nye verdifordeling.
 
@@ -234,10 +234,40 @@ Tegnet område får `drawn:<UUID>` ved fullført tegning, uavhengig av kartinsta
 Resultatet bærer samme `analysisId` som basisanalysen, og Appen sjekker ID og
 kommune før tall og kart brukes. Regresjonstester dekker plan → polygon A →
 polygon B → plan, sen respons etter områdebytte og erstatning av avbrutte
-pågående kall. Grid, Natur/Jordbruk og DiBK-filter er uendret; verdiregelen
+pågående kall. Grid, Natur/Jordbruk-klassifisering, prosentnevnere og DiBK-filter er uendret; arealene er målestokkskorrigert og verdiregelen
 er oppdatert i metodeversjon v2.
 
 ## Delt request-/cachepipeline
+
+### Felles arealkorreksjon i nettleseren
+
+`utmArea.ts` bruker én korreksjon for projiserte EPSG:25833-arealer:
+
+`terreng-km² = projisert-m² / (k² × 1 000 000)`, der
+`k = 0,9996 × (1 + (x − 500 000)² / (2 × 6 380 000²))`.
+
+`x` er midten av kommunegrensens østlige/vestlige utstrekning etter
+projisering fra Kartverket til EPSG:25833. Det er samme kommunefaktor for
+alle analyseområder, ikke et nytt midtpunkt for hvert polygon eller hver flis.
+Kommunemidtpunkt kreves; kildefeil gir feiltilstand og ikke ukorrigerte tall.
+Oppslaget deles og caches for høyst 16 kommuner; avbrutt konsument bruker
+ikke svaret, men stopper ikke andre konsumenters felles oppslag.
+
+Korreksjonen gjelder plan-/polygonareal, Natur/Jordbruk, økosystemfordeling,
+Skog, Verdsatte naturtyper og kartleggingsdekning, inkludert geometrisk
+areal i tegnekontrollen og kommunevise geometriberegninger. Ferdige SSB-tall
+er allerede kildeberegnede arealer og korrigeres ikke på nytt. Regnskapsgrunnlag
+og supplerende temadata blandes ikke av denne enhetskorreksjonen.
+
+For kontrollert Kartverket-grense for Trondheim er `x ≈ 268 102,13 m`,
+`k ≈ 1,00026031` og arealfaktor `≈ 0,99947958`. Et projisert areal på
+1 000 dekar blir 999,480 dekar (−0,520 dekar / −0,05204 %).
+Andeler med samme korreksjon i teller og nevner er uendret.
+
+Metodeversjoner er oppdatert for plan/polygon, økosystemer, skog og dekning.
+Preparation/backend er ikke offentlig runtime og harmoniseres ikke her:
+kildefelt og eksisterende preparation-metoder må beholde egen proveniens og
+skal valideres før de brukes som autoritative regnskapstall.
 
 `apps/web/src/map/sharedImageRequests.ts` brukes for dynamiske rasterbilder.
 

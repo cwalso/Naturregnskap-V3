@@ -614,7 +614,7 @@ function analysisFixture(id: string, offset: number, index: number): plannedAnal
     natureSharePercent: null, agricultureSharePercent: null,
     natureShareOfAnalysisAreaPercent: 25, agricultureShareOfAnalysisAreaPercent: 50,
     pixelMeters: 21.15625, tileCount: 1, source: 'Eget tegnet område',
-    methodVersion: 'drawn-area-raster-v1',
+    methodVersion: 'drawn-area-raster-v2',
     overlay: {
       kind: id.startsWith('planned') ? 'planned' : 'drawn',
       zoom: 9, cx0: 0, cy0: 0, width: 4, height: 4,
@@ -627,7 +627,7 @@ function breakdownFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis):
   return {
     municipalityNumber: '5001', analysisId: analysis.analysisId, status: 'available',
     source: 'NIBIO Grunnkart for arealanalyse', level: 'okosystemtypeniva1',
-    methodVersion: 'planned-nature-types-v1', tileCount: 1, pixelMeters: 21.15625,
+    methodVersion: 'planned-nature-types-v2', tileCount: 1, pixelMeters: 21.15625,
     classificationPixelMeters: 10.578125, classifiedAreaKm2: 0.001, unclassifiedAreaKm2: 0,
     metrics: [{ id: 'skog', label: `${analysis.analysisId}-resultat`, color: '#9ECC73', areaKm2: 0.001, sharePercent: 100 }],
   }
@@ -773,6 +773,9 @@ describe('result selection and map feedback', () => {
     expect(vi.mocked(map.setValuedNaturePresentation).mock.lastCall![0]!.selection).toEqual({ kind: 'type', label: 'Naturbeitemark' })
     fireEvent.click(screen.getByRole('button', { name: 'Vis alle' }))
     expect(list.getAllByRole('button')).toHaveLength(2)
+    const methodMetrics = document.querySelectorAll('.locality-method-metrics')
+    expect(methodMetrics[1]).toHaveTextContent('registrert overlapp')
+    expect(methodMetrics[1]).not.toHaveTextContent('%')
     expect(vi.mocked(map.setValuedNaturePresentation).mock.lastCall![0]!.selection).toEqual({ kind: 'all' })
     expect(screen.getByText('Ingen kartlegging registrert i dekningskilden for analysemasken.')).toBeInTheDocument()
   })

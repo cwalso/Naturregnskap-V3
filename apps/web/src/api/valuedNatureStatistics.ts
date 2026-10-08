@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor, municipalityAreaFactor } from '../map/utmArea'
 import proj4 from 'proj4'
 
 import type { MunicipalityBoundary } from './municipalities'
@@ -63,7 +64,7 @@ export interface ValuedNatureStatistics {
   readonly municipalityNumber: string
   readonly municipalityName: string
   readonly status: 'available'
-  readonly methodVersion: 'valued-nature-statistics-v1'
+  readonly methodVersion: 'valued-nature-statistics-v2'
   readonly source: 'Miljødirektoratet'
   readonly featureCount: number
   readonly registeredAreaKm2: number
@@ -80,7 +81,7 @@ export interface PlannedCoverageGap {
   readonly analysisId: string
   readonly municipalityNumber: string
   readonly status: 'available'
-  readonly methodVersion: 'planned-coverage-gap-v1'
+  readonly methodVersion: 'planned-coverage-gap-v2'
   readonly plannedAreaKm2: number
   readonly mappedPlannedAreaKm2: number
   readonly unmappedPlannedAreaKm2: number
@@ -157,13 +158,14 @@ async function runStatistics(
   ])
 
   const projectedBoundary = projectBoundary(boundary)
-  const municipalityAreaKm2 = geometryArea(projectedBoundary) / 1_000_000
+  const factor = municipalityAreaFactor(boundary)
+  const municipalityAreaKm2 = geometryArea(projectedBoundary) / 1_000_000 * factor
   const coverage = rasterCoverage(projectedBoundary, coverageFeatures)
   const mappedCoverageKm2 = coverage.coveredCellCount
-    * coverage.cellMeters * coverage.cellMeters / 1_000_000
+    * coverage.cellMeters * coverage.cellMeters / 1_000_000 * factor
 
   const featureMetrics = valuedFeatures.map((feature) => ({
-    areaKm2: featureArea(feature) / 1_000_000,
+    areaKm2: featureArea(feature) / 1_000_000 * factor,
     value: attributeText(feature.attributes, 'Verdikategori'),
     type: attributeText(feature.attributes, 'Naturtype'),
   }))
@@ -174,7 +176,7 @@ async function runStatistics(
     municipalityNumber: boundary.properties.number,
     municipalityName: boundary.properties.name,
     status: 'available',
-    methodVersion: 'valued-nature-statistics-v1',
+    methodVersion: 'valued-nature-statistics-v2',
     source: 'Miljødirektoratet',
     featureCount: valuedFeatures.length,
     registeredAreaKm2,
@@ -232,13 +234,14 @@ async function runPlannedCoverageGap(
     (overlay.extent[2] - overlay.extent[0]) / overlay.width
     * (overlay.extent[3] - overlay.extent[1]) / overlay.height
     / 1_000_000
+    * await getMunicipalityAreaFactor(analysis.municipalityNumber, signal)
 
   const plannedAreaKm2 = plannedCells * cellAreaKm2
   const mappedPlannedAreaKm2 = mappedPlannedCells * cellAreaKm2
 
   return {
     status: 'available',
-    methodVersion: 'planned-coverage-gap-v1',
+    methodVersion: 'planned-coverage-gap-v2',
     analysisId: analysis.analysisId,
     municipalityNumber: analysis.municipalityNumber,
     plannedAreaKm2,

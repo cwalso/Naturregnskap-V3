@@ -48,7 +48,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
-| Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Autoritativ kildevalidering, UTM-korreksjon og entydig naturtypefordeling gjenstår |
+| Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Felles UTM-korreksjon er innført; autoritativ kildevalidering og entydig naturtypefordeling gjenstår |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
 | Historiske tidsserier | ⚪ | Krever avklart endringsprodukt og metode |
@@ -117,7 +117,7 @@ dempet ramme, treff som sterke flater. «Zoom til treff» viser og
 stedfester aktivt delresultat, også ved spredte treff. Valg/filtrering, status
 og tegnforklaring følger samme analyseidentitet og utvalg; Natur/Jordbruk
 bruker raster, Verdsatte naturtyper kildepolygoner med visningsklipp. Null treff, skjult resultat og
-teknisk feil har egne tilstander. Natur/Jordbruk, analysegrid og DiBK-filter er uendret. Verdsatte naturtyper
+teknisk feil har egne tilstander. Natur/Jordbruk-klassifisering, analysegrid og DiBK-filter er uendret; arealene målestokkskorrigeres. Verdsatte naturtyper
 bruker fire kategorier og høyeste verdi ved overlapp (metodeversjon v2). Se
 [akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
 og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).

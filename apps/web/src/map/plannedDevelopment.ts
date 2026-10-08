@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from './utmArea'
 import TileGrid from 'ol/tilegrid/TileGrid'
 
 import { loadSharedImageBlob } from './sharedImageRequests'
@@ -84,7 +85,7 @@ export interface PlannedNatureBreakdown {
   readonly status: 'available'
   readonly source: 'NIBIO Grunnkart for arealanalyse'
   readonly level: 'okosystemtypeniva1'
-  readonly methodVersion: 'planned-nature-types-v1'
+  readonly methodVersion: 'planned-nature-types-v2'
   readonly tileCount: number
   readonly pixelMeters: number
   readonly classificationPixelMeters: number
@@ -110,7 +111,7 @@ export interface PlannedDevelopmentAnalysis {
   readonly tileCount: number
   readonly pixelMeters: number
   readonly source: 'DiBK kommuneplaner' | 'Eget tegnet område'
-  readonly methodVersion: 'dibk-plan-raster-v1' | 'drawn-area-raster-v1'
+  readonly methodVersion: 'dibk-plan-raster-v2' | 'drawn-area-raster-v2'
   readonly overlay: PlannedDevelopmentOverlayGrid
 }
 
@@ -210,6 +211,7 @@ export async function calculatePlannedDevelopment(
     // This binary mask contains every valid plan pixel, not just Nature.
     const analysisPixels = cleanedAnalysisMask.nature
     const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+      * await getMunicipalityAreaFactor(municipalityNumber, signal)
 
     const topLeftExtent = planTileGrid.getTileCoordExtent([
       PLAN_ANALYSIS_ZOOM,
@@ -245,7 +247,7 @@ export async function calculatePlannedDevelopment(
       tileCount: tileResults.length,
       pixelMeters: PLAN_PIXEL_METERS,
       source: 'DiBK kommuneplaner',
-      methodVersion: 'dibk-plan-raster-v1',
+      methodVersion: 'dibk-plan-raster-v2',
       overlay: {
         kind: 'planned',
         zoom: PLAN_ANALYSIS_ZOOM,
@@ -356,7 +358,7 @@ export async function calculatePlannedNatureBreakdown(
   signal?: AbortSignal,
 ): Promise<PlannedNatureBreakdown> {
   signal?.throwIfAborted()
-  const cacheKey = analysis.analysisId
+  const cacheKey = `${analysis.municipalityNumber}:${analysis.analysisId}`
   const cached = natureBreakdownCache.get(cacheKey)
   if (cached) return cached
 
@@ -375,9 +377,10 @@ export async function calculatePlannedNatureBreakdown(
     unclassified += item.unclassified
   }
 
-  const pixelAreaKm2 = NATURE_TYPE_PIXEL_METERS * NATURE_TYPE_PIXEL_METERS / 1_000_000
+  const factor = await getMunicipalityAreaFactor(analysis.municipalityNumber, signal)
+  const pixelAreaKm2 = NATURE_TYPE_PIXEL_METERS * NATURE_TYPE_PIXEL_METERS / 1_000_000 * factor
   const plannedNaturePixels = Math.round(
-    analysis.natureKm2 / (PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000),
+    analysis.natureKm2 / (PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000 * factor),
   ) * NATURE_TYPE_SCALE * NATURE_TYPE_SCALE
   const metrics = natureTypeDefinitions
     .map((definition, index) => ({
@@ -396,7 +399,7 @@ export async function calculatePlannedNatureBreakdown(
     status: 'available',
     source: 'NIBIO Grunnkart for arealanalyse',
     level: 'okosystemtypeniva1',
-    methodVersion: 'planned-nature-types-v1',
+    methodVersion: 'planned-nature-types-v2',
     tileCount: tiles.length,
     pixelMeters: PLAN_PIXEL_METERS,
     classificationPixelMeters: NATURE_TYPE_PIXEL_METERS,
