@@ -74,11 +74,11 @@ Det tegnede området:
 Ved endringer skal det testes at gammel analyse/cache ikke følger med når
 brukeren bytter mellom framtidig utbygging og eget polygon.
 
-Dagens `analysisId` for tegnede områder er en lokal løpenøkkel i kartinstansen.
-Den kan gjenbrukes etter at kartet er opprettet på nytt, mens enkelte
-resultatcacher lever videre på modulnivå. Cacheisolasjon ved kommune- og
-visningsbytte er derfor et kjent kontrollpunkt, ikke en ferdig verifisert
-egenskap.
+Tegnet område får en UUID-basert `analysisId` ved fullført tegning, uavhengig av
+kartinstans. Samme område beholder identiteten ved bytte av datagrunnlag.
+Regresjonstester dekker unik ID etter ny kartinstans, plan → polygon A → polygon
+B → plan og sene svar etter områdebytte. Tall og treffmaske brukes bare når
+resultatets ID og kommune stemmer med aktiv analyse.
 
 ## 4. Natur og jordbruk – implementert prototype
 
@@ -96,6 +96,12 @@ Resultatet skal minst vise:
 - knapp for å finne resultatet i kartet
 
 Prosentandeler skal ikke vises dersom nevneren ikke kan dokumenteres.
+
+Dagens nevner er hele den gyldige analysemasken på 21,15625 m rutenett, også
+Bebygd og vann. Planområdets mask renses med eksisterende smalstripefilter;
+tegnet polygon bruker polygonmasken og gyldige kildepiksler uten dette
+filteret. Natur + Jordbruk skal ikke brukes som analyseareal. Se
+[analyseareal og prosentnevner](../data/grunnkart-2025-analysis-source.md#analyseareal-og-prosentnevner-i-dagens-rastermetode).
 
 ## 5. Verdsatte naturtyper – implementert prototype
 
@@ -201,3 +207,66 @@ Analyseverktøyet skal:
 2. kvalitetssikre kart/resultat-samsvar
 3. utvide overlay til nye temadata bare etter faglig avklaring
 4. videreutvikle plansammenligning og rapportering dersom prosjektet prioriterer det
+
+## 11. Tydelige overlaytreff i kartet
+
+**Status: TODO – eksisterende stedfesting og filtre dekker behovet delvis**
+
+Som bruker ønsker jeg umiddelbart å forstå hvor analysen gir treff og hvordan
+treffene forholder seg til valgt analyseområde. Eksisterende kartknapper og
+resultatlag er et utgangspunkt; endelig visuell løsning er ikke bestemt.
+
+Akseptansekriterier for en senere forbedring:
+
+1. Analyseområdet og treffområdet kan skilles visuelt, også uten bare å tolke
+   farge. Brukeren kan se både områdets ramme og hvilke deler som gir treff.
+2. «Finn resultatet i kartet» gjør relevant resultat synlig og gir et
+   forståelig utsnitt, også for små eller spredte treff. Brukeren skal ikke
+   måtte tolke flere nesten like lag for å finne treffet.
+3. Valg av verdikategori, naturtype eller annet delresultat gjenspeiles
+   tydelig i kartet og markeres i resultatvisningen. Aktivt valg er synlig og
+   kan nullstilles; det følger ikke med til et annet analyseområde.
+4. Tegnforklaring og status beskriver aktivt område, datagrunnlag, treff og
+   eventuelt filter. Kart og tall bruker samme analyseidentitet og mask.
+5. Null registrerte treff, skjult resultat, manglende grunnlag, lasting og
+   teknisk feil har ulike forståelige tilstander. Tomt kart alene er ikke
+   en tilstrekkelig forklaring. Null treff betyr ikke fravær av naturverdi.
+6. Flyten område → datagrunnlag → resultat → stedfesting fungerer på mobil og
+   desktop. Tegnekontroller, resultatvalg, kartutsnitt og status prøves i en
+   virkelig nettleser med berøring og tastatur; små enhetstester erstatter
+   ikke denne kontrollen.
+
+## 12. Objektinformasjon for aktiv analyse
+
+**Status: TODO – mangler i den tilgjengelige analyseflyten**
+
+Som bruker ønsker jeg å velge et treff og få relevante opplysninger, kilde og
+kobling til delresultatet. Kartmotoren har tematisk feature-info, men relevante
+temalag er ikke aktive i analyseverkstedet og tilhørende popup vises ikke på
+temasidene. Dette er ikke en ferdig tilgjengelig objektflyt.
+
+Akseptansekriterier:
+
+- Objektinformasjon gjelder aktiv analyse/datagrunnlag og viser hva punktet
+  eller objektet representerer; grunnkartklasse, planområde og tematreff
+  holdes adskilt.
+- Valg fra resultat og fra kart peker på samme treff og viser kilde,
+  dekning og relevante opplysninger uten falsk presisjon.
+- Tegning konkurrerer ikke med objektvalg. Ingen treff, skjult lag og
+  teknisk feil forklares forskjellig. Informasjonen kan også nås uten
+  presist kartklikk og brukes på mobil.
+
+## 13. Flere egne områder og innlasting
+
+**Status: TODO – ett tegnet polygon er dekket; områdeliste og innlasting mangler**
+
+Mulige behov er navngiving, valg, fjerning og sammenligning av flere egne
+områder samt innlasting av egne arealer/planer. Dette er framtidige
+produktoppgaver, ikke implementert funksjonalitet eller en ny analysefamilie.
+
+Før prioritering må det besluttes om områder analyseres separat eller samlet,
+hvordan overlapp håndteres, hvilke filformater/projeksjoner som støttes og
+hvordan lagring, størrelsesgrenser og datakvalitet formidles. Områdene skal ha
+eksplisitt identitet, kilde og rolle. Innlasting skal valideres før analyse;
+en egen tegning skal ikke automatisk erstatte gjeldende plan. Plansammenligning
+krever egen faglig beslutning om gjeldende og foreslått arealbruk, jf. del 7.

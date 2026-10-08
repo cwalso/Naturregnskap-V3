@@ -48,6 +48,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
+| Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID-identitet, maskebasert prosentnevner og område-/cacheisolasjon dekket av kontrollerte regresjonstester; faglig kildevalidering og mobilkontroll gjenstår |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
 | Historiske tidsserier | ⚪ | Krever avklart endringsprodukt og metode |
@@ -88,6 +89,42 @@ tematjenester har ikke nødvendigvis samme geografiske begrensning.
 Nye analysegrunnlag skal legges til først når brukerbehov, analysekilde,
 resultattype og datadekning er avklart.
 
+## Funksjonelle gap i Utforsk i kart
+
+Status nedenfor gjelder relevant brukerfunksjonalitet i analyseverkstedet,
+ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
+ønskede behov, ikke vedtatt funksjonsutvidelse eller ferdig implementasjon.
+
+| Brukerbehov | Status | Konkret TODO / avgrensning |
+| --- | --- | --- |
+| Framtidig utbygging som analyseområde | Allerede dekket | Behold gjeldende DiBK-filter og prototypeforbehold; tall er bare klargjort for Trondheim |
+| Ett eget tegnet polygon | Allerede dekket | Tegn, angre, ferdig, avbryt, tegn på nytt og fjern; samme analysegrunnlag som plan |
+| Flere egne områder og områdehåndtering | Delvis dekket | Ett område finnes. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
+| Overlay mot Natur/Jordbruk og Verdsatte naturtyper | Allerede dekket | Behold skillet mellom heldekkende basis og supplerende registreringer; kart og tall skal dele identitet/mask |
+| Tydelig stedfesting og delresultatvalg | Delvis dekket | Kartknapper, verdikategori-/naturtypefilter og utsnitt finnes. Prioriter tydeligere skille mellom analyseområde og treff, forståelig utsnitt og synkronisert status; se akseptansekriteriene under |
+| Objektinformasjon for aktiv analyse | Mangler | Eksisterende tematisk feature-info er ikke en tilgjengelig objektflyt i arbeidsflaten. Koble kart-/resultatvalg til relevante opplysninger, kilde og dekning uten å konkurrere med tegning |
+| Flere relevante overlaytema | Mangler | Verneområder og villrein finnes som temasider, men ikke som analysegrunnlag. Avklar kilde, mål, dekning og usikkerhet før kobling; inngrepsfri natur trenger særskilt metode for avstand/soner og kan ikke fremstilles som beregnet konsekvens av enkel overlapp |
+| Grå arealer og mulig arealgjenbruk | Mangler | Bynaturen gir kontekst, men direkte gråareal-overlay i verkstedet mangler. Avklar data/metode; grått betyr ikke ledig areal og er ikke regnskapets Bebygd-kategori |
+| Panorering, zoom, kommuneutsnitt og tegnemodus | Allerede dekket | OpenLayers og tegningskontroller finnes; vedvarende polygonvisning etter kartgjenoppretting og reell mobil-/tastaturbruk må kvalitetssikres |
+| Opplasting av egne arealer/planer | Mangler | Vurder validering av geometri, koordinatsystem, format, størrelsesgrenser, kilde og lagring; ikke implementert |
+| Sammenligning av gjeldende/forslått plan eller områdealternativer | Mangler | Krever eksplisitt faglig beslutning om sammenligningsgrunnlag, endringer og overlapp; ingen automatisk erstatning av gjeldende plan |
+| Plan-/datadekning og tilstand forklart i arbeidsflaten | Delvis dekket | Prototypeforbehold, feil og utilgjengelig raster finnes. Tydeliggjør manglende/ufullstendig plan og tematisk kartlegging; null treff skal ikke forveksles med ukjent dekning |
+| Generell lagkatalog og tekniske debug-kontroller som brukerfunksjon | Ikke relevant for V3 | Kartkontroller skal støtte analyseoppgaven, ikke gjøre verkstedet til en generell GIS-klient |
+| Antatt framtidig naturtap som autoritativ regnskapsendring | Ikke relevant for V3 | Overlay er prototypebeslutningsstøtte. Utbygging eller egen tegning bokføres ikke som faktisk endring |
+
+**Prioritert produkt-TODO: tydelige overlaytreff.** Brukeren skal umiddelbart
+se hvor analysen gir treff, kunne skille analyseområde fra treffområde og
+få relevant treff fram ved «Finn resultatet i kartet». Valg/filtrering skal
+gjenspeiles i kartet; tegnforklaring/status og tall skal være synkronisert.
+Null treff, skjult resultat og teknisk feil må ha ulike tilstander.
+Endelig visuell løsning er ikke bestemt. Se
+[akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
+og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).
+
+Videre arbeid skal bevare flyten analyseområde → datagrunnlag → resultat →
+stedfesting, bruke eksisterende V3-designmønstre og verifiseres på mobil med
+berøring. Ingen nye temasider eller analysefamilier innføres uten beslutning.
+
 ## Prinsipper for videre utvikling
 
 1. Naturregnskap, temadata, analyse og veiledning holdes adskilt.
@@ -104,17 +141,20 @@ resultattype og datadekning er avklart.
 
 ## Prioriterte neste steg
 
-### 1. Validere eksisterende overlayberegninger
+### 1. Følge opp eksisterende overlayberegninger og tydelige treff
 
-Kontroller spesielt:
+Den avgrensede korrekthetsgaten har kontrollert rasternevner, UUID-identitet,
+cacheisolasjon og sene svar ved plan → polygon A → polygon B → plan for begge
+implementerte analysegrunnlag. Nevneren var allerede riktig; metoden er ikke
+endret. Nye tester kontrollerer også ny kartinstans og avbrutte kall.
 
-- arealrekonsiliering
-- prosentnevnere
-- samsvar mellom kart og tall
-- bytte mellom planområde og tegnet polygon
-- stale cache/resultater, særlig fordi lokalt genererte `drawn:<nummer>`-ID-er
-  kan gjenbrukes når kartinstansen opprettes på nytt
-- mobil tegnemodus
+Gjenstående prioritering:
+
+- validering av rasteranslag mot et faglig godkjent kontrollgrunnlag
+- tydeligere overlaytreff etter produktkravene over
+- objektinformasjon for aktiv analyse
+- mobil tegnemodus og polygonvisning etter kartgjenoppretting
+- behold regresjonsdekning for områdebytte, prosentnevnere og cache
 
 ### 2. Stabilitet og ytelse
 

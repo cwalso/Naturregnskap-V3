@@ -80,6 +80,7 @@ export interface PlannedNatureTypeMetric {
 
 export interface PlannedNatureBreakdown {
   readonly municipalityNumber: string
+  readonly analysisId: string
   readonly status: 'available'
   readonly source: 'NIBIO Grunnkart for arealanalyse'
   readonly level: 'okosystemtypeniva1'
@@ -137,6 +138,7 @@ export async function calculatePlannedDevelopment(
   municipalityNumber: string,
   signal?: AbortSignal,
 ): Promise<PlannedDevelopmentResult> {
+  signal?.throwIfAborted()
   const cached = plannedDevelopmentCache.get(municipalityNumber)
   if (cached) return cached
 
@@ -205,6 +207,8 @@ export async function calculatePlannedDevelopment(
 
     const cleaned = removeNarrowPlanStrips(planned, width)
     const cleanedAnalysisMask = removeNarrowPlanStrips(plannedAny, width)
+    // This binary mask contains every valid plan pixel, not just Nature.
+    const analysisPixels = cleanedAnalysisMask.nature
     const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
 
     const topLeftExtent = planTileGrid.getTileCoordExtent([
@@ -222,7 +226,7 @@ export async function calculatePlannedDevelopment(
       municipalityNumber,
       analysisId: `planned:${municipalityNumber}`,
       analysisAreaKind: 'planned',
-      analysisAreaKm2: cleanedAnalysisMask.nature * pixelAreaKm2,
+      analysisAreaKm2: analysisPixels * pixelAreaKm2,
       status: 'available',
       natureKm2: cleaned.nature * pixelAreaKm2,
       agricultureKm2: cleaned.agriculture * pixelAreaKm2,
@@ -232,11 +236,11 @@ export async function calculatePlannedDevelopment(
       agricultureSharePercent: totalAgriculture > 0
         ? cleaned.agriculture / totalAgriculture * 100
         : null,
-      natureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
-        ? cleaned.nature / cleanedAnalysisMask.nature * 100
+      natureShareOfAnalysisAreaPercent: analysisPixels > 0
+        ? cleaned.nature / analysisPixels * 100
         : null,
-      agricultureShareOfAnalysisAreaPercent: cleanedAnalysisMask.nature > 0
-        ? cleaned.agriculture / cleanedAnalysisMask.nature * 100
+      agricultureShareOfAnalysisAreaPercent: analysisPixels > 0
+        ? cleaned.agriculture / analysisPixels * 100
         : null,
       tileCount: tileResults.length,
       pixelMeters: PLAN_PIXEL_METERS,
@@ -259,6 +263,7 @@ export async function calculatePlannedDevelopment(
         analysisMask: cleanedAnalysisMask.cleaned,
       },
     }
+    signal?.throwIfAborted()
     plannedDevelopmentCache.set(municipalityNumber, result)
     return result
   } finally {
@@ -350,6 +355,7 @@ export async function calculatePlannedNatureBreakdown(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedNatureBreakdown> {
+  signal?.throwIfAborted()
   const cacheKey = analysis.analysisId
   const cached = natureBreakdownCache.get(cacheKey)
   if (cached) return cached
@@ -386,6 +392,7 @@ export async function calculatePlannedNatureBreakdown(
 
   const result: PlannedNatureBreakdown = {
     municipalityNumber: analysis.municipalityNumber,
+    analysisId: analysis.analysisId,
     status: 'available',
     source: 'NIBIO Grunnkart for arealanalyse',
     level: 'okosystemtypeniva1',
@@ -397,6 +404,7 @@ export async function calculatePlannedNatureBreakdown(
     unclassifiedAreaKm2: unclassified * pixelAreaKm2,
     metrics,
   }
+  signal?.throwIfAborted()
   natureBreakdownCache.set(cacheKey, result)
   return result
 }

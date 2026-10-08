@@ -162,15 +162,28 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [valuedNatureResultVisible, setValuedNatureResultVisible] = useState(true)
   const [plannedDevelopmentAnalysisTarget, setPlannedDevelopmentAnalysisTarget] =
     useState<PlannedDevelopmentAnalysisTarget>('grunnkart')
-  const [plannedNatureBreakdown, setPlannedNatureBreakdown] = useState<PlannedNatureBreakdown | null>(null)
+  const [natureBreakdownResult, setPlannedNatureBreakdown] = useState<PlannedNatureBreakdown | null>(null)
   const [plannedNatureBreakdownState, setPlannedNatureBreakdownState] = useState<'idle' | 'loading' | 'error'>('idle')
-  const [plannedValuedNature, setPlannedValuedNature] = useState<PlannedValuedNatureAnalysis | null>(null)
+  const [valuedNatureResult, setPlannedValuedNature] = useState<PlannedValuedNatureAnalysis | null>(null)
   const [plannedValuedNatureState, setPlannedValuedNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [valuedNatureMapSelection, setValuedNatureMapSelection] =
     useState<ValuedNatureMapSelection>({ kind: 'all' })
 
   const mapAnalysisResult = analysisAreaMode === 'drawn' ? drawnAnalysis : plannedDevelopment
   const mapAnalysisState = analysisAreaMode === 'drawn' ? drawnAnalysisState : plannedDevelopmentState
+
+  const overlayAnalysis = activeView === 'utforsk-i-kart' ? mapAnalysisResult : plannedDevelopment
+  // Effects reset state after rendering. Never combine an old result with a new mask.
+  const plannedNatureBreakdown = overlayAnalysis?.status === 'available'
+    && natureBreakdownResult?.analysisId === overlayAnalysis.analysisId
+    && natureBreakdownResult.municipalityNumber === overlayAnalysis.municipalityNumber
+    ? natureBreakdownResult
+    : null
+  const plannedValuedNature = overlayAnalysis?.status === 'available'
+    && valuedNatureResult?.analysisId === overlayAnalysis.analysisId
+    && valuedNatureResult.municipalityNumber === overlayAnalysis.municipalityNumber
+    ? valuedNatureResult
+    : null
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
   const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
@@ -651,6 +664,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function openValuedNatureAnalysis() {
+    setValuedNatureMapSelection({ kind: 'all' })
     setAnalysisAreaMode('planned')
     setPlannedDevelopmentAnalysisTarget('valued-nature')
     map.current?.setDrawnAnalysisAreaVisible(false)
@@ -658,6 +672,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function usePlannedAnalysisArea() {
+    setValuedNatureMapSelection({ kind: 'all' })
     setAnalysisAreaMode('planned')
     setDrawingAnalysisArea(false)
     map.current?.cancelDrawnAnalysisArea()
@@ -665,6 +680,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function useDrawnAnalysisArea() {
+    setValuedNatureMapSelection({ kind: 'all' })
     if (!drawnAnalysisArea) {
       startDrawingAnalysisArea()
       return
@@ -676,6 +692,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function startDrawingAnalysisArea() {
+    setValuedNatureMapSelection({ kind: 'all' })
     setAnalysisAreaMode('drawn')
     setDrawnAnalysisArea(null)
     setDrawnAnalysis(null)
@@ -707,6 +724,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function clearDrawnAnalysisArea() {
+    setValuedNatureMapSelection({ kind: 'all' })
     map.current?.clearDrawnAnalysisArea()
     setDrawnAnalysisArea(null)
     setDrawnAnalysis(null)

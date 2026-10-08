@@ -1,12 +1,11 @@
-# V3 målbilde – teknisk referanse fra Publicdemorepo
+# V3 målbilde – dataflyt og analyseverksted
 
 **Dato:** 08.10.2026  
-**Status:** Levende teknisk referanse; flere mønstre er nå implementert i V3
+**Status:** Levende målbilde; flere mønstre er nå implementert i V3
 
 ## Utgangspunkt
 
-Publicdemorepo brukes som funksjonell og teknisk referanse for en enkel
-dataflyt:
+V3 skal ha en enkel og sporbar dataflyt:
 
 ```text
 kommunevalg
@@ -16,10 +15,8 @@ kommunevalg
   -> tall + kart + objekter
 ```
 
-V3 skal beholde denne enkelheten uten å kopiere demonstratorens monolittiske
-struktur.
-
-Repoet brukes som referanse for mønstre, ikke som kilde for ukritisk kodekopi.
+V3 skal beholde denne enkelheten med tydelige kildekontrakter og faglige
+moduler for beregning, kart og presentasjon.
 
 ## Faglig ramme
 
@@ -30,14 +27,13 @@ V3 skal alltid skille mellom:
 3. analyse- og beslutningsstøtte
 4. veiledning og formidling
 
-Publicdemorepo kan være teknisk enklere enn dette skillet. V3 skal ikke ofre
-faglig presisjon for å ligne demonstratoren.
+Teknisk enkelhet skal ikke gå på bekostning av dette faglige skillet.
 
-## Mønstre som er tatt inn i V3
+## Gjeldende mønstre i V3
 
 Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 
-| Mønster fra referansen | Status i V3 | Implementasjon |
+| Mønster | Status i V3 | Implementasjon |
 | --- | --- | --- |
 | Kommune som felles kontekst | Implementert | Kommunevalg og kommunegrense deles på tvers av sider |
 | Oversiktsraster ved grov zoom | Implementert for prototypekommune | Prepared Grunnkart-raster + detaljerte fliser |
@@ -48,7 +44,7 @@ Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 | Deling av pågående identiske kall | Implementert | `sharedImageRequests.ts` |
 | Begrenset browsercache | Implementert | 400 råbilder per kilde i dagens prototype |
 | Kart + tall fra samme analysemask | Implementert i prototypeanalysen | Overlayresultater bruker felles rastermask for klargjort kommune |
-| Objektinformasjon | Implementert for relevante temalag | Feature info / temadata |
+| Objektinformasjon | Delvis teknisk grunnlag; brukerflyt mangler | Tematisk feature-info finnes i kartmotoren, men aktiv analyse og tilgjengelig popup er ikke koblet sammen i arbeidsflaten |
 
 ## Dagens analyseverksted
 
@@ -101,19 +97,16 @@ Det betyr at:
 - analyseområdet har eksplisitt geometri
 - rasterisering skjer på samme grid
 - samme analysemotor kan gjenbrukes
-- resultatcache nøckles på `analysisId`; dagens lokale tegnede ID-er kan
-  gjenbrukes etter at kartinstansen opprettes på nytt, så isolasjon ved
-  kontekstbytte må fortsatt valideres
+- resultatcache bruker `analysisId`; fullført tegning får `drawn:<UUID>`
+  uavhengig av kartinstans, og tall/treffmasker kontrolleres mot aktiv ID og
+  kommune før visning
 - kart og tall skal bruke samme område/mask
 
 Dette er et viktig designprinsipp for senere områdebaserte analyser.
 
 ## Ytelsesstrategi
 
-Referanseimplementasjonen viste at nettleseranalyse kan fungere dersom
-datatilgangen holdes enkel og kontrollert.
-
-V3 bruker derfor:
+V3 holder datatilgangen enkel og kontrollert med:
 
 - fliser i stedet for store heldekkende bilder når mulig
 - begrenset samtidighet
@@ -202,9 +195,9 @@ Koblede datakilder bør beskrive minst:
 - geografisk dekning
 - begrensninger
 
-## Hva som fortsatt ikke er løst av referansemønsteret
+## Hva som fortsatt ikke er løst
 
-Publicdemorepo løser ikke alene:
+En fungerende nettleserprototype avgjør ikke:
 
 - autoritativ regnskapsføring
 - tidsserier og metodebrudd
@@ -227,5 +220,6 @@ Før flere analysefunksjoner bygges bør V3 prioritere:
 5. dokumentasjon av metodeversjoner
 6. nye temaanalyser først etter faglig avklaring
 
-Det sentrale er ikke å kopiere én demonstrator, men å gjenbruke gode mønstre
-uten å miste sporbarhet og faglig presisjon.
+Videre funksjonelle behov og gap er dokumentert i
+[utviklingsplanen](../utviklingsplan.md#funksjonelle-gap-i-utforsk-i-kart).
+Målbildet er et analyseverksted med sporbarhet og faglig presisjon.

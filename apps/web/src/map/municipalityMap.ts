@@ -617,7 +617,6 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     }),
   })
   let drawInteraction: Draw | null = null
-  let drawnAreaCounter = 0
 
   const drawInteractionStyle = new Style({
     stroke: new Stroke({ color: '#005b42', width: 3, lineDash: [8, 5] }),
@@ -917,17 +916,17 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
         ))
         const extent = geometry.getExtent()
         const area: DrawnAnalysisArea = {
-          id: `drawn:${++drawnAreaCounter}`,
+          id: `drawn:${crypto.randomUUID()}`,
           rings,
           extent: [extent[0], extent[1], extent[2], extent[3]],
           areaKm2: geometry.getArea() / 1_000_000,
         }
 
         window.setTimeout(() => {
-          if (drawInteraction === interaction) {
-            map.removeInteraction(interaction)
-            drawInteraction = null
-          }
+          // A destroyed map or a newer drawing must not publish this area.
+          if (drawInteraction !== interaction) return
+          map.removeInteraction(interaction)
+          drawInteraction = null
           drawnAnalysisLayer.setVisible(true)
           updateDrawnAreaMaskVisibility()
           handler(area)

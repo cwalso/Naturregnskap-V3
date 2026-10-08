@@ -176,7 +176,6 @@ Gjeldende regler:
 - råbilder caches med begrenset cache
 - samme råflis gjenbrukes mellom kart og analyse når URL/datagrunnlag er identisk
 
-Dette mønsteret er inspirert av Publicdemorepo, men reimplementert i V3.
 Cachegrensen i requestlaget er 400 råbilder per kilde. Et abortsignal stopper en
 konsument fra å bruke resultatet før eller etter lasting, men avbryter ikke et
 delt nettverkskall som allerede er startet.
@@ -195,10 +194,16 @@ Polygonet:
 - får egen `analysisId`
 - bruker samme overordnede overlaypipeline som plananalysen
 
-Cache og resultater bruker i dag `analysisId`. Tegnede ID-er er lokale
-løpenøkler som kan gjenbrukes når kartinstansen opprettes på nytt, mens enkelte
-resultatcacher er modulglobale. Full cacheisolasjon ved kommune-/visningsbytte
-er derfor et kjent teknisk kontrollpunkt.
+Cache og resultater bruker `analysisId`. Fullført tegning får
+`drawn:<UUID>` fra `crypto.randomUUID()`, uavhengig av kartinstans; planområdet
+bruker `planned:<kommunenummer>`. Økosystemfordeling og verdsatt-natur-resultat
+bærer samme ID som basisanalysen. Appen kontrollerer både ID og kommunenummer
+før resultat eller treffmaske brukes, også i første rendering etter områdebytte.
+Et verdsatt-natur-kall som er avbrutt mens det pågår, erstattes ved ny analyse;
+sen feil fra det gamle kallet får ikke slette den nyere cacheoppføringen.
+Ferdig beregnede resultater kan gjenbrukes selv om den tidligere konsumenten
+senere avbrytes. Avbrutt tegning eller ødelagt kart publiserer ikke et utsatt
+tegne-resultat.
 
 ## Kommuneavgrensning i kart
 
