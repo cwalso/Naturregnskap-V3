@@ -1,0 +1,8 @@
+.explore-analysis-map { overflow: hidden; border: 1px solid #c7dedd; border-radius: .5rem; background: #f7f9f8; }
+.explore-analysis-map__header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem 1rem; }
+.explore-analysis-map__header button { min-height: 44px; padding: .5rem .8rem; font: inherit; background: white; border: 1px solid #005e5d; color: #005e5d; cursor: pointer; }
+.explore-analysis-map__header button:focus-visible, .explore-analysis-map__canvas:focus-visible { outline: 3px solid #ed6b06; outline-offset: -3px; }
+.explore-analysis-map__canvas { width: 100%; height: min(68vh, 750px); min-height: 440px; background: #f3f4f3; }
+.explore-analysis-map > p { margin: 0; padding: .75rem 1rem; font-size: .85rem; }
+.explore-analysis-map__note { color: #50605b; }
+@media (max-width: 600px) { .explore-analysis-map__canvas { min-height: 400px; } }

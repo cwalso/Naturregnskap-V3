@@ -87,6 +87,21 @@ Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat
 og identitet. Beregningsgrid og presentasjonsgeometri skilles; kildepolygoner
 kan klippes visuelt til den gyldige analysemasken uten å beregne nye tall.
 
+## Ny kartpresentasjon under implementering
+
+`ExploreAnalysisMap` er en separat kartkomponent med eksplisitt kommunegrense,
+visning av naturtype-WMS og eksisterende planresultat som input. Den eier ikke
+beregninger. `explorePlanArea.ts` viser hele den eksisterende gyldige
+planmasken uten omklassifisering. Visningen bruker vanlig kommuneavgrensende
+vektormaske; den gjenbruker ikke `valuedNatureMap.ts` eller Canvas-renderklipp.
+
+Komponenten er foreløpig bare tilgjengelig i nettleserkontrollflaten under
+`apps/web/tests/browser/`. `App.tsx` og den offentlige prototypen bruker
+fortsatt gammel kartpresentasjon. Trinn A er visuelt verifisert; B–E gjenstår,
+og reell planvisning er blokkert av testmiljøets nettverkstilgang. Se
+[ny ADR](../decisions/2026-10-08-v3-isolated-explore-map.md). Dette endrer ikke
+metode, analysegrid, prosentnevnere eller eksisterende resultatcache.
+
 ## Dagens datatilgang
 
 V3 bruker en hybridmodell.

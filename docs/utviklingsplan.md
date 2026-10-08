@@ -91,6 +91,17 @@ resultattype og datadekning er avklart.
 
 ## Funksjonelle gap i Utforsk i kart
 
+**Pågående utskifting av kartpresentasjon:** Manuell kontroll har avdekket at
+lokaliteter og overlapp ikke er tilstrekkelig synlige i offentlig prototype.
+Tidligere implementert stedfesting nedenfor er derfor ikke en bestått visuell
+acceptance-gate. En separat `ExploreAnalysisMap` bygges trinnvis fra `main`
+`a2e270dc7986cb2ce2f9a6c22ffe46e5aa7793db`; gammel kode beholdes. Reell
+naturtype-WMS alene (A) er synlig og kontrollert. Plan alene (B) avventer
+tilgang til plantjenesten i testmiljøet. Begge lag, tydelig overlapp,
+Natur/Jordbruk og nytt panel (C–E) er ikke implementert. Ingen ny offentlig
+kartkobling eller PR før visuell godkjenning. Se
+[beslutning og trinnvis gate](decisions/2026-10-08-v3-isolated-explore-map.md).
+
 Status nedenfor gjelder relevant brukerfunksjonalitet i analyseverkstedet,
 ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 ønskede behov, ikke vedtatt funksjonsutvidelse eller ferdig implementasjon.

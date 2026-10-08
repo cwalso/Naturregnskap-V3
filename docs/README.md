@@ -62,6 +62,11 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
+Ny kartpresentasjon under implementering beskrives i
+[`2026-10-08-v3-isolated-explore-map.md`](decisions/2026-10-08-v3-isolated-explore-map.md).
+Den er ikke koblet til offentlig brukerflate; visuell godkjenning av plan og
+overlapp gjenstår.
+
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av
 Miljødirektoratets logo. Den eldre ADR-en beholdes uendret som historikk og er
