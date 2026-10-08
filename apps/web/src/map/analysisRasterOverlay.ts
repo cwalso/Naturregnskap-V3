@@ -8,6 +8,7 @@ export interface AnalysisRasterOverlay {
   readonly palette?: Readonly<Record<number, string>>
   readonly outlineOnly?: boolean
   readonly strong?: boolean
+  readonly calm?: boolean
 }
 
 export interface AnalysisRasterWindow {
@@ -51,7 +52,7 @@ export function createAnalysisRasterCanvas(
         pixels[rgba] = color[0]
         pixels[rgba + 1] = color[1]
         pixels[rgba + 2] = color[2]
-        pixels[rgba + 3] = overlay.outlineOnly ? 170 : overlay.strong ? (edge ? 255 : 210) : edge ? 235 : 92
+        pixels[rgba + 3] = overlay.outlineOnly ? 150 : overlay.calm ? (edge ? 225 : 170) : overlay.strong ? (edge ? 255 : 210) : edge ? 235 : 92
       } else if (overlay.strong && (
         (column > 0 && overlay.mask[index - 1]) || (column < overlay.width - 1 && overlay.mask[index + 1])
         || (row > 0 && overlay.mask[index - overlay.width]) || (row < overlay.height - 1 && overlay.mask[index + overlay.width])

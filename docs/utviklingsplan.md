@@ -48,7 +48,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
-| Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID-identitet, maskebasert prosentnevner og område-/cacheisolasjon dekket av kontrollerte regresjonstester; faglig kildevalidering og mobilkontroll gjenstår |
+| Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Felles UTM-korreksjon er innført; autoritativ kildevalidering og entydig naturtypefordeling gjenstår |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
 | Historiske tidsserier | ⚪ | Krever avklart endringsprodukt og metode |
@@ -101,8 +101,8 @@ ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 | Ett eget tegnet polygon | Allerede dekket | Tegn, angre, ferdig, avbryt, tegn på nytt og fjern; samme analysegrunnlag som plan |
 | Flere egne områder og områdehåndtering | Delvis dekket | Ett område finnes. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
 | Overlay mot Natur/Jordbruk og Verdsatte naturtyper | Allerede dekket | Behold skillet mellom heldekkende basis og supplerende registreringer; kart og tall skal dele identitet/mask |
-| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og eksisterende verdikategori-/naturtypevalg. Finn-handlingen beholder aktivt valg; status og tegnforklaring følger kartet |
-| Objektinformasjon for aktiv analyse | Mangler | Eksisterende tematisk feature-info er ikke en tilgjengelig objektflyt i arbeidsflaten. Koble kart-/resultatvalg til relevante opplysninger, kilde og dekning uten å konkurrere med tegning |
+| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og faktiske lokaliteter med kategori-/naturtypefilter. Zoom-handlingen beholder aktivt valg; status og tegnforklaring følger kartet |
+| Objektinformasjon for aktiv analyse | Dekket for Verdsatte naturtyper | Kildepolygoner, kategori-/naturtypefilter, liste ↔ kartvalg, detaljer og registrert dekning. Andre objektflyter er fortsatt TODO |
 | Flere relevante overlaytema | Mangler | Verneområder og villrein finnes som temasider, men ikke som analysegrunnlag. Avklar kilde, mål, dekning og usikkerhet før kobling; inngrepsfri natur trenger særskilt metode for avstand/soner og kan ikke fremstilles som beregnet konsekvens av enkel overlapp |
 | Grå arealer og mulig arealgjenbruk | Mangler | Bynaturen gir kontekst, men direkte gråareal-overlay i verkstedet mangler. Avklar data/metode; grått betyr ikke ledig areal og er ikke regnskapets Bebygd-kategori |
 | Panorering, zoom, kommuneutsnitt og tegnemodus | Dekket i prototype | Polygonet gjenopprettes etter sidenavigasjon i samme økt. Mobil har kart/resultat-snarveier og tegnekontroller ved kartet; ikke lagring mellom økter |
@@ -112,11 +112,13 @@ ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 | Generell lagkatalog og tekniske debug-kontroller som brukerfunksjon | Ikke relevant for V3 | Kartkontroller skal støtte analyseoppgaven, ikke gjøre verkstedet til en generell GIS-klient |
 | Antatt framtidig naturtap som autoritativ regnskapsendring | Ikke relevant for V3 | Overlay er prototypebeslutningsstøtte. Utbygging eller egen tegning bokføres ikke som faktisk endring |
 
-**Implementert produktløft: tydelige overlaytreff.** Analyseområdet vises som
-dempet ramme, treff som sterke flater. «Finn resultatet i kartet» viser og
+**Implementert produktløft: kildegeometri og objektflyt.** Analyseområdet vises som
+dempet ramme, treff som sterke flater. «Zoom til treff» viser og
 stedfester aktivt delresultat, også ved spredte treff. Valg/filtrering, status
-og tegnforklaring følger samme resultatmaske. Null treff, skjult resultat og
-teknisk feil har egne tilstander. Beregninger og faglig metode er uendret. Se
+og tegnforklaring følger samme analyseidentitet og utvalg; Natur/Jordbruk
+bruker raster, Verdsatte naturtyper kildepolygoner med visningsklipp. Null treff, skjult resultat og
+teknisk feil har egne tilstander. Natur/Jordbruk-klassifisering, analysegrid og DiBK-filter er uendret; arealene målestokkskorrigeres. Verdsatte naturtyper
+bruker fire kategorier og høyeste verdi ved overlapp (metodeversjon v2). Se
 [akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
 og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).
 
@@ -130,7 +132,7 @@ berøring. Ingen nye temasider eller analysefamilier innføres uten beslutning.
 2. Grunnkart er sentralt heldekkende grunnlag.
 3. Browserbaserte rasteranalyser er prototypebeslutningsstøtte, ikke
    autoritative regnskapstall.
-4. Kart og tall for samme analyse skal bruke samme analysemask.
+4. Kart og tall deler identitet og gyldig avgrensning; kildegeometri og beregningsgrid skilles.
 5. Manglende data skal aldri bli falsk 0.
 6. Kommuneavgrensning skal være eksplisitt.
 7. Metode- og dataversjoner skal kunne spores.
@@ -150,7 +152,7 @@ endret. Nye tester kontrollerer også ny kartinstans og avbrutte kall.
 Gjenstående prioritering:
 
 - validering av rasteranslag mot et faglig godkjent kontrollgrunnlag
-- objektinformasjon for aktiv analyse
+- videre objektflyt for andre grunnlag; Verdsatte naturtyper har koblet liste/kartvalg
 - videre brukerprøving av mobil tegnemodus og stedfesting i faktiske plansaker
 - behold regresjonsdekning for områdebytte, prosentnevnere og cache
 

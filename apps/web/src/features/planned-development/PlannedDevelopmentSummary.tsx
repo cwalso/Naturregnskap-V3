@@ -1,4 +1,6 @@
-import { useId } from 'react'
+import { useEffect, useState } from 'react'
+import { ValuedNatureResult } from './ValuedNatureResult'
+import type { PlannedCoverageGap } from '../../api/valuedNatureStatistics'
 
 import {
   protectedAreas,
@@ -44,6 +46,10 @@ interface PlannedDevelopmentSummaryProps {
   readonly onValuedNatureResultVisibleChange: (visible: boolean) => void
   readonly valuedNatureMapSelection: ValuedNatureMapSelection
   readonly onShowValuedNatureInMap: (selection: ValuedNatureMapSelection) => void
+  readonly coverage: PlannedCoverageGap | null
+  readonly coverageState: 'idle' | 'loading' | 'error'
+  readonly selectedLocalityId: string | null
+  readonly onSelectLocality: (id: string | null) => void
   readonly analysisAreaMode: AnalysisAreaMode
   readonly drawnArea: DrawnAnalysisArea | null
   readonly drawing: boolean
@@ -106,198 +112,8 @@ const readyAnalysisTargets = analysisTargets.filter((target) => target.status ==
 const plannedAnalysisTargets = analysisTargets.filter((target) => target.status === 'next')
 
 function dekar(km2: number): string {
-  return `${areaFormatter.format(km2 * 1000)} dekar`
-}
-
-function ValuedNatureResult({
-  analysis,
-  visible,
-  onVisibleChange,
-  selection,
-  onShowInMap,
-  analysisAreaLabel,
-}: {
-  readonly analysis: PlannedValuedNatureAnalysis
-  readonly visible: boolean
-  readonly onVisibleChange: (visible: boolean) => void
-  readonly selection: ValuedNatureMapSelection
-  readonly onShowInMap: (selection: ValuedNatureMapSelection) => void
-  readonly analysisAreaLabel: string
-}) {
-  const mapActions = (
-    <div className="analysis-result__map-actions">
-      <button type="button" className="analysis-result__primary-action" onClick={() => onShowInMap(selection)}>
-        Finn resultatet i kartet <span aria-hidden="true">→</span>
-      </button>
-      <label className="analysis-result__visibility">
-        <input type="checkbox" checked={visible} onChange={(event) => onVisibleChange(event.target.checked)} />
-        <span>Vis resultatlaget</span>
-      </label>
-      {selection.kind !== 'all' && <button type="button" className="analysis-result__clear-filter" onClick={() => onShowInMap({ kind: 'all' })}>Vis alle treff</button>}
-    </div>
-  )
-  if (analysis.affectedFeatureCount === 0) {
-    return (
-      <div className="valued-nature-result">
-        <div className="plan-analysis">
-          <span>Registrerte verdsatte naturtypelokaliteter med beregnet overlapp</span>
-          <strong>0</strong>
-          <small>
-            Datasettet er ikke heldekkende. Null treff skal derfor ikke tolkes som
-            fravær av naturverdi.
-          </small>
-        </div>
-        {mapActions}
-        <p className="plan-nature-breakdown__note">
-          Analysen er gjort mot registrerte lokaliteter i Miljødirektoratets
-          løpende tjeneste, med samme ca. {Math.round(analysis.pixelMeters)} m
-          planmaske som analyseområdet.
-        </p>
-      </div>
-    )
-  }
-
-  const primaryTypes = analysis.typeMetrics.slice(0, 6)
-  const remainingTypes = analysis.typeMetrics.slice(6)
-
-  return (
-    <div className="valued-nature-result">
-      <div className="analysis-result__summary-grid">
-        <div className="analysis-result__metric">
-          <span>Berørte lokaliteter</span>
-          <strong>{areaFormatter.format(analysis.affectedFeatureCount)}</strong>
-          <small>
-            av {areaFormatter.format(analysis.candidateFeatureCount)} registrerte
-            lokaliteter i analyseutsnittet
-          </small>
-        </div>
-        <div className="analysis-result__metric">
-          <span>Unikt overlappsareal</span>
-          <strong>ca. {dekar(analysis.uniqueOverlapAreaKm2)}</strong>
-          <small>Fysisk areal uten dobbelttelling av overlappende registreringer</small>
-        </div>
-      </div>
-
-      {mapActions}
-
-      {selection.kind !== 'all' && (
-        <p className="analysis-result__active-filter">
-          Kartet er filtrert til: <strong>{selection.label}</strong>
-        </p>
-      )}
-
-      <div className="valued-nature-breakdown">
-        <p className="map-sidebar__eyebrow">Fordelt på verdikategori</p>
-        <div className="valued-nature-breakdown__list">
-          {analysis.valueMetrics.map((metric) => (
-            <ValuedNatureMetricRow
-              metric={metric}
-              key={metric.label}
-              showColor
-              selected={selection.kind === 'value' && selection.label === metric.label}
-              onShowInMap={() => onShowInMap({ kind: 'value', label: metric.label })}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="valued-nature-breakdown">
-        <p className="map-sidebar__eyebrow">Fordelt på naturtype</p>
-        <div className="valued-nature-breakdown__list">
-          {primaryTypes.map((metric) => (
-            <ValuedNatureMetricRow
-              metric={metric}
-              key={metric.label}
-              selected={selection.kind === 'type' && selection.label === metric.label}
-              onShowInMap={() => onShowInMap({ kind: 'type', label: metric.label })}
-            />
-          ))}
-        </div>
-
-        {remainingTypes.length > 0 && (
-          <details className="valued-nature-breakdown__more">
-            <summary>Vis alle {analysis.typeMetrics.length} naturtyper</summary>
-            <div className="valued-nature-breakdown__list">
-              {remainingTypes.map((metric) => (
-                <ValuedNatureMetricRow
-                  metric={metric}
-                  key={metric.label}
-                  selected={selection.kind === 'type' && selection.label === metric.label}
-                  onShowInMap={() => onShowInMap({ kind: 'type', label: metric.label })}
-                />
-              ))}
-            </div>
-          </details>
-        )}
-      </div>
-
-      {analysis.hasOverlappingRegistrations && (
-        <p className="plan-nature-breakdown__note">
-          Enkelte registrerte lokaliteter overlapper hverandre. Fordelingene viser
-          registrert overlappsareal per lokalitet og kan derfor summeres til mer enn
-          det unike fysiske overlappsarealet.
-        </p>
-      )}
-
-      <p className="plan-nature-breakdown__note">
-        Verdsatte naturtyper er supplerende temadata og ikke heldekkende
-        regnskapsgrunnlag. Arealene er prototypeanslag beregnet på ca.{' '}
-        {Math.round(analysis.pixelMeters)} m rutenett mot {analysisAreaLabel.toLowerCase()}.
-      </p>
-    </div>
-  )
-}
-
-function ValuedNatureMetricRow({
-  metric,
-  showColor = false,
-  selected = false,
-  onShowInMap,
-}: {
-  readonly metric: PlannedValuedNatureAnalysis['valueMetrics'][number]
-  readonly showColor?: boolean
-  readonly selected?: boolean
-  readonly onShowInMap: () => void
-}) {
-  const labelId = useId()
-  return (
-    <div className={selected ? 'valued-nature-metric valued-nature-metric--selected' : 'valued-nature-metric'}>
-      <div className="valued-nature-metric__labels" id={labelId}>
-        <strong>
-          {showColor && (
-            <i
-              className="valued-nature-metric__swatch"
-              style={{ background: metric.color }}
-              aria-hidden="true"
-            />
-          )}
-          {metric.label}
-        </strong>
-        <span>{dekar(metric.areaKm2)}</span>
-      </div>
-      <small>
-        {metric.featureCount} {metric.featureCount === 1 ? 'lokalitet' : 'lokaliteter'}
-        {' · '}{percentFormatter.format(metric.sharePercent)} %
-      </small>
-      <div className="valued-nature-metric__bar" aria-hidden="true">
-        <span
-          style={{
-            width: `${Math.max(1, metric.sharePercent)}%`,
-            background: metric.color ?? 'var(--color-accent)',
-          }}
-        />
-      </div>
-      <button
-        type="button"
-        className="valued-nature-metric__map-action"
-        aria-pressed={selected}
-        aria-describedby={labelId}
-        onClick={onShowInMap}
-      >
-        {selected ? 'Funnet i kart' : 'Finn i kart'} <span aria-hidden="true">→</span>
-      </button>
-    </div>
-  )
+  const area = km2 * 1000
+  return `${area > 0 && area < .1 ? 'under 0,1' : area < 100 ? new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 }).format(area) : areaFormatter.format(area)} dekar`
 }
 
 export function PlannedDevelopmentSummary({
@@ -319,6 +135,10 @@ export function PlannedDevelopmentSummary({
   onValuedNatureResultVisibleChange,
   valuedNatureMapSelection,
   onShowValuedNatureInMap,
+  coverage,
+  coverageState,
+  selectedLocalityId,
+  onSelectLocality,
   analysisAreaMode,
   drawnArea,
   drawing,
@@ -334,6 +154,10 @@ export function PlannedDevelopmentSummary({
     ?? analysisTargets[0]
   const areaLabel = analysisAreaMode === 'drawn' ? 'Eget tegnet område' : 'Framtidig utbygging'
   const drawnAreaDekar = drawnArea ? dekar(drawnArea.areaKm2) : null
+  const [setupOpen, setSetupOpen] = useState(false)
+  useEffect(() => {
+    if (result?.status === 'available' && !drawing) setSetupOpen(false)
+  }, [result, drawing, analysisTarget])
 
   return (
     <section
@@ -348,6 +172,8 @@ export function PlannedDevelopmentSummary({
         <span className="status-tag status-tag--muted">Prototype</span>
       </header>
 
+      <details className="analysis-setup" open={setupOpen || !result || drawing || result.status !== 'available'} onToggle={(event) => setSetupOpen(event.currentTarget.open)}>
+        <summary>{areaLabel} · {analysisTarget === 'grunnkart' ? 'Natur og jordbruk' : selectedTarget.label} <span>Endre</span></summary>
       <div className="analysis-builder">
         <section className="analysis-builder__step" aria-labelledby="analysis-area-heading">
           <div className="analysis-builder__step-heading">
@@ -417,12 +243,7 @@ export function PlannedDevelopmentSummary({
             </div>
           )}
 
-          {drawnArea && !drawing && (
-            <div className="analysis-drawn-actions">
-              <button type="button" onClick={onStartDrawing}>Tegn på nytt</button>
-              <button type="button" onClick={onClearDrawnArea}>Fjern område</button>
-            </div>
-          )}
+
         </section>
 
         <section className="analysis-builder__step" aria-labelledby="analysis-source-heading">
@@ -472,6 +293,11 @@ export function PlannedDevelopmentSummary({
         </section>
       </div>
 
+      </details>
+      {drawnArea && !drawing && <div className="analysis-drawn-actions analysis-drawn-actions--persistent">
+        <button type="button" onClick={onStartDrawing}>Tegn på nytt</button>
+        <button type="button" onClick={onClearDrawnArea}>Fjern område</button>
+      </div>}
       <section className="analysis-output" aria-labelledby="analysis-result-heading">
         <div className="analysis-output__heading">
           <span className="analysis-step-label">
@@ -489,7 +315,11 @@ export function PlannedDevelopmentSummary({
             <ValuedNatureResult
               analysis={valuedNatureAnalysis}
               visible={valuedNatureResultVisible}
-              analysisAreaLabel={areaLabel}
+              key={valuedNatureAnalysis.analysisId}
+              coverage={coverage}
+              coverageState={coverageState}
+              selectedId={selectedLocalityId}
+              onSelectLocality={onSelectLocality}
               onVisibleChange={onValuedNatureResultVisibleChange}
               selection={valuedNatureMapSelection}
               onShowInMap={onShowValuedNatureInMap}
@@ -548,7 +378,7 @@ export function PlannedDevelopmentSummary({
                 className="analysis-result__primary-action"
                 onClick={onFindGrunnkartResultInMap}
               >
-                Finn resultatet i kartet <span aria-hidden="true">→</span>
+                Zoom til treff
               </button>
               <label className="analysis-result__visibility">
                 <input
@@ -637,8 +467,7 @@ export function PlannedDevelopmentSummary({
               ) : (
                 <p>
                   Det tegnede polygonet rasteriseres på samme ca.{' '}
-                  {Math.round(result.pixelMeters)} m rutenett og klippes til valgt
-                  kommune før det krysses med Grunnkartet.
+                  {Math.round(result.pixelMeters)} m rutenett og avgrenses av gyldige piksler i kommunerasteret før det krysses med Grunnkartet.
                 </p>
               )}
               <p>Resultatet er et prototypeanslag, ikke offisiell statistikk.</p>

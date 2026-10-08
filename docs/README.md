@@ -58,6 +58,7 @@ senere beslutninger har endret retningen.
 - tegnet polygon som analyseområde
 - delt request-/flispipeline
 - temasidesett og kommuneavgrensning
+- kildegeometri, objektvalg og høyeste verdi ved overlapp i analyseverkstedet
 
 Se `decisions/`.
 

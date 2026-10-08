@@ -83,8 +83,9 @@ theme
 
 UI-komponenter skal ikke eie datakildekunnskap eller skjulte fagregler.
 
-Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme
-analyseresultat/analysemask.
+Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat
+og identitet. Beregningsgrid og presentasjonsgeometri skilles; kildepolygoner
+kan klippes visuelt til den gyldige analysemasken uten å beregne nye tall.
 
 ## Dagens datatilgang
 
@@ -152,7 +153,7 @@ Plan-/polygonanalysen bruker:
 - fast rutenett
 - ca. 21,16 meter per analysepiksel
 - kommuneavgrensning
-- samme analysemask til kart og tall
+- samme analyseidentitet og gyldige avgrensning til kart og tall
 
 Det forberedte Trondheim-rasteret har ca. 19,72 meters kildeoppløsning og samples
 til 21,15625-metersgitteret. Natur/Jordbruk telles på dette gitteret.
@@ -182,13 +183,26 @@ delt nettverkskall som allerede er startet.
 
 ## Treffvisning i analyseverkstedet
 
-I analyseverkstedet vises områdets gyldige `analysisMask` som egen dempet
-rasterramme. Natur/Jordbruk-treff bygges fra `overlay.cleaned`, mens Verdsatte
-naturtyper bruker resultatets pikselindekser. Begge trefflag vises med samme
-`TileImage`-pipeline og beregnede analysegrid også ved nær zoom. Det eldre
+`utmArea.ts` eier felles UTM33-målestokkskorreksjon ved kommunemidtpunktet
+for projiserte nettleserarealer på tvers av analyse og temasider. Ferdige
+SSB-arealer korrigeres ikke på nytt. Se data-/metodedokumentet for formel,
+versjoner og avgrensningen mot preparation.
+
+I analyseverkstedet vises gyldig `analysisMask` som en dempet rasterramme.
+Natur/Jordbruk-treff bygges fortsatt fra `overlay.cleaned` og vises med
+`TileImage` på beregnet analysegrid, også ved nær zoom. Verdsatte naturtyper
+beholder i stedet berørte kildepolygoner og attributter i `localities`.
+`valuedNaturePresentation.ts` filtrerer de samme objektene for liste og kart;
+`valuedNatureMap.ts` tegner svake hele lokaliteter og sterke kildepolygoner
+klippet til gyldige masker på eget Canvas. Hele utvalget tegner høyeste verdi
+øverst; ved verdifilter klippes sterkt fyll til kategoriens vinnende ruter.
+Det er ikke eksakt vektorinterseksjon. Naturtypefilter viser registrerte
+objekter, uten ny entydig fordeling mellom overlappende naturtyper. Det eldre
 planens detaljlag er ikke aktivt i analyseverkstedet. Delresultatvalg filtrerer
-bare visningsmasken; det beregner ikke nye tall eller endrer analysemasken.
-Kartutsnitt beregnes fra aktiv treffmaske. Bare forespurte visningsfliser på
+bare presentasjonen; det beregner ikke nye tall eller endrer analysemasken.
+Kartutsnitt beregnes fra aktiv rastermaske eller filtrerte kildegeometrier.
+Objektvalg deles mellom kart og liste, knyttet til kommune og `analysisId`,
+og er deaktivert under tegning. Grunnkart tones ned under synlige resultater. Bare forespurte visningsfliser på
 256 × 256 piksler tegnes direkte i Canvas, med nabopiksler lest fra hele
 masken for sømløs kantmarkering. Visningslagene
 bruker OpenLayers sin fliscache (målstørrelse 32; kan økes for synlige fliser),

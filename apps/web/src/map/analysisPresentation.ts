@@ -22,7 +22,7 @@ export function buildGrunnkartMapOverlay(
     width: overlay.width, height: overlay.height, extent: overlay.extent, mask,
     fillColor: analysisColors.nature,
     palette: { 1: analysisColors.nature, 2: analysisColors.agriculture },
-    strong: true,
+    calm: true,
   }
 }
 
@@ -60,14 +60,14 @@ export function analysisPresentation(input: {
   if (input.result?.status === 'not_available') return state('unavailable', 'Analysegrunnlaget er ikke tilgjengelig', input.result.reason)
   if (!input.result) return state('not_started', 'Analysen er ikke kjørt', 'Velg et analyseområde og datagrunnlag. Tegn et område hvis du vil undersøke en egen flate.')
   if (valuedBasis && !input.valued) return state('loading', 'Analysen beregnes', 'Henter registrerte naturtyper for analyseområdet.')
-  if (!input.visible) return state('hidden', 'Resultatet er skjult', 'Tallene gjelder fortsatt. Vis resultatlaget eller bruk Finn resultatet i kartet.')
+  if (!input.visible) return state('hidden', 'Resultatet er skjult', 'Tallene gjelder fortsatt. Vis resultatlaget eller bruk Zoom til treff.')
   if (input.renderState === 'error') return state('error', 'Kartresultatet kunne ikke vises', 'Tallene er beregnet, men kartvisningen feilet. Dette er ikke null treff.')
   const valuedSelection = input.valuedSelection
   const hasHits = valuedBasis
     ? (valuedSelection.kind === 'all'
-      ? input.valued!.allOverlapPixelIndices.length > 0
+      ? input.valued!.affectedFeatureCount > 0
       : (valuedSelection.kind === 'value' ? input.valued!.valueMetrics : input.valued!.typeMetrics)
-        .some((metric) => metric.label === valuedSelection.label && metric.mapPixelIndices.length > 0))
+        .some((metric) => metric.label === valuedSelection.label && metric.featureCount > 0))
     : grunnkartArea(input.result, input.selection) > 0
   if (!hasHits) return state('no_hits', 'Ingen treff i valgt resultat', valuedBasis
     ? 'Ingen registrert overlapp. Datasettet er ikke heldekkende; null treff betyr ikke fravær av naturverdi.'

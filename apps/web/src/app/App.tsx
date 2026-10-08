@@ -55,8 +55,8 @@ import {
   type PlannedDevelopmentResult,
   type PlannedNatureBreakdown,
 } from '../map/plannedDevelopment'
+import { filterValuedLocalities, type ValuedNaturePresentation } from '../map/valuedNaturePresentation'
 import {
-  buildValuedNatureMapOverlay,
   calculatePlannedValuedNatureAnalysis,
   type PlannedValuedNatureAnalysis,
   type ValuedNatureMapSelection,
@@ -179,6 +179,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [analysisRenderState, setAnalysisRenderState] = useState<AnalysisMapRenderState>('idle')
   const [findResultRequest, setFindResultRequest] = useState(0)
   const consumedFindRequest = useRef(0)
+  const [localitySelection, setLocalitySelection] = useState<{ analysisId: string; municipalityNumber: string; id: string } | null>(null)
+  const [localityFitRequest, setLocalityFitRequest] = useState(0)
+  const consumedLocalityFit = useRef(0)
 
   const mapAnalysisResult = analysisAreaMode === 'drawn' ? drawnAnalysis : plannedDevelopment
   const mapAnalysisState = analysisAreaMode === 'drawn' ? drawnAnalysisState : plannedDevelopmentState
@@ -525,7 +528,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, boundaryData])
 
   useEffect(() => {
-    if (activeView !== 'tema-valued-nature' || plannedDevelopment?.status !== 'available') {
+    const analysis = activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'valued-nature' ? mapAnalysisResult : activeView === 'tema-valued-nature' ? plannedDevelopment : null
+    if (analysis?.status !== 'available') {
       setPlannedCoverageGap(null)
       setPlannedCoverageGapState('idle')
       return
@@ -535,7 +539,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setPlannedCoverageGap(null)
     setPlannedCoverageGapState('loading')
 
-    void getPlannedCoverageGap(plannedDevelopment, controller.signal)
+    void getPlannedCoverageGap(analysis, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
         setPlannedCoverageGap(result)
@@ -549,7 +553,12 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     return () => controller.abort()
-  }, [activeView, plannedDevelopment])
+  }, [activeView, plannedDevelopment, mapAnalysisResult, plannedDevelopmentAnalysisTarget])
+
+  const mapCoverage = mapAnalysisResult?.status === 'available'
+    && plannedCoverageGap?.analysisId === mapAnalysisResult.analysisId
+    && plannedCoverageGap.municipalityNumber === mapAnalysisResult.municipalityNumber
+    ? plannedCoverageGap : null
 
   const activeHighlight = useMemo(() => {
     if (activeView !== 'utforsk-i-kart' || mapAnalysisResult?.status !== 'available') return null
@@ -558,19 +567,43 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         ? buildGrunnkartMapOverlay(mapAnalysisResult.overlay, grunnkartMapSelection)
         : null
     }
-    return plannedDevelopmentAnalysisTarget === 'valued-nature' && plannedValuedNature && valuedNatureResultVisible
-      ? buildValuedNatureMapOverlay(plannedValuedNature, mapAnalysisResult.overlay, valuedNatureMapSelection)
-      : null
+    return null
   }, [
     activeView,
     mapAnalysisResult,
     plannedDevelopmentAnalysisTarget,
     plannedDevelopmentVisible,
     grunnkartMapSelection,
-    plannedValuedNature,
-    valuedNatureMapSelection,
-    valuedNatureResultVisible,
   ])
+
+  const selectedLocalityId = localitySelection?.analysisId === plannedValuedNature?.analysisId
+    && localitySelection?.municipalityNumber === plannedValuedNature?.municipalityNumber
+    && plannedValuedNature && filterValuedLocalities(plannedValuedNature.localities, valuedNatureMapSelection).some((locality) => locality.id === localitySelection?.id)
+    ? localitySelection!.id : null
+  const valuedPresentation = useMemo<ValuedNaturePresentation | null>(() =>
+    activeView === 'utforsk-i-kart' && !drawingAnalysisArea && plannedDevelopmentAnalysisTarget === 'valued-nature'
+      && valuedNatureResultVisible && plannedValuedNature && mapAnalysisResult?.status === 'available'
+      ? { municipalityNumber: plannedValuedNature.municipalityNumber, analysisId: plannedValuedNature.analysisId,
+        overlay: mapAnalysisResult.overlay, localities: plannedValuedNature.localities, valueMetrics: plannedValuedNature.valueMetrics,
+        selection: valuedNatureMapSelection, selectedId: selectedLocalityId }
+      : null,
+    [activeView, drawingAnalysisArea, plannedDevelopmentAnalysisTarget, valuedNatureResultVisible, plannedValuedNature, mapAnalysisResult, valuedNatureMapSelection, selectedLocalityId])
+  useEffect(() => {
+    map.current?.setValuedNaturePresentation(valuedPresentation)
+    map.current?.setAnalysisFocus(Boolean(activeHighlight || valuedPresentation?.localities.length))
+    map.current?.setValuedNatureSelectionHandler(valuedPresentation ? (id) => {
+      if (!id || filterValuedLocalities(valuedPresentation.localities, valuedPresentation.selection).some((locality) => locality.id === id)) {
+        setLocalitySelection(id ? { analysisId: valuedPresentation.analysisId, municipalityNumber: valuedPresentation.municipalityNumber, id } : null)
+      }
+    } : null)
+    return () => map.current?.setValuedNatureSelectionHandler(null)
+  }, [valuedPresentation, activeHighlight, activeView, selectedMunicipality])
+  useEffect(() => {
+    if (consumedLocalityFit.current !== localityFitRequest) {
+      consumedLocalityFit.current = localityFitRequest
+      if (valuedPresentation?.selectedId) map.current?.fitToValuedNatureResults(true)
+    }
+  }, [localityFitRequest, valuedPresentation])
 
   useEffect(() => {
     map.current?.setAnalysisHighlight(activeHighlight)
@@ -580,8 +613,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     if (consumedFindRequest.current !== findResultRequest) {
       consumedFindRequest.current = findResultRequest
       if (activeHighlight) map.current?.fitToAnalysisHighlight()
+      else if (valuedPresentation && filterValuedLocalities(valuedPresentation.localities, valuedPresentation.selection).length) map.current?.fitToValuedNatureResults()
     }
-  }, [activeHighlight, findResultRequest])
+  }, [activeHighlight, valuedPresentation, findResultRequest])
 
   const presentation = analysisPresentation({
     state: mapAnalysisState, result: mapAnalysisResult, basis: plannedDevelopmentAnalysisTarget,
@@ -592,6 +626,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   })
 
   function resetMapSelection() {
+    setLocalitySelection(null)
     setGrunnkartMapSelection('all')
     setValuedNatureMapSelection({ kind: 'all' })
     setPlannedDevelopmentVisible(true)
@@ -783,14 +818,25 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   function showValuedNatureInMap(selection: ValuedNatureMapSelection) {
     setValuedNatureResultVisible(true)
     setValuedNatureMapSelection(selection)
+    if (selection.kind !== valuedNatureMapSelection.kind || (selection.kind !== 'all' && (valuedNatureMapSelection.kind === 'all' || selection.label !== valuedNatureMapSelection.label))) setLocalitySelection(null)
 
     setFindResultRequest((request) => request + 1)
     scrollToMapSection('map-canvas-region')
   }
 
+  function selectLocality(id: string | null) {
+    if (!plannedValuedNature) return
+    setLocalitySelection(id ? { analysisId: plannedValuedNature.analysisId, municipalityNumber: plannedValuedNature.municipalityNumber, id } : null)
+    if (id) {
+      setValuedNatureResultVisible(true)
+      setLocalityFitRequest((request) => request + 1)
+      scrollToMapSection('map-canvas-region')
+    }
+  }
+
   function scrollToMapSection(targetId: 'map-canvas-region' | 'map-analysis-panel') {
     document.getElementById(targetId)?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: window.innerWidth <= 960 || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       block: 'start',
     })
   }
@@ -1118,6 +1164,10 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   onValuedNatureResultVisibleChange={setValuedNatureResultVisible}
                   valuedNatureMapSelection={valuedNatureMapSelection}
                   onShowValuedNatureInMap={showValuedNatureInMap}
+                  coverage={mapCoverage}
+                  coverageState={plannedCoverageGapState}
+                  selectedLocalityId={selectedLocalityId}
+                  onSelectLocality={selectLocality}
                   analysisAreaMode={analysisAreaMode}
                   drawnArea={drawnAnalysisArea}
                   drawing={drawingAnalysisArea}
@@ -1188,8 +1238,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                   Til resultatet
                 </button>
                 <div className={`map-result-status map-result-status--${presentation.kind}`}>
-                  <strong>{presentation.title}</strong>
-                  <span>{presentation.detail}</span>
+                  {presentation.kind !== 'hits' && <strong>{presentation.title}</strong>}
                 </div>
                 <div className="analysis-map-legend" aria-label="Tegnforklaring for analysen">
                   <span><i className="analysis-map-legend__area" />Analyseområde</span>
@@ -1198,7 +1247,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
                       {grunnkartMapSelection !== 'agriculture' && <span><i style={{ backgroundColor: analysisColors.nature }} />Natur</span>}
                       {grunnkartMapSelection !== 'nature' && <span><i style={{ backgroundColor: analysisColors.agriculture }} />Jordbruk</span>}
                     </>
-                  ) : <span><i style={{ backgroundColor: activeHighlight?.fillColor }} />{presentation.selectionLabel}</span>)}
+                  ) : <>
+                    {plannedValuedNature?.valueMetrics.filter((metric) => valuedPresentation && filterValuedLocalities(valuedPresentation.localities, valuedPresentation.selection).some((locality) => locality.value === metric.label)).map((metric) => <span key={metric.label}><i style={{ backgroundColor: metric.color }} />{metric.label}</span>)}
+                    <span>Svakt: hel lokalitet · fyll: innenfor analysemasken</span>
+                    {selectedLocalityId && <span className="analysis-map-legend__selected">Hvit kant: valgt lokalitet</span>}
+                  </>)}
                 </div>
               </div>
             )}
@@ -1361,7 +1414,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           </div>
           {mapWorkspace(
             'Analyse',
-            'Kartet viser valgt analyseområde og resultat. Tallene i analysepanelet er hovedresultatet; kartet brukes til å finne hvor overlappene ligger.',
+            'Arbeid med treffene i kartet. Bruk panelet til tall, filtrering og lokaliteter.',
             'explore',
           )}
         </>

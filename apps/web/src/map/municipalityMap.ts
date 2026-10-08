@@ -55,6 +55,9 @@ import {
   loadPlannedDevelopmentDetailTile,
 } from './plannedDevelopmentOverlay'
 import { loadSharedImageBlob } from './sharedImageRequests'
+import { createValuedNatureLayers } from './valuedNatureMap'
+import type { ValuedNaturePresentation } from './valuedNaturePresentation'
+import { municipalityAreaFactor } from './utmArea'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -63,7 +66,8 @@ const EMPTY_MAP_TILE =
   'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E'
 
 function setMapTileBlob(tile: ImageTile, blob: Blob) {
-  const image = tile.getImage() as HTMLImageElement
+  const image = tile.getImage() as HTMLImageElement | null
+  if (!image) return
   const objectUrl = URL.createObjectURL(blob)
   const release = () => URL.revokeObjectURL(objectUrl)
   image.addEventListener('load', release, { once: true })
@@ -79,7 +83,8 @@ async function loadSharedMapTile(
   try {
     setMapTileBlob(tile, await loader(src))
   } catch {
-    ;(tile.getImage() as HTMLImageElement).src = EMPTY_MAP_TILE
+    const image = tile.getImage() as HTMLImageElement | null
+    if (image) image.src = EMPTY_MAP_TILE
   }
 }
 
@@ -130,6 +135,10 @@ export interface MunicipalityMap {
   fitToPlannedDevelopmentResult(): void
   setAnalysisHighlight(overlay: AnalysisRasterOverlay | null): void
   fitToAnalysisHighlight(): void
+  setValuedNaturePresentation(model: ValuedNaturePresentation | null): void
+  setValuedNatureSelectionHandler(handler: ((id: string | null) => void) | null): void
+  fitToValuedNatureResults(selectedOnly?: boolean): void
+  setAnalysisFocus(active: boolean): void
   setAnalysisArea(overlay: PlannedDevelopmentOverlayGrid | null): void
   setAnalysisLayerStatusHandler(handler: ((state: AnalysisMapRenderState) => void) | null): void
   setDrawnAnalysisArea(area: DrawnAnalysisArea | null): void
@@ -702,6 +711,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       forestLayer.getVisible()
       || ecosystemLayer.getVisible()
       || urbanLayer.getVisible()
+      || valuedLayers.active()
       || (drawnAnalysisLayer.getVisible() && drawnAnalysisSource.getFeatures().length > 0)
       || [...thematicLayers.values()].some((layer) => layer.getVisible())
     municipalityMaskLayer.setVisible(thematicVisible)
@@ -730,6 +740,9 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     enableRotation: false,
   })
   let pendingBoundaryFit: [number, number, number, number] | null = null
+  let drawnAreaFactor = 1
+  let localitySelectionHandler: ((id: string | null) => void) | null = null
+  const valuedLayers = createValuedNatureLayers((coordinate) => map.getPixelFromCoordinate(coordinate))
 
   const map = new OlMap({
     target,
@@ -751,6 +764,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       plannedDetailLayer,
       analysisAreaLayer,
       analysisHighlightLayer,
+      valuedLayers.contextLayer,
+      valuedLayers.hitLayer,
       drawnAnalysisLayer,
       ...thematicDatasets.map((dataset) => thematicLayers.get(dataset.id)!),
       changesLayer,
@@ -794,6 +809,18 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   map.on('singleclick', (event) => {
     if (drawInteraction) return
+    if (valuedLayers.active()) {
+      if (boundarySource.getFeatures().length > 0 && !boundarySource.getFeatures().some((feature) => feature.getGeometry()?.intersectsCoordinate(event.coordinate))) {
+        localitySelectionHandler?.(null)
+        return
+      }
+      const id = map.forEachFeatureAtPixel(event.pixel, (feature) => String(feature.getId()), {
+        layerFilter: (layer) => layer === valuedLayers.contextLayer || layer === valuedLayers.hitLayer,
+        hitTolerance: 6,
+      })
+      localitySelectionHandler?.(id ?? null)
+      return
+    }
     const resolution = view.getResolution()
     if (resolution === undefined) return
     void identifyThematicFeatures(event.coordinate, resolution)
@@ -806,6 +833,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
 
   return {
     showBoundary(boundary) {
+      drawnAreaFactor = municipalityAreaFactor(boundary)
       boundarySource.clear()
       const features = new GeoJSON().readFeatures(JSON.stringify(boundary), {
         dataProjection: 'EPSG:4326',
@@ -828,6 +856,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       void configureAccountOverview(boundary.properties.number)
     },
     clearBoundary() {
+      valuedLayers.set(null)
       boundarySource.clear()
       municipalityMaskSource.clear()
       municipalityMaskLayer.setVisible(false)
@@ -910,6 +939,24 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     setAnalysisHighlight(overlay) {
       configureRasterOverlay(analysisHighlightLayer, highlightState, overlay)
     },
+    setValuedNaturePresentation(model) {
+      valuedLayers.set(model)
+      updateMunicipalityMaskVisibility()
+    },
+    setValuedNatureSelectionHandler(handler) { localitySelectionHandler = handler },
+    fitToValuedNatureResults(selectedOnly = false) {
+      const extent = valuedLayers.extent(selectedOnly)
+      if (!extent) return
+      view.fit(extent, {
+        padding: new Array(4).fill(Math.min(48, Math.max(16, (map.getSize()?.[0] ?? 400) * 0.06))),
+        duration: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : 350,
+        maxZoom: 13,
+      })
+    },
+    setAnalysisFocus(active) {
+      accountOverviewLayer.setOpacity(active ? 0.27 : 0.86)
+      accountDetailLayer.setOpacity(active ? 0.27 : 0.86)
+    },
     setAnalysisArea(overlay) {
       configureRasterOverlay(analysisAreaLayer, areaState, overlay ? {
         width: overlay.width, height: overlay.height, extent: overlay.extent,
@@ -963,7 +1010,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
           id: `drawn:${crypto.randomUUID()}`,
           rings,
           extent: [extent[0], extent[1], extent[2], extent[3]],
-          areaKm2: geometry.getArea() / 1_000_000,
+          areaKm2: geometry.getArea() / 1_000_000 * drawnAreaFactor,
         }
 
         window.setTimeout(() => {
@@ -1011,7 +1058,7 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
       view.fit(extent, {
         padding: [72, 72, 72, 72],
         duration: 350,
-        maxZoom: 15,
+        maxZoom: 13,
       })
     },
     setThematicLayerVisible(datasetId, visible) {
@@ -1062,6 +1109,8 @@ export const createMunicipalityMap: MunicipalityMapFactory = (target) => {
     },
     clearChanges() { changesSource.clear() },
     destroy() {
+      localitySelectionHandler = null
+      valuedLayers.set(null)
       analysisLayerStatusHandler = null
       resizeObserver?.disconnect()
       window.cancelAnimationFrame(firstFrame)

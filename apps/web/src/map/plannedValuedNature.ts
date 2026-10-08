@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from './utmArea'
 import { valuedNature } from '../datasets/registry'
 import {
   PLAN_PIXEL_METERS,
@@ -19,16 +20,13 @@ const valueCategoryColors: Record<string, string> = {
   'Ikke oppgitt': '#D8DDDA',
 }
 
-const valueCategoryOrder = [
+export const valuedAnalysisCategories = [
   'Svært stor verdi',
   'Stor verdi',
   'Middels verdi',
   'Noe verdi',
-  'Vurderes per lokalitet',
-  'Vurderes per naturtype',
-  'Ikke gitt verdi',
-  'Ikke oppgitt',
 ] as const
+const valueCategoryOrder: readonly string[] = valuedAnalysisCategories
 
 type EsriRing = readonly (readonly [number, number])[]
 type EsriRings = readonly EsriRing[]
@@ -62,12 +60,23 @@ export type ValuedNatureMapSelection =
   | { readonly kind: 'value'; readonly label: string }
   | { readonly kind: 'type'; readonly label: string }
 
+export interface ValuedNatureLocality {
+  readonly id: string
+  readonly name: string
+  readonly natureType: string
+  readonly value: string
+  readonly color: string
+  /** Source geometry in EPSG:25833, independent of the calculation grid. */
+  readonly rings: EsriRings
+  readonly overlapAreaKm2: number
+}
+
 export interface PlannedValuedNatureAnalysis {
   readonly municipalityNumber: string
   readonly analysisId: string
   readonly status: 'available'
   readonly source: 'Miljødirektoratet – naturtyper med KU-verdi'
-  readonly methodVersion: 'planned-valued-nature-v1'
+  readonly methodVersion: 'planned-valued-nature-v2'
   readonly pixelMeters: number
   readonly candidateFeatureCount: number
   readonly affectedFeatureCount: number
@@ -77,6 +86,7 @@ export interface PlannedValuedNatureAnalysis {
   readonly allOverlapPixelIndices: Uint32Array
   readonly valueMetrics: readonly ValuedNatureBreakdownMetric[]
   readonly typeMetrics: readonly ValuedNatureBreakdownMetric[]
+  readonly localities: readonly ValuedNatureLocality[]
 }
 
 interface CachedAnalysisRequest {
@@ -86,15 +96,26 @@ interface CachedAnalysisRequest {
 }
 
 const analysisCache = new Map<string, CachedAnalysisRequest>()
+const MAX_COMPLETED_ANALYSES = 16
+
+function trimAnalysisCache() {
+  let completed = Array.from(analysisCache.values()).filter((entry) => entry.completed).length
+  for (const [key, entry] of analysisCache) {
+    if (completed <= MAX_COMPLETED_ANALYSES) break
+    if (entry.completed) { analysisCache.delete(key); completed -= 1 }
+  }
+}
 
 export async function calculatePlannedValuedNatureAnalysis(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedValuedNatureAnalysis> {
   signal?.throwIfAborted()
-  const cacheKey = analysis.analysisId
+  const cacheKey = `${analysis.municipalityNumber}:${analysis.analysisId}`
   const cached = analysisCache.get(cacheKey)
   if (cached && (cached.completed || !cached.signal?.aborted)) {
+    analysisCache.delete(cacheKey)
+    analysisCache.set(cacheKey, cached)
     const result = await cached.request
     signal?.throwIfAborted()
     return result
@@ -103,6 +124,7 @@ export async function calculatePlannedValuedNatureAnalysis(
   const request = runAnalysis(analysis, signal)
     .then((result) => {
       entry.completed = true
+      trimAnalysisCache()
       return result
     })
     .catch((error: unknown) => {
@@ -120,8 +142,9 @@ async function runAnalysis(
 ): Promise<PlannedValuedNatureAnalysis> {
   const features = await fetchValuedNatureFeatures(analysis.overlay.extent, signal)
   signal?.throwIfAborted()
-  const summary = summarizeFeatures(features, analysis.overlay)
-  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+  const factor = await getMunicipalityAreaFactor(analysis.municipalityNumber, signal)
+  const summary = summarizeFeatures(features, analysis.overlay, factor)
+  const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000 * factor
   const registeredOverlapAreaKm2 = summary.featurePixelTotal * pixelAreaKm2
   const uniqueOverlapAreaKm2 = summary.uniquePixelCount * pixelAreaKm2
 
@@ -130,19 +153,20 @@ async function runAnalysis(
     analysisId: analysis.analysisId,
     status: 'available',
     source: 'Miljødirektoratet – naturtyper med KU-verdi',
-    methodVersion: 'planned-valued-nature-v1',
+    methodVersion: 'planned-valued-nature-v2',
     pixelMeters: PLAN_PIXEL_METERS,
     candidateFeatureCount: features.length,
     affectedFeatureCount: summary.affectedFeatureCount,
     uniqueOverlapAreaKm2,
     registeredOverlapAreaKm2,
     hasOverlappingRegistrations:
-      registeredOverlapAreaKm2 > uniqueOverlapAreaKm2 + pixelAreaKm2,
+      summary.featurePixelTotal > summary.uniquePixelCount,
     allOverlapPixelIndices: summary.uniquePixelIndices,
+    localities: summary.localities,
     valueMetrics: buildMetrics(
       summary.byValue,
       summary.affectedFeatureCount,
-      summary.featurePixelTotal,
+      summary.uniquePixelCount,
       pixelAreaKm2,
       true,
     ),
@@ -216,7 +240,7 @@ export function buildValuedNatureQueryBody(
 ): URLSearchParams {
   return new URLSearchParams({
     f: 'json',
-    where: '1=1',
+    where: `Verdikategori IN (${valuedAnalysisCategories.map((category) => `'${category}'`).join(',')})`,
     geometry: JSON.stringify({
       xmin: extent[0],
       ymin: extent[1],
@@ -262,7 +286,9 @@ async function fetchValuedNatureFeatures(
       throw new Error(data.error.message ?? 'Verdsatte naturtyper returnerte en feil')
     }
 
-    const page = Array.isArray(data.features) ? data.features : []
+    if (!Array.isArray(data.features)) throw new Error('Verdsatte naturtyper returnerte et ugyldig svar')
+    const page = data.features
+    if (data.exceededTransferLimit && page.length === 0) throw new Error('Verdsatte naturtyper ga et ufullstendig svar')
     features.push(...page)
 
     if (!data.exceededTransferLimit && page.length < PAGE_SIZE) break
@@ -280,6 +306,7 @@ interface GroupCounter {
 }
 
 interface FeatureSummary {
+  localities: ValuedNatureLocality[]
   affectedFeatureCount: number
   featurePixelTotal: number
   uniquePixelCount: number
@@ -298,15 +325,27 @@ export function summarizeValuedNatureFeaturesForTest(
 function summarizeFeatures(
   features: readonly EsriValuedNatureFeature[],
   overlay: PlannedDevelopmentOverlayGrid,
+  areaFactor = 1,
 ): FeatureSummary {
   const byValue = new Map<string, GroupCounter>()
   const byType = new Map<string, GroupCounter>()
   const uniqueOverlap = new Uint8Array(overlay.analysisMask.length)
+  const winningValue = new Uint8Array(overlay.analysisMask.length)
+  const localities: ValuedNatureLocality[] = []
+  const seenIds = new Set<string>()
 
   let affectedFeatureCount = 0
   let featurePixelTotal = 0
 
   for (const feature of features) {
+    const value = attributeText(feature.attributes, 'Verdikategori')
+    const rank = valueCategoryOrder.indexOf(value)
+    if (rank < 0) continue
+    const id = feature.attributes.OBJECTID
+    if (id === undefined || id === null) throw new Error('Verdsatte naturtyper mangler kildeobjekt-ID')
+    const sourceId = String(id)
+    if (seenIds.has(sourceId)) continue
+    seenIds.add(sourceId)
     const rings = normalizeRings(feature.geometry?.rings)
     if (rings.length === 0) continue
 
@@ -316,10 +355,29 @@ function summarizeFeatures(
     affectedFeatureCount += 1
     featurePixelTotal += pixelIndices.length
 
-    const value = attributeText(feature.attributes, 'Verdikategori')
     const natureType = attributeText(feature.attributes, 'Naturtype')
+    localities.push({
+      id: sourceId,
+      name: attributeText(feature.attributes, 'Områdenavn'),
+      natureType, value, color: valueCategoryColors[value] ?? '#D8DDDA', rings,
+      overlapAreaKm2: pixelIndices.length * PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000 * areaFactor,
+    })
     incrementGroup(byValue, value, pixelIndices)
     incrementGroup(byType, natureType, pixelIndices)
+    for (const index of pixelIndices) {
+      if (!winningValue[index] || rank + 1 < winningValue[index]) winningValue[index] = rank + 1
+    }
+  }
+
+  // Category areas partition the unique union. Counts and per-locality areas
+  // still describe affected registrations, including lower-value overlaps.
+  for (const counter of byValue.values()) { counter.pixelCount = 0; counter.pixelIndices.clear() }
+  for (let index = 0; index < winningValue.length; index += 1) {
+    const rank = winningValue[index]
+    if (!rank) continue
+    const counter = byValue.get(valueCategoryOrder[rank - 1])!
+    counter.pixelCount += 1
+    counter.pixelIndices.add(index)
   }
 
   const uniquePixelIndices: number[] = []
@@ -328,6 +386,7 @@ function summarizeFeatures(
   }
 
   return {
+    localities,
     affectedFeatureCount,
     featurePixelTotal,
     uniquePixelCount: uniquePixelIndices.length,

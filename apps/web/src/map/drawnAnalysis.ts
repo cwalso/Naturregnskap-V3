@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from './utmArea'
 import type { Extent } from 'ol/extent'
 
 import {
@@ -128,6 +129,7 @@ export async function calculateDrawnAreaAnalysis(
     }
 
     const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
+      * await getMunicipalityAreaFactor(municipalityNumber, signal)
     const topLeftExtent = planTileGrid.getTileCoordExtent([
       PLAN_ANALYSIS_ZOOM,
       minX,
@@ -156,7 +158,7 @@ export async function calculateDrawnAreaAnalysis(
       tileCount: tileResults.length,
       pixelMeters: PLAN_PIXEL_METERS,
       source: 'Eget tegnet område',
-      methodVersion: 'drawn-area-raster-v1',
+      methodVersion: 'drawn-area-raster-v2',
       overlay: {
         kind: 'drawn',
         zoom: PLAN_ANALYSIS_ZOOM,

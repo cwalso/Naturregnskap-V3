@@ -115,7 +115,7 @@ Hovedhierarkiet er:
 1. **Velg analyseområde**
 2. **Kryss området med**
 3. **Resultat**
-4. **Finn resultatet i kartet**
+4. **Les og stedfest resultatet**
 
 På desktop:
 
@@ -144,16 +144,19 @@ Eksempel:
 
 Detaljfordeling kommer etter hovedtallet.
 
-«Finn resultatet i kartet» skal være en tydelig primærhandling når resultatet
-kan stedfestes.
+Etter resultatet skal kartet være hovedflate. «Zoom til treff» er en kompakt
+handling som beholder aktivt filter; brukeren skal ellers se treffene direkte.
+Område/datagrunnlag er sammenleggbart etter beregning, med lett tilgang til
+endre, tegn på nytt og fjern.
 
 Prototypen skiller analyseområde fra treff med en dempet ramme og sterk
 treffmarkering med lys kant. Eget polygon bruker en dempet stiplet ramme med
 transparent innside over treffene. Kommunegrensen ligger fortsatt øverst. Resultatkort for
-Natur/Jordbruk og eksisterende kategori-/naturtypevalg styrer treffmasken.
+Natur/Jordbruk styrer rastertreff; kategori-/naturtypevalg for Verdsatte
+naturtyper styrer faktiske lokaliteter i både kart og liste.
 Valgt delresultat markeres i panelet og kartets status/tegnforklaring.
-«Finn resultatet i kartet» beholder valget og viser alle valgte treff;
-«Vis alle treff» nullstiller. Null treff, skjult resultat, lasting og teknisk
+«Zoom til treff» beholder valget og viser alle valgte treff;
+«Vis alle» nullstiller Verdsatte naturtyper; «Vis alle treff» nullstiller Natur/Jordbruk. Null treff, skjult resultat, lasting og teknisk
 feil har forskjellige tekstlige tilstander. Akseptansekriteriene står i
 [brukerhistorien om tydelige overlaytreff](analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
 Videre kontroller skal følge eksisterende V3-komponenter og flyten område →

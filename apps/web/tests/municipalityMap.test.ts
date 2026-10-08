@@ -6,19 +6,27 @@ import VectorLayer from 'ol/layer/Vector'
 import type View from 'ol/View'
 import TileImage from 'ol/source/TileImage'
 import TileState from 'ol/TileState'
+import ImageTile from 'ol/ImageTile'
 import { DrawEvent, type default as Draw } from 'ol/interaction/Draw'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createMunicipalityMap } from '../src/map/municipalityMap'
 import type { DrawnAnalysisArea } from '../src/map/drawnAnalysis'
 import * as rasterOverlay from '../src/map/analysisRasterOverlay'
+import * as imageRequests from '../src/map/sharedImageRequests'
 
-const mapInstances = vi.hoisted(() => [] as { interactions: Draw[]; layers: BaseLayer[]; view: View }[])
+const mapInstances = vi.hoisted(() => [] as {
+  interactions: Draw[]; layers: BaseLayer[]; view: View;
+  handlers: Record<string, (event: { pixel: number[]; coordinate: number[] }) => void>;
+  picked: Feature | null;
+}[])
 vi.mock('ol/Map', () => ({
   default: class {
     interactions: Draw[] = []
     layers: BaseLayer[]
     view: View
+    handlers: Record<string, (event: { pixel: number[]; coordinate: number[] }) => void> = {}
+    picked: Feature | null = null
     constructor(options: { layers: BaseLayer[]; view: View }) {
       this.layers = options.layers
       this.view = options.view
@@ -31,7 +39,8 @@ vi.mock('ol/Map', () => ({
     updateSize() {}
     getSize() { return [390, 320] }
     renderSync() {}
-    on() {}
+    on(type: string, handler: (event: { pixel: number[]; coordinate: number[] }) => void) { this.handlers[type] = handler }
+    forEachFeatureAtPixel(_pixel: number[], callback: (feature: Feature) => string) { return this.picked ? callback(this.picked) : undefined }
     setTarget() {}
   },
 }))
@@ -84,6 +93,49 @@ describe('drawn analysis identity and map lifecycle', () => {
 })
 
 describe('active result map layers', () => {
+  it('selects the source object from map clicks and gives drawing precedence', () => {
+    const map = createMunicipalityMap(document.createElement('div'))
+    const selected = vi.fn()
+    map.setValuedNatureSelectionHandler(selected)
+    map.setValuedNaturePresentation({
+      municipalityNumber: '5001', analysisId: 'drawn:click-test', selectedId: null, selection: { kind: 'all' }, valueMetrics: [],
+      overlay: { kind: 'drawn', zoom: 9, cx0: 0, cy0: 0, width: 1, height: 1, extent: [0, 0, 10, 10], analysisMask: Uint8Array.of(1), cleaned: Uint8Array.of(1) },
+      localities: [{ id: 'source:42', name: 'Skogen', natureType: 'Skog', value: 'Stor verdi', color: '#FD7032', overlapAreaKm2: .001, rings: [[[0, 0], [0, 10], [10, 10], [10, 0], [0, 0]]] }],
+    })
+    const instance = mapInstances[0]
+    const picked = new Feature(new Polygon([[[0, 0], [10, 10], [0, 0]]]))
+    picked.setId('source:42')
+    instance.picked = picked
+    instance.handlers.singleclick({ pixel: [1, 1], coordinate: [1, 1] })
+    expect(selected).toHaveBeenLastCalledWith('source:42')
+    map.startDrawnAnalysisArea(vi.fn())
+    instance.handlers.singleclick({ pixel: [1, 1], coordinate: [1, 1] })
+    expect(selected).toHaveBeenCalledOnce()
+    map.cancelDrawnAnalysisArea()
+    instance.picked = null
+    instance.handlers.singleclick({ pixel: [1, 1], coordinate: [1, 1] })
+    expect(selected).toHaveBeenLastCalledWith(null)
+    map.destroy()
+  })
+
+  it('ignores late network tiles after their image has been disposed', async () => {
+    let finish: (blob: Blob) => void = () => {}
+    vi.spyOn(imageRequests, 'loadSharedImageBlob').mockImplementation(() => new Promise((resolve) => { finish = resolve }))
+    const map = createMunicipalityMap(document.createElement('div'))
+    const account = mapInstances[0].layers[2] as TileLayer
+    const accountSource = account.getSource()!
+    const tile = accountSource.getTile(10, 506, 368, 1, accountSource.getProjection()!)
+    if (!(tile instanceof ImageTile)) throw new Error('Expected an account image tile')
+    tile.load()
+    expect(imageRequests.loadSharedImageBlob).toHaveBeenCalledOnce()
+    tile.dispose()
+    expect(tile.getImage()).toBeNull()
+    finish(new Blob(['late tile']))
+    await Promise.resolve()
+    await Promise.resolve()
+    map.destroy()
+  })
+
   const overlay: rasterOverlay.AnalysisRasterOverlay = {
     width: 3, height: 2, extent: [0, 0, 30, 20],
     mask: Uint8Array.from([1, 0, 0, 0, 0, 1]), fillColor: '#006B57',
@@ -118,7 +170,7 @@ describe('active result map layers', () => {
     const drawn = layers[drawnIndex] as VectorLayer
     expect(drawn.getSource()!.getFeatures()[0].getGeometry()!.getExtent()).toEqual([...area.extent])
     expect(drawn.getVisible()).toBe(true)
-    expect(layers[drawnIndex - 1]).toBeInstanceOf(TileLayer)
+    expect(layers[drawnIndex - 1].getClassName()).toBe('valued-localities-hits')
     recreated.setDrawnAnalysisArea(null)
     expect(drawn.getSource()!.getFeatures()).toHaveLength(0)
     recreated.destroy()

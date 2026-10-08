@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor, municipalityAreaFactor } from '../map/utmArea'
 import proj4 from 'proj4'
 
 import type { MunicipalityBoundary } from './municipalities'
@@ -63,7 +64,7 @@ export interface ValuedNatureStatistics {
   readonly municipalityNumber: string
   readonly municipalityName: string
   readonly status: 'available'
-  readonly methodVersion: 'valued-nature-statistics-v1'
+  readonly methodVersion: 'valued-nature-statistics-v2'
   readonly source: 'Miljødirektoratet'
   readonly featureCount: number
   readonly registeredAreaKm2: number
@@ -77,8 +78,10 @@ export interface ValuedNatureStatistics {
 }
 
 export interface PlannedCoverageGap {
+  readonly analysisId: string
+  readonly municipalityNumber: string
   readonly status: 'available'
-  readonly methodVersion: 'planned-coverage-gap-v1'
+  readonly methodVersion: 'planned-coverage-gap-v2'
   readonly plannedAreaKm2: number
   readonly mappedPlannedAreaKm2: number
   readonly unmappedPlannedAreaKm2: number
@@ -86,7 +89,7 @@ export interface PlannedCoverageGap {
 }
 
 const statisticsCache = new Map<string, Promise<ValuedNatureStatistics>>()
-const coverageGapCache = new Map<string, Promise<PlannedCoverageGap>>()
+const coverageGapCache = new Map<string, { request: Promise<PlannedCoverageGap>; signal?: AbortSignal; completed: boolean }>()
 
 export function getValuedNatureStatistics(
   boundary: MunicipalityBoundary,
@@ -104,18 +107,35 @@ export function getValuedNatureStatistics(
   return request
 }
 
-export function getPlannedCoverageGap(
+export async function getPlannedCoverageGap(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedCoverageGap> {
-  const cached = coverageGapCache.get(analysis.municipalityNumber)
-  if (cached) return cached
-
-  const request = runPlannedCoverageGap(analysis, signal).catch((error: unknown) => {
-    coverageGapCache.delete(analysis.municipalityNumber)
+  signal?.throwIfAborted()
+  const key = `${analysis.municipalityNumber}:${analysis.analysisId}`
+  const cached = coverageGapCache.get(key)
+  if (cached && (cached.completed || !cached.signal?.aborted)) {
+    coverageGapCache.delete(key)
+    coverageGapCache.set(key, cached)
+    const result = await cached.request
+    signal?.throwIfAborted()
+    return result
+  }
+  const request = runPlannedCoverageGap(analysis, signal).then((result) => {
+    signal?.throwIfAborted()
+    entry.completed = true
+    let count = [...coverageGapCache.values()].filter((item) => item.completed).length
+    for (const [oldKey, old] of coverageGapCache) {
+      if (count <= 16) break
+      if (old.completed) { coverageGapCache.delete(oldKey); count -= 1 }
+    }
+    return result
+  }).catch((error: unknown) => {
+    if (coverageGapCache.get(key) === entry) coverageGapCache.delete(key)
     throw error
   })
-  coverageGapCache.set(analysis.municipalityNumber, request)
+  const entry = { request, signal, completed: false }
+  coverageGapCache.set(key, entry)
   return request
 }
 
@@ -138,13 +158,14 @@ async function runStatistics(
   ])
 
   const projectedBoundary = projectBoundary(boundary)
-  const municipalityAreaKm2 = geometryArea(projectedBoundary) / 1_000_000
+  const factor = municipalityAreaFactor(boundary)
+  const municipalityAreaKm2 = geometryArea(projectedBoundary) / 1_000_000 * factor
   const coverage = rasterCoverage(projectedBoundary, coverageFeatures)
   const mappedCoverageKm2 = coverage.coveredCellCount
-    * coverage.cellMeters * coverage.cellMeters / 1_000_000
+    * coverage.cellMeters * coverage.cellMeters / 1_000_000 * factor
 
   const featureMetrics = valuedFeatures.map((feature) => ({
-    areaKm2: featureArea(feature) / 1_000_000,
+    areaKm2: featureArea(feature) / 1_000_000 * factor,
     value: attributeText(feature.attributes, 'Verdikategori'),
     type: attributeText(feature.attributes, 'Naturtype'),
   }))
@@ -155,7 +176,7 @@ async function runStatistics(
     municipalityNumber: boundary.properties.number,
     municipalityName: boundary.properties.name,
     status: 'available',
-    methodVersion: 'valued-nature-statistics-v1',
+    methodVersion: 'valued-nature-statistics-v2',
     source: 'Miljødirektoratet',
     featureCount: valuedFeatures.length,
     registeredAreaKm2,
@@ -213,13 +234,16 @@ async function runPlannedCoverageGap(
     (overlay.extent[2] - overlay.extent[0]) / overlay.width
     * (overlay.extent[3] - overlay.extent[1]) / overlay.height
     / 1_000_000
+    * await getMunicipalityAreaFactor(analysis.municipalityNumber, signal)
 
   const plannedAreaKm2 = plannedCells * cellAreaKm2
   const mappedPlannedAreaKm2 = mappedPlannedCells * cellAreaKm2
 
   return {
     status: 'available',
-    methodVersion: 'planned-coverage-gap-v1',
+    methodVersion: 'planned-coverage-gap-v2',
+    analysisId: analysis.analysisId,
+    municipalityNumber: analysis.municipalityNumber,
     plannedAreaKm2,
     mappedPlannedAreaKm2,
     unmappedPlannedAreaKm2: Math.max(0, plannedAreaKm2 - mappedPlannedAreaKm2),
@@ -301,7 +325,9 @@ async function fetchFeatures(
       throw new Error(data.error.message ?? 'Temadatatjenesten returnerte en feil')
     }
 
-    const page = Array.isArray(data.features) ? data.features : []
+    if (!Array.isArray(data.features)) throw new Error('Deknings-/temadatatjenesten ga et ugyldig svar')
+    const page = data.features
+    if (data.exceededTransferLimit && page.length === 0) throw new Error('Deknings-/temadatatjenesten ga et ufullstendig svar')
     features.push(...page)
 
     if (!data.exceededTransferLimit && page.length < PAGE_SIZE) break

@@ -225,14 +225,15 @@ Gjeldende interaksjon og akseptansekriterier:
 
 1. Analyseområdet og treffområdet kan skilles visuelt, også uten bare å tolke
    farge. Brukeren kan se både områdets ramme og hvilke deler som gir treff.
-2. «Finn resultatet i kartet» gjør relevant resultat synlig og gir et
+2. «Zoom til treff» gjør relevant resultat synlig og gir et
    forståelig utsnitt, også for små eller spredte treff. Brukeren skal ikke
    måtte tolke flere nesten like lag for å finne treffet.
 3. Valg av verdikategori, naturtype eller annet delresultat gjenspeiles
    tydelig i kartet og markeres i resultatvisningen. Aktivt valg er synlig og
    kan nullstilles; det følger ikke med til et annet analyseområde.
 4. Tegnforklaring og status beskriver aktivt område, datagrunnlag, treff og
-   eventuelt filter. Kart og tall bruker samme analyseidentitet og mask.
+   eventuelt filter. Kart og tall deler analyseidentitet og gyldig avgrensning,
+   mens beregningsgrid og kildegeometri holdes adskilt.
 5. Null registrerte treff, skjult resultat, manglende grunnlag, lasting og
    teknisk feil har ulike forståelige tilstander. Tomt kart alene er ikke
    en tilstrekkelig forklaring. Null treff betyr ikke fravær av naturverdi.
@@ -242,10 +243,12 @@ Gjeldende interaksjon og akseptansekriterier:
    ikke denne kontrollen.
 
 Natur- og Jordbruk-kortene velger tilhørende treffmaske og finner den i kartet.
-Verdikategori og naturtype bruker eksisterende delresultater og pikselindekser.
-«Finn resultatet i kartet» beholder aktivt delresultat, gjør det synlig og
-tilpasser utsnittet til alle valgte treff. «Vis alle treff» nullstiller
-filteret. Område- og datagrunnlagsbytte nullstiller filter og skjult resultat.
+Verdikategori og naturtype filtrerer faktiske berørte kildeobjekter i både
+kart og liste. Svake hele lokaliteter viser kontekst; sterkt fyll følger
+gyldige analyse-/verdimasker.
+«Zoom til treff» beholder aktivt delresultat, gjør det synlig og
+tilpasser utsnittet til alle valgte treff. «Vis alle» nullstiller filteret for Verdsatte naturtyper, mens
+«Vis alle treff» nullstiller Natur/Jordbruk. Område- og datagrunnlagsbytte nullstiller filter og skjult resultat.
 Uten treff flyttes ikke kartet til en tom maske; statusen forklarer null treff
 og analyseområdets ramme beholdes.
 
@@ -258,17 +261,31 @@ rastermetode eller kommuneavgrensning.
 
 På mobil finnes snarveier mellom kart og resultat og tegnehandlinger ved
 kartet. Beregningsfeil, visningsfeil, lasting, utilgjengelig grunnlag, null
-treff og skjult resultat forklares som forskjellige tilstander. Videre
-objektinformasjon, flere tema og plansammenligning er fortsatt framtidige behov.
+treff og skjult resultat forklares som forskjellige tilstander. Generell
+objektinformasjon for andre analysegrunnlag, flere tema og
+plansammenligning er fortsatt framtidige behov.
 
 ## 12. Objektinformasjon for aktiv analyse
 
-**Status: TODO – mangler i den tilgjengelige analyseflyten**
+**Status: implementert for Verdsatte naturtyper; øvrige objektflyter er TODO**
 
-Som bruker ønsker jeg å velge et treff og få relevante opplysninger, kilde og
-kobling til delresultatet. Kartmotoren har tematisk feature-info, men relevante
-temalag er ikke aktive i analyseverkstedet og tilhørende popup vises ikke på
-temasidene. Dette er ikke en ferdig tilgjengelig objektflyt.
+Kart og kompakt resultatliste deler valgt lokalitet, filtrering på verdi og
+naturtype og Vis alle. Listevalg markerer og finner samme kildeobjekt i
+kartet; kartvalg markerer raden og detaljene uten å flytte hele siden.
+Detaljer viser navn, naturtype, verdi, kilde-ID og registrert overlappsareal
+med prototypeforbehold. Hovedresultat er antall og unikt areal; verdifordeling
+bruker høyeste verdi, mens objekter/naturtype fortsatt viser registrert areal.
+
+Etter resultatet er område/datagrunnlag sammenleggbart, og kartet er hovedflate.
+Tegn på nytt og Fjern område er fortsatt tilgjengelige. Zoom til treff er
+kompakt og beholder filteret. Mobil bruker separate kart-/resultatflater og
+44 px kontroller, uten et permanent objektpanel oppå kartet.
+
+Dekning hentes separat for aktiv kommune/analysisId. Registrert dekning, ingen
+registrert dekning, ukjent/lasting og teknisk feil formidles forskjellig.
+Andelen gjelder gyldig analysemask, ikke kommunens landareal. Null lokaliteter
+betyr aldri fravær av naturverdi. Ikke implementert: kartlag for dekning,
+generell inspektør, egne planobjekter eller klassifikasjonsobjekter.
 
 Akseptansekriterier:
 

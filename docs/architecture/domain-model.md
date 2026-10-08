@@ -111,8 +111,12 @@ AnalysisResult
   warnings[]
 ```
 
-Kart, nøkkeltall og tabeller for samme analyse skal bruke samme resultat eller
-samme analysemask.
+Kart, nøkkeltall og tabeller for samme analyse skal bruke samme resultat og
+identitet. Kildegeometri i kartet er en presentasjon av samme gyldige
+analyseområde, ikke en ny beregningsrepresentasjon. Berørt lokalitet har
+kilde-ID, navn, naturtype, verdikategori, geometri i EPSG:25833 og registrert
+overlappsareal på analysegridet. Objektvalg er knyttet til kommune/analysisId;
+kilde-ID alene er ikke global analyseidentitet.
 
 ## 7. ThematicImpact
 

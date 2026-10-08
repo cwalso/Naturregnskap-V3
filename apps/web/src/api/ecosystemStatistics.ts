@@ -1,3 +1,4 @@
+import { getMunicipalityAreaFactor } from '../map/utmArea'
 import { loadSharedImageBlob } from '../map/sharedImageRequests'
 import {
   classifyAccountPixel,
@@ -35,7 +36,7 @@ export interface EcosystemStatisticsAvailable {
   readonly municipalityName: string
   readonly source: 'NIBIO Grunnkart for arealanalyse'
   readonly sourceVersion: '2025'
-  readonly methodVersion: 'ecosystem-types-raster-v1'
+  readonly methodVersion: 'ecosystem-types-raster-v2'
   readonly municipalityMappedAreaKm2: number
   readonly natureAreaKm2: number
   readonly metrics: readonly EcosystemMetric[]
@@ -124,6 +125,7 @@ async function calculateEcosystemStatistics(
 
     const pixelAreaKm2 =
       NATURE_TYPE_PIXEL_METERS * NATURE_TYPE_PIXEL_METERS / 1_000_000
+      * await getMunicipalityAreaFactor(municipalityNumber, signal)
     const municipalityMappedAreaKm2 = mappedPixels * pixelAreaKm2
     const natureAreaKm2 = naturePixels * pixelAreaKm2
 
@@ -146,7 +148,7 @@ async function calculateEcosystemStatistics(
       municipalityName,
       source: 'NIBIO Grunnkart for arealanalyse',
       sourceVersion: '2025',
-      methodVersion: 'ecosystem-types-raster-v1',
+      methodVersion: 'ecosystem-types-raster-v2',
       municipalityMappedAreaKm2,
       natureAreaKm2,
       metrics,

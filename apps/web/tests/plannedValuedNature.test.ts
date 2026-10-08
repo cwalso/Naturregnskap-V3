@@ -19,6 +19,7 @@ describe('valued nature × future development', () => {
     expect(body.get('returnGeometry')).toBe('true')
     expect(body.get('outFields')).toContain('Verdikategori')
     expect(body.get('outFields')).toContain('Naturtype')
+    expect(body.get('where')).toBe("Verdikategori IN ('Svært stor verdi','Stor verdi','Middels verdi','Noe verdi')")
 
     const geometry = JSON.parse(body.get('geometry') ?? '{}')
     expect(geometry).toMatchObject({
@@ -83,6 +84,24 @@ describe('valued nature × future development', () => {
     })
     expect(summary.uniquePixelIndices).toHaveLength(7)
     expect(summary.byValue.get('Svært stor verdi')?.pixelIndices.size).toBe(4)
+    expect(summary.byValue.get('Stor verdi')?.pixelIndices.size).toBe(3)
+    expect(summary.byValue.get('Stor verdi')?.pixelCount).toBe(3)
+  })
+
+  it('excludes other categories and unknown values and gives the highest value every overlapping cell', () => {
+    const overlay: PlannedDevelopmentOverlayGrid = { kind: 'drawn', zoom: 9, cx0: 0, cy0: 0, width: 2, height: 2, extent: [0, 0, 2, 2], cleaned: new Uint8Array(4), analysisMask: new Uint8Array(4).fill(1) }
+    const geometry = { rings: [[[0, 0], [0, 2], [2, 2], [2, 0], [0, 0]]] as [number, number][][] }
+    const summary = summarizeValuedNatureFeaturesForTest(['Noe verdi', 'Ikke gitt verdi', 'Stor verdi', 'Svært stor verdi', 'Middels verdi', 'Vurderes per lokalitet'].map((value, id) => ({ attributes: { OBJECTID: id, Verdikategori: value, Naturtype: 'Samme type' }, geometry })), overlay)
+    expect(summary.affectedFeatureCount).toBe(4)
+    expect(summary.uniquePixelCount).toBe(4)
+    expect(summary.featurePixelTotal).toBe(16)
+    expect(summary.byValue.get('Svært stor verdi')?.pixelCount).toBe(4)
+    for (const category of ['Stor verdi', 'Middels verdi', 'Noe verdi']) {
+      expect(summary.byValue.get(category)).toMatchObject({ pixelCount: 0, featureCount: 1 })
+    }
+    expect([...summary.byValue.values()].reduce((sum, metric) => sum + metric.pixelCount, 0)).toBe(summary.uniquePixelCount)
+    expect(summary.byType.get('Samme type')?.pixelCount).toBe(16)
+    expect(summary.localities).toHaveLength(4)
   })
 
   it('respects holes in polygon geometry', () => {
@@ -101,6 +120,7 @@ describe('valued nature × future development', () => {
     const summary = summarizeValuedNatureFeaturesForTest([
       {
         attributes: {
+          OBJECTID: 201,
           Verdikategori: 'Middels verdi',
           Naturtype: 'Testnaturtype',
         },
@@ -134,7 +154,7 @@ describe('valued nature × future development', () => {
       analysisId: 'planned:5001',
       status: 'available',
       source: 'Miljødirektoratet – naturtyper med KU-verdi',
-      methodVersion: 'planned-valued-nature-v1',
+      methodVersion: 'planned-valued-nature-v2',
       pixelMeters: 21,
       candidateFeatureCount: 2,
       affectedFeatureCount: 2,
@@ -150,7 +170,7 @@ describe('valued nature × future development', () => {
         sharePercent: 50,
         mapPixelIndices: Uint32Array.from([1, 5]),
       }],
-      typeMetrics: [],
+      typeMetrics: [], localities: [],
     } satisfies PlannedValuedNatureAnalysis
 
     const result = buildValuedNatureMapOverlay(
@@ -165,4 +185,40 @@ describe('valued nature × future development', () => {
     expect(result?.mask[2]).toBe(0)
   })
 
+})
+
+
+describe('locality identity and exclusive values', () => {
+  const overlay: PlannedDevelopmentOverlayGrid = { kind: 'drawn', zoom: 9, cx0: 0, cy0: 0, width: 4, height: 4, extent: [0, 0, 4, 4], cleaned: new Uint8Array(16), analysisMask: new Uint8Array(16).fill(1) }
+  const outer: [number, number][] = [[0, 0], [0, 4], [4, 4], [4, 0], [0, 0]]
+  it('partitions a three-level overlap into exclusive highest-value cells', () => {
+    const summary = summarizeValuedNatureFeaturesForTest([
+      { attributes: { OBJECTID: 701, Verdikategori: 'Noe verdi', Naturtype: 'Eng' }, geometry: { rings: [outer] } },
+      { attributes: { OBJECTID: 702, Verdikategori: 'Middels verdi', Naturtype: 'Skog' }, geometry: { rings: [[[2, 0], [2, 4], [4, 4], [4, 0], [2, 0]]] } },
+      { attributes: { OBJECTID: 703, Verdikategori: 'Svært stor verdi', Naturtype: 'Myr' }, geometry: { rings: [[[2, 2], [2, 4], [4, 4], [4, 2], [2, 2]]] } },
+    ], overlay)
+    expect(summary.byValue.get('Noe verdi')?.pixelCount).toBe(8)
+    expect(summary.byValue.get('Middels verdi')?.pixelCount).toBe(4)
+    expect(summary.byValue.get('Svært stor verdi')?.pixelCount).toBe(4)
+    expect([...summary.byValue.values()].reduce((sum, value) => sum + value.pixelCount, 0)).toBe(summary.uniquePixelCount)
+    expect(summary.uniquePixelCount).toBe(16)
+    expect(summary.featurePixelTotal).toBe(28)
+  })
+  it('counts one source ID once, including multiple parts and holes, and excludes subpixel localities', () => {
+    const multipart = { attributes: { OBJECTID: 501, Verdikategori: 'Stor verdi', Naturtype: 'Skog' }, geometry: { rings: [outer, [[1, 1], [3, 1], [3, 3], [1, 3], [1, 1]], [[10, 10], [10, 11], [11, 11], [11, 10], [10, 10]]] as [number, number][][] } }
+    const tiny = { attributes: { OBJECTID: 502, Verdikategori: 'Stor verdi', Naturtype: 'Skog' }, geometry: { rings: [[[.1, .1], [.1, .2], [.2, .2], [.2, .1], [.1, .1]]] as [number, number][][] } }
+    const summary = summarizeValuedNatureFeaturesForTest([multipart, multipart, tiny], overlay)
+    expect(summary.affectedFeatureCount).toBe(1)
+    expect(summary.localities.map((item) => item.id)).toEqual(['501'])
+    expect(summary.featurePixelTotal).toBe(12)
+    expect(summary.uniquePixelCount).toBe(12)
+  })
+  it('keeps two same-value registrations but counts their shared cells once for value area', () => {
+    const features = [601, 602].map((id) => ({ attributes: { OBJECTID: id, Verdikategori: 'Stor verdi', Naturtype: id === 601 ? 'Skog' : 'Eng' }, geometry: { rings: [outer] } }))
+    const summary = summarizeValuedNatureFeaturesForTest(features, overlay)
+    expect(summary.affectedFeatureCount).toBe(2)
+    expect(summary.byValue.get('Stor verdi')).toMatchObject({ pixelCount: 16, featureCount: 2 })
+    expect(summary.featurePixelTotal).toBe(32)
+    expect(summary.uniquePixelCount).toBe(16)
+  })
 })
