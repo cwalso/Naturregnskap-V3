@@ -1,228 +1,226 @@
 # V3 målbilde – teknisk referanse fra Publicdemorepo
 
-**Dato:** 2026-10-06  
-**Status:** Målbilde for videre V3-utvikling
+**Dato:** 08.10.2026  
+**Status:** Levende teknisk referanse; flere mønstre er nå implementert i V3
 
 ## Utgangspunkt
 
-Publicdemorepo viser at mye av den praktiske verdien i et kommunalt
-naturregnskap kan realiseres med en enkel dataflyt:
+Publicdemorepo brukes som funksjonell og teknisk referanse for en enkel
+dataflyt:
 
 ```text
 kommunevalg
-  -> autoritativ kilde
-  -> avgrensning mot kommune
-  -> enkel analyse / klassifisering
-  -> kart + tall + objekter
+  -> data/kartkilde
+  -> kommuneavgrensning
+  -> enkel analyse/klassifisering
+  -> tall + kart + objekter
 ```
 
-V3 skal ta med seg denne enkelheten, men ikke kopiere demonstratorens
-monolittiske implementasjon. V3 skal beholde et tydelig skille mellom:
+V3 skal beholde denne enkelheten uten å kopiere demonstratorens monolittiske
+struktur.
 
-1. selve naturregnskapet
+Repoet brukes som referanse for mønstre, ikke som kilde for ukritisk kodekopi.
+
+## Faglig ramme
+
+V3 skal alltid skille mellom:
+
+1. naturregnskap
 2. supplerende temadata
 3. analyse- og beslutningsstøtte
 4. veiledning og formidling
 
-Publicdemorepo brukes som funksjonell og teknisk referanse. Repoet har ingen
-lisensfil, og kode skal derfor ikke kopieres. Mønstrene reimplementeres i V3.
+Publicdemorepo kan være teknisk enklere enn dette skillet. V3 skal ikke ofre
+faglig presisjon for å ligne demonstratoren.
 
-## Arkitekturprinsipp: hybrid
+## Mønstre som er tatt inn i V3
 
-V3 skal ikke gjøre alle datakilder til backend-prosesser. Samtidig skal
-regnskapskritiske beregninger ikke flyttes ut i nettleseren.
+Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 
-```text
-                         Valgt kommune
-                              |
-                      felles kommunekontekst
-                              |
-             +----------------+----------------+
-             |                |                |
-      Regnskapsmotor     Temadatamotor     Kartmotor
-      versjonert         dynamisk          dynamisk
-      etterprøvbar       supplerende       visualisering
-             |                |                |
-             +----------------+----------------+
-                              |
-                       fire temasider
-```
-
-### Regnskapsmotor
-
-Brukes når resultatet skal omtales som del av naturregnskapet.
-
-Krav:
-
-- heldekkende og definert regnskapsområde
-- eksplisitt metodeversjon
-- eksplisitt dataversjon
-- dokumentert bokføringsregel
-- autoritativ arealberegning
-- rekonsiliering
-- sporbarhet
-
-Frontend skal ikke eie disse beregningene.
-
-### Temadatamotor
-
-Brukes for supplerende innsikt, for eksempel verneområder, villrein,
-verdsatte naturtyper og inngrepsfri natur.
-
-Mønster:
-
-```text
-kommunegrense
-  + feature-/karttjeneste
-  -> treff / objekter / eventuell arealanalyse
-  -> tydelig dekning og begrensning
-```
-
-Dynamiske kilder kan brukes direkte eller via backend-adapter avhengig av CORS,
-stabilitet, geometribehov og behov for felles validering.
-
-### Kartmotor
-
-WMS og tilsvarende karttjenester brukes til rask visualisering. Et WMS-bilde er
-ikke et autoritativt arealgrunnlag. Samme datasett kan derfor ha både
-`visualSource` og `analysisSource`.
-
-## Felles kommunekontekst
-
-Kommunevalg er inngangen til hele tjenesten. Følgende skal deles på tvers av
-alle temasider:
-
-- kommunenummer og navn
-- kommunegrense
-- aktive datakilder
-- regnskapsstatus
-- temadatastatus
-- karttilstand
-- cache for data som allerede er hentet
-
-Bytte mellom temasider skal ikke utløse unødvendig ny nedlasting av samme data.
-
-## Funksjonsmapping fra Publicdemorepo
-
-| Funksjon i demonstratoren | V3-plassering | Rolle i V3 |
+| Mønster fra referansen | Status i V3 | Implementasjon |
 | --- | --- | --- |
-| Kommunevalg | Felles skall | Felles kontekst for alle sider |
-| Kommunegrense fra Kartverket | Felles kjerne | Avgrensning, kart og analyser |
-| NIBIO Grunnkart WMS | Oversikt + Utforsk i kart | Visualisering av heldekkende grunnlag |
-| Gruppering Bebygd/Jordbruk/Natur i kart | Oversikt + Utforsk i kart | Presentasjon; regnskapstall kommer fra regnskapsmotor |
-| SSB 09594 hovedtall | Ikke regnskapsgrunnlag uten metodevedtak | Kan brukes som referanse/validering, ikke erstatte Grunnkart-regnskap |
-| SSB tidsserie | Naturtapet, evt. referanse | Må ikke presenteres som faktisk arealendring uten egnet endringsprodukt |
-| Verneområder | Hva slags natur har vi? + kart | Supplerende temadata |
-| Villrein | Hva slags natur har vi? + kart | Supplerende temadata, regional dekning |
-| Verdsatte naturtyper | Hva slags natur har vi? + kart | Supplerende temadata; dekningsgrad må vises |
-| INON | Hva slags natur har vi? + kart | Supplerende indikator |
-| Objektliste og faktaark | Utforsk i kart | Objektinformasjon og kilde |
-| Klikk i kart | Utforsk i kart | Objektidentifikasjon |
-| Caching i nettleser | Felles kjerne | Ytelse og færre kall |
-| Teknisk kall-logg | Utviklerdiagnostikk | Ikke primær brukerfunksjon |
-| Kommuneplan / planlagt utbygging | Ikke i første V3 | Holdes utenfor inntil mandat/metode er avklart |
-| Oversiktsbilde ved lav zoom | Kartmotor | Mulig ytelsesstrategi, ikke fagmodell |
+| Kommune som felles kontekst | Implementert | Kommunevalg og kommunegrense deles på tvers av sider |
+| Oversiktsraster ved grov zoom | Implementert for prototypekommune | Prepared Grunnkart-raster + detaljerte fliser |
+| Flisbasert analyse | Implementert | Fast rastergrid for plan/polygonoverlay |
+| Tegne eget polygon | Implementert | OpenLayers Draw + samme overlaypipeline |
+| Gjenbruk av data mellom kart/analyse | Implementert delvis | Felles råfliser der URL/datagrunnlag er identisk |
+| Begrenset samtidighet | Implementert | Maks 4 kall per datakilde |
+| Deling av pågående identiske kall | Implementert | `sharedImageRequests.ts` |
+| Begrenset browsercache | Implementert | 400 råbilder per kilde i dagens prototype |
+| Kart + tall fra samme analysemask | Implementert som mål/mønster | Overlayresultater bruker felles rastermask |
+| Objektinformasjon | Implementert for relevante temalag | Feature info / temadata |
 
-## Fire temasider
+## Dagens analyseverksted
 
-### 1. Oversikt
+`Utforsk i kart` er ikke lenger tenkt som en generell lagvelger.
 
-Primærspørsmål:
+Primærflyten er:
 
-> Hvor mye natur har kommunen?
+```text
+1. velg analyseområde
+   ├─ framtidig utbygging
+   └─ eget polygon
 
-Skal vise:
+2. kryss området med
+   ├─ Natur og jordbruk
+   └─ Verdsatte naturtyper
 
-- Natur
-- Dyrket mark som brukerrettet presentasjon av jordbrukskategorien
-- Bebygd
-- kompakt kart
-- datagrunnlag og metode sekundært
+3. les resultat
 
-Tall som omtales som naturregnskap skal komme fra den versjonerte
-regnskapsmotoren. Kartet kan hentes dynamisk fra NIBIO.
+4. finn resultatet i kartet
+```
 
-### 2. Naturtapet
+Dette mønsteret skal beholdes dersom flere analyser legges til.
 
-Primærspørsmål:
+## Fremtidig utbygging
 
-> Hvor mye natur er dokumentert bygget ned over tid?
+DiBKs kommuneplantjeneste brukes i prototypen for å identifisere områder med
+framtidig arealbruk etter dagens tekniske filter.
 
-Skal skille mellom:
+Denne analysen er:
 
-- dokumentert endring
-- statistisk kontekst
-- eventuell naturtypefordeling når metode og kilder støtter det
+- beslutningsstøtte
+- prototype
+- ikke et eget naturregnskap
+- ikke en naturfaglig konsekvensutredning
+- ikke en garanti om at arealet faktisk bygges ut
 
-Aggregert SSB-statistikk kan brukes som kontekst, men ikke konstrueres til
-stedfestede tap eller omtales som faktisk endringsanalyse dersom kilden ikke
-støtter dette.
+Målet er å undersøke hvilken natur som ligger i analyseområdet, ikke å bygge en
+generell planreserveapplikasjon.
 
-### 3. Hva slags natur har vi?
+## Tegnet område
 
-Primærspørsmål:
+Brukerdefinert polygon er implementert som samme konseptuelle type
+analyseområde som framtidig utbygging.
 
-> Hva vet vi mer om naturen i kommunen?
+Det betyr at:
 
-Skal inneholde to tydelige lag:
+- analyseområdet har eksplisitt geometri
+- rasterisering skjer på samme grid
+- samme analysemotor kan gjenbrukes
+- cache nøckles på `analysisId`
+- kart og tall skal bruke samme område/mask
 
-1. heldekkende informasjon som metodisk kan kobles til regnskapsgrunnlaget
-2. supplerende temadata
+Dette er et viktig designprinsipp for senere områdebaserte analyser.
 
-Første prioriterte supplerende tema:
+## Ytelsesstrategi
 
-- verneområder
-- villrein
-- verdsatte naturtyper
-- inngrepsfri natur
+Referanseimplementasjonen viste at nettleseranalyse kan fungere dersom
+datatilgangen holdes enkel og kontrollert.
 
-For hvert tema skal V3 vise kilde, dekning, treffstatus og viktige
-begrensninger.
+V3 bruker derfor:
 
-### 4. Utforsk i kart
+- fliser i stedet for store heldekkende bilder når mulig
+- begrenset samtidighet
+- deduplisering av identiske requests
+- delt cache
+- gjenbruk av råfliser
+- prepared oversiktsraster ved grov målestokk
 
-Primærspørsmål:
+Dette skal ikke føre til at faglig metode gjemmes i ytelseskode.
 
-> Hvor ligger arealene og de registrerte naturverdiene?
+## Kartmotor og analysegrunnlag
 
-Skal være den mest fleksible arbeidsflaten:
+Et datasett kan ha ulike tekniske roller:
 
-- Grunnkart
-- supplerende kartlag
-- objektinformasjon
-- klikkbare kildelenker
-- lag av/på
-- kommunegrense
-- senere eventuelt analyseverktøy
+- visningskilde
+- analysekilde
+- prepared/prosessert grunnlag
 
-Kartet skal ikke gjøre visuelle lag om til regnskapsdata uten separat
-analysegrunnlag.
+I dagens prototype brukes klassifiserte WMS-rasterfliser også i enkelte
+nettleserbaserte overlayanalyser. Dette er en pragmatisk prototypeløsning.
+
+Regnskapskritiske/autoritative tall skal fortsatt kunne produseres fra en
+versjonert, kontrollert analysekilde.
+
+## Temasider
+
+Gjeldende temasider er:
+
+- Myr (våtmark)
+- Skog
+- Verdsatte naturtyper
+- Verneområder
+- Villreinområder
+- Inngrepsfri natur
+- Bynaturen (grå arealer)
+
+Ikke alle har samme faglige rolle eller datadekning.
+
+Temadata skal visuelt avgrenses til valgt kommune.
+
+## Fire hovedflater
+
+### Kommuneoversikt
+
+Svar på:
+
+> Hva har kommunen i dag på et overordnet nivå?
+
+Skal prioritere forståelige hovedtall og kompakt kart.
+
+### Naturtapet
+
+Svar på:
+
+> Hva er dokumentert bygget ned over tid?
+
+Skal ikke konstruere stedfestet naturtap fra statistikk som ikke er stedfestet.
+
+### Naturtema
+
+Svar på:
+
+> Hva vet vi mer om naturen og den utbygde delen av kommunen?
+
+Skal tydelig skille heldekkende regnskapsgrunnlag og supplerende temadata.
+
+### Utforsk i kart
+
+Svar på:
+
+> Hva overlapper et valgt område, og hvor ligger resultatet?
+
+Dette er analyse- og beslutningsstøtte.
 
 ## Datakildekontrakt
 
-Alle kilder som brukes i V3 skal beskrive minst:
+Koblede datakilder bør beskrive minst:
 
 - identifikator
 - faglig rolle
-- hvilke temasider kilden kan brukes på
+- hvilke sider/analyser de brukes i
 - dataeier
-- visualiseringskilde
+- visningskilde
 - analysekilde
-- versjon eller status som løpende tjeneste
+- versjon/status
 - geografisk dekning
-- viktige begrensninger
+- begrensninger
 
-Dette registeret er den tekniske kontrakten mellom fag, data og presentasjon.
+## Hva som fortsatt ikke er løst av referansemønsteret
 
-## Prioritert implementeringsrekkefølge
+Publicdemorepo løser ikke alene:
 
-1. Felles kommunekontekst og cache.
-2. Dataset-register med eksplisitt rolle per temaside.
-3. Oversikt kobles til regnskapsmotor + NIBIO-kart.
-4. Hva slags natur har vi? utvides med verdsatt natur og INON.
-5. Utforsk i kart bruker samme registrerte kilder.
-6. Naturtapet kobles til eget endringsgrunnlag når dette er avklart.
+- autoritativ regnskapsføring
+- tidsserier og metodebrudd
+- versjonert produksjonsberegning
+- eierskap og forvaltning etter prosjektperioden
+- nasjonal skalerbarhet
+- dokumentert datakvalitet
+- produksjonsarkitektur
 
-Det sentrale er ikke å kopiere én enkelt nettside, men å beholde den enkle
-dataflyten samtidig som V3 får sporbarhet, klare faglige skiller og et
-forvaltbart design- og kodegrunnlag.
+Disse må løses som egne styrings-, fag- og arkitekturspørsmål.
+
+## Videre teknisk retning
+
+Før flere analysefunksjoner bygges bør V3 prioritere:
+
+1. stabilitet og validering av eksisterende overlayberegninger
+2. kontroll av prosentnevnere og arealrekonsiliering
+3. kart/resultat-samsvar
+4. måling av request/cache-effekt
+5. dokumentasjon av metodeversjoner
+6. nye temaanalyser først etter faglig avklaring
+
+Det sentrale er ikke å kopiere én demonstrator, men å gjenbruke gode mønstre
+uten å miste sporbarhet og faglig presisjon.
