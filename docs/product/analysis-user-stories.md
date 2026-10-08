@@ -1,106 +1,190 @@
-# Brukerhistorier – fremtidig analyse
+# Brukerhistorier – analyse og beslutningsstøtte
 
-Dette dokumentet beskriver brukerbehovene som skal være styrende for videre utvikling av analysefunksjonalitet i V3.
+**Sist oppdatert: 08.10.2026**
 
-## 1. Gjeldende KPA
+Dette dokumentet beskriver brukerbehovene som skal styre analysefunksjonaliteten
+i V3. Status skilles mellom det som er implementert i prototypen og det som
+fortsatt er framtidig.
 
-Som bruker ønsker jeg å se hvordan gjeldende kommuneplanens arealdel påvirker naturen i kommunen.
+## 1. Hovedbruker og arbeidsflyt
 
-Løsningen skal på sikt kunne:
+Primærbrukeren er en kommunal arealplanlegger.
 
-- vise gjeldende KPA/planreserve i kart
-- vise overlapp mellom planlagt utbygging og Grunnkart for arealanalyse
-- vise relevante supplerende temadata i de berørte områdene
-- beregne areal som potensielt berøres
-- presentere både kart og statistikk
-- gi grunnlag for rapportering
+Brukeren skal ikke måtte starte med å velge mange kartlag. Primærflyten er:
 
-Aktuelle temadata er foreløpig:
+1. velg analyseområde
+2. velg datagrunnlag
+3. les resultat
+4. finn resultatet i kartet
 
-- inngrepsfri natur
+Kartet brukes til stedfesting. Resultatet skal være forståelig som tall og tekst
+før brukeren tolker kartet.
+
+## 2. Framtidig utbygging – implementert prototype
+
+**Status: implementert prototype**
+
+Som bruker ønsker jeg å se hvilken natur og hvilke registrerte naturverdier som
+ligger i områder satt av til framtidig utbygging.
+
+Dagens prototype kan:
+
+- bruke framtidige utbyggingsområder fra kommuneplantjenesten som analyseområde
+- krysse analyseområdet med Natur og jordbruk fra Grunnkart
+- vise fordeling på økosystemtyper der beregningen er koblet inn
+- krysse analyseområdet med Verdsatte naturtyper
+- vise resultat som areal/nøkkeltall
+- stedfeste analyseresultatet i kartet
+
+Dette er beslutningsstøtte. Resultatet skal ikke omtales som sikkert framtidig
+naturtap eller naturfaglig konsekvensutredning.
+
+## 3. Eget polygon – implementert prototype
+
+**Status: implementert prototype**
+
+Som bruker ønsker jeg å tegne et område direkte i kartet og få samme type
+analyse som for framtidig utbygging.
+
+Dagens prototype støtter:
+
+- start tegning
+- registrering av polygonpunkter
+- angre siste punkt
+- ferdig
+- avbryt
+- tegn på nytt
+- fjern område
+
+Det tegnede området:
+
+- rasteriseres
+- avgrenses til valgt kommune
+- analyseres på samme overordnede rasterpipeline som øvrig overlay
+- kan krysses med Natur og jordbruk
+- kan krysses med Verdsatte naturtyper
+
+Ved endringer skal det testes at gammel analyse/cache ikke følger med når
+brukeren bytter mellom framtidig utbygging og eget polygon.
+
+## 4. Natur og jordbruk – implementert prototype
+
+**Status: implementert prototype**
+
+Som bruker ønsker jeg å forstå hvor mye Natur og Jordbruk som overlapper valgt
+analyseområde.
+
+Resultatet skal minst vise:
+
+- berørt Natur i dekar
+- berørt Jordbruk i dekar
+- relevant andel av analyseområdet når nevneren er metodisk riktig
+- økosystemfordeling der den er beregnet
+- knapp for å finne resultatet i kartet
+
+Prosentandeler skal ikke vises dersom nevneren ikke kan dokumenteres.
+
+## 5. Verdsatte naturtyper – implementert prototype
+
+**Status: implementert prototype**
+
+Som bruker ønsker jeg å se hvilke registrerte verdsatte naturtyper som
+overlapper analyseområdet.
+
+Resultatet skal kunne vise:
+
+- antall berørte registrerte lokaliteter
+- beregnet unikt overlappsareal
+- fordeling på verdikategori
+- fordeling på naturtype der datagrunnlaget støtter det
+- stedfesting av alle eller filtrerte treff i kartet
+
+Verdsatte naturtyper er supplerende temadata. Manglende treff eller dekning skal
+ikke tolkes som fravær av naturverdi.
+
+## 6. Flere temadata i overlay
+
+**Status: under vurdering**
+
+Aktuelle tema for senere overlay er blant annet:
+
 - verneområder
 - villreinområder
-- verdsatte naturtyper
+- inngrepsfri natur
+- andre eksplisitt prioriterte temadata
 
-KPA kan prinsipielt komme fra nasjonal plandatabase, forhåndslastede data eller lokal opplasting. Endelig kilde og integrasjonsmåte er ikke besluttet.
+Disse skal ikke kobles inn bare fordi de finnes som kartlag. For hvert tema må
+det avklares:
 
-## 2. Forslag til ny KPA
+- hva analysen faktisk skal svare på
+- hvilken analysekilde som brukes
+- om areal, objektantall eller treffstatus er riktig resultat
+- dekning og datamangler
+- hvordan resultatet skal presenteres uten å skape falsk presisjon
 
-Som bruker ønsker jeg å analysere forslag til ny KPA og sammenligne denne med gjeldende KPA.
+## 7. Forslag til ny KPA og plansammenligning
 
-Løsningen skal på sikt kunne:
+**Status: framtidig**
 
-- laste inn forslag til ny KPA
-- vise gjeldende og foreslått KPA i samme løsning
-- sammenligne planlagt arealbruk
-- vise hvor ny plan øker eller reduserer planlagt nedbygging
-- synliggjøre arealer som tas ut gjennom planvask
-- sammenligne berørte naturarealer og supplerende naturdata
+Som bruker ønsker jeg på sikt å analysere forslag til ny KPA og sammenligne den
+med gjeldende plan.
 
-Gjeldende KPA og forslag til ny KPA skal bruke samme underliggende plan- og analysemodell.
+Aktuelle behov:
 
-## 3. Rapportering
+- laste inn eller velge forslag til ny KPA
+- sammenligne gjeldende og foreslått arealbruk
+- vise arealer som legges til eller tas ut
+- sammenligne berørt natur
+- støtte planvask
 
-Analyseverktøyet skal på sikt kunne presentere resultater for både enkeltområder og planen samlet.
+Gjeldende og foreslått KPA bør bruke samme underliggende analysemodell dersom
+dette utvikles.
 
-Aktuelle resultater:
+## 8. Rapportering
 
-- planlagt berørt naturareal fordelt på økosystemtyper
-- planlagt berørt areal for gjeldende og ny KPA
-- berørt inngrepsfri natur
-- berørte verneområder
-- berørte villreinområder
-- berørte verdsatte naturtyper
-- andel/areal der relevante temadata mangler
+**Status: framtidig / delvis dekket av dagens resultatvisning**
 
-Kart, tabeller, grafer og rapport skal bygge på samme analyseresultat.
+Kart, tabeller, grafer og eventuell rapport skal bygge på samme analyseresultat.
 
-PDF/digital rapport er et aktuelt behov. Eksakt rapportformat besluttes senere.
+Mulige framtidige rapportresultater:
 
-## 4. Sammenheng med naturregnskapet
+- samlet berørt Natur og Jordbruk
+- fordeling på økosystemtyper
+- berørte registrerte naturverdier
+- datadekning og usikkerhet
+- analyseområde, dataversjon og metodeversjon
 
-Analyseverktøyet er ikke det samme som selve naturregnskapet, men skal oppleves som en sammenhengende del av samme tjeneste.
+PDF eller annen rapportform besluttes senere.
 
-Det innebærer blant annet:
+## 9. Kartleggingsgrad og datamangler
 
-- felles designprinsipper
-- gjenbruk av de samme relevante datakildene
-- konsistente begreper
-- samme forståelse av dataversjoner, metadata og usikkerhet
+Brukeren trenger å forstå når kunnskapsgrunnlaget er mangelfullt.
 
-## 5. Tegne eget polygon
+Løsningen skal skille mellom:
 
-Lavere prioritert behov:
+- registrert treff
+- ingen registrerte treff
+- ikke kartlagt/ukjent
+- teknisk feil
 
-Som bruker ønsker jeg å kunne tegne et polygon og få oversikt over naturen som finnes eller er registrert innenfor området.
+For Verdsatte naturtyper er kartleggingsgrad/dekningsinformasjon særlig
+relevant.
 
-Mulige bruksområder:
+## 10. Ikke-funksjonelle behov
 
-- tidlig siling av nye utbyggingsinnspill
-- planvask
-- vurdering av enkeltområder
-- prosjektbaserte analyser
+Analyseverktøyet skal:
 
-Dette skal bruke samme analysemotor som KPA-analyse, ikke en separat beregningslogikk.
+- fungere på mobil og desktop
+- være tydelig i tegnemodus
+- ikke starte unødvendige parallelle analyser ved React-rerender
+- gjenbruke identiske rasterfliser
+- begrense samtidige nettverkskall
+- avbryte/ignorere stale resultater ved område- eller kommunebytte
+- gi forståelig feilmelding i stedet for falsk 0
 
-## 6. Kartleggingsgrad og datamangler
+## Prioritering videre
 
-Brukeren trenger å forstå hvor kunnskapsgrunnlaget er mangelfullt.
-
-Løsningen skal derfor kunne vise kartleggingsgrad/dekning der datakilden støtter dette, særlig for verdsatte naturtyper/NiN-relatert kartlegging.
-
-Manglende temadata skal uttrykkes som ukjent eller ikke kartlagt, ikke som null naturverdi.
-
-## Prioritering
-
-Høy prioritet:
-
-1. analyse av gjeldende KPA
-2. analyse og sammenligning av forslag til ny KPA
-3. felles resultatmodell og rapportgrunnlag
-4. tydelig sammenheng med naturregnskapet
-
-Lavere prioritet:
-
-5. tegning av egne polygoner
-6. mer detaljert visning av kartleggingsgrad
+1. stabilisere eksisterende analyser og validere prosent-/arealberegninger
+2. kvalitetssikre kart/resultat-samsvar
+3. utvide overlay til nye temadata bare etter faglig avklaring
+4. videreutvikle plansammenligning og rapportering dersom prosjektet prioriterer det
