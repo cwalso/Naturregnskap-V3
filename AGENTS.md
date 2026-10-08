@@ -162,11 +162,12 @@ Gjeldende prinsipper:
 - lukk `ImageBitmap` og frigjør object URLs/Canvas-ressurser der det er relevant
 
 Resultatcache for økosystemfordeling og Verdsatte naturtyper bruker
-`analysisId`. Lokalt genererte ID-er for tegnede polygoner kan i dagens kode
-gjenbrukes når kartinstansen opprettes på nytt. Ikke anta at cacheisolasjon ved
-kommune-/visningsbytte er ferdig løst; dette skal valideres før videre bruk.
-
-Publicdemorepo brukes som funksjonell/teknisk referanse for disse mønstrene. Kode skal ikke kopieres ukritisk.
+`analysisId`. Tegnede polygoner får `drawn:<UUID>` fra `crypto.randomUUID()`
+ved fullført tegning, uavhengig av kartinstans. ID-en beholdes når samme område
+analyseres mot et annet datagrunnlag. Resultater skal bare vises når både
+analyseidentitet og kommune stemmer med aktiv analyse; dette gjelder også
+kartmasker og delresultater. Områdebytte og avbrutte forespørsler skal fortsatt
+dekkes av regresjonstester.
 
 ## 10. Domeneskille i kode
 

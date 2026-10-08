@@ -129,6 +129,32 @@ Planmasken rasteriseres og krysses med klassifisert Grunnkart.
 Resultatet er beslutningsstøtte, ikke et regnskapstall og ikke en
 konsekvensutredning.
 
+## Analyseareal og prosentnevner i dagens rastermetode
+
+`analysisAreaKm2` er antall gyldige analysepiksler multiplisert med
+`21,15625² / 1 000 000` km². Det er ikke Natur + Jordbruk eller det tegnede
+polygonets uavgrensede geometriareal.
+
+- **Framtidig utbygging:** gyldige Grunnkart-piksler med alpha ≥ 100 og
+  planmaskepiksler med alpha ≥ 128. Den binære masken for hele området renses
+  med dagens smalstripefilter. Alle gjenværende gyldige klasser teller i
+  analysearealet, også Bebygd og vann. Natur/Jordbruk renses i en separat
+  klassifisert maske med samme filter; dette er eksisterende prototypemetode.
+- **Tegnet polygon:** polygonmaskepiksler med alpha ≥ 128 og gyldige
+  Grunnkart-piksler med alpha ≥ 100 teller. Smalstripefilteret brukes ikke for
+  tegnet polygon. Gyldige Bebygd- og vannpiksler teller også i analysearealet.
+
+`natureShareOfAnalysisAreaPercent` og `agricultureShareOfAnalysisAreaPercent`
+bruker henholdsvis Natur- og Jordbruk-pikslene delt på dette hele analysearealet.
+Et tomt planområde får areal 0 og prosent `null`; et tegnet område uten gyldige
+piksler returneres som utilgjengelig analyse. Disse andelene er forskjellige
+fra plananalysens andeler av kommunens Natur/Jordbruk og fra
+økosystemfordelingens andeler av analysert Natur.
+
+Kontrollerte tester dekker begge områdetypene med Natur, Jordbruk, Bebygd,
+vann og ugyldige piksler. Dette validerer tellingen under dagens metode, ikke
+en autoritativ analysekilde eller nøyaktig vektoravgrensning.
+
 ## Tegnet polygon
 
 Brukeren kan tegne eget polygon i kartet.
@@ -167,10 +193,12 @@ Overlay mot analyseområdet henter vektorgeometri fra ArcGIS REST, rasteriserer
 geometrien til plan-/polygonanalysens ca. 21,16-metersgrid og caches per
 `analysisId`.
 
-Dette er viktig fordi samme kommune kan ha flere samtidige/sekvensielle
-analyseområder. Lokalt genererte `analysisId`-verdier for tegnede polygoner kan
-i dagens kode gjenbrukes når kartinstansen opprettes på nytt. Cacheisolasjon på
-tvers av slike bytter er derfor ikke ferdig verifisert.
+Dette er viktig fordi samme kommune kan ha flere sekvensielle analyseområder.
+Tegnet område får `drawn:<UUID>` ved fullført tegning, uavhengig av kartinstans.
+Resultatet bærer samme `analysisId` som basisanalysen, og Appen sjekker ID og
+kommune før tall og kart brukes. Regresjonstester dekker plan → polygon A →
+polygon B → plan, sen respons etter områdebytte og erstatning av avbrutte
+pågående kall. Dette endrer ikke rastermetoden eller datadekningen.
 
 ## Delt request-/cachepipeline
 

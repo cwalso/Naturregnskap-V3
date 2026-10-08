@@ -131,6 +131,7 @@ describe('valued nature × future development', () => {
 
     const analysis = {
       municipalityNumber: '5001',
+      analysisId: 'planned:5001',
       status: 'available',
       source: 'Miljødirektoratet – naturtyper med KU-verdi',
       methodVersion: 'planned-valued-nature-v1',

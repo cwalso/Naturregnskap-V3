@@ -6,7 +6,7 @@ import {
   buildAccountTileUrl,
 } from '../src/map/accountOverviewRaster'
 
-describe('Publicdemorepo-style account map', () => {
+describe('Grunnkart account map', () => {
   it('requests detailed Grunnkart tiles in UTM33 with the grouped ecosystem style', () => {
     const url = new URL(buildAccountTileUrl(
       'https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse',
@@ -21,7 +21,7 @@ describe('Publicdemorepo-style account map', () => {
     expect(url.searchParams.get('sld_body')).toContain('#9ECC73')
   })
 
-  it('uses the same 30 metre detail threshold as the public demonstrator', () => {
+  it('uses a 30 metre threshold for detailed Grunnkart tiles', () => {
     expect(ACCOUNT_DETAIL_MAX_RESOLUTION).toBe(30)
   })
 })

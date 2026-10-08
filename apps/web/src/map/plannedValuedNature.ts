@@ -64,6 +64,7 @@ export type ValuedNatureMapSelection =
 
 export interface PlannedValuedNatureAnalysis {
   readonly municipalityNumber: string
+  readonly analysisId: string
   readonly status: 'available'
   readonly source: 'Miljødirektoratet – naturtyper med KU-verdi'
   readonly methodVersion: 'planned-valued-nature-v1'
@@ -78,21 +79,38 @@ export interface PlannedValuedNatureAnalysis {
   readonly typeMetrics: readonly ValuedNatureBreakdownMetric[]
 }
 
-const analysisCache = new Map<string, Promise<PlannedValuedNatureAnalysis>>()
+interface CachedAnalysisRequest {
+  readonly request: Promise<PlannedValuedNatureAnalysis>
+  readonly signal?: AbortSignal
+  completed: boolean
+}
 
-export function calculatePlannedValuedNatureAnalysis(
+const analysisCache = new Map<string, CachedAnalysisRequest>()
+
+export async function calculatePlannedValuedNatureAnalysis(
   analysis: PlannedDevelopmentAnalysis,
   signal?: AbortSignal,
 ): Promise<PlannedValuedNatureAnalysis> {
+  signal?.throwIfAborted()
   const cacheKey = analysis.analysisId
   const cached = analysisCache.get(cacheKey)
-  if (cached) return cached
+  if (cached && (cached.completed || !cached.signal?.aborted)) {
+    const result = await cached.request
+    signal?.throwIfAborted()
+    return result
+  }
 
-  const request = runAnalysis(analysis, signal).catch((error: unknown) => {
-    analysisCache.delete(cacheKey)
-    throw error
-  })
-  analysisCache.set(cacheKey, request)
+  const request = runAnalysis(analysis, signal)
+    .then((result) => {
+      entry.completed = true
+      return result
+    })
+    .catch((error: unknown) => {
+      if (analysisCache.get(cacheKey) === entry) analysisCache.delete(cacheKey)
+      throw error
+    })
+  const entry: CachedAnalysisRequest = { request, signal, completed: false }
+  analysisCache.set(cacheKey, entry)
   return request
 }
 
@@ -101,6 +119,7 @@ async function runAnalysis(
   signal?: AbortSignal,
 ): Promise<PlannedValuedNatureAnalysis> {
   const features = await fetchValuedNatureFeatures(analysis.overlay.extent, signal)
+  signal?.throwIfAborted()
   const summary = summarizeFeatures(features, analysis.overlay)
   const pixelAreaKm2 = PLAN_PIXEL_METERS * PLAN_PIXEL_METERS / 1_000_000
   const registeredOverlapAreaKm2 = summary.featurePixelTotal * pixelAreaKm2
@@ -108,6 +127,7 @@ async function runAnalysis(
 
   return {
     municipalityNumber: analysis.municipalityNumber,
+    analysisId: analysis.analysisId,
     status: 'available',
     source: 'Miljødirektoratet – naturtyper med KU-verdi',
     methodVersion: 'planned-valued-nature-v1',

@@ -17,7 +17,7 @@ afterEach(() => {
 })
 
 describe('DiBK planned development prototype', () => {
-  it('uses the same DiBK WMS filter as Publicdemorepo', () => {
+  it('selects future development with the documented DiBK WMS filter', () => {
     const url = new URL(buildPlanTileUrl([9, 253, 184]))
 
     expect(url.origin + url.pathname).toBe(

@@ -147,6 +147,15 @@ Detaljfordeling kommer etter hovedtallet.
 «Finn resultatet i kartet» skal være en tydelig primærhandling når resultatet
 kan stedfestes.
 
+Tydeligere overlaytreff er en prioritert TODO, ikke en ferdig visuell løsning.
+Analyseområde og treff må kunne skilles, valgt delresultat må gjenkjennes i
+kartet, og tegnforklaring/status må forklare hva som vises. Null treff, skjult
+resultat og teknisk feil skal ikke se like ut. Akseptansekriteriene står i
+[brukerhistorien om tydelige overlaytreff](analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
+Videre kontroller skal følge eksisterende V3-komponenter og flyten område →
+datagrunnlag → resultat → stedfesting. Mobil bruk må prøves med berøring og
+lesbare resultater, uten at kartkontroller dominerer oppgaven.
+
 ## Tegnemodus
 
 Når brukeren tegner polygon:

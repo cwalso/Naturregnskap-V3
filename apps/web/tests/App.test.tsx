@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/app/App'
@@ -18,6 +18,10 @@ import { accountCategoryIds, type AccountOverviewData } from '../src/features/ac
 import { defaultBasemap } from '../src/map/basemaps'
 import type { MunicipalityMap } from '../src/map/municipalityMap'
 import { buildWmsLegendUrl } from '../src/map/wmsLegend'
+import * as plannedAnalysis from '../src/map/plannedDevelopment'
+import * as drawnAnalysis from '../src/map/drawnAnalysis'
+import * as valuedAnalysis from '../src/map/plannedValuedNature'
+import type { AnalysisRasterOverlay } from '../src/map/analysisRasterOverlay'
 
 const municipalityListSource = [
   { kommunenummer: '5001', kommunenavnNorsk: 'Trondheim' },
@@ -184,6 +188,7 @@ afterEach(() => {
   cleanup()
   vi.restoreAllMocks()
   window.location.hash = ''
+  Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView')
 })
 
 describe('grunnkonfigurasjon', () => {
@@ -586,5 +591,124 @@ describe('Level0-regnskap', () => {
     expect(screen.queryByText('XX')).not.toBeInTheDocument()
     expect(screen.getByText(/Regnskapstall er ikke klargjort for Trondheim/)).toBeInTheDocument()
     expect(screen.getByText(/Vi viser ikke eksempelverdier eller nuller/)).toBeInTheDocument()
+  })
+})
+
+function analysisFixture(id: string, offset: number, index: number): plannedAnalysis.PlannedDevelopmentAnalysis {
+  const mask = new Uint8Array(16)
+  mask[index] = 1
+  return {
+    municipalityNumber: '5001', analysisId: id,
+    analysisAreaKind: id.startsWith('planned') ? 'planned' : 'drawn',
+    status: 'available', analysisAreaKm2: 0.004, natureKm2: 0.001, agricultureKm2: 0.002,
+    natureWithNarrowStripsKm2: 0.001, agricultureWithNarrowStripsKm2: 0.002,
+    natureSharePercent: null, agricultureSharePercent: null,
+    natureShareOfAnalysisAreaPercent: 25, agricultureShareOfAnalysisAreaPercent: 50,
+    pixelMeters: 21.15625, tileCount: 1, source: 'Eget tegnet område',
+    methodVersion: 'drawn-area-raster-v1',
+    overlay: {
+      kind: id.startsWith('planned') ? 'planned' : 'drawn',
+      zoom: 9, cx0: 0, cy0: 0, width: 4, height: 4,
+      extent: [offset, 0, offset + 4, 4], cleaned: mask, analysisMask: mask,
+    },
+  }
+}
+
+function breakdownFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis): plannedAnalysis.PlannedNatureBreakdown {
+  return {
+    municipalityNumber: '5001', analysisId: analysis.analysisId, status: 'available',
+    source: 'NIBIO Grunnkart for arealanalyse', level: 'okosystemtypeniva1',
+    methodVersion: 'planned-nature-types-v1', tileCount: 1, pixelMeters: 21.15625,
+    classificationPixelMeters: 10.578125, classifiedAreaKm2: 0.001, unclassifiedAreaKm2: 0,
+    metrics: [{ id: 'skog', label: `${analysis.analysisId}-resultat`, color: '#9ECC73', areaKm2: 0.001, sharePercent: 100 }],
+  }
+}
+
+function valuedFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis): valuedAnalysis.PlannedValuedNatureAnalysis {
+  const indices = Uint32Array.from(Array.from(analysis.overlay.analysisMask).flatMap((value, index) => value ? [index] : []))
+  return {
+    municipalityNumber: '5001', analysisId: analysis.analysisId, status: 'available',
+    source: 'Miljødirektoratet – naturtyper med KU-verdi', methodVersion: 'planned-valued-nature-v1',
+    pixelMeters: 21.15625, candidateFeatureCount: 1, affectedFeatureCount: 1,
+    uniqueOverlapAreaKm2: 0.001, registeredOverlapAreaKm2: 0.001, hasOverlappingRegistrations: false,
+    allOverlapPixelIndices: indices,
+    valueMetrics: [{ label: 'Stor verdi', color: '#FD7032', featureCount: 1, areaKm2: 0.001, sharePercent: 100, mapPixelIndices: indices }],
+    typeMetrics: [{ label: `${analysis.analysisId}-resultat`, featureCount: 1, areaKm2: 0.001, sharePercent: 100, mapPixelIndices: indices }],
+  }
+}
+
+describe('overlay state when switching analysis areas', () => {
+  it.each(['grunnkart', 'valued-nature'] as const)('isolates plan → A → B → plan in the %s UI and map, including late responses', async (basis) => {
+    const map = mapMock()
+    mockMunicipalityFlow()
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', { configurable: true, value: vi.fn() })
+    const plan = analysisFixture('planned:5001', 0, 0)
+    const a = analysisFixture('drawn:A', 100, 1)
+    const b = analysisFixture('drawn:B', 200, 2)
+    vi.spyOn(plannedAnalysis, 'calculatePlannedDevelopment').mockResolvedValue(plan)
+    vi.spyOn(drawnAnalysis, 'calculateDrawnAreaAnalysis').mockImplementation(async (_number, area) => area.id === a.analysisId ? a : b)
+    const types = vi.spyOn(plannedAnalysis, 'calculatePlannedNatureBreakdown')
+      .mockImplementation(async (analysis) => breakdownFixture(analysis))
+    const valued = vi.spyOn(valuedAnalysis, 'calculatePlannedValuedNatureAnalysis')
+      .mockImplementation(async (analysis) => valuedFixture(analysis))
+
+    render(<App createMap={() => map} />)
+    await chooseTrondheim()
+    fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
+    if (basis === 'valued-nature') fireEvent.click(screen.getByRole('radio', { name: /Verdsatte naturtyper/ }))
+    await screen.findByText(`${plan.analysisId}-resultat`)
+    if (basis === 'valued-nature') {
+      fireEvent.click(screen.getAllByRole('button', { name: /Finn i kart/ })[0])
+      expect(screen.getByText('Kartet er filtrert til:')).toBeInTheDocument()
+    }
+
+    async function draw(result: plannedAnalysis.PlannedDevelopmentAnalysis, button: RegExp) {
+      fireEvent.click(screen.getByRole('button', { name: button }))
+      const handler = vi.mocked(map.startDrawnAnalysisArea).mock.lastCall![0]
+      act(() => handler({ id: result.analysisId, rings: [], extent: result.overlay.extent, areaKm2: 0.004 }))
+      await screen.findByText(`${result.analysisId}-resultat`)
+    }
+    await draw(a, /Eget område/)
+    expect(screen.queryByText(`${plan.analysisId}-resultat`)).not.toBeInTheDocument()
+    expect(screen.queryByText('Kartet er filtrert til:')).not.toBeInTheDocument()
+    await draw(b, /Tegn på nytt/)
+    expect(screen.queryByText(`${a.analysisId}-resultat`)).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /Framtidig utbygging/ }))
+    await screen.findByText(`${plan.analysisId}-resultat`)
+    expect(screen.queryByText(`${b.analysisId}-resultat`)).not.toBeInTheDocument()
+
+    // Begin another B analysis, leave while it is pending and then let it resolve.
+    // Deliberately ignore AbortSignal in the mock to exercise App's stale-response guard.
+    let finishLate: (() => void) | undefined
+    if (basis === 'grunnkart') {
+      types.mockImplementation((analysis) => analysis.analysisId === b.analysisId
+        ? new Promise((resolve) => { finishLate = () => resolve(breakdownFixture(analysis)) })
+        : Promise.resolve(breakdownFixture(analysis)))
+    } else {
+      valued.mockImplementation((analysis) => analysis.analysisId === b.analysisId
+        ? new Promise((resolve) => { finishLate = () => resolve(valuedFixture(analysis)) })
+        : Promise.resolve(valuedFixture(analysis)))
+    }
+    fireEvent.click(screen.getByRole('button', { name: /Eget område/ }))
+    await vi.waitFor(() => expect(finishLate).toBeDefined())
+    fireEvent.click(screen.getByRole('button', { name: /Framtidig utbygging/ }))
+    await screen.findByText(`${plan.analysisId}-resultat`)
+    await act(async () => { finishLate!() })
+    expect(screen.queryByText(`${b.analysisId}-resultat`)).not.toBeInTheDocument()
+    expect(screen.getByText(`${plan.analysisId}-resultat`)).toBeInTheDocument()
+
+    const highlights = vi.mocked(map.setAnalysisHighlight).mock.calls
+      .map(([overlay]) => overlay).filter((overlay): overlay is AnalysisRasterOverlay => overlay !== null)
+    if (basis === 'valued-nature') {
+      expect(highlights.length).toBeGreaterThan(0)
+      for (const overlay of highlights) {
+        const expected = [plan, a, b].find((analysis) => analysis.overlay.extent[0] === overlay.extent[0])!
+        expect(overlay.mask).toEqual(expected.overlay.analysisMask)
+      }
+    } else {
+      expect(highlights).toHaveLength(0)
+      expect(map.setPlannedDevelopmentOverlay).toHaveBeenLastCalledWith(plan.overlay)
+    }
   })
 })

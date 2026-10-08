@@ -41,6 +41,7 @@ export async function calculateDrawnAreaAnalysis(
   area: DrawnAnalysisArea,
   signal?: AbortSignal,
 ): Promise<PlannedDevelopmentResult> {
+  signal?.throwIfAborted()
   const raster = await loadOverviewRaster(municipalityNumber)
   if (!raster) {
     return {
@@ -174,6 +175,7 @@ export async function calculateDrawnAreaAnalysis(
       },
     }
 
+    signal?.throwIfAborted()
     return result
   } finally {
     overviewBitmap.close()

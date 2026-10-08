@@ -30,7 +30,7 @@ afterEach(() => {
 })
 
 describe('SSB prototype account', () => {
-  it('uses the same three SSB groups as the public demonstrator', async () => {
+  it('uses the three documented SSB groups', async () => {
     const values = new Array(codes.length).fill(0)
     values[codes.indexOf('01')] = 10
     values[codes.indexOf('15-16')] = 20
