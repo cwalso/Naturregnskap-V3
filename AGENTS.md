@@ -109,6 +109,13 @@ Analysegrunnlag som er implementert i analyseverkstedet:
 - Natur og jordbruk fra Grunnkart
 - Verdsatte naturtyper
 
+De tallbaserte overlayanalysene er per 08.10.2026 bare klargjort for Trondheim
+(5001), fordi `overview/index.json` bare inneholder et kommunevis
+oversiktsraster for Trondheim. Ikke beskriv arbeidsflyten som nasjonalt
+beregningsklar før tilsvarende grunnlag finnes og er validert for flere
+kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
+rasteranalysene.
+
 Resultatet skal være lesbart som tall først. Kartet brukes primært til stedfesting. Ikke erstatt denne flyten med en stor lagvelger.
 
 ## 8. Tegnet polygon
@@ -125,7 +132,11 @@ Gjeldende implementasjon støtter:
 - tegn på nytt
 - fjern område
 
-Polygonet rasteriseres, avgrenses til valgt kommune og bruker samme overordnede overlaypipeline som øvrige analyser.
+Polygonet rasteriseres og bruker samme overordnede overlaypipeline som øvrige
+analyser. Dagens beregning begrenses til gyldige, ikke-transparente piksler i
+det klargjorte kommunevise oversiktsrasteret; den utfører ikke en separat eksakt
+vektorinterseksjon med kommunegrensen. Denne forskjellen skal beskrives dersom
+klippemetoden omtales.
 
 Ved endringer i polygonanalysen skal følgende verifiseres eksplisitt:
 
@@ -145,8 +156,15 @@ Gjeldende prinsipper:
 - råbilder caches med begrenset cache (400 elementer per kilde i dagens prototype)
 - samme råflis skal gjenbrukes mellom kart og analyse når URL/datagrunnlag er identisk
 - unngå store heldekkende bilder når flisbasert analyse er mulig
-- aborter eller ignorer stale resultater ved kommune-/analysebytte
+- aborter eller ignorer stale resultater ved kommune-/analysebytte; dagens delte
+  requestlag avbryter ikke selve nettverkskallet etter at det er startet, men
+  avbrutte konsumenter bruker ikke resultatet
 - lukk `ImageBitmap` og frigjør object URLs/Canvas-ressurser der det er relevant
+
+Resultatcache for økosystemfordeling og Verdsatte naturtyper bruker
+`analysisId`. Lokalt genererte ID-er for tegnede polygoner kan i dagens kode
+gjenbrukes når kartinstansen opprettes på nytt. Ikke anta at cacheisolasjon ved
+kommune-/visningsbytte er ferdig løst; dette skal valideres før videre bruk.
 
 Publicdemorepo brukes som funksjonell/teknisk referanse for disse mønstrene. Kode skal ikke kopieres ukritisk.
 

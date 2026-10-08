@@ -41,13 +41,13 @@ Per 08.10.2026 er følgende mønstre implementert eller delvis implementert:
 | --- | --- | --- |
 | Kommune som felles kontekst | Implementert | Kommunevalg og kommunegrense deles på tvers av sider |
 | Oversiktsraster ved grov zoom | Implementert for prototypekommune | Prepared Grunnkart-raster + detaljerte fliser |
-| Flisbasert analyse | Implementert | Fast rastergrid for plan/polygonoverlay |
-| Tegne eget polygon | Implementert | OpenLayers Draw + samme overlaypipeline |
+| Flisbasert analyse | Implementert for prototypekommune | Fast rastergrid for plan/polygonoverlay; tall krever klargjort raster som nå bare finnes for Trondheim |
+| Tegne eget polygon | Implementert, analyse for prototypekommune | OpenLayers Draw er generell; tall/overlay krever klargjort raster |
 | Gjenbruk av data mellom kart/analyse | Implementert delvis | Felles råfliser der URL/datagrunnlag er identisk |
 | Begrenset samtidighet | Implementert | Maks 4 kall per datakilde |
 | Deling av pågående identiske kall | Implementert | `sharedImageRequests.ts` |
 | Begrenset browsercache | Implementert | 400 råbilder per kilde i dagens prototype |
-| Kart + tall fra samme analysemask | Implementert som mål/mønster | Overlayresultater bruker felles rastermask |
+| Kart + tall fra samme analysemask | Implementert i prototypeanalysen | Overlayresultater bruker felles rastermask for klargjort kommune |
 | Objektinformasjon | Implementert for relevante temalag | Feature info / temadata |
 
 ## Dagens analyseverksted
@@ -71,6 +71,9 @@ Primærflyten er:
 ```
 
 Dette mønsteret skal beholdes dersom flere analyser legges til.
+
+Rasterbaserte tall og overlay er per 08.10.2026 bare klargjort for Trondheim
+(5001). Dette er en eksplisitt prototypebegrensning, ikke nasjonal dekning.
 
 ## Fremtidig utbygging
 
@@ -98,7 +101,9 @@ Det betyr at:
 - analyseområdet har eksplisitt geometri
 - rasterisering skjer på samme grid
 - samme analysemotor kan gjenbrukes
-- cache nøckles på `analysisId`
+- resultatcache nøckles på `analysisId`; dagens lokale tegnede ID-er kan
+  gjenbrukes etter at kartinstansen opprettes på nytt, så isolasjon ved
+  kontekstbytte må fortsatt valideres
 - kart og tall skal bruke samme område/mask
 
 Dette er et viktig designprinsipp for senere områdebaserte analyser.

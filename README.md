@@ -73,6 +73,13 @@ Analysegrunnlag som er implementert:
 Resultatene er prototypebasert beslutningsstøtte. De skal ikke omtales som
 autoritative regnskapstall uten egen metodisk beslutning og validering.
 
+De rasterbaserte tallanalysene krever et klargjort kommunevis
+oversiktsraster. Repoet inneholder per 08.10.2026 bare et slikt raster for
+Trondheim (5001). Analyseverkstedet og temasidene kan åpnes for andre kommuner,
+men Natur/Jordbruk-overlay, Verdsatte naturtyper-overlay, skogstatistikk og
+våtmarksstatistikk returnerer da at beregningen ikke er klargjort. Dynamiske
+kartlag og kommunevise tematreff har en annen og bredere dekning.
+
 ## Offentlig demoarkitektur
 
 GitHub Pages er den eneste runtime-komponenten som trengs for den offentlige
@@ -121,9 +128,12 @@ Oversiktsrasteret brukes ved grov målestokk. Detaljerte Grunnkart-fliser hentes
 ved nærmere zoom.
 
 Overlayanalysen for framtidig utbygging og eget polygon bruker et fast
-prototype-rutenett på ca. **21,16 meter**. Klassifiserte rasterfliser brukes i
-nettleseren for beslutningsstøtte. Dette er ikke en erstatning for en
-versjonert, autoritativ regnskapsmotor.
+prototype-rutenett på ca. **21,16 meter**. Det klargjorte Grunnkart-rasteret for
+Trondheim har ca. **19,72 meter** kildeoppløsning og samples til analyserutenettet.
+Overlay mot Verdsatte naturtyper rasteriserer REST-geometrier på det samme
+21,16-metersrutenettet. Økosystemfordelingen bruker finere klassifiseringspiksler
+på ca. 10,58 meter. Dette er nettleserbasert beslutningsstøtte, ikke en
+erstatning for en versjonert, autoritativ regnskapsmotor.
 
 Se `docs/data/grunnkart-2025-analysis-source.md`.
 

@@ -38,16 +38,16 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Naturtapet | 🟡 | Side/design etablert; endelig dokumentert endringsgrunnlag fortsatt under avklaring |
 | Naturtema | ✅ prototype | Prioriterte temasider etablert |
 | Kommuneavgrenset temakart | ✅ | Temadata maskeres visuelt utenfor valgt kommune |
-| Skog og Myr/våtmark | ✅ prototype | Heldekkende Grunnkart-basert temaside-/kartmønster |
-| Verdsatte naturtyper | ✅ prototype | Kommunevise beregninger, kartleggingsgrad og overlay mot analyseområde |
+| Skog og Myr/våtmark | ✅ prototype / Trondheimstall | Grunnkart-baserte temasider og kart; tallberegning krever klargjort raster og finnes nå bare for Trondheim |
+| Verdsatte naturtyper | ✅ prototype / Trondheim-overlay | Kommunevise REST-beregninger og kartleggingsgrad; overlay mot analyseområde krever klargjort basisanalyse |
 | Verneområder | ✅ prototype | Supplerende temaside og kart |
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
 | Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
 | Utforsk i kart – analyseverksted | ✅ prototype | Område → datagrunnlag → resultat → stedfesting |
-| Framtidig utbygging × Natur/Jordbruk | ✅ prototype | Rasterbasert overlay og lesbart resultat |
-| Framtidig utbygging × Verdsatte naturtyper | ✅ prototype | Overlay, filtrering og stedfesting |
-| Tegn eget polygon | ✅ prototype | OpenLayers Draw og samme overlaypipeline |
+| Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
+| Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
+| Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
 | Historiske tidsserier | ⚪ | Krever avklart endringsprodukt og metode |
@@ -80,6 +80,11 @@ Gjeldende analysegrunnlag:
 - Natur og jordbruk
 - Verdsatte naturtyper
 
+Arbeidsflyten er implementert generelt i brukerflaten, men tallberegningene er
+per 08.10.2026 bare klargjort for Trondheim (5001). Dette skyldes at repoet bare
+har et kommunevis oversiktsraster for Trondheim. Temakart og direkte
+tematjenester har ikke nødvendigvis samme geografiske begrensning.
+
 Nye analysegrunnlag skal legges til først når brukerbehov, analysekilde,
 resultattype og datadekning er avklart.
 
@@ -107,7 +112,8 @@ Kontroller spesielt:
 - prosentnevnere
 - samsvar mellom kart og tall
 - bytte mellom planområde og tegnet polygon
-- stale cache/resultater
+- stale cache/resultater, særlig fordi lokalt genererte `drawn:<nummer>`-ID-er
+  kan gjenbrukes når kartinstansen opprettes på nytt
 - mobil tegnemodus
 
 ### 2. Stabilitet og ytelse

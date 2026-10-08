@@ -75,6 +75,11 @@ PLAN_PIXEL_METERS       = 21,15625 m
 
 Resultater omtales derfor som omtrent **21,16 m rutenett**.
 
+Dette er analysegridets oppløsning, ikke oppløsningen i alle inngående
+datakilder. Det klargjorte oversiktsrasteret for Trondheim er ca. 19,72 meter
+per piksel og samples til 21,16-metersgitteret. Økosystemtypeflisene som brukes
+til detaljfordeling har ca. 10,58 meter per klassifiseringspiksel.
+
 ## Kartvisning
 
 Ved detaljert kartvisning hentes klassifiserte Grunnkart-fliser fra NIBIO.
@@ -103,6 +108,12 @@ som grunnlag i enkelte prototypeberegninger.
 
 Dette er ikke en generell nasjonal preparation-pipeline ennå.
 
+Konsekvensen er at rasteravhengige tall i dagens kode bare kan beregnes for
+Trondheim (5001): framtidig utbygging, eget polygon, skogstatistikk,
+våtmarks-/økosystemstatistikk og overlay mot Verdsatte naturtyper. Kartvisning
+og direkte kommune-/tematjenester kan fungere for andre kommuner og må ikke
+forveksles med denne beregningsdekningen.
+
 ## Framtidig utbygging
 
 DiBKs kommuneplantjeneste brukes som prototypekilde for analyseområdet
@@ -125,7 +136,8 @@ Brukeren kan tegne eget polygon i kartet.
 Polygonet:
 
 1. lagres som eksplisitt geometri
-2. avgrenses mot valgt kommune
+2. begrenses til piksler med gyldige, ikke-transparente Grunnkart-data i det
+   klargjorte kommunevise rasteret
 3. rasteriseres på samme plan-/analysegrid
 4. krysses med Grunnkart
 5. får egen `analysisId`
@@ -133,6 +145,10 @@ Polygonet:
 
 Dette gjør framtidig utbygging og eget polygon til varianter av samme
 analyseområde-konsept.
+
+Dagens kode utfører ikke en separat vektorinterseksjon mellom det tegnede
+polygonet og kommunegrensen. Kommuneavgrensningen i beregningen avhenger av at
+det klargjorte rasterets gyldige piksler allerede følger kommunen.
 
 ## Økosystemfordeling
 
@@ -147,10 +163,14 @@ automatisk behandles som et eget regnskap.
 
 Verdsatte naturtyper er supplerende temadata.
 
-Overlay mot analyseområdet beregnes separat og caches per `analysisId`.
+Overlay mot analyseområdet henter vektorgeometri fra ArcGIS REST, rasteriserer
+geometrien til plan-/polygonanalysens ca. 21,16-metersgrid og caches per
+`analysisId`.
 
 Dette er viktig fordi samme kommune kan ha flere samtidige/sekvensielle
-analyseområder.
+analyseområder. Lokalt genererte `analysisId`-verdier for tegnede polygoner kan
+i dagens kode gjenbrukes når kartinstansen opprettes på nytt. Cacheisolasjon på
+tvers av slike bytter er derfor ikke ferdig verifisert.
 
 ## Delt request-/cachepipeline
 
@@ -166,6 +186,10 @@ Per datakilde:
 NIBIO og DiBK får egne request-pools.
 
 Målet er færre kall og gjenbruk av samme rådata mellom kart og analyse.
+Identiske kall betyr samme komplette URL. Requestlaget lagrer rå responsbytes
+og flytter cachetreff bakerst før eldste element fjernes. Abortsignalet
+kontrolleres før og etter det delte kallet; en allerede startet delt `fetch`
+avbrytes ikke.
 
 ## Viktig metodeavgrensning
 

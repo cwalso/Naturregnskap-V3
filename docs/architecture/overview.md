@@ -154,7 +154,14 @@ Plan-/polygonanalysen bruker:
 - kommuneavgrensning
 - samme analysemask til kart og tall
 
-Økosystemklassifisering kan bruke finere oppløsning der det er implementert.
+Det forberedte Trondheim-rasteret har ca. 19,72 meters kildeoppløsning og samples
+til 21,15625-metersgitteret. Natur/Jordbruk telles på dette gitteret.
+Verdsatte naturtypers REST-geometrier rasteriseres mot den samme analysemasken.
+Økosystemfordelingen hentes fra klassifiserte WMS-fliser med ca. 10,58 meters
+klassifiseringspiksel.
+
+Tallanalysene er per 08.10.2026 bare klargjort for Trondheim (5001), fordi det
+bare finnes et kommunevis oversiktsraster for denne kommunen i repoet.
 
 Se `docs/data/grunnkart-2025-analysis-source.md`.
 
@@ -170,6 +177,9 @@ Gjeldende regler:
 - samme råflis gjenbrukes mellom kart og analyse når URL/datagrunnlag er identisk
 
 Dette mønsteret er inspirert av Publicdemorepo, men reimplementert i V3.
+Cachegrensen i requestlaget er 400 råbilder per kilde. Et abortsignal stopper en
+konsument fra å bruke resultatet før eller etter lasting, men avbryter ikke et
+delt nettverkskall som allerede er startet.
 
 ## Tegnet polygon
 
@@ -180,11 +190,15 @@ Polygonet:
 - tegnes i kartet
 - lagres som eksplisitt analysegeometri
 - rasteriseres til samme analysegitter
-- klippes til valgt kommune
+- begrenses til gyldige, ikke-transparente piksler i det klargjorte
+  kommunevise oversiktsrasteret
 - får egen `analysisId`
 - bruker samme overordnede overlaypipeline som plananalysen
 
-Cache og resultater skal nøckles per analyseområde, ikke bare per kommune.
+Cache og resultater bruker i dag `analysisId`. Tegnede ID-er er lokale
+løpenøkler som kan gjenbrukes når kartinstansen opprettes på nytt, mens enkelte
+resultatcacher er modulglobale. Full cacheisolasjon ved kommune-/visningsbytte
+er derfor et kjent teknisk kontrollpunkt.
 
 ## Kommuneavgrensning i kart
 
@@ -199,6 +213,10 @@ Dagens strategi er:
 
 Tidligere direkte canvas-klipping gjorde lag ustabile/usynlige og skal ikke
 gjeninnføres uten ny vurdering.
+
+Maskeringen er visuell. WMS-kilden kan fortsatt levere piksler innenfor lagets
+rektangulære extent utenfor den eksakte kommunegeometrien; maskelaget skjuler
+dem. Objektspørring avvises eksplisitt utenfor kommunegeometrien.
 
 ## Dataset-register
 

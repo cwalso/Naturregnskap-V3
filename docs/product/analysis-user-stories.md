@@ -20,6 +20,12 @@ Brukeren skal ikke måtte starte med å velge mange kartlag. Primærflyten er:
 Kartet brukes til stedfesting. Resultatet skal være forståelig som tall og tekst
 før brukeren tolker kartet.
 
+Arbeidsflyten er implementert i brukerflaten, men de rasterbaserte tallanalysene
+krever et klargjort kommunevis Grunnkart-raster. Repoet har per 08.10.2026 bare
+dette for Trondheim (5001). Statusene «implementert prototype» nedenfor betyr
+derfor implementert og testbar for denne prototypekommunen, ikke nasjonal
+beregningsdekning.
+
 ## 2. Framtidig utbygging – implementert prototype
 
 **Status: implementert prototype**
@@ -59,13 +65,20 @@ Dagens prototype støtter:
 Det tegnede området:
 
 - rasteriseres
-- avgrenses til valgt kommune
+- begrenses i beregningen til gyldige, ikke-transparente piksler i det
+  klargjorte kommunevise rasteret
 - analyseres på samme overordnede rasterpipeline som øvrig overlay
 - kan krysses med Natur og jordbruk
 - kan krysses med Verdsatte naturtyper
 
 Ved endringer skal det testes at gammel analyse/cache ikke følger med når
 brukeren bytter mellom framtidig utbygging og eget polygon.
+
+Dagens `analysisId` for tegnede områder er en lokal løpenøkkel i kartinstansen.
+Den kan gjenbrukes etter at kartet er opprettet på nytt, mens enkelte
+resultatcacher lever videre på modulnivå. Cacheisolasjon ved kommune- og
+visningsbytte er derfor et kjent kontrollpunkt, ikke en ferdig verifisert
+egenskap.
 
 ## 4. Natur og jordbruk – implementert prototype
 

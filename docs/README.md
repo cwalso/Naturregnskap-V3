@@ -61,6 +61,11 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
+ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
+føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av
+Miljødirektoratets logo. Den eldre ADR-en beholdes uendret som historikk og er
+ikke en gjeldende UI-regel.
+
 ## Vedlikeholdsregel
 
 Når en PR endrer faglig rolle, analysemetode, brukerflyt, arkitektur,
