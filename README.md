@@ -1,100 +1,171 @@
 # Kommunale naturregnskap V3
 
-V3 er en teknisk prototype for å prøve ut et felles og etterprøvbart grunnlag
-for kommunale naturregnskap. Prototypen utvikles trinnvis. Første versjon
-handler først og fremst om et arealbasert naturregnskap, datagrunnlag,
-sporbarhet og forståelig bruk i kommunal arealforvaltning.
+V3 er en teknisk prototype for å prøve ut et felles, etterprøvbart og praktisk
+nyttig kommunalt naturregnskap. Prototypen utvikles trinnvis og skal ikke
+forveksles med en ferdig eller profilgodkjent tjeneste.
 
 Den offentlige testflaten ligger på:
 
 https://cwalso.github.io/Naturregnskap-V3/
 
-## Enkel demoarkitektur
+**Status i repoet: 08.10.2026**
+
+## Faglig skille
+
+Prototypen skiller mellom fire ting som ikke skal blandes:
+
+1. **Naturregnskapet** – heldekkende og metodebundet regnskapsgrunnlag.
+2. **Supplerende temadata** – relevante kartlag som gir ekstra innsikt.
+3. **Analyse- og beslutningsstøtte** – overlay og andre analyser som bygger videre på dataene.
+4. **Veiledning og formidling** – forklaringer som gjør dataene forståelige og anvendelige.
+
+Første versjon skal først og fremst forstås som et arealbasert/utbredelsesbasert
+naturregnskap. Tilstand, økosystemtjenester og avansert scenarioanalyse er ikke
+avklart som del av regnskapskjernen.
+
+## Dagens sider
+
+Hovednavigasjonen består av:
+
+- **Kommuneoversikt**
+- **Naturtapet**
+- **Naturtema**
+- **Utforsk i kart**
+
+Gjeldende temasider er:
+
+- Myr (våtmark)
+- Skog
+- Verdsatte naturtyper
+- Verneområder
+- Villreinområder
+- Inngrepsfri natur
+- Bynaturen (grå arealer)
+
+Temadata på temasidene avgrenses visuelt til valgt kommune.
+
+## Utforsk i kart
+
+`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+
+Arbeidsflyten er:
+
+```text
+velg analyseområde
+        ↓
+velg datagrunnlag
+        ↓
+les resultat
+        ↓
+finn resultatet i kartet
+```
+
+Analyseområder som er implementert:
+
+- områder satt av til framtidig utbygging i kommuneplan
+- eget polygon tegnet i kartet
+
+Analysegrunnlag som er implementert:
+
+- Natur og jordbruk fra Grunnkart for arealanalyse
+- Verdsatte naturtyper
+
+Resultatene er prototypebasert beslutningsstøtte. De skal ikke omtales som
+autoritative regnskapstall uten egen metodisk beslutning og validering.
+
+De rasterbaserte tallanalysene krever et klargjort kommunevis
+oversiktsraster. Repoet inneholder per 08.10.2026 bare et slikt raster for
+Trondheim (5001). Analyseverkstedet og temasidene kan åpnes for andre kommuner,
+men Natur/Jordbruk-overlay, Verdsatte naturtyper-overlay, skogstatistikk og
+våtmarksstatistikk returnerer da at beregningen ikke er klargjort. Dynamiske
+kartlag og kommunevise tematreff har en annen og bredere dekning.
+
+## Offentlig demoarkitektur
 
 GitHub Pages er den eneste runtime-komponenten som trengs for den offentlige
 demoen.
 
 ```text
-offentlige datakilder
-        +
-offline preparation / beregning
-        ↓
-statiske, versjonerte resultater
-        ↓
-React / Vite
-        ↓
-GitHub Pages
+Kartverket / NIBIO / DiBK / Miljødirektoratet / SSB
+                    +
+        statiske/prepared prototypefiler
+                    ↓
+       React + TypeScript + OpenLayers
+                    ↓
+               GitHub Pages
 ```
 
-Brukerflaten:
+`apps/api` inneholder FastAPI/Python-kode for preparation, domenelogikk og
+tester, men API-et er ikke en runtime-forutsetning for den publiserte
+GitHub Pages-demoen.
 
-- henter kommuneliste og kommunegrense direkte fra Kartverket
-- bruker NIBIOs WMS for visualisering av Grunnkart for arealanalyse
-- spør relevante offentlige ArcGIS-tjenester direkte for supplerende temadata
-- viser foreløpige Natur / Dyrket mark / Bebygd-tall direkte fra SSB tabell 09594
-- bruker samme SSB-gruppering som den tekniske Publicdemorepo-demonstratoren
+## Datagrunnlag i prototypen
 
-SSB-tallene er en prototypevisning for å få en testbar brukerflate med reelle
-kommunetall. De skal ikke forveksles med det endelige Grunnkart-baserte
-regnskapsgrunnlaget. Tunge regnskapsberegninger skal ikke gjøres i nettleseren.
+Brukerflaten bruker blant annet:
 
-## Dataskille
+- Kartverket for kommunevalg og kommunegrense
+- NIBIOs Grunnkart for arealanalyse 2025
+- DiBKs kommuneplantjeneste for prototypeanalyse av framtidig utbygging
+- Miljødirektoratets tjenester for supplerende temadata
+- SSB tabell 09594 som foreløpig prototypevisning av overordnede hovedtall
+- forhåndsprosesserte rasterfiler der dette er lagt inn i repoet
 
-Prototypen skiller mellom:
+SSB-visningen og nettleserbaserte rasteranalyser er eksplisitte
+prototypeimplementasjoner og skal ikke forveksles med et ferdig godkjent
+regnskapsgrunnlag.
 
-1. **Regnskapsgrunnlag** – heldekkende og metodebundet grunnlag for selve
-   naturregnskapet.
-2. **Supplerende temadata** – relevante kartlag som gir ekstra innsikt, men som
-   ikke automatisk inngår i regnskapet.
-3. **Analyse- og beslutningsstøtte** – videre bruk av regnskap og andre data.
-4. **Veiledning og formidling** – nødvendig for riktig forståelse og bruk.
+## Grunnkart og rasteranalyse
 
-WMS brukes som visualiseringskilde, ikke som beregningsgrunnlag.
+Kartet bruker EPSG:25833.
 
-## Repo
-
-- `apps/web`: React, TypeScript, Vite og OpenLayers. Dette er den offentlige
-  demoen som deployes til GitHub Pages.
-- `apps/api`: FastAPI/Python-kode, domenelogikk, adaptere, tester og
-  preparation-skript. Denne delen er nyttig for utvikling og databehandling,
-  men er ikke en runtime-forutsetning for dagens Pages-demo.
-- `docs`: metode-, arkitektur-, beslutnings- og produktdokumentasjon.
-- `.data`: lokale analysedata. Mappen versjoneres ikke i Git.
-
-## Foreløpige arealtall fra SSB
-
-Prototypevisningen følger samme enkle gruppering av SSB tabell 09594 som
-Publicdemorepo:
-
-- **Bebygd:** arealklasse 01–14
-- **Dyrket mark:** arealklasse 15–16
-- **Natur:** arealklasse 17, 18, 19, 20, 21 og 24
-- **Ferskvann:** 22.01 og 22.02 hentes, men inngår ikke i de tre hovedtallene
-
-Nyeste tilgjengelige årgang hentes med `Tid=top(1)`. Dette er en eksplisitt
-prototypemetode. Når et godkjent Grunnkart-basert Level0-resultat foreligger,
-skal det kunne erstatte SSB-visningen uten at domenekategoriene i brukerflaten
-må endres.
-
-## Trondheim-oversiktsraster
-
-For Trondheim (5001) ligger et prototype-raster fra samme demonstrasjonsløp som
-Publicdemorepo under:
+For Trondheim finnes et forhåndsprosessert oversiktsraster:
 
 ```text
 apps/web/public/data/grunnkart/2025/overview/5001.png
 ```
 
-Metadata og geografisk utstrekning ligger i `overview/index.json`. Rasteret er
-ca. 19,72 meter per piksel i EPSG:25833. For Trondheim brukes det nå på samme
-grunnprinsipp som i Publicdemorepo: rasteret vises som heldekkende oversiktsbilde
-når kartet er zoomet ut, mens detaljerte fliser fra NIBIOs Grunnkart-tjeneste
-tar over når oppløsningen kommer under ca. 30 meter per piksel. Rasteret
-fargelegges i nettleseren fra de rå klassefargene til samme grupperte palett som
-det detaljerte kartlaget.
+Oversiktsrasteret brukes ved grov målestokk. Detaljerte Grunnkart-fliser hentes
+ved nærmere zoom.
 
-Rasteret brukes **ikke** som kilde til de tre hovedtallene i dagens visning;
-disse hentes foreløpig fra SSB tabell 09594.
+Overlayanalysen for framtidig utbygging og eget polygon bruker et fast
+prototype-rutenett på ca. **21,16 meter**. Det klargjorte Grunnkart-rasteret for
+Trondheim har ca. **19,72 meter** kildeoppløsning og samples til analyserutenettet.
+Overlay mot Verdsatte naturtyper rasteriserer REST-geometrier på det samme
+21,16-metersrutenettet. Økosystemfordelingen bruker finere klassifiseringspiksler
+på ca. 10,58 meter. Dette er nettleserbasert beslutningsstøtte, ikke en
+erstatning for en versjonert, autoritativ regnskapsmotor.
+
+Se `docs/data/grunnkart-2025-analysis-source.md`.
+
+## Delt flispipeline
+
+`apps/web/src/map/sharedImageRequests.ts` sørger for at rasterkall gjenbrukes
+på tvers av kart og analyser der URL/datagrunnlag er det samme.
+
+Dagens regler:
+
+- maks 4 samtidige kall per datakilde
+- identiske pågående kall deles
+- råbilder caches med begrenset cache
+- kart og analyse skal gjenbruke samme råflis når det er mulig
+
+Dette reduserer unødvendige WMS-kall og inkonsistens mellom kart og analyse.
+
+## Branding og bilder
+
+Prototypen er offentlig, men ikke profilgodkjent. Headeren er derfor nøytral og
+skal ikke bruke Miljødirektoratets logo uten eksplisitt godkjenning.
+
+Flere temasider bruker midlertidige Unsplash-bilder via eksterne URL-er. Dette
+er prototypeillustrasjoner. Før en mer formell publisering bør bildene erstattes
+med kontrollerte filer med kjent kilde, fotograf/kreditering og bruksrett.
+
+## Repo
+
+- `apps/web`: React, TypeScript, Vite og OpenLayers. Offentlig demo.
+- `apps/api`: FastAPI/Python, domenelogikk, preparation og tester.
+- `docs`: produkt-, metode-, arkitektur- og beslutningsdokumentasjon.
+- `.data`: lokale analysedata som ikke versjoneres i Git.
 
 ## Lokal frontend
 
@@ -120,22 +191,6 @@ python -m pip install -r requirements-dev.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-FastAPI-koden beholdes som utviklings- og teststøtte og for eksisterende
-preparation-/domenelogikk. Den offentlige GitHub Pages-demoen skal ikke være
-avhengig av at denne prosessen kjører.
-
-## GitHub Codespaces
-
-Codespaces kan fortsatt brukes når frontend, Python-verktøy og lokale
-preparation-løp skal testes samlet:
-
-```bash
-./.devcontainer/start-preview.sh
-```
-
-For vanlig funksjonell test av den publiserte brukerflaten skal det ikke være
-nødvendig å starte et Codespace.
-
 ## Tester og kvalitetskontroll
 
 Frontend:
@@ -156,12 +211,20 @@ pytest
 ruff check .
 ```
 
-Pull requests og `main` kjøres gjennom GitHub Actions quality gate. Endringer
-i frontend deployes automatisk til GitHub Pages etter merge til `main`.
+Pull requests og `main` kjøres gjennom GitHub Actions quality gate. Frontend
+deployes automatisk til GitHub Pages etter merge til `main`.
 
 ## Førende dokumentasjon
 
-Instruksjonene i [`AGENTS.md`](AGENTS.md) og dokumentasjonen under
-[`docs/`](docs/) er førende kontekst for videre utvikling.
+Start her:
 
-[Utviklingsplan for V3-prototypen](docs/utviklingsplan.md)
+- [AGENTS.md](AGENTS.md)
+- [Dokumentasjonsoversikt](docs/README.md)
+- [Utviklingsplan](docs/utviklingsplan.md)
+- [Arkitekturoversikt](docs/architecture/overview.md)
+- [Produktprinsipper](docs/product/principles.md)
+- [Analysebrukerhistorier](docs/product/analysis-user-stories.md)
+
+Gamle ADR-er er historiske beslutningslogger og skal normalt ikke omskrives.
+Nyere ADR-er og dagens eksplisitte levende dokumentasjon gjelder når retningen
+er endret.

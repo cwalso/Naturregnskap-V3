@@ -1,104 +1,155 @@
 # Produktprinsipper – Kommunale naturregnskap V3
 
+**Sist oppdatert: 08.10.2026**
+
 ## Formål
 
-V3 skal demonstrere hvordan kommunale naturregnskap kan etableres som et felles, etterprøvbart og praktisk nyttig kunnskapsgrunnlag for kommunal arealforvaltning.
+V3 skal demonstrere hvordan kommunale naturregnskap kan etableres som et felles,
+etterprøvbart og praktisk nyttig kunnskapsgrunnlag for kommunal
+arealforvaltning.
 
-Løsningen skal skille tydelig mellom selve regnskapet, supplerende temadata, analyse- og beslutningsstøtte og veiledning/formidling.
+Den digitale løsningen er et virkemiddel. Verdien ligger i metode,
+datagrunnlag, bokføringsregler, analyser, veiledning og bruk.
 
-## 1. Selve regnskapet
+## 1. Fire tydelige lag
 
-Regnskapskjernen bygger på heldekkende data:
+Løsningen skal alltid skille mellom:
 
-- Grunnkart for arealanalyse som beholdningsgrunnlag
-- SSBs utbyggingsregnskap som endringsgrunnlag
+1. **Naturregnskapet** – felles metode, heldekkende datagrunnlag,
+   versjonering og sammenlignbarhet.
+2. **Supplerende temadata** – relevante kartlag som gir innsikt, men som ikke
+   automatisk inngår i regnskapet.
+3. **Analyse- og beslutningsstøtte** – overlay og andre analyser som bygger
+   videre på regnskap og temadata.
+4. **Veiledning og formidling** – forklaringer som er nødvendige for riktig bruk.
 
-Regnskapet føres på overordnet nivå 0:
+Dette skillet skal være synlig både i fagmodell, kode og brukerflate.
+
+## 2. Første regnskapskjerne
+
+Første versjon skal først og fremst forstås som et
+arealbasert/utbredelsesbasert naturregnskap.
+
+Grunnkart for arealanalyse er sentralt heldekkende grunnlag. Overordnet nivå 0
+i prototypen er:
 
 - Bebygd
 - Jordbruk
 - Natur
 
-Regnskapet skal kunne vise:
+Økosystemtype er en annen klassifikasjon enn nivå 0 og skal ikke blandes med
+nivå 0.
 
-- balanse per kommune og låst periode
-- netto og brutto endringer mellom perioder
-- hvor mye natur og jordbruksareal som er gått over til bebygd areal
-- en arealmessig prognose basert på vedtatt planreserve/KPA
+Tilstand og økosystemtjenester er ikke del av regnskapskjernen i dagens
+prototype.
 
-Prognosen er en fremskrivning av arealbalansen dersom planreserven realiseres, ikke en naturfaglig konsekvensvurdering.
+## 3. Endring over tid
 
-## 2. Tidsserier
+Historisk endring må bygge på et eksplisitt endringsgrunnlag. Differanse mellom
+to årsversjoner av Grunnkart skal ikke automatisk tolkes som reell endring på
+bakken, fordi datakorrigering og forbedret klassifisering kan gi utslag.
 
-Tidsserier skal i første omgang bygges på Grunnkart for arealanalyse og SSBs utbyggingsregnskap.
-
-Utviklingen skal kunne forstås som kjedede perioder:
+Målet er sporbare perioder der:
 
 `låst versjon + dokumenterte endringer = neste låste versjon`
 
-Når en versjon låses, må både tallgrunnlaget og beregningsmetoden kunne spores. Metodeendringer skal synliggjøres slik at metodiske brudd ikke fremstår som reell naturendring.
+Metode- og dataversjoner skal kunne spores.
 
-Andre datasett, også heldekkende temadata, holdes foreløpig utenfor tidsserien inntil metode og formål er avklart.
+## 4. Naturen i dag
 
-## 3. Naturen i dag
+Brukeren skal kunne undersøke dagens natur gjennom:
 
-Når brukeren undersøker naturen i kommunen i dag, skal løsningen kunne vise økosystemtyper og relevante egenskaper ved dagens natur.
+- heldekkende informasjon fra Grunnkart
+- supplerende temadata
+- tydelig informasjon om dekning og begrensninger
 
-Økosystemtype er en annen klassifikasjon enn nivå 0-inndelingen Bebygd/Jordbruk/Natur. Disse skal ikke blandes sammen.
+Gjeldende temasider er:
 
-Det skal ikke uten videre føres endringsregnskap på økosystemtypenivå.
+- Myr (våtmark)
+- Skog
+- Verdsatte naturtyper
+- Verneområder
+- Villreinområder
+- Inngrepsfri natur
+- Bynaturen (grå arealer)
 
-## 4. Hva har vi mistet
+Disse sidene har ulike faglige roller. De skal ikke fremstilles som én felles
+regnskapsklassifikasjon.
 
-Grunnlaget for historisk naturtap er heldekkende informasjon om hvor natur og jordbruksareal er bygget ned.
+## 5. Supplerende temadata
 
-Nedbyggingspolygoner kan kobles mot relevante temadata for å beskrive registrerte egenskaper ved arealet som er berørt.
+Verdsatte naturtyper, verneområder, villreinområder og inngrepsfri natur gir
+supplerende innsikt.
 
-Temadata kan blant annet omfatte:
+Manglende treff betyr ikke at området mangler naturverdi. Løsningen skal skille
+mellom:
 
-- inngrepsfri natur
-- verneområder
-- villreinområder
-- verdsatte naturtyper
-- andre relevante datasett som senere besluttes tatt inn
-
-Dette gir supplerende innsikt, ikke et heldekkende tapsregnskap på naturtypenivå. Manglende kartlegging skal vises eksplisitt som datamangel.
-
-## 5. Hva har vi planlagt å miste
-
-Fremtidig analyse har to spor:
-
-### Vedtatt
-
-Gjeldende planreserve/KPA analyseres mot samme heldekkende grunnlag og relevante temadata.
-
-### Ikke vedtatt
-
-Forslag til ny KPA eller andre fremtidige arealer skal på sikt kunne lastes inn og analyseres etter samme prinsipp.
-
-Dette er analyse- og beslutningsstøtte og skal ikke blandes sammen med selve naturregnskapet.
-
-## 6. Samme analyseprinsipp bakover og fremover
-
-Historisk og fremtidig analyse skal bruke samme grunnlogikk:
-
-1. et areallag angir hvor nedbygging har skjedd eller kan skje
-2. Grunnkartet angir hvilken overordnet areal-/naturklasse som berøres
-3. supplerende temadata beskriver registrerte naturverdier der data finnes
-
-## 7. Datamangler
-
-Manglende temadata skal aldri presenteres som om naturverdier ikke finnes.
-
-Løsningen skal så langt som mulig skille mellom:
-
-- registrert verdi
-- ikke registrert verdi
+- registrert verdi/treff
+- ingen registrerte treff
 - ikke kartlagt/ukjent
 - teknisk utilgjengelig data
 
-## 8. Avgrensning for første versjon
+## 6. Bynaturen og grå arealer
 
-Tilstand og økosystemtjenester inngår ikke i regnskapskjernen for første versjon.
+Bynaturen er ikke en egen økosystemtype i naturregnskapet.
 
-Avansert scenarioanalyse og naturfaglig konsekvensvurdering skal ikke innføres uten eksplisitt beslutning.
+Temaet brukes for å forstå den utbygde delen av kommunen og støtte vurderinger
+av fortetting, transformasjon og gjenbruk.
+
+Naturregnskapets bebygde/opparbeidede areal og det separate Kart over grå
+arealer er beslektede, men ikke identiske størrelser. De skal ikke blandes uten
+metodisk avklaring.
+
+## 7. Fremtidig arealbruk er analyse
+
+Områder satt av til framtidig utbygging brukes som analyseområde. Analysen kan
+vise hvilken natur eller hvilke registrerte naturverdier som ligger innenfor
+området.
+
+Dette er beslutningsstøtte, ikke selve naturregnskapet.
+
+Prototypen skal ikke beskrive dette som en naturfaglig konsekvensutredning eller
+som et sikkert framtidig naturtap.
+
+## 8. Eget tegnet område
+
+Brukeren kan tegne et polygon og bruke dette som analyseområde.
+
+Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
+
+1. et eksplisitt analyseområde
+2. et eksplisitt datagrunnlag
+3. en dokumentert overlaymetode
+4. et resultat som kan leses som tall og stedfestes i kart
+
+Det skal ikke bygges en separat analysemotor for tegnede områder dersom samme
+pipeline kan gjenbrukes.
+
+## 9. Kart og resultat
+
+Kartet er et hjelpemiddel for stedfesting. Hovedresultatet i analyser skal være
+lesbart som tekst/tall uten at brukeren må tolke kartet.
+
+Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme
+analyseresultat/analysemask.
+
+## 10. Prototypeberegninger
+
+Dagens nettleserbaserte rasteranalyser er prototyper.
+
+De kan bruke klassifiserte WMS-rasterfliser for å teste arbeidsflyt, metode og
+brukernytte, men skal ikke omtales som autoritative regnskapstall uten:
+
+- godkjent metode
+- låst dataversjon
+- validering mot egnet analysekilde
+- dokumentert usikkerhet
+- sporbarhet
+
+## 11. Første versjon og videreutvikling
+
+Avansert scenarioanalyse, økologisk tilstand, økosystemtjenester og mer
+automatisert beslutningsstøtte skal omtales som mulig videreutvikling.
+
+Første versjon bør først og fremst etablere et felles og etterprøvbart
+regnskapsgrunnlag og en forståelig måte å bruke det på.
