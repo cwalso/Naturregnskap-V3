@@ -9,9 +9,6 @@ Kart og rasteranalyse hentet flere av de samme bildene/flisene uavhengig.
 Dette ga unødvendige nettverkskall, svakere ytelse og risiko for at kart og
 analyse brukte ulike dataøyeblikk.
 
-Publicdemorepo viste nytten av flisbasert lasting, caching og begrenset
-samtidighet.
-
 ## Beslutning
 
 V3 bruker et felles requestlag i:
