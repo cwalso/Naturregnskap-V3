@@ -2,108 +2,222 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-## 1. Formål
+**Sist oppdatert: 08.10.2026**
 
-V3 er en modulær prototype for kommunale naturregnskap. Løsningen skal skille tydelig mellom selve naturregnskapet, supplerende temadata, analyse- og beslutningsstøtte og veiledning/formidling.
+## 1. Formål og faglig ramme
 
-Løsningen er et virkemiddel. Verdien ligger i et felles og etterprøvbart regnskapsgrunnlag, dokumentert metode, sporbarhet, analyser og riktig bruk i kommunal arealforvaltning.
+V3 er en teknisk prototype for kommunale naturregnskap. Løsningen er et virkemiddel; verdien ligger i et felles og etterprøvbart kunnskapsgrunnlag, dokumentert metode, sporbarhet, analyser, veiledning og riktig bruk i kommunal arealforvaltning.
+
+Kode og brukerflate skal alltid skille mellom:
+
+1. **selve naturregnskapet** – felles metode, heldekkende datagrunnlag, versjonering og sammenlignbarhet
+2. **supplerende temadata** – relevant naturinformasjon som ikke automatisk inngår i regnskapet
+3. **analyse- og beslutningsstøtte** – overlay, plananalyse og andre avledede analyser
+4. **veiledning og formidling** – nødvendig for riktig forståelse og bruk
+
+Første versjon skal omtales nøkternt som et arealbasert/utbredelsesbasert naturregnskap. Tilstand, økosystemtjenester og avansert scenarioanalyse er ikke en avklart del av regnskapskjernen.
 
 ## 2. Faglige hovedregler
 
-1. Regnskapsgrunnlag og supplerende temadata skal aldri blandes sammen uten eksplisitt metodisk beslutning.
-2. Første regnskapskjerne bygger på heldekkende data, Grunnkart for arealanalyse som beholdningsgrunnlag og SSBs utbyggingsregnskap som endringsgrunnlag.
-3. Overordnet nivå 0 i regnskapet er Bebygd, Jordbruk og Natur.
-4. Økosystemtyper beskriver naturen i dag og er en annen klassifikasjon enn nivå 0. De to skal ikke forveksles.
-5. Temadata som inngrepsfri natur, verneområder, villreinområder og verdsatte naturtyper er supplerende kunnskapslag. Manglende treff skal ikke tolkes som fravær av naturverdi.
-6. Det skal ikke bygges tidsserier eller trendpåstander på detaljerte temadata uten uttrykkelig metodisk avklaring.
-7. Tilstand og økosystemtjenester er ikke del av V1-regnskapskjernen.
-8. Fremtidige analyser er analyse- og beslutningsstøtte, ikke selve naturregnskapet.
-9. Vedtatt planreserve og forslag til ny KPA skal kunne analyseres etter samme grunnprinsipp som historisk nedbygging, et areallag legges over samme heldekkende grunnlag og relevante temadata.
-10. Fremtidig arealberegning er en arealmessig analyse, ikke automatisk en naturfaglig konsekvensvurdering.
+1. Regnskapsgrunnlag og supplerende temadata skal ikke blandes uten eksplisitt metodisk beslutning.
+2. Grunnkart for arealanalyse er sentralt heldekkende grunnlag og mulig felles «fasit» for areal- og naturtypeinndeling.
+3. Overordnet nivå 0 i prototypen er **Bebygd, Jordbruk og Natur**.
+4. Økosystemtype er en annen klassifikasjon enn nivå 0 og skal ikke forveksles med nivå 0.
+5. Verdsatte naturtyper/NiN, verneområder, villreinområder og inngrepsfri natur er supplerende temadata/indikatorer, ikke automatisk regnskapsgrunnlag.
+6. Manglende tematreff betyr ikke manglende naturverdi. Skill mellom null treff, ukjent/ikke kartlagt og teknisk feil.
+7. Bynaturen/grå arealer er ikke en egen økosystemtype i regnskapet. Temaet brukes som analyse- og beslutningsstøtte rundt den utbygde delen av kommunen.
+8. Historiske tidsserier skal ikke konstrueres fra skiftende årsversjoner av Grunnkart uten metode for å skille reell endring fra datakorrigering.
+9. Fremtidig utbygging og tegnede områder er analyseområder. Resultatene er beslutningsstøtte og endrer ikke naturregnskapet.
+10. «Hva skjer hvis vi bygger her?» skal ikke omtales som ferdig avansert scenarioanalyse. Dagens prototype viser enkle overlayanalyser.
 
-## 3. Arkitekturregler
+## 3. Temasider som gjelder nå
 
-1. Frontend skal bygges modulært med React, TypeScript, Vite og OpenLayers.
-2. Analyse-API skal bygges i Python med FastAPI.
-3. WMS brukes primært til visualisering. Autoritative eller presenterte arealberegninger skal ikke utledes fra WMS-bilder.
-4. GIS-analyser som gir regnskapstall eller analysegrunnlag skal utføres server-side eller mot eksplisitt godkjente forhåndsprosesserte data.
-5. BBOX/envelope kan brukes til søk og ytelsesoptimalisering, men ikke som erstatning for eksakt geometrisk klipping når resultatet presenteres som arealtall.
-6. Eksterne datakilder skal isoleres bak adaptere. Domene- og analysemoduler skal ikke være tett koblet til leverandørspesifikke API-er.
-7. Kartvisning og analyse skal kunne bruke ulike kilder for samme datasett, for eksempel WMS til visning og WFS/API/forhåndsprosesserte data til analyse.
-8. Datasettene skal beskrives i et sentralt register med kilde, kategori, versjon, gyldighetsdato, metadata og analysemuligheter.
-9. Analyse-, data- og metodeversjon skal kunne spores i resultater.
-10. Kart, tabeller, grafer og rapporter skal bygge på samme analyseresultat, ikke egne parallelle beregninger.
-11. Visuell presentasjon og theme skal kunne byttes uten å endre fagmodell, analyse, API-kontrakter eller datakildeadaptere. UI-komponenter skal konsumere typed data/view models, bruke semantiske design tokens og ikke eie faglige beregninger eller datakildekunnskap.
+Det skal ikke opprettes nye temasider uten eksplisitt beslutning. Gjeldende temasider er:
 
-## 4. Domeneskille
+- **Myr (våtmark)**
+- **Skog**
+- **Verdsatte naturtyper**
+- **Verneområder**
+- **Villreinområder**
+- **Inngrepsfri natur**
+- **Bynaturen (grå arealer)**
 
-Kode og begreper skal tydelig skille mellom:
+Skog og Myr/våtmark bygger på heldekkende Grunnkart. Verdsatte naturtyper, verneområder, villrein og inngrepsfri natur er supplerende temadata/indikatorer. Bynaturen kombinerer regnskapskontekst med supplerende innsikt om grå arealer.
 
-- `account`, selve naturregnskapet
-- `nature-status`, naturen i dag
-- `historical-loss`, hva som er bygget ned og hva slags registrert natur som er berørt
-- `future-analysis`, vedtatt og ikke vedtatt fremtidig arealbruk
-- `thematic-data`, supplerende temadata
-- `reporting`, presentasjon og rapportering av allerede beregnede resultater
+Temadata på temasidene skal visuelt avgrenses til valgt kommune. Ikke vis temaflater utenfor kommunegrensen.
+
+## 4. Offentlig prototype og branding
+
+Den offentlige prototypen kjører på GitHub Pages:
+
+`https://cwalso.github.io/Naturregnskap-V3/`
+
+Prototypen er offentlig, men er ikke en profilgodkjent Miljødirektoratet-tjeneste. Headeren skal derfor være nøytral og vise **Kommunale naturregnskap** og teststatus. Ikke legg inn Miljødirektoratets logo eller annen offisiell avsenderprofil uten eksplisitt godkjenning.
+
+Bilder fra Unsplash i dagens temasider er midlertidige prototypebilder. Ikke legg til nye eksterne bilder uten kilde-/rettighetsvurdering. På sikt bør bilder lagres kontrollert med kjent kilde, fotograf/kreditering og bruksrett.
+
+## 5. Dagens demoarkitektur
+
+Offentlig runtime er frontend-only:
+
+```text
+offentlige data- og karttjenester
+        +
+forhåndsprosesserte/statiske prototypefiler
+        ↓
+React + TypeScript + OpenLayers
+        ↓
+GitHub Pages
+```
+
+- `apps/web` er den offentlige demoen.
+- `apps/api` med FastAPI/Python beholdes for preparation, domenelogikk, tester og mulig framtidig arkitektur, men er ikke runtime-avhengighet for GitHub Pages.
+- Regnskapskritiske/autoritative resultater skal fortsatt kunne flyttes til versjonert preparation/backend. Frontend-analysene er prototypeanalyser.
+
+## 6. Kart, raster og beregning
+
+Det gamle absolutte prinsippet «WMS er bare visualisering» er for grovt for dagens prototype.
+
+Gjeldende regel er:
+
+- WMS/kartbilder kan brukes direkte til **prototypevisualisering**.
+- Klassifiserte WMS-rasterfliser brukes også i enkelte **prototypeanalyser i nettleseren**, blant annet framtidig utbygging, tegnet polygon og økosystemfordeling.
+- Slike resultater skal være tydelig merket som prototypeanslag/metodebundet beslutningsstøtte.
+- WMS-avledede nettleserberegninger skal ikke omtales som autoritative regnskapstall uten metodisk beslutning, versjonering og validering mot godkjent analysekilde.
+- Kart og analyser skal så langt mulig bruke samme råfliser/klassifisering for å unngå visuell og numerisk inkonsistens.
+
+Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et fast rutenett på ca. **21,16 meter** per analysepiksel. Mer detaljert økosystemklassifisering kan bruke finere rutenett der implementert.
+
+## 7. Utforsk i kart – gjeldende arbeidsflyt
+
+`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+
+Primærflyten er:
+
+1. **Velg analyseområde**
+2. **Velg hva området skal krysses med**
+3. **Les resultat**
+4. **Finn resultatet i kartet**
+
+Analyseområder som er implementert:
+
+- framtidig utbygging fra kommuneplan
+- eget polygon tegnet i kartet
+
+Analysegrunnlag som er implementert i analyseverkstedet:
+
+- Natur og jordbruk fra Grunnkart
+- Verdsatte naturtyper
+
+Resultatet skal være lesbart som tall først. Kartet brukes primært til stedfesting. Ikke erstatt denne flyten med en stor lagvelger.
+
+## 8. Tegnet polygon
+
+Eget polygon skal behandles som et analyseområde på samme måte som framtidig utbygging, ikke som en separat analysefamilie.
+
+Gjeldende implementasjon støtter:
+
+- start tegning
+- punkter/hjørner i kart
+- angre siste punkt
+- ferdig
+- avbryt
+- tegn på nytt
+- fjern område
+
+Polygonet rasteriseres, avgrenses til valgt kommune og bruker samme overordnede overlaypipeline som øvrige analyser.
+
+Ved endringer i polygonanalysen skal følgende verifiseres eksplisitt:
+
+- at arealet gjelder hele analyseområdet
+- at prosentnevneren er riktig
+- at gammel cache/overlay ikke gjenbrukes etter områdebytte
+- at analyse og kart bruker samme analysemask
+
+## 9. Ytelse og flispipeline
+
+`apps/web/src/map/sharedImageRequests.ts` er felles request-/cachelag for rasterbilder.
+
+Gjeldende prinsipper:
+
+- maks **4 samtidige nettverkskall per datakilde**
+- identiske pågående kall deles
+- råbilder caches med begrenset cache (400 elementer per kilde i dagens prototype)
+- samme råflis skal gjenbrukes mellom kart og analyse når URL/datagrunnlag er identisk
+- unngå store heldekkende bilder når flisbasert analyse er mulig
+- aborter eller ignorer stale resultater ved kommune-/analysebytte
+- lukk `ImageBitmap` og frigjør object URLs/Canvas-ressurser der det er relevant
+
+Publicdemorepo brukes som funksjonell/teknisk referanse for disse mønstrene. Kode skal ikke kopieres ukritisk.
+
+## 10. Domeneskille i kode
+
+Begreper og moduler skal skille mellom:
+
+- `account` – selve naturregnskapet
+- `nature-status` – naturen i dag
+- `historical-loss` – dokumentert historisk endring
+- `future-analysis` – fremtidig arealbruk og tegnede analyseområder
+- `thematic-data` – supplerende temadata
+- `reporting` – presentasjon/rapportering av allerede beregnede resultater
+- `map` – kartinteraksjon og visning
+- `datasets` – datakildekontrakter og register
 
 Ikke bruk generiske navn som gjør at disse domenene flyter sammen.
 
-## 5. Plananalyse
-
-Gjeldende KPA og forslag til ny KPA skal modelleres som varianter av samme konsept, ikke som to separate tekniske løsninger.
-
-Plananalyse skal etter hvert håndtere:
-
-- valgt planversjon
-- kilde og datoversjon
-- geometri og koordinatsystem
-- hvilke arealformål som teller som utbygging
-- allerede utbygd areal
-- overlapp mellom gammel og ny plan
-- regel for hvilken plan som gjelder ved overlapp
-- ugyldig eller reparert geometri
-- metode-/regelsettversjon
-
-Ikke hardkod planregler i UI-komponenter.
-
-## 6. Datamangler og usikkerhet
+## 11. Datamangler og usikkerhet
 
 Datamangler er førsteklasses informasjon. Resultater skal kunne skille mellom:
 
-- areal med registrert temainformasjon
-- areal uten registrert temainformasjon
+- registrert verdi/treff
+- ingen registrerte treff
+- ikke kartlagt/ukjent
 - teknisk feil eller manglende datatilgang
 
 Ingen av disse skal presenteres som samme tilstand.
 
-## 7. Utviklingsprinsipper
+## 12. Utviklingsprinsipper
 
 1. Bygg små, vertikale og testbare steg.
-2. Ikke implementer funksjonalitet som ikke er eksplisitt etterspurt i oppgaven.
-3. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov og begrunnelse.
-4. Unngå overengineering. Dette er en profesjonell prototype, ikke et ferdig produksjonssystem.
-5. Bruk TypeScript-typer og Python-modeller til å gjøre domenet eksplisitt.
-6. Legg forretningsregler og analysemetode utenfor UI-komponenter.
-7. Kjør relevante tester og build før oppgaven avsluttes.
-8. Oppdater dokumentasjon og ADR når en oppgave innebærer en reell arkitekturbeslutning.
-9. Ikke kopier V2-kode ukritisk. V2 er referanse for funksjonalitet, datakilder og læring, ikke teknisk fundament.
+2. Ikke implementer funksjonalitet som ikke er eksplisitt etterspurt.
+3. Ikke opprett nye temasider eller analysefamilier uten faglig avklaring.
+4. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov.
+5. Legg fagregler og analysemetode utenfor presentasjonskomponenter.
+6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat/analysemask.
+7. Kjør relevante tester, lint og build før avslutning.
+8. Oppdater levende dokumentasjon og legg til ADR når en reell arkitekturbeslutning tas.
+9. Gamle ADR-er er historikk og skal normalt ikke omskrives.
+10. Prototypens teknologistack er ikke automatisk produksjonsarkitektur.
 
-## 8. Arbeidsform med Codex
+## 13. Dokumentasjon som skal leses før arbeid
 
-Før implementering:
+Start med:
 
-1. Les denne filen.
-2. Les relevante dokumenter under `docs/`.
-3. Oppsummer kort hvilke arkitektur- og domeneregler som er relevante for oppgaven.
-4. Gjør kun endringer som er nødvendige for oppgaven.
+1. `AGENTS.md`
+2. `docs/README.md`
+3. `docs/utviklingsplan.md`
+4. relevant produkt-/arkitekturdokumentasjon
+5. relevante ADR-er for området som endres
+
+Ved konflikt gjelder nyere eksplisitte beslutninger og dagens kode foran historiske ADR-er. Dokumentasjonsavvik skal korrigeres i samme PR når de oppdages.
+
+## 14. Arbeidsform med Codex
+
+Før implementering skal Codex:
+
+1. lese dokumentene over
+2. kontrollere dagens `main`
+3. identifisere om oppgaven gjelder regnskap, temadata, analyse eller formidling
+4. beskrive kort hvilke eksisterende regler/mønstre som berøres
 
 Ved avslutning skal Codex oppgi:
 
 1. hva som er endret
-2. hvilke filer som er opprettet eller endret
-3. hvilke tester/build som er kjørt og resultatet
-4. eventuelle avvik, antakelser eller spørsmål som bør avklares før neste steg
+2. hvilke filer som er endret/opprettet
+3. hvilke tester/lint/build som er kjørt og resultat
+4. metodiske antakelser og begrensninger
+5. hvilken dokumentasjon/ADR som er oppdatert
 
-## 9. Kostnads- og utviklingsmiljø
+## 15. Kostnads- og utviklingsmiljø
 
-Arbeidsflyten skal kunne gjennomføres fra nettleser med GitHub og Codex Web, uten å være avhengig av en bestemt lokal PC eller betalte tilleggstjenester. Ikke innfør infrastruktur som medfører løpende kostnader uten eksplisitt beslutning.
+Arbeidsflyten skal kunne gjennomføres fra nettleser med GitHub/Codex uten å være avhengig av en bestemt lokal PC eller nye betalte runtime-tjenester. Ikke innfør infrastruktur med løpende kostnader uten eksplisitt beslutning.
