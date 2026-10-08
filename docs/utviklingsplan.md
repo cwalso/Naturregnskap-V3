@@ -1,76 +1,173 @@
 # Utviklingsplan – Naturregnskap V3
 
-**Sist oppdatert: 29.09.2026**
+**Sist oppdatert: 08.10.2026**
 
 Dette er en arbeidsplan for den tekniske V3-prototypen, ikke en formell
-leveranseplan for Kommunale naturregnskap. Prototypen tester dataflyt,
-metodeimplementering og arkitekturprinsipper. I gjeldende løsningsarkitektur er
-det lagt opp til bruk av blant annet Databricks og Experience Builder, mens
-prototypen bruker enklere teknologi for å prøve ut de samme logiske prinsippene.
+leveranseplan for Kommunale naturregnskap.
 
-Dokumentet skal oppdateres fortløpende etter gjennomførte PR-er og
-arkitekturavklaringer.
+> **Vedlikeholdsregel:** Ved hver merget PR skal det vurderes om status,
+> arkitektur, metode eller produktretning har endret seg. Berørte levende
+> dokumenter skal oppdateres i samme PR eller umiddelbart etterpå.
 
-> **Vedlikeholdsregel:** Ved hver merget versjon/PR skal status, resultat og neste
-> steg i dette dokumentet vurderes og oppdateres.
+## Status nå
 
-## Statusoversikt
+V3 har gått fra teknisk fundament og grunnleggende kart til en offentlig
+GitHub Pages-prototype med:
 
-| Versjon | Status | Hovedmål | Resultat / neste steg |
-| --- | --- | --- | --- |
-| V3.0 – Teknisk fundament | ✅ Ferdig | React/TypeScript/Vite-frontend, FastAPI-backend og grunnleggende modul- og domenestruktur. | Det modulære tekniske fundamentet er etablert. |
-| V3.1 – Kart og kommunevalg | ✅ Ferdig | Kommunevalg, kommunegrense og grunnleggende kart. | Kommune er etablert som inngang til kartflyten. |
-| V3.2 – Dataset registry og Grunnkart | ✅ Ferdig | Sentralt dataset registry, Grunnkart 2025 WMS som `visualSource` og tydelig skille mellom visning og analysegrunnlag. | WMS-visualisering er etablert uten å gjøre kartbilder til beregningsgrunnlag. |
-| V3.2.1 – Codespaces/browser-preview | ✅ Ferdig | Nettleserbasert utviklingspreview med frontend og API i GitHub Codespaces. | Preview-flyt og utviklingsoppsett er etablert. |
-| V3.2.2 – Grunnleggende UX/design | ✅ Ferdig | Grunnleggende kommunevelger, layout, semantiske designtokens og visuelt profilgrunnlag. | Et første, ikke profilgodkjent UX- og designgrunnlag er etablert. |
-| V3.2.3 – Profilheader og tegnforklaring | ✅ Ferdig | Profilheader med offisiell logo og permanent tegnforklaring for aktive faglag. | Header og tegnforklaring er etablert; framtidige lag må få validert legendekilde. |
-| V3.3 – Overordnet regnskapsoversikt | ✅ Ferdig | Level0-kategoriene Natur, Jordbruk og Bebygd, eksplisitt `XX`/`not_available` ved manglende data og utskiftbar presentasjonsarkitektur. | Typed presentasjonsflyt er etablert uten beregninger i UI-komponentene. |
-| V3.4 – Research gate for Grunnkart 2025 | ✅ Ferdig | Kontrollere faktisk datagrunnlag og stenge implementering inntil analysekilden var inspisert. | Historisk research gate er gjennomført og senere erstattet av den operative beslutningen i V3.4B. |
-| V3.4B – Kommunevis Parquet → prepared data → API | ✅ Ferdig | Faktisk GeoParquet for Indre Fosen (5054), offline beregning, prepared resultat og `/account-overview`-API. | Tung regnskapsberegning skjer ikke i nettleseren eller per HTTP-request. Grunnkart-WMS brukes fortsatt bare til visualisering. |
-| V3.5 – Proveniens og etterprøvbarhet | ✅ Ferdig | Gjøre kilde, metode, versjon/periode og viktige avgrensninger forståelige og nyttige for brukeren. | Brukerrettet proveniens er etablert for dagens Level0-regnskap. Kilde, referanseversjon eller regnskapsperiode, metode og viktige avgrensninger kan formidles i brukerflaten. Teknisk sporbarhet beholdes i backend uten å eksponeres unødvendig. Videre forbedring av metadata-kontrakten tas ved konkret behov. |
-| V3.6 – Generisk preparation-pipeline | 🔵 Planlagt | Gå fra én eksplisitt testkommune til kommuneuavhengig behandling, slik at samme arkitektur og metode virker for flere kommuner uten spesialkode. | Neste praktiske verifikasjon er å kjøre det eksisterende preparation-løpet på minst én ny kommune med reell GeoParquet. Videreføre batch/precompute og ikke lese stor Parquet per HTTP-request. |
-| V3.6A – Polygonbasert endringsarkitektur | ✅ Ferdig | Etablere en kildeuavhengig arkitektur for polygonbaserte endringer. | Generisk `ChangeFeature`-modell og eksplisitt syntetiske testpolygoner for 5054 er etablert; de er ikke observerte AR5-/SSB-endringer. Separate prepared summary/features bindes til samme preparation-run med `generationId`. `/changes` gir aggregert informasjon og `/changes/features` polygoner. Frontend avviser mismatch, håndterer stale responses og lar ikke polygonfeil gjøre aggregert oversikt utilgjengelig. |
-| V3.7 – Dokumentert naturtap | ⚪ Under avklaring | Etablere historisk visning av dokumentert naturtap basert på statistikk og metodegrunnlag som faktisk er tilgjengelig på kommunenivå. | SSBs naturregnskapsstatistikk publiseres første gang 25. november 2026. Løsningen skal ikke forutsette at SSB leverer stedfestede utbyggingspolygoner. Aggregert statistikk og polygonbaserte endringsdata behandles som ulike dataproblemer. |
-| V3.8 – «Naturen i dag» | 🟡 Påbegynt | Introdusere mer detaljert informasjon om dagens natur og gjøre skillet mellom regnskapsgrunnlag og supplerende data tydelig for brukeren. | «Utforsk naturen» har interaktiv temautforsking, forklaring av regnskapsgrunnlaget og de første reelle supplerende datasettene. Mer detaljert heldekkende naturinndeling er fortsatt under avklaring. |
-| V3.9 – Supplerende temadata | 🟡 Påbegynt | Innføre temalag som beriker forståelsen av arealer uten å blande temadata med regnskapsgrunnlaget. | Naturvernområder og Villreinområder er koblet til med WMS som visualisering og ArcGIS REST Query som separat analysegrunnlag for kommunespesifikk treffstatus. UI skiller mellom treff, ingen registrerte treff og teknisk utilgjengelig kilde. Øvrige temainnganger er fortsatt ikke koblet til. |
-| V3.10 – Tematisk forståelse av naturtap | ⚪ Under avklaring | Vurdere om dokumentert naturtap kan beskrives med mer detaljert naturinformasjon der datagrunnlaget gir metodisk grunnlag for det. | Skal ikke bygge på en antakelse om at historisk naturtap er stedfestet. Dersom egnet naturklassifisering eller geometri finnes, kan supplerende temadata brukes, men manglende dekning skal være eksplisitt og temadata skal ikke endre Level0-regnskapet. |
-| V3.11 – Historikk og tidsserier | ⚪ Under avklaring | Vise dokumenterte endringer mellom låste og versjonerte perioder med sporbarhet mellom data-, metodeversjoner og publiserte resultater. | Planlagt retning, men periodegrunnlag og metode må avklares. Det skal ikke antas årlige tidsserier dersom datagrunnlaget ikke støtter det. |
-| V3.12 – Natur i områder avsatt til framtidig utbygging | ⚪ Under avklaring | Mulig videreutvikling for å vise hvilken natur som ligger i områder som i vedtatte planer er avsatt til framtidig utbygging. | Dette er beslutningsstøtte, ikke selve naturregnskapet, og er ikke garantert del av første versjon. Omfang, datagrunnlag og metode må avklares før eventuell implementering. Analysen skal ha natur som fokus og skal ikke presentere planreserve eller hvilke utbyggingsformål områdene er avsatt til. |
+- kommuneoversikt
+- Naturtapet
+- prioriterte temasider
+- analyseverksted i kart
+- framtidig utbygging som analyseområde
+- eget tegnet polygon som analyseområde
+- overlay mot Natur/Jordbruk og Verdsatte naturtyper
+- delt request-/flispipeline for bedre ytelse
 
-## Prinsipper som gjelder for alle videre versjoner
+Prototypen er fortsatt et utviklings- og læringsverktøy. Den er ikke et ferdig
+kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 
-1. Regnskapsgrunnlag og supplerende temadata skal ikke blandes.
-2. Grunnkart for arealanalyse er sentralt heldekkende grunnlag for Level0.
-3. WMS er `visualSource`, ikke beregningsgrunnlag.
-4. Regnskapsberegninger gjøres i databehandlingslaget, ikke i nettleseren.
-5. Prepared/kuraterte resultater serveres til brukerflaten.
-6. Manglende data = `not_available`, aldri falsk null.
-7. Versjonering, provenance, metodeversjon og sporbarhet er førsteklasses krav.
-8. Arkitekturen skal være kildeuavhengig der det er praktisk mulig.
-9. Prototypens teknologistack er ikke et bindende valg for produksjonsløsningen.
-10. Produksjonsarkitekturen må kunne oversette samme logiske dataflyt til
-    Databricks, ArcGIS-tjenester/API og Experience Builder.
-11. Fremoverskuende visninger skal beskrive hvilken natur som ligger i områder
-    som i vedtatte planer er avsatt til framtidig utbygging, ikke planreserve
-    eller utbyggingsformål.
-12. Historisk naturtap skal presenteres på det geografiske og tematiske
-    detaljeringsnivået kildedata faktisk støtter. Aggregert statistikk skal ikke
-    framstilles som stedfestede endringspolygoner.
+## Milepæler
 
-## Neste anbefalte steg
+| Milepæl | Status | Resultat |
+| --- | --- | --- |
+| Teknisk fundament | ✅ | React/TypeScript/Vite/OpenLayers og FastAPI/Python-struktur etablert |
+| Kommunevalg og kommunegrense | ✅ | Kommune er felles kontekst for sider, kart og analyser |
+| Dataset registry | ✅ | Kilder har eksplisitt faglig rolle og teknisk kilde |
+| Kommuneoversikt / nivå 0 | ✅ prototype | Natur, Jordbruk og Bebygd presenteres; dagens hovedtall har fortsatt prototypeforbehold |
+| Proveniens | ✅ delvis | Kilde/metode kan vises, men må videreføres til alle nye analyser |
+| Naturtapet | 🟡 | Side/design etablert; endelig dokumentert endringsgrunnlag fortsatt under avklaring |
+| Naturtema | ✅ prototype | Prioriterte temasider etablert |
+| Kommuneavgrenset temakart | ✅ | Temadata maskeres visuelt utenfor valgt kommune |
+| Skog og Myr/våtmark | ✅ prototype | Heldekkende Grunnkart-basert temaside-/kartmønster |
+| Verdsatte naturtyper | ✅ prototype | Kommunevise beregninger, kartleggingsgrad og overlay mot analyseområde |
+| Verneområder | ✅ prototype | Supplerende temaside og kart |
+| Villreinområder | ✅ prototype | Supplerende temaside og kart |
+| Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
+| Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
+| Utforsk i kart – analyseverksted | ✅ prototype | Område → datagrunnlag → resultat → stedfesting |
+| Framtidig utbygging × Natur/Jordbruk | ✅ prototype | Rasterbasert overlay og lesbart resultat |
+| Framtidig utbygging × Verdsatte naturtyper | ✅ prototype | Overlay, filtrering og stedfesting |
+| Tegn eget polygon | ✅ prototype | OpenLayers Draw og samme overlaypipeline |
+| Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
+| Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
+| Historiske tidsserier | ⚪ | Krever avklart endringsprodukt og metode |
+| Forslag til ny KPA / plansammenligning | ⚪ | Framtidig mulig videreutvikling |
+| Rapportgenerering | ⚪ | Framtidig mulig videreutvikling |
 
-1. **Brukerflater:** Oversikt, Utforsk naturen og Utforsk i kart er løftet inn i samme designretning. Naturvernområder og Villreinområder har nå kommunespesifikk treffstatus basert på polygonspørring mot feature-tjenestene, mens WMS fortsatt kun brukes til visning. Neste steg er å utvide samme mønster til flere prioriterte temadata og eventuelt etablere eksplisitt dekningsgeometri der kilden krever skille mellom null treff og manglende geografisk dekning.
-2. **V3.6:** Verifisere preparation-løpet på minst én ny kommune med reell GeoParquet.
-3. **V3.7:** Koble på SSB-/annet dokumentert naturtap når publisert datagrunnlag og kommunal metode er avklart. Ikke forutsett polygoner.
-4. **V3.8/V3.9:** Koble på mer detaljert heldekkende naturinformasjon og deretter supplerende temadata med eksplisitt datadekning.
-5. **V3.10/V3.11:** Vurdere tematisk naturtap og tidsserier først når datagrunnlaget støtter dette.
-6. **V3.12:** Deretter vurdere visning av natur i områder som i vedtatte planer er avsatt til framtidig utbygging.
+## Gjeldende temasider
 
+Temasidesettet er låst til:
 
-## Kilder for avgrensning per 29.09.2026
+1. Myr (våtmark)
+2. Skog
+3. Verdsatte naturtyper
+4. Verneområder
+5. Villreinområder
+6. Inngrepsfri natur
+7. Bynaturen (grå arealer)
 
-- SSB, «Naturregnskap»: første publisering er varslet 25. november 2026, med tall for referanseåret 2024.
-- SSB, «Arealbruk og arealressurser»: statistikken beskriver bebygd areal etter bruksformål og ubebygde områder etter markslag, og er derfor en annen statistikk enn kommunalt naturregnskap.
-- Miljødirektoratet, «Naturregnskap»: beskriver utbredelse, tilstand og økosystemtjenester som ulike deler av naturregnskapet, og peker samtidig på at enklere naturregnskap kan lages med tilgjengelige data mens kunnskapsgrunnlaget utvikles.
+Ikke legg til nye temasider uten eksplisitt beslutning.
 
-Kildene brukes som faglig ramme for prototypen. De innebærer ikke at alle nasjonale regnskapsdeler eller SSB-statistikker kan overføres direkte til kommunalt nivå uten metodeavklaring.
+## Analyseverkstedet
+
+Gjeldende analyseområder:
+
+- framtidig utbygging
+- eget tegnet polygon
+
+Gjeldende analysegrunnlag:
+
+- Natur og jordbruk
+- Verdsatte naturtyper
+
+Nye analysegrunnlag skal legges til først når brukerbehov, analysekilde,
+resultattype og datadekning er avklart.
+
+## Prinsipper for videre utvikling
+
+1. Naturregnskap, temadata, analyse og veiledning holdes adskilt.
+2. Grunnkart er sentralt heldekkende grunnlag.
+3. Browserbaserte rasteranalyser er prototypebeslutningsstøtte, ikke
+   autoritative regnskapstall.
+4. Kart og tall for samme analyse skal bruke samme analysemask.
+5. Manglende data skal aldri bli falsk 0.
+6. Kommuneavgrensning skal være eksplisitt.
+7. Metode- og dataversjoner skal kunne spores.
+8. Små vertikale PR-er foretrekkes.
+9. Dokumentasjon og ADR oppdateres når beslutninger endres.
+10. Produksjonsarkitektur avgjøres ikke av hva som er enklest i prototypen.
+
+## Prioriterte neste steg
+
+### 1. Validere eksisterende overlayberegninger
+
+Kontroller spesielt:
+
+- arealrekonsiliering
+- prosentnevnere
+- samsvar mellom kart og tall
+- bytte mellom planområde og tegnet polygon
+- stale cache/resultater
+- mobil tegnemodus
+
+### 2. Stabilitet og ytelse
+
+Mål faktisk effekt av:
+
+- request-deduplisering
+- cache
+- maks fire samtidige kall
+- gjenbruk av råfliser
+- object URL-/ImageBitmap-opprydding
+
+### 3. Grunnkart/metode
+
+Avklar:
+
+- autoritativ analysekilde
+- nivå-0-bokføringsregler
+- versjonering
+- datakorrigering versus reell endring
+- nasjonal preparation
+
+### 4. Naturtapet
+
+Koble siden til dokumentert endringsgrunnlag når dette finnes og er metodisk
+avklart.
+
+Ikke konstruer stedfestede tap fra aggregert statistikk.
+
+### 5. Bynaturen
+
+Vurder direkte integrasjon av Kart over grå arealer dersom dette prioriteres,
+med tydelig skille mot regnskapets Bebygd/opparbeidet-kategori.
+
+### 6. Flere overlaytema
+
+Verneområder, villrein og inngrepsfri natur kan vurderes, men bare etter
+avklaring av:
+
+- brukerbehov
+- analysekilde
+- resultatmål
+- dekning
+- usikkerhet
+
+### 7. Ny KPA / plansammenligning
+
+Dette er mulig videreutvikling, ikke en forpliktelse i første versjon.
+
+## Dokumentasjonsstatus
+
+Levende dokumenter som skal holdes oppdatert:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/README.md`
+- `docs/utviklingsplan.md`
+- `docs/product/*.md`
+- `docs/architecture/overview.md`
+- relevante data-/metodedokumenter
+
+Historiske ADR-er under `docs/decisions/` skal normalt ikke omskrives. Nye
+beslutninger dokumenteres i nye ADR-er.
