@@ -1,6 +1,6 @@
 # Dokumentasjon – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 Denne siden viser hvilke dokumenter som er levende styringsdokumenter og hvilke
 som er historiske beslutningslogger.
@@ -62,10 +62,11 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
-Ny kartpresentasjon under implementering beskrives i
-[`2026-10-08-v3-isolated-explore-map.md`](decisions/2026-10-08-v3-isolated-explore-map.md).
-Den er ikke koblet til offentlig brukerflate; visuell godkjenning av plan og
-overlapp gjenstår.
+Ny kartpresentasjon er koblet til `#utforsk-i-kart` i denne kodeversjonen
+etter visuell kontroll A–E med reelle Trondheim-data. Se
+[`2026-10-09-v3-explore-analysis-map.md`](decisions/2026-10-09-v3-explore-analysis-map.md).
+Den presiserer presentasjonsbeslutningen fra 08.10.2026 uten å endre metode.
+Publisering på Pages krever merge og vellykket deploy.
 
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av

@@ -36,6 +36,7 @@ import {
   loadMunicipalityThematicCoverage,
 } from '../data/municipalityWorkspace'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
+import { ExploreAnalysisWorkspace } from '../features/explore-map/ExploreAnalysisWorkspace'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
@@ -201,8 +202,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
   const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
-  const showsMap = activeView === 'utforsk-i-kart'
-    || activeView === 'tema-forest'
+  const showsMap = activeView === 'tema-forest'
     || activeEcosystemId !== null
     || activeView === 'tema-urban-nature'
     || activeThematicDatasetId !== null
@@ -1387,6 +1387,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       )
 
+  // Retain the previous workbench during visual migration, without mounting it.
+  void mapWorkspace
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
       <header className="content-page__intro map-page__intro">
@@ -1412,11 +1414,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
             <span><b>2</b> Velg datagrunnlag</span>
             <span><b>3</b> Les og stedfest resultatet</span>
           </div>
-          {mapWorkspace(
-            'Analyse',
-            'Arbeid med treffene i kartet. Bruk panelet til tall, filtrering og lokaliteter.',
-            'explore',
-          )}
+          <ExploreAnalysisWorkspace municipality={selectedMunicipality} boundary={boundaryData}
+            result={plannedDevelopment} state={plannedDevelopmentState}
+            target={plannedDevelopmentAnalysisTarget === 'valued-nature' ? 'valued-nature' : 'grunnkart'} onTargetChange={changeAnalysisTarget}
+            valued={plannedValuedNature} valuedState={plannedValuedNatureState}
+            coverage={plannedCoverageGap} coverageState={plannedCoverageGapState} />
         </>
       )}
     </section>

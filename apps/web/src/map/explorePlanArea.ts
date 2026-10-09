@@ -5,7 +5,7 @@ import type { PlannedDevelopmentAnalysis } from './plannedDevelopment'
 
 // Display the existing valid mask, including built-up/water pixels. This
 // adapter does not classify pixels or calculate an area.
-export function planAreaSource(analysis: PlannedDevelopmentAnalysis): ImageStatic {
+export function planAreaSource(analysis: PlannedDevelopmentAnalysis, outlineOnly = false): ImageStatic {
   const { width, height, extent, analysisMask } = analysis.overlay
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -20,6 +20,7 @@ export function planAreaSource(analysis: PlannedDevelopmentAnalysis): ImageStati
     const edge = x === 0 || y === 0 || x === width - 1 || y === height - 1
       || !analysisMask[i - 1] || !analysisMask[i + 1]
       || !analysisMask[i - width] || !analysisMask[i + width]
+    if (outlineOnly && !edge) continue
     pixels.data.set(edge ? [5, 58, 130, 255] : [24, 111, 205, 190], i * 4)
   }
   context.putImageData(pixels, 0, 0)

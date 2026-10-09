@@ -1,6 +1,6 @@
 # Arkitekturoversikt – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## Mål
 
@@ -84,23 +84,27 @@ theme
 UI-komponenter skal ikke eie datakildekunnskap eller skjulte fagregler.
 
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat
-og identitet. Beregningsgrid og presentasjonsgeometri skilles; kildepolygoner
-kan klippes visuelt til den gyldige analysemasken uten å beregne nye tall.
+og identitet. Beregningsgrid og kildegeometri skilles. Den aktive nye
+kartflyten viser WMS-kontekst, beregnet grid-treff og valgt kildegeometrisk
+omriss som forskjellige ting, uten å beregne nye tall.
 
-## Ny kartpresentasjon under implementering
+## Separat kartpresentasjon i Utforsk i kart
 
-`ExploreAnalysisMap` er en separat kartkomponent med eksplisitt kommunegrense,
-visning av naturtype-WMS og eksisterende planresultat som input. Den eier ikke
-beregninger. `explorePlanArea.ts` viser hele den eksisterende gyldige
-planmasken uten omklassifisering. Visningen bruker vanlig kommuneavgrensende
-vektormaske; den gjenbruker ikke `valuedNatureMap.ts` eller Canvas-renderklipp.
+`ExploreAnalysisWorkspace` er koblet til `App.tsx` i denne kodeversjonen.
+Komponenten mottar eksisterende resultater og tilstander; den eier ikke
+nettverkskall eller analyser. `ExploreAnalysisMap` har egen OpenLayers-instans
+med kommunegrense, planresultat, valgt grunnlag og filtrering som input.
+Den gamle `municipalityMap` monteres ikke for denne ruten. Temasider og andre
+kart er uendret. Gammel arbeidsflate og metode-/tegningskode beholdes.
 
-Komponenten er foreløpig bare tilgjengelig i nettleserkontrollflaten under
-`apps/web/tests/browser/`. `App.tsx` og den offentlige prototypen bruker
-fortsatt gammel kartpresentasjon. Trinn A er visuelt verifisert; B–E gjenstår,
-og reell planvisning er blokkert av testmiljøets nettverkstilgang. Se
-[ny ADR](../decisions/2026-10-08-v3-isolated-explore-map.md). Dette endrer ikke
-metode, analysegrid, prosentnevnere eller eksisterende resultatcache.
+Ny arbeidsflate er framtidig utbygging × Natur/Jordbruk eller Verdsatte
+naturtyper. Tegneinngangen er midlertidig skjult. Ordinær kommuneavgrensende
+vektormaske skjuler alt utenfor kommunen, uten Canvas-renderklipp.
+
+Visuell gate A–E er kontrollert med reelle Trondheim-data, inkludert manuell
+zoom/pan, temarundtur og 390 px. Faktisk render-regresjon inngår i Quality Gate.
+Se [beslutning](../decisions/2026-10-09-v3-explore-analysis-map.md). Publisering
+på Pages krever merge og vellykket deploy; kontrollen er utført på branchen.
 
 ## Dagens datatilgang
 
@@ -147,7 +151,7 @@ Gjeldende arbeidsflyt:
 ```text
 analyseområde
   ├─ framtidig utbygging
-  └─ eget tegnet polygon
+  └─ eget tegnet polygon (kode beholdt; inngang midlertidig skjult)
         ↓
 analysegrunnlag
   ├─ Natur og jordbruk
@@ -203,32 +207,43 @@ for projiserte nettleserarealer på tvers av analyse og temasider. Ferdige
 SSB-arealer korrigeres ikke på nytt. Se data-/metodedokumentet for formel,
 versjoner og avgrensningen mot preparation.
 
-I analyseverkstedet vises gyldig `analysisMask` som en dempet rasterramme.
-Natur/Jordbruk-treff bygges fortsatt fra `overlay.cleaned` og vises med
-`TileImage` på beregnet analysegrid, også ved nær zoom. Verdsatte naturtyper
-beholder i stedet berørte kildepolygoner og attributter i `localities`.
-`valuedNaturePresentation.ts` filtrerer de samme objektene for liste og kart;
-`valuedNatureMap.ts` tegner svake hele lokaliteter og sterke kildepolygoner
-klippet til gyldige masker på eget Canvas. Hele utvalget tegner høyeste verdi
-øverst; ved verdifilter klippes sterkt fyll til kategoriens vinnende ruter.
-Det er ikke eksakt vektorinterseksjon. Naturtypefilter viser registrerte
-objekter, uten ny entydig fordeling mellom overlappende naturtyper. Det eldre
-planens detaljlag er ikke aktivt i analyseverkstedet. Delresultatvalg filtrerer
-bare presentasjonen; det beregner ikke nye tall eller endrer analysemasken.
-Kartutsnitt beregnes fra aktiv rastermaske eller filtrerte kildegeometrier.
-Objektvalg deles mellom kart og liste, knyttet til kommune og `analysisId`,
-og er deaktivert under tegning. Grunnkart tones ned under synlige resultater. Bare forespurte visningsfliser på
-256 × 256 piksler tegnes direkte i Canvas, med nabopiksler lest fra hele
-masken for sømløs kantmarkering. Visningslagene
-bruker OpenLayers sin fliscache (målstørrelse 32; kan økes for synlige fliser),
-uten heldekkende PNG-er eller nye object URLs. Lokale visningsfliser venter
-ikke på eksterne kartkall i nettverkskøen. Fliscachen tømmes ved bytte eller
-destruksjon. Generering og statusmeldinger er beskyttet mot sene svar med en egen
-request-versjon per visningslag, og visningsfeil formidles til brukerflaten.
+Den nye kartflyten skiller tre representasjoner:
+
+- `explorePlanArea.ts`: hele gyldige `analysisMask` som blått statisk
+  rasterbilde og separat kant over temakartet. Begge bruker original extent.
+- Verdsatte naturtyper: vanlig `ImageWMS` med kildens symbolikk, uavhengig av
+  REST-analyse og feil i beregning. Ingen Canvas-renderklipp.
+- Treff: `buildValuedNatureMapOverlay` bruker eksisterende mask/utvalg og
+  `exploreOverlapGeometry.ts` følger maskens ytre cellekanter. Sammenhengende
+  ruter blir flater, hull bevares og interne cellestreker utelates. Lilla
+  fyll/lys kant er en visuell markering; den endrer ikke overlappsarealet.
+
+Natur/Jordbruk bruker samme grensevisning fra `overlay.cleaned`, separat for
+klasse 1 og 2. Klassifisering, grid og nevner er uendret. Grensen er beregnet
+grid-geometri, ikke en eksakt naturtypegrense eller ny vektorinterseksjon.
+`valuedNaturePresentation.ts` filtrerer eksisterende objekter for listen;
+valgt lokalitet får et kildegeometrisk omriss og kan velges i kart eller liste.
+Temakartet viser fortsatt registrerte lokaliteter som kontekst; filteret
+endrer treff og liste, ikke WMS-tjenestens innhold eller hovedtallene.
+
+Kartet validerer kommune, `planned:<kommunenummer>` og analyseområdetype før
+plan brukes, og kommune/analysisId før verdsatt-natur-resultat brukes.
+Filter/objektvalg er eid av kommune + analyse + grunnlag og nullstilles ved
+bytte. Nye resultat eller utvalg kan ikke fit/zoome kartet. Bare kommune og
+«Vis hele kommunen» gjør det. Resize bevarer brukerens utsnitt.
+
+Plan-/treffgeometri gjenbygges bare ved endret resultatreferanse/utvalg.
+Ingen ny resultatcache eller analysepipeline innføres. Vanlig temakart bruker
+OpenLayers WMS-lasting; den delte flispipelinen for beregning er uendret.
+Ved destruksjon frigjøres kilder, map, lyttere og ResizeObserver. Den eldre
+`valuedNatureMap.ts` med Canvas/flisvisning beholdes, men brukes ikke i den
+nye arbeidsflaten.
 
 ## Tegnet polygon
 
-OpenLayers `Draw` brukes for eget analyseområde.
+OpenLayers `Draw` er beholdt for eget analyseområde. Inngangen er midlertidig
+skjult i den nye arbeidsflaten; beskrivelsen nedenfor gjelder den beholdte
+metode-/kartkoden, ikke aktive nye kontroller.
 
 Polygonet:
 

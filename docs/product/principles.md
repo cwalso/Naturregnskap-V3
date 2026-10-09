@@ -1,6 +1,6 @@
 # Produktprinsipper – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## Formål
 
@@ -113,7 +113,9 @@ som et sikkert framtidig naturtap.
 
 ## 8. Eget tegnet område
 
-Brukeren kan tegne et polygon og bruke dette som analyseområde.
+Tegnet polygon er implementert som analyseområde i den beholdte
+metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
+arbeidsflaten; primærmodellen nå er framtidig utbygging × ett analysetema.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 
@@ -132,9 +134,12 @@ lesbart som tekst/tall uten at brukeren må tolke kartet.
 
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat,
 kommune og analyseidentitet. Beregningsrepresentasjon og kartrepresentasjon
-er forskjellige: tall kan beregnes på rastergrid mens kartet viser faktiske
-kildepolygoner innenfor samme gyldige analysemask. Når analysen finnes, er
-kartet hovedarbeidsflaten med et kompakt resultat-/objektpanel.
+er forskjellige: tall beregnes på eksisterende rastergrid. Kartet viser
+ordinære naturtypelokaliteter som WMS-kontekst og beregnet overlapp som
+grense/fyll fra samme gyldige treffmaske. Valgt lokalitet får kildegeometrisk
+omriss. Treffgrensen er ikke eksakt naturtypegeometri eller en ny
+vektorinterseksjon. Kartet er hovedarbeidsflaten med et kompakt
+resultat-/objektpanel. Filter- og objektvalg flytter ikke kartet.
 
 ## 10. Prototypeberegninger
 

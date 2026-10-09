@@ -60,10 +60,16 @@ les resultat
 finn resultatet i kartet
 ```
 
-Analyseområder som er implementert:
+Den nye arbeidsflaten bruker framtidig utbygging fra kommuneplan × ett
+valgt analysegrunnlag. Tegnet polygon er beholdt i metode-/kartkoden, men
+tegneinngangen er midlertidig skjult. Kartet viser resultat direkte;
+filter-, objekt- og temavalg endrer ikke utsnittet. Brukeren zoomer og
+panorerer selv, eller velger «Vis hele kommunen».
 
-- områder satt av til framtidig utbygging i kommuneplan
-- eget polygon tegnet i kartet
+Kart og kompakt resultatpanel bruker `ExploreAnalysisWorkspace`.
+[Beslutning om ny kartpresentasjon](docs/decisions/2026-10-09-v3-explore-analysis-map.md)
+beskriver lagene, visuell kontroll og avgrensningen mot beregningsmetoden.
+Endringen er først publisert på Pages etter merge og vellykket deploy.
 
 Analysegrunnlag som er implementert:
 

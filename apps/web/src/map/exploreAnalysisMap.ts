@@ -21,6 +21,9 @@ import { ACCOUNT_CRS } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
 import { createPlanAreaLayer, planAreaSource } from './explorePlanArea'
 import type { PlannedDevelopmentAnalysis } from './plannedDevelopment'
+import { buildValuedNatureMapOverlay, type PlannedValuedNatureAnalysis, type ValuedNatureMapSelection } from './plannedValuedNature'
+import { exploreOverlapGeometry } from './exploreOverlapGeometry'
+import { filterValuedLocalities, localityFeature } from './valuedNaturePresentation'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -30,9 +33,14 @@ export interface ExploreMapContext {
   readonly boundary: MunicipalityBoundary | null
   readonly showValuedNature: boolean
   readonly plan: PlannedDevelopmentAnalysis | null
+  readonly valued?: PlannedValuedNatureAnalysis | null
+  readonly selection?: ValuedNatureMapSelection
+  readonly showNatureAgriculture?: boolean
+  readonly selectedLocalityId?: string | null
 }
 export interface ExploreMapController {
   update(context: ExploreMapContext): void
+  setLocalitySelectionHandler(handler: ((id: string | null) => void) | null): void
   fitToMunicipality(): void
   destroy(): void
 }
@@ -54,6 +62,24 @@ export function createExploreAnalysisMap(
   })
   const theme = new ImageLayer({ source: themeSource, visible: false, className: 'explore-valued-nature' })
   const planLayer = createPlanAreaLayer()
+  const planOutline = new ImageLayer({ visible: false, className: 'explore-plan-outline' })
+  const overlapSource = new VectorSource()
+  const overlapLayer = new VectorLayer({ source: overlapSource, visible: false, className: 'explore-overlap',
+    style: [
+      new Style({ stroke: new Stroke({ color: '#FFFFFF', width: 6 }) }),
+      new Style({ fill: new Fill({ color: '#8B008B' }), stroke: new Stroke({ color: '#580058', width: 3 }) }),
+    ],
+  })
+  const natureSource = new VectorSource()
+  const natureLayer = new VectorLayer({ source: natureSource, visible: false, className: 'explore-nature-agriculture', style: (feature) => {
+    const color = feature.get('kind') === 1 ? '#2D7D46' : '#C48A00'
+    return [new Style({ stroke: new Stroke({ color: '#FFFFFF', width: 6 }) }), new Style({ fill: new Fill({ color }), stroke: new Stroke({ color, width: 3 }) })]
+  } })
+  const localitySource = new VectorSource()
+  let selectedLocalityId: string | null = null
+  let selectionHandler: ((id: string | null) => void) | null = null
+  const localityLayer = new VectorLayer({ source: localitySource, className: 'explore-selected-locality', style: (feature) => feature.getId() === selectedLocalityId
+    ? [new Style({ stroke: new Stroke({ color: '#FFFFFF', width: 7 }) }), new Style({ stroke: new Stroke({ color: '#151515', width: 3 }) })] : undefined })
   const boundarySource = new VectorSource()
   const maskSource = new VectorSource()
   const mask = new VectorLayer({
@@ -70,13 +96,17 @@ export function createExploreAnalysisMap(
     target, view,
     layers: [
       new TileLayer({ source: new XYZ({ url: defaultBasemap.url, attributions: defaultBasemap.attribution, projection: defaultBasemap.projection, crossOrigin: 'anonymous' }) }),
-      theme, planLayer, mask, border,
+      planLayer, theme, planOutline, natureLayer, overlapLayer, localityLayer, mask, border,
     ],
   })
   let destroyed = false
   let boundary: MunicipalityBoundary | null = null
   let pendingFit = false
   let plan: PlannedDevelopmentAnalysis | null = null
+  let overlayKey = ''
+  let overlayResult: PlannedValuedNatureAnalysis | null = null
+  let overlayPlan: PlannedDevelopmentAnalysis | null = null
+  let naturePlan: PlannedDevelopmentAnalysis | null = null
   let activeImage: ImageWrapper | null = null
   const imageListeners = [
     themeSource.on('imageloadstart', (event) => {
@@ -90,6 +120,11 @@ export function createExploreAnalysisMap(
       if (!destroyed && theme.getVisible() && activeImage === event.image) onStatus('error')
     }),
   ]
+  map.on('singleclick', (event) => {
+    if (!theme.getVisible()) return
+    const feature = localitySource.getFeatures().find((feature) => feature.getGeometry()?.intersectsCoordinate(event.coordinate))
+    selectionHandler?.(feature ? String(feature.getId()) : null)
+  })
 
   function fit() {
     if (!boundarySource.getFeatures().length) return
@@ -144,12 +179,46 @@ export function createExploreAnalysisMap(
         && next.plan.analysisAreaKind === 'planned' ? next.plan : null
       if (plan !== nextPlan) {
         const previousSource = planLayer.getSource()
+        const previousOutline = planOutline.getSource()
         plan = nextPlan
         planLayer.setSource(plan ? planAreaSource(plan) : null)
         planLayer.setVisible(plan !== null)
+        planOutline.setSource(plan ? planAreaSource(plan, true) : null)
+        planOutline.setVisible(plan !== null)
         previousSource?.dispose()
+        previousOutline?.dispose()
       }
       theme.setVisible(visible)
+      planLayer.setOpacity(visible || next.showNatureAgriculture ? .5 : 1)
+      const valued = visible && plan && next.valued?.municipalityNumber === plan.municipalityNumber
+        && next.valued.analysisId === plan.analysisId ? next.valued : null
+      const selection = next.selection ?? { kind: 'all' }
+      const key = JSON.stringify(selection)
+      if (overlayResult !== valued || overlayPlan !== plan || overlayKey !== key) {
+        overlayResult = valued
+        overlayPlan = plan
+        overlayKey = key
+        const overlay = valued && plan ? buildValuedNatureMapOverlay(valued, plan.overlay, selection) : null
+        overlapSource.clear()
+        localitySource.clear()
+        if (overlay) overlapSource.addFeature(new Feature(exploreOverlapGeometry(overlay)))
+        if (valued) localitySource.addFeatures(filterValuedLocalities(valued.localities, selection).map(localityFeature))
+        overlapLayer.setVisible(overlay !== null)
+      }
+      selectedLocalityId = next.selectedLocalityId && localitySource.getFeatureById(next.selectedLocalityId) ? next.selectedLocalityId : null
+      localityLayer.changed()
+      const nextNaturePlan = !visible && next.showNatureAgriculture ? plan : null
+      if (naturePlan !== nextNaturePlan) {
+        naturePlan = nextNaturePlan
+        natureSource.clear()
+        if (naturePlan) {
+          for (const kind of [1, 2]) {
+            const geometry = exploreOverlapGeometry({ ...naturePlan.overlay, mask: naturePlan.overlay.cleaned, fillColor: '#000000' }, kind)
+            if (geometry.getCoordinates().length) natureSource.addFeature(new Feature({ geometry, kind }))
+          }
+        }
+        natureLayer.setVisible(naturePlan !== null)
+      }
       resize()
       if (visible) {
         // A cached WMS image emits no new load event when restored. Derive
@@ -173,7 +242,15 @@ export function createExploreAnalysisMap(
       for (const listener of imageListeners) themeSource.removeEventListener(listener.type, listener.listener)
       themeSource.dispose()
       planLayer.getSource()?.dispose()
+      planOutline.getSource()?.dispose()
+      overlapSource.dispose()
+      natureSource.dispose()
+      localitySource.dispose()
+      boundarySource.dispose()
+      maskSource.dispose()
+      selectionHandler = null
       map.dispose()
     },
+    setLocalitySelectionHandler(handler: ((id: string | null) => void) | null) { selectionHandler = handler },
   }
 }

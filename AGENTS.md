@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -97,12 +97,12 @@ Primærflyten er:
 1. **Velg analyseområde**
 2. **Velg hva området skal krysses med**
 3. **Les resultat**
-4. **Finn resultatet i kartet**
+4. **Les og stedfest resultatet i kartet**
 
-Analyseområder som er implementert:
-
-- framtidig utbygging fra kommuneplan
-- eget polygon tegnet i kartet
+Aktiv offentlig arbeidsflate i denne kodeversjonen er **framtidig utbygging
+fra kommuneplan × ett valgt analysegrunnlag**. Tegnet polygon er implementert
+i den beholdte metode-/kartkoden, men inngangen er midlertidig skjult i
+`Utforsk i kart` under utskiftingen av kartpresentasjonen.
 
 Analysegrunnlag som er implementert i analyseverkstedet:
 
@@ -116,13 +116,18 @@ beregningsklar før tilsvarende grunnlag finnes og er validert for flere
 kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
 rasteranalysene.
 
-Resultatet skal være lesbart som tall uten karttolking. Når resultatet finnes, er kartet hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste. Ikke erstatt analyseflyten med en stor lagvelger.
+Resultatet skal være lesbart som tall uten karttolking. Kartet er
+hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste.
+Filter-, objekt- og temavalg skal ikke flytte kartutsnittet. Brukeren zoomer og
+panorerer selv; bare kommunebytte og «Vis hele kommunen» tilpasser utsnittet.
+Ikke erstatt analyseflyten med en stor lagvelger.
 
 ## 8. Tegnet polygon
 
 Eget polygon skal behandles som et analyseområde på samme måte som framtidig utbygging, ikke som en separat analysefamilie.
 
-Gjeldende implementasjon støtter:
+Den beholdte implementasjonen støtter følgende; kontrollene er midlertidig
+skjult i den nye offentlige kartflyten:
 
 - start tegning
 - punkter/hjørner i kart
@@ -202,7 +207,7 @@ Ingen av disse skal presenteres som samme tilstand.
 3. Ikke opprett nye temasider eller analysefamilier uten faglig avklaring.
 4. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov.
 5. Legg fagregler og analysemetode utenfor presentasjonskomponenter.
-6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt; Verdsatte naturtyper vises som kildepolygoner.
+6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt. I den nye kartflyten vises Verdsatte naturtyper som ordinær WMS-kontekst, beregnet treff som grense/fyll fra eksisterende rastermaske og valgt lokalitet som kildegeometrisk omriss. Ikke kall rastertreffet eksakt naturtypegeometri.
 7. Kjør relevante tester, lint og build før avslutning.
 8. Oppdater levende dokumentasjon og legg til ADR når en reell arkitekturbeslutning tas.
 9. Gamle ADR-er er historikk og skal normalt ikke omskrives.

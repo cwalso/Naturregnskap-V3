@@ -1,6 +1,7 @@
 import { transform } from 'ol/proj'
 import { createExploreAnalysisMap, type ExploreMapContext, type ExploreMapStatus } from '../../src/map/exploreAnalysisMap'
 import type { PlannedDevelopmentAnalysis } from '../../src/map/plannedDevelopment'
+import type { PlannedValuedNatureAnalysis } from '../../src/map/plannedValuedNature'
 import 'ol/ol.css'
 
 const boundary = {
@@ -28,7 +29,20 @@ const plan: PlannedDevelopmentAnalysis = {
     extent: [266000, 7028000, 274000, 7036000], analysisMask: mask, cleaned: new Uint8Array(64) },
 }
 const statuses: ExploreMapStatus[] = []
+const selections: (string | null)[] = []
+const overlapIndices = new Uint32Array([20, 28])
+const valued: PlannedValuedNatureAnalysis = {
+  municipalityNumber: '5001', analysisId: 'planned:5001', status: 'available',
+  source: 'Miljødirektoratet – naturtyper med KU-verdi', methodVersion: 'planned-valued-nature-v2', pixelMeters: 21.15625,
+  candidateFeatureCount: 1, affectedFeatureCount: 1, uniqueOverlapAreaKm2: 2, registeredOverlapAreaKm2: 2, hasOverlappingRegistrations: false,
+  allOverlapPixelIndices: overlapIndices,
+  valueMetrics: [{ label: 'Stor verdi', color: '#FD7032', featureCount: 1, areaKm2: 2, sharePercent: 100, mapPixelIndices: overlapIndices }],
+  typeMetrics: [],
+  localities: [{ id: 'test-locality', name: 'Test', natureType: 'Testtype', value: 'Stor verdi', color: '#FD7032', overlapAreaKm2: 2,
+    rings: [[[270000, 7031000], [270000, 7035000], [273000, 7035000], [273000, 7031000], [270000, 7031000]]] }],
+}
 const controller = createExploreAnalysisMap(document.querySelector<HTMLDivElement>('#map')!, (status) => statuses.push(status))
+controller.setLocalitySelectionHandler((id) => selections.push(id))
 let context: ExploreMapContext = { boundary, showValuedNature: true, plan: null }
 controller.update(context)
 declare global {
@@ -36,13 +50,15 @@ declare global {
     exploreRenderFixture: {
       set(changes: Partial<ExploreMapContext>): void
       plan: PlannedDevelopmentAnalysis
+      valued: PlannedValuedNatureAnalysis
       boundary: typeof boundary
       statuses: ExploreMapStatus[]
+      selections: (string | null)[]
       destroy(): void
     }
   }
 }
 window.exploreRenderFixture = {
   set(changes) { context = { ...context, ...changes }; controller.update(context) },
-  plan, boundary, statuses, destroy: () => controller.destroy(),
+  plan, valued, boundary, statuses, selections, destroy: () => controller.destroy(),
 }

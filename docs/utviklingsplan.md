@@ -1,6 +1,6 @@
 # Utviklingsplan – Naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 Dette er en arbeidsplan for den tekniske V3-prototypen, ikke en formell
 leveranseplan for Kommunale naturregnskap.
@@ -19,7 +19,7 @@ GitHub Pages-prototype med:
 - prioriterte temasider
 - analyseverksted i kart
 - framtidig utbygging som analyseområde
-- eget tegnet polygon som analyseområde
+- tegnet polygon som analyseområde i beholdt kode; inngang midlertidig skjult
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
 - delt request-/flispipeline for bedre ytelse
 
@@ -47,7 +47,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Utforsk i kart – analyseverksted | ✅ prototype | Område → datagrunnlag → resultat → stedfesting |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
-| Tegn eget polygon | ✅ prototype / Trondheimanalyse | OpenLayers Draw er generelt tilgjengelig; tall og overlay krever klargjort kommunevis raster |
+| Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
 | Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Felles UTM-korreksjon er innført; autoritativ kildevalidering og entydig naturtypefordeling gjenstår |
 | Delt request-/flispipeline | ✅ | Deduplisering, maks fire samtidige kall per kilde og begrenset cache |
 | Generisk preparation for autoritative regnskapstall | 🔵 | Ikke ferdigstilt nasjonalt |
@@ -71,10 +71,9 @@ Ikke legg til nye temasider uten eksplisitt beslutning.
 
 ## Analyseverkstedet
 
-Gjeldende analyseområder:
-
-- framtidig utbygging
-- eget tegnet polygon
+Aktiv offentlig arbeidsflate i denne kodeversjonen bruker framtidig
+utbygging × ett analysetema. Eget tegnet polygon er beholdt i
+metode-/kartkoden, men inngangen er midlertidig skjult.
 
 Gjeldende analysegrunnlag:
 
@@ -91,16 +90,15 @@ resultattype og datadekning er avklart.
 
 ## Funksjonelle gap i Utforsk i kart
 
-**Pågående utskifting av kartpresentasjon:** Manuell kontroll har avdekket at
-lokaliteter og overlapp ikke er tilstrekkelig synlige i offentlig prototype.
-Tidligere implementert stedfesting nedenfor er derfor ikke en bestått visuell
-acceptance-gate. En separat `ExploreAnalysisMap` bygges trinnvis fra `main`
-`a2e270dc7986cb2ce2f9a6c22ffe46e5aa7793db`; gammel kode beholdes. Reell
-naturtype-WMS alene (A) er synlig og kontrollert. Plan alene (B) avventer
-tilgang til plantjenesten i testmiljøet. Begge lag, tydelig overlapp,
-Natur/Jordbruk og nytt panel (C–E) er ikke implementert. Ingen ny offentlig
-kartkobling eller PR før visuell godkjenning. Se
-[beslutning og trinnvis gate](decisions/2026-10-08-v3-isolated-explore-map.md).
+**Ny separat kartpresentasjon:** `ExploreAnalysisWorkspace` og
+`ExploreAnalysisMap` er koblet til App-ruten i denne kodeversjonen. A–E er
+visuelt kontrollert 09.10.2026 med reelle Trondheim-data: naturtyper alene,
+plan alene, begge uten trefflag, tydelig beregnet overlapp og Natur/Jordbruk.
+DiBK ga HTTP 200/PNG for frontendens uendrede GetMap-kall; tidligere blokkering
+lå i testmiljøets proxy. Zoom inn/ut, pan, temarundtur og 390 px er kontrollert.
+Gammel kart-/metodekode er beholdt. Ingen nye analysegrunnlag eller metode er
+innført. Dette er branch-status; Pages oppdateres først etter merge/deploy.
+Se [ny beslutning](decisions/2026-10-09-v3-explore-analysis-map.md).
 
 Status nedenfor gjelder relevant brukerfunksjonalitet i analyseverkstedet,
 ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
@@ -109,29 +107,27 @@ ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er
 | Brukerbehov | Status | Konkret TODO / avgrensning |
 | --- | --- | --- |
 | Framtidig utbygging som analyseområde | Allerede dekket | Behold gjeldende DiBK-filter og prototypeforbehold; tall er bare klargjort for Trondheim |
-| Ett eget tegnet polygon | Allerede dekket | Tegn, angre, ferdig, avbryt, tegn på nytt og fjern; samme analysegrunnlag som plan |
-| Flere egne områder og områdehåndtering | Delvis dekket | Ett område finnes. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
+| Ett eget tegnet polygon | Kode beholdt, inngang skjult | Ingen nye tegnefunksjoner; visuell gate før reaktivering |
+| Flere egne områder og områdehåndtering | Delvis dekket | Enkeltpolygonkode er beholdt med skjult inngang. Vurder navngiving, liste, valg og fjerning; avklar separat/samlet analyse og overlapp før implementering |
 | Overlay mot Natur/Jordbruk og Verdsatte naturtyper | Allerede dekket | Behold skillet mellom heldekkende basis og supplerende registreringer; kart og tall skal dele identitet/mask |
-| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Dempet områderamme, sterke treff, Natur/Jordbruk-kort og faktiske lokaliteter med kategori-/naturtypefilter. Zoom-handlingen beholder aktivt valg; status og tegnforklaring følger kartet |
+| Tydelig stedfesting og delresultatvalg | Dekket i prototype | Blå planflate, ordinær naturtype-WMS og sterke grid-treff. Verdi-/naturtypefilter styrer treff/liste; filter, objektvalg og temabytte bevarer utsnittet |
 | Objektinformasjon for aktiv analyse | Dekket for Verdsatte naturtyper | Kildepolygoner, kategori-/naturtypefilter, liste ↔ kartvalg, detaljer og registrert dekning. Andre objektflyter er fortsatt TODO |
 | Flere relevante overlaytema | Mangler | Verneområder og villrein finnes som temasider, men ikke som analysegrunnlag. Avklar kilde, mål, dekning og usikkerhet før kobling; inngrepsfri natur trenger særskilt metode for avstand/soner og kan ikke fremstilles som beregnet konsekvens av enkel overlapp |
 | Grå arealer og mulig arealgjenbruk | Mangler | Bynaturen gir kontekst, men direkte gråareal-overlay i verkstedet mangler. Avklar data/metode; grått betyr ikke ledig areal og er ikke regnskapets Bebygd-kategori |
-| Panorering, zoom, kommuneutsnitt og tegnemodus | Dekket i prototype | Polygonet gjenopprettes etter sidenavigasjon i samme økt. Mobil har kart/resultat-snarveier og tegnekontroller ved kartet; ikke lagring mellom økter |
+| Panorering, zoom, kommuneutsnitt og tegnemodus | Kart dekket, tegneinngang skjult | Zoom/pan, kommune/reset og mobile Kart/Resultat-snarveier er kontrollert. Tegnekontroller skjult; tidligere kode beholdt |
 | Opplasting av egne arealer/planer | Mangler | Vurder validering av geometri, koordinatsystem, format, størrelsesgrenser, kilde og lagring; ikke implementert |
 | Sammenligning av gjeldende/forslått plan eller områdealternativer | Mangler | Krever eksplisitt faglig beslutning om sammenligningsgrunnlag, endringer og overlapp; ingen automatisk erstatning av gjeldende plan |
 | Plan-/datadekning og tilstand forklart i arbeidsflaten | Delvis dekket | Prototypeforbehold, feil og utilgjengelig raster finnes. Tydeliggjør manglende/ufullstendig plan og tematisk kartlegging; null treff skal ikke forveksles med ukjent dekning |
 | Generell lagkatalog og tekniske debug-kontroller som brukerfunksjon | Ikke relevant for V3 | Kartkontroller skal støtte analyseoppgaven, ikke gjøre verkstedet til en generell GIS-klient |
 | Antatt framtidig naturtap som autoritativ regnskapsendring | Ikke relevant for V3 | Overlay er prototypebeslutningsstøtte. Utbygging eller egen tegning bokføres ikke som faktisk endring |
 
-**Implementert produktløft: kildegeometri og objektflyt.** Analyseområdet vises som
-dempet ramme, treff som sterke flater. «Zoom til treff» viser og
-stedfester aktivt delresultat, også ved spredte treff. Valg/filtrering, status
-og tegnforklaring følger samme analyseidentitet og utvalg; Natur/Jordbruk
-bruker raster, Verdsatte naturtyper kildepolygoner med visningsklipp. Null treff, skjult resultat og
-teknisk feil har egne tilstander. Natur/Jordbruk-klassifisering, analysegrid og DiBK-filter er uendret; arealene målestokkskorrigeres. Verdsatte naturtyper
-bruker fire kategorier og høyeste verdi ved overlapp (metodeversjon v2). Se
-[akseptansekriterier for tydelige overlaytreff](product/analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet)
-og [objektinformasjon](product/analysis-user-stories.md#12-objektinformasjon-for-aktiv-analyse).
+**Implementert presentasjonsløft:** Plan, tema og beregnet treff vises som
+forskjellige lag, med sterkest markering på treffet. Kompakt panel prioriterer
+antall, unikt areal, fire verdikategorier og liste. Dekning/metode er sekundært.
+Objekt- og filtervalg skjer uten kartflytting. Natur/Jordbruk bruker eksisterende
+rasterklasser; Verdsatte naturtyper bruker ordinær WMS-kontekst, grid-avledet
+treffgeometri og valgt kildeomriss. Kategorier, høyeste verdi, UTM-korreksjon,
+grid, DiBK-filter, nevner, UUID og eksisterende cachelogikk er uendret.
 
 Videre arbeid skal bevare flyten analyseområde → datagrunnlag → resultat →
 stedfesting, bruke eksisterende V3-designmønstre og verifiseres på mobil med
@@ -164,7 +160,7 @@ Gjenstående prioritering:
 
 - validering av rasteranslag mot et faglig godkjent kontrollgrunnlag
 - videre objektflyt for andre grunnlag; Verdsatte naturtyper har koblet liste/kartvalg
-- videre brukerprøving av mobil tegnemodus og stedfesting i faktiske plansaker
+- videre brukerprøving av stedfesting i faktiske plansaker; ny gate før tegneinngangen eventuelt reaktiveres
 - behold regresjonsdekning for områdebytte, prosentnevnere og cache
 
 ### 2. Stabilitet og ytelse
