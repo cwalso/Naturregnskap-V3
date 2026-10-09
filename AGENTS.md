@@ -110,8 +110,11 @@ fire verdidelag; filtrering viser kildens polygoner, med samme verdifarger.
 Manglende data/registrering skal skilles fra feil og fravær av naturverdi.
 
 Planvisningen bruker det eksisterende status-2/formål-1000/2000-filteret.
-Den viser kildeplanens avsetninger, også på eksisterende bebyggelse, uten
-analysegridets stripebehandling eller mekanisk fratrekk av Bebygd.
+Den selvstendige visningen viser bare dagens Natur og Jordbruk innenfor
+planformålene. Bebygd, vann og ugyldige piksler skjules. Pikselvis sammenstilling
+bruker eksisterende klasser, EPSG:25833 og råflispipeline; grove utsnitt
+aggregerer treff på nivå 9 med svakere farge for små felt. Smale treff beholdes
+i kartpresentasjonen. Analysemetode, grid, stripebehandling og cache er uendret.
 
 Nivå 0 gjenbruker kommuneoversiktsraster og eksisterende klassifiserte
 WMS-fliser på detaljnivå. Bare Trondheim har klargjort oversiktsraster nå.

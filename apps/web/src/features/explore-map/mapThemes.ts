@@ -14,9 +14,9 @@ export const mapThemes = [
   },
   {
     id: 'future-development', name: 'Framtidig utbygging', role: 'Plandata', source: 'DiBK · kommuneplanens arealdel',
-    description: 'Områder avsatt til framtidige utbyggingsformål i kommuneplanen.',
-    note: 'Planområdene kan også inneholde allerede bebygde arealer, fortetting og transformasjon. Kartet viser planavsetning, ikke beregnet framtidig naturtap.',
-    legend: [{ label: 'Framtidige utbyggingsformål', color: '#186FCD' }],
+    description: 'Natur og jordbruk innenfor områder avsatt til framtidige utbyggingsformål i kommuneplanen.',
+    note: 'Bebygd areal, vann og ukjente piksler skjules. Kartet viser dagens arealdekke innenfor planavsetninger, ikke bokført naturtap eller en prognose for faktisk framtidig naturtap.',
+    legend: [{ label: 'Natur', color: '#9ECC73' }, { label: 'Jordbruk', color: '#FFD16E' }],
   },
 ] as const
 export type MapThemeId = typeof mapThemes[number]['id']

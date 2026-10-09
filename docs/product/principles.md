@@ -103,9 +103,10 @@ metodisk avklaring.
 ## 7. Fremtidig arealbruk og analyse
 
 Framtidige utbyggingsformål kan utforskes som selvstendige plandata.
-Planstatus/formål dokumenterer planavsetningen, ikke fysisk ubebygd mark,
-sikkert framtidig naturtap eller regnskapsendring. Områdene kan inkludere
-eksisterende bebyggelse, fortetting og transformasjon.
+Selve planformålene kan inkludere eksisterende bebyggelse. Den selvstendige
+kartvisningen viser derfor bare Natur og Jordbruk fra dagens Grunnkart innenfor
+disse formålene. Bebygd, vann og ugyldige piksler skjules. Planstatus/formål
+dokumenterer planavsetning, ikke sikkert framtidig naturtap eller regnskapsendring.
 
 Planområdene kan senere brukes som analyseområder i den beholdte
 kryssanalyseflyten. Kryssanalysen startes ikke fra dagens karttemavelger.

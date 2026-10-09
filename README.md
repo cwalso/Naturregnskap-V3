@@ -54,8 +54,10 @@ Oppgavebranchen viser tre selvstendige karttemaer:
 
 `ExploreThemesWorkspace` og `exploreThemeMap` viser bare ett tema om gangen.
 Søk i registrerte naturtyper, verdi-/naturtypefilter og lokalitetsvalg
-beholder utsnittet. Planvisningen bruker kildeplanen og det eksisterende
-filteret, uten å skjule allerede bebygde arealer.
+beholder utsnittet. Planvisningen bruker uendret DiBK-filter og viser dagens
+Natur og Jordbruk innenfor planformålene, med eksisterende grønn/gul symbolikk.
+Bebygd, vann og ugyldige piksler skjules. Dette er kartpresentasjon, ikke
+bokført naturtap eller prognose for faktisk framtidig naturtap.
 
 Kommuneoversikten for Grunnkart gjenbruker det klargjorte Trondheim-rasteret.
 Ved innzooming brukes samme eksisterende klassifisering og WMS-fliser.
@@ -68,8 +70,10 @@ Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
 [Beslutning om selvstendige karttemaer](docs/decisions/2026-10-09-v3-independent-map-themes.md)
 beskriver presentasjon og avgrensning.
 [Kontrollrapport og skjermbilder](docs/validation/2026-10-09-independent-map-themes.md)
-viser branchens reelle Trondheim-kontroller. Endringen er ikke publisert;
-ekstern testpublisering håndteres separat.
+viser den opprinnelige branch-kontrollen.
+[Korrigert planvisning og nye skjermbilder](docs/validation/2026-10-09-future-development-display.md)
+dokumenterer Natur/Jordbruk-visningen. Testpublisering skjer fra PR-branchen
+via eksisterende Pages-workflow; ingen merge til main inngår.
 
 ## Offentlig demoarkitektur
 

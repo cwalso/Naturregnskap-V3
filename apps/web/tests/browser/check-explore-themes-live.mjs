@@ -89,10 +89,59 @@ try {
   await gate('C-future', async () => {
     await theme('future-development'); await painted(); await screenshot('C-future')
     assert.deepEqual(await viewState(), initialView)
-    const counts = await pixels(); assert.ok(counts.plan > 500, JSON.stringify(counts)); assert.equal(counts.valued, 0)
+    const counts = await pixels(); assert.ok(counts.nature > 100 && counts.agriculture > 50, JSON.stringify(counts)); assert.equal(counts.valued, 0); assert.equal(counts.plan, 0); assert.equal(counts.built, 0)
     const visible = await page.evaluate(() => globalThis.__themeMap.getLayers().getArray().filter((layer) => layer.getVisible()).map((layer) => layer.getClassName()))
     assert.ok(!visible.includes('explore-registered-nature') && !visible.includes('explore-level0-overview'))
     return { pixels: counts, visible }
+  })
+  await gate('H-real-raster-exclusion', async () => {
+    const checked = await page.evaluate(async () => {
+      const { planTileGrid, buildPlanTileUrl, buildRawAccountPlanTileUrl } = await import('/src/map/plannedDevelopment.ts')
+      const { classifyAccountPixel } = await import('/src/map/accountOverviewRaster.ts')
+      const map = globalThis.__themeMap
+      const layer = map.getLayers().getArray().find((item) => item.getClassName() === 'explore-future-development')
+      const tc = planTileGrid.getTileCoordForCoordAndZ([267000, 7031500], 11)
+      const tile = layer.getSource().getTile(...tc, 1, map.getView().getProjection())
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => reject(new Error('Detaljflisen ble ikke lastet')), 45000)
+        function done() {
+          if (tile.getState() === 2) { clearTimeout(timeout); tile.removeEventListener('change', done); resolve() }
+          if (tile.getState() === 3) { clearTimeout(timeout); tile.removeEventListener('change', done); reject(new Error('Detaljflisen feilet')) }
+        }
+        tile.addEventListener('change', done); tile.load(); done()
+      })
+      function imagePixels(image) {
+        const canvas = document.createElement('canvas'); canvas.width = canvas.height = 512
+        const context = canvas.getContext('2d'); context.drawImage(image, 0, 0)
+        return context.getImageData(0, 0, 512, 512).data
+      }
+      async function raw(url) {
+        const response = await fetch(url)
+        if (!response.ok) throw new Error(`Kildekontroll: HTTP ${response.status}`)
+        const bitmap = await createImageBitmap(await response.blob())
+        try { return imagePixels(bitmap) } finally { bitmap.close() }
+      }
+      const [account, plan] = await Promise.all([
+        raw(buildRawAccountPlanTileUrl('https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse', tc)), raw(buildPlanTileUrl(tc)),
+      ])
+      const actual = imagePixels(tile.getImage())
+      const counts = { nature: 0, agriculture: 0, builtWithinPlan: 0, waterWithinPlan: 0, invalid: 0, outsidePlan: 0, mismatches: 0 }
+      for (let i = 0; i < actual.length; i += 4) {
+        const k = classifyAccountPixel(account[i], account[i + 1], account[i + 2])
+        let color = null
+        if (account[i + 3] < 100) counts.invalid++
+        else if (plan[i + 3] < 128) counts.outsidePlan++
+        else if (k === 2) { counts.nature++; color = [158, 204, 115, 255] }
+        else if (k === 1) { counts.agriculture++; color = [255, 209, 110, 255] }
+        else if (k === 0) counts.builtWithinPlan++
+        else counts.waterWithinPlan++
+        if (color ? color.some((v, c) => actual[i + c] !== v) : actual[i + 3] !== 0) counts.mismatches++
+      }
+      return { tileCoord: tc, extent: planTileGrid.getTileCoordExtent(tc), counts }
+    })
+    assert.equal(checked.counts.mismatches, 0, JSON.stringify(checked))
+    for (const key of ['nature', 'agriculture', 'builtWithinPlan', 'outsidePlan']) assert.ok(checked.counts[key] > 0, JSON.stringify(checked))
+    return checked
   })
   await gate('D-roundtrip', async () => {
     await theme('level0'); await painted(); await screenshot('D-roundtrip')
@@ -156,6 +205,7 @@ try {
     await page.waitForFunction(() => !globalThis.__themeMap.getView().getAnimating() && !globalThis.__themeMap.getView().getInteracting())
     await painted(); const moved = await viewState(); assert.notDeepEqual(moved.center, zoomed.center)
     await theme('future-development'); await painted(); assert.deepEqual(await viewState(), moved)
+    await screenshot('F-future-detail')
     await theme('level0'); await painted(); assert.deepEqual(await viewState(), moved)
     await map.scrollIntoViewIfNeeded(); await map.focus()
     const wheelBox = await map.boundingBox()

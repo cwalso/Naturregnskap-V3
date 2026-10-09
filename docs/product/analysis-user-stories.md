@@ -13,6 +13,8 @@ utbygging som tre selvstendige temaer, ett om gangen. Ingen kryssanalyse
 startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
 ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
 uten beregnet overlappsareal. Temabytte og objektvalg bevarer kartutsnittet.
+Framtidig utbygging viser dagens Natur og Jordbruk innenfor planformålene.
+Bebygd, vann og ugyldige piksler skjules; ingen arealtall beregnes i visningen.
 
 Delene nedenfor beskriver den **beholdte analysekoden og framtidige analysebehov**.
 Beskrivelser av analyseverkstedet, samtidige plan-/tema-/trefflag og aktiv

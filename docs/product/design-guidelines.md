@@ -122,8 +122,10 @@ ligger de i én kolonne. Kontroller er minst 44 px, og visningen skal ikke
 ha horisontal scrolling ved 390 px.
 
 Temabytte, filtrering, objektvalg og resize bevarer senter/oppløsning.
-Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Kildeplanen kan
-omfatte eksisterende bebyggelse; dette forklares kort ved tegnforklaringen.
+Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
+viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter
+og eksisterende grønn/gul symbolikk. Bebygd og vann skjules; forklaringen
+skiller kartpresentasjon fra bokført eller prognostisert naturtap.
 Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
 
 ## Resultatdesign i beholdt analyseverksted

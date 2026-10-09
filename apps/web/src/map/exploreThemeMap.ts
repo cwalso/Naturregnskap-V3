@@ -24,7 +24,7 @@ import { nationalLandCover2025, valuedNature } from '../datasets/registry'
 import type { MapThemeId } from '../features/explore-map/mapThemes'
 import { ACCOUNT_CRS, ACCOUNT_DETAIL_MAX_RESOLUTION, accountTileGrid, buildRawAccountTileUrl, loadAccountDisplayTileBlob, loadOverviewRaster } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
-import { buildPlanTileUrl } from './plannedDevelopment'
+import { createFutureDevelopmentDisplaySource } from './futureDevelopmentDisplay'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -61,13 +61,7 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
   const natureSource = new ImageWMS({ url: valuedNature.visualSource.endpoint, params: { LAYERS: [...municipalValueLegend].reverse().map((category) => category.wmsLayer).join(','), VERSION: '1.3.0', TRANSPARENT: true },
     projection: ACCOUNT_CRS, ratio: 1, crossOrigin: 'anonymous', attributions: valuedNature.attribution })
   const nature = new ImageLayer({ source: natureSource, visible: false, className: 'explore-registered-nature' })
-  const planTemplate = new URL(buildPlanTileUrl([9, 0, 0]))
-  const planParams = planTemplate.searchParams
-  const planSource = new ImageWMS({ url: planTemplate.origin + planTemplate.pathname,
-    params: { LAYERS: planParams.get('layers'), VERSION: '1.3.0', TRANSPARENT: true, FORMAT: 'image/png8',
-      filter: planParams.get('filter'), sld_body: planParams.get('sld_body')!.replace('#000000', '#186FCD') },
-    projection: ACCOUNT_CRS, ratio: 1, crossOrigin: 'anonymous', attributions: 'Kilde: DiBK, kommuneplanens arealdel' })
-  const plan = new ImageLayer({ source: planSource, visible: false, className: 'explore-future-development' })
+  const plan = new TileLayer<XYZ>({ visible: false, className: 'explore-future-development' })
   const localitySource = new VectorSource()
   const styles = new Map<string, Style[]>()
   let selectedId: string | null = null
@@ -102,9 +96,9 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
   let previousData: MunicipalValuedNature | null = null
   let previousFilter = ''
   let selectionHandler: ((id: string | null) => void) | null = null
-  const listeners = [natureSource, planSource].flatMap((source, index) => {
-    const layer = index === 0 ? nature : plan
-    const theme: MapThemeId = index === 0 ? 'valued-nature' : 'future-development'
+  const listeners = [natureSource].flatMap((source) => {
+    const layer = nature
+    const theme: MapThemeId = 'valued-nature'
     return (['imageloadstart', 'imageloadend', 'imageloaderror'] as const).map((event) => source.on(event, (e) => {
       if (destroyed || !layer.getVisible() || activeTheme !== theme || !boundary) return
       const size = map.getSize(), resolution = view.getResolution()
@@ -113,6 +107,8 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
       onStatus(theme, event === 'imageloadstart' ? 'loading' : event === 'imageloadend' ? 'ready' : 'error')
     }))
   })
+  let planLoading = 0
+  let planError = false
   let tilesLoading = 0
   let tileError = false
   const tileListeners = (['tileloadstart', 'tileloadend', 'tileloaderror'] as const).map((event) => accountSource.on(event, () => {
@@ -145,9 +141,11 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
     if (activeTheme === 'level0') {
       const coarse = view.getResolution()! >= detail.getMaxResolution()
       onStatus(activeTheme, coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileError ? 'error' : tilesLoading ? 'loading' : 'ready')
+    } else if (activeTheme === 'future-development') {
+      onStatus(activeTheme, planError ? 'error' : planLoading ? 'loading' : 'ready')
     } else if (activeTheme === 'valued-nature' && filtered) onStatus(activeTheme, 'ready')
     else {
-      const source = activeTheme === 'valued-nature' ? natureSource : planSource
+      const source = natureSource
       const size = map.getSize(), resolution = view.getResolution()
       const image = size && resolution ? source.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
       onStatus(activeTheme, image?.getState() === ImageState.LOADED ? 'ready' : image?.getState() === ImageState.ERROR ? 'error' : 'loading')
@@ -175,6 +173,7 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
         const changed = boundary?.properties.number !== next.boundary?.properties.number
         boundary = next.boundary
         borderSource.clear(); maskSource.clear(); localitySource.clear()
+        plan.getSource()?.dispose(); plan.setSource(null); planLoading = 0; planError = false
         overviewRequest++; overviewReady = false; overviewFailed = false; tileError = false
         overview.getSource()?.dispose(); overview.setSource(null); overview.setVisible(false)
         if (overviewUrl) URL.revokeObjectURL(overviewUrl)
@@ -190,6 +189,16 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
             const world = [[-4000000, -1000000], [5000000, -1000000], [5000000, 12000000], [-4000000, 12000000], [-4000000, -1000000]]
             maskSource.addFeature(new Feature(new MultiPolygon([[world, ...polygons.map((rings) => [...rings[0]].reverse())], ...polygons.flatMap((rings) => rings.slice(1).map((hole) => [hole]))])))
             for (const layer of [overview, detail, nature, plan, localities]) layer.setExtent(geometry.getExtent())
+          }
+          const source = createFutureDevelopmentDisplaySource(boundary.properties.number, borderSource.getExtent()!)
+          plan.setSource(source)
+          for (const event of ['tileloadstart', 'tileloadend', 'tileloaderror'] as const) {
+            source.on(event, () => {
+              if (destroyed || plan.getSource() !== source) return
+              planLoading = Math.max(0, planLoading + (event === 'tileloadstart' ? 1 : -1))
+              if (event === 'tileloaderror') planError = true
+              if (activeTheme === 'future-development') syncStatus()
+            })
           }
           if (changed) pendingFit = true
           void configureOverview(boundary.properties.number)
@@ -222,8 +231,8 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
       destroyed = true; overviewRequest++; observer?.disconnect(); window.removeEventListener('resize', resize)
       for (const listener of [...listeners, ...tileListeners]) listener.target?.removeEventListener(listener.type, listener.listener)
       if (overviewUrl) URL.revokeObjectURL(overviewUrl)
-      overview.getSource()?.dispose()
-      for (const source of [accountSource, natureSource, planSource, localitySource, maskSource, borderSource]) source.dispose()
+      overview.getSource()?.dispose(); plan.getSource()?.dispose()
+      for (const source of [accountSource, natureSource, localitySource, maskSource, borderSource]) source.dispose()
       selectionHandler = null; map.dispose()
     },
   }

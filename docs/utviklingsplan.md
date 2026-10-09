@@ -73,7 +73,10 @@ Ikke legg til nye temasider uten eksplisitt beslutning.
 
 På oppgavebranchen er Utforsk i kart gjort om til tre selvstendige visninger:
 nivå 0 som standard, Verdsatte naturtyper og framtidige utbyggingsformål.
-Ett tema er aktivt om gangen. Ingen automatisk plan-/overlappsberegning kjøres.
+Ett tema er aktivt om gangen. Ingen automatisk tallanalyse kjøres.
+Framtidig utbygging er korrigert til dagens Natur og Jordbruk innenfor
+planformålene, med Bebygd/vann/ugyldige piksler skjult. Små og smale treff
+beholdes i kartpresentasjonen; eksisterende analyser er uendret.
 Søkbare kommunale naturtypevalg bygger på alle registrerte lokaliteter
 i de fire verdikategoriene, ikke bare lokaliteter berørt av plan.
 
@@ -81,7 +84,10 @@ Analyseverkstedet, tegning og alle metoder beholdes for senere reaktivering.
 Natur/Jordbruk- og naturtypeoverlapp er fortsatt Trondheim-klargjorte
 prototypeberegninger. Ingen nye temaer eller analysegrunnlag er innført.
 
-Manuell brukeraksept og ekstern testpublisering gjenstår. Se
+Hovedretningen er brukerakseptert. Korrigert planvisning er testet med reelle
+Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
+[ny kontrollrapport](validation/2026-10-09-future-development-display.md),
+[planpresentasjon](decisions/2026-10-09-v3-future-development-display.md),
 [beslutning](decisions/2026-10-09-v3-independent-map-themes.md) og
 [kontrollrapport](validation/2026-10-09-independent-map-themes.md).
 

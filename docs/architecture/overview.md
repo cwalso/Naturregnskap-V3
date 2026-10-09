@@ -108,14 +108,23 @@ Dette er en kildeoversikt, uten analyse-ID, overlappraster eller arealtall.
 Alle-visningen bruker kildens fire verdidelag i WMS. Filtrert visning bruker
 EPSG:25833-kildepolygoner med samme kategori-/verdifarger.
 
-Plantemaet gjenbruker filter og fyllstil fra `buildPlanTileUrl`, men viser
-dynamisk kilde-WMS fremfor analysegridets gyldige/striperyddede mask.
+Plantemaet bruker `futureDevelopmentDisplay` for pikselvis sammenstilling.
+Filter/fyllstil, planrutenett, rå klassefarger, klassifisering og requestlag
+gjenbrukes uendret fra V3. Bare Natur/Jordbruk får farge. På nivå 9 samples
+kommuneoversikten med nærmeste piksel; grovere fliser aggregerer nivå-9-treff
+med dominerende klasse og dekningsavhengig alfa. Nærmere utsnitt bruker rå
+Grunnkart- og planfliser med identisk bbox/pikselrutenett. Smale felt beholdes
+uten analysegridets stripefjerning. Dette er visningsfliser, uten arealtall,
+analyse-ID, analysemasker eller ny resultatcache. Grove utsnitt krever fortsatt
+klargjort kommuneoversikt (foreløpig Trondheim). Ved kommunebytte/destruksjon
+avbrytes konsumenten og sene fliser ignoreres.
 Masken utenfor kommunen og kommunegrensen ligger over aktivt tema.
 Kommunevalg/reset tilpasser utsnitt; tema/filter/objekt/resize gjør det ikke.
 
 Se [ny beslutning](../decisions/2026-10-09-v3-independent-map-themes.md).
-Dette er branch-status. Ingen merge eller offentlig Pages-publisering er
-utført som del av leveransen.
+[Korreksjon av planpresentasjonen](../decisions/2026-10-09-v3-future-development-display.md)
+og [reell Trondheim-kontroll](../validation/2026-10-09-future-development-display.md)
+dokumenterer den siste endringen. Testpublisering skjer fra PR-branchen uten merge.
 
 ## Dagens datatilgang
 
