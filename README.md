@@ -8,7 +8,7 @@ Den offentlige testflaten ligger på:
 
 https://cwalso.github.io/Naturregnskap-V3/
 
-**Status i repoet: 08.10.2026**
+**Status i repoet: 09.10.2026**
 
 ## Faglig skille
 
@@ -46,15 +46,21 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-Oppgavebranchen viser tre selvstendige karttemaer:
+Oppgavebranchen viser tre uavhengige kartlag:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
 3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-`ExploreThemesWorkspace` og `exploreThemeMap` viser bare ett tema om gangen.
-Søk i registrerte naturtyper, verdi-/naturtypefilter og lokalitetsvalg
-beholder utsnittet. Planvisningen bruker uendret DiBK-filter og viser dagens
+`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–3 lag
+med avkryssing og egen gjennomsiktighet. Nivå 0 ligger nederst (30 %
+gjennomsiktighet som standard), plan i midten og naturtyper øverst.
+Kommunemaske/grense ligger over alle; bakgrunnskartet vises også med alle av.
+Lagvalg, gjennomsiktighet, søk, filter og lokalitetsvalg beholder utsnittet.
+Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
+Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
+men bare de tre implementerte lagene vises. Planvisningen bruker uendret
+DiBK-filter og viser dagens
 Natur og Jordbruk innenfor planformålene, med eksisterende grønn/gul symbolikk.
 Bebygd, vann og ugyldige piksler skjules. Dette er kartpresentasjon, ikke
 bokført naturtap eller prognose for faktisk framtidig naturtap.
@@ -67,8 +73,11 @@ Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
 beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
 Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
 
+[Flere samtidige kartlag](docs/decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[kontrollrapport med skjermbilder](docs/validation/2026-10-09-concurrent-map-layers.md) dokumenterer gjeldende flyt.
+
 [Beslutning om selvstendige karttemaer](docs/decisions/2026-10-09-v3-independent-map-themes.md)
-beskriver presentasjon og avgrensning.
+beskriver den tidligere presentasjonen og avgrensningen.
 [Kontrollrapport og skjermbilder](docs/validation/2026-10-09-independent-map-themes.md)
 viser den opprinnelige branch-kontrollen.
 [Korrigert planvisning og nye skjermbilder](docs/validation/2026-10-09-future-development-display.md)

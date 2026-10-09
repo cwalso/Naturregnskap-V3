@@ -62,8 +62,12 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
-Gjeldende Utforsk-rute viser tre selvstendige karttemaer uten automatisk
-kryssanalyse. Se [ny beslutning](decisions/2026-10-09-v3-independent-map-themes.md)
+Gjeldende Utforsk-rute viser tre uavhengige kartlag uten automatisk kryssanalyse.
+Se [samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[A–L-kontroll med skjermbilder](validation/2026-10-09-concurrent-map-layers.md). De tidligere tre
+kartvisningene og korrigert planvisning er manuelt godkjent.
+
+Tidligere overgang til selvstendige karttemaer er dokumentert i [tidligere beslutning](decisions/2026-10-09-v3-independent-map-themes.md)
 og [validering med skjermbilder](validation/2026-10-09-independent-map-themes.md).
 Denne beslutningen erstatter den aktive kartflyten i
 `2026-10-09-v3-explore-analysis-map.md`; analysemetoden og verkstedet beholdes.

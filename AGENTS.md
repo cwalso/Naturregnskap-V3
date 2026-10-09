@@ -88,21 +88,29 @@ Gjeldende regel er:
 
 Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et fast rutenett på ca. **21,16 meter** per analysepiksel. Mer detaljert økosystemklassifisering kan bruke finere rutenett der implementert.
 
-## 7. Utforsk i kart – selvstendige temaer
+## 7. Utforsk i kart – uavhengige kartlag
 
-Gjeldende branch viser tre selvstendige karttemaer i `#utforsk-i-kart`:
+Gjeldende branch viser tre uavhengige kartlag i `#utforsk-i-kart`:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
 3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-Bare ett tema er aktivt. Temabytte rydder filtre og lokalitetsvalg, men
-beholder senter/oppløsning. Bare kommunevalg og «Vis hele kommunen» tilpasser
-utsnittet. Ingen kryssanalyse startes ved åpning eller temabytte.
+Avkryssing tillater 0–3 aktive lag. Alle av viser bakgrunnskartet. Hvert aktivt
+lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → plan →
+naturtyper/lokalitetsvalg → kommunemaske/grense. Nivå 0 starter med 30 %
+gjennomsiktighet; plan/naturtyper med 0 %. Klassifisering og farger er uendret.
+Lagvalg, gjennomsiktighet, filter, objektvalg og resize bevarer utsnittet.
+Bare kommunevalg og «Vis hele kommunen» tilpasser det. Andre lagvalg bevarer
+naturtypefilter og valgt objekt. Å skjule naturtypelaget fjerner objektvalg,
+men bevarer filteret. Ingen kryssanalyse startes ved lagvalg.
 
 `ExploreThemesWorkspace`, `exploreThemeMap` og et lite `mapThemes`-register
 eier denne visningen. Registeret gir navn, faglig rolle, kilde, beskrivelse
-og tegnforklaring. Ikke bygg generell GIS-klient eller lagkatalog.
+og tegnforklaring, standard synlighet/opasitet, tegnerekkefølge og filtertype.
+Bare implementerte lag vises. Fem interne ID-er er reservert for framtidige
+lag; ingen nye kilder/placeholder-kontroller er innført. Mobilvelgeren kan
+lukkes over kartet. Ikke bygg generell GIS-klient eller lagkatalog.
 
 Naturtypelisten hentes mot hele kommunepolygonet fra REST-kilden. Den er
 uavhengig av plan og viser bare registrerte naturtyper. WMS bruker kildens
@@ -123,7 +131,8 @@ utsnitt er ikke dokumentert fravær av data.
 
 Analyseverkstedet, polygonverktøyene og metodene beholdes i kode og tester,
 men monteres ikke på Utforsk-ruten. De skal først kobles tilbake i en egen
-oppgave etter manuell godkjenning av de selvstendige kartvisningene.
+oppgave. De tre kartvisningene og korrigert planvisning er manuelt godkjent;
+den nye lagstyringen leveres for videre brukertest, uten å reaktivere analyse.
 Ingen metode, analyse-ID, nevner, UTM-korreksjon eller resultatcache endres.
 
 ## 8. Tegnet polygon

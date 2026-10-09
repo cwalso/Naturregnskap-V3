@@ -9,10 +9,12 @@ fortsatt er framtidig.
 ## Gjeldende kartflyt og status
 
 Utforsk i kart viser nå Grunnkart nivå 0, Verdsatte naturtyper og Framtidig
-utbygging som tre selvstendige temaer, ett om gangen. Ingen kryssanalyse
-startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
+utbygging som tre uavhengige kartlag. Brukeren kan kombinere 0–3 lag og
+endre gjennomsiktighet uten automatisk zoom. Ingen kryssanalyse startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
 ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
-uten beregnet overlappsareal. Temabytte og objektvalg bevarer kartutsnittet.
+uten beregnet overlappsareal. Lagvalg og objektvalg bevarer kartutsnittet.
+Filteret påvirker bare naturtypelaget; andre lagvalg bevarer filter og valg.
+Alle av viser bakgrunnskartet. Lagvelgeren kan lukkes på mobil.
 Framtidig utbygging viser dagens Natur og Jordbruk innenfor planformålene.
 Bebygd, vann og ugyldige piksler skjules; ingen arealtall beregnes i visningen.
 
@@ -20,8 +22,9 @@ Delene nedenfor beskriver den **beholdte analysekoden og framtidige analysebehov
 Beskrivelser av analyseverkstedet, samtidige plan-/tema-/trefflag og aktiv
 analyse gjelder denne beholdte implementasjonen, ikke dagens Utforsk-rute.
 Analyser som allerede finnes på temasider er beholdt. Kryssanalyse i Utforsk
-kan først kobles tilbake i en egen oppgave etter manuell godkjenning av de
-tre kartvisningene. Se [beslutning](../decisions/2026-10-09-v3-independent-map-themes.md).
+kan først kobles tilbake i en egen oppgave. De tre visningene er manuelt
+godkjent; samtidige lag er neste visuelle leveranse. Se
+[beslutning](../decisions/2026-10-09-v3-concurrent-map-layers.md).
 
 ## 1. Hovedbruker og arbeidsflyt
 

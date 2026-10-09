@@ -17,7 +17,7 @@ GitHub Pages-prototype med:
 - kommuneoversikt
 - Naturtapet
 - prioriterte temasider
-- tre selvstendige karttemaer på oppgavebranchen; analyseverkstedet beholdt i kode
+- tre uavhengige kartlag på oppgavebranchen; analyseverkstedet beholdt i kode
 - framtidig utbygging som analyseområde
 - tegnet polygon som analyseområde i beholdt kode; inngang midlertidig skjult
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
@@ -44,7 +44,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
 | Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
-| Utforsk i kart – selvstendige temaer | ✅ branch / manuell aksept gjenstår | Nivå 0, registrerte naturtyper og framtidige planformål; ingen automatisk kryssanalyse |
+| Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Tre lag med avkryssing, egen gjennomsiktighet og mobilvelger; godkjent planvisning beholdt, ingen kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
@@ -69,11 +69,14 @@ Temasidesettet er låst til:
 
 Ikke legg til nye temasider uten eksplisitt beslutning.
 
-## Selvstendige karttemaer og beholdt analyseverksted
+## Samtidige kartlag og beholdt analyseverksted
 
-På oppgavebranchen er Utforsk i kart gjort om til tre selvstendige visninger:
-nivå 0 som standard, Verdsatte naturtyper og framtidige utbyggingsformål.
-Ett tema er aktivt om gangen. Ingen automatisk tallanalyse kjøres.
+De tre kartvisningene og korrigert planvisning er manuelt godkjent. Neste
+leveranse på samme branch lar brukeren kombinere nivå 0, framtidig utbygging
+og Verdsatte naturtyper med uavhengig avkryssing og gjennomsiktighet.
+Alle lag kan slås av; basen vises. Fast rekkefølge bevarer naturtyper og
+kommunegrense øverst. Mobilvelgeren kan lukkes. Naturtypefilter og valg
+påvirkes ikke av de andre lagene. Ingen automatisk tallanalyse kjøres.
 Framtidig utbygging er korrigert til dagens Natur og Jordbruk innenfor
 planformålene, med Bebygd/vann/ugyldige piksler skjult. Små og smale treff
 beholdes i kartpresentasjonen; eksisterende analyser er uendret.
@@ -84,6 +87,10 @@ Analyseverkstedet, tegning og alle metoder beholdes for senere reaktivering.
 Natur/Jordbruk- og naturtypeoverlapp er fortsatt Trondheim-klargjorte
 prototypeberegninger. Ingen nye temaer eller analysegrunnlag er innført.
 
+[Samtidige lag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[visuell A–L-kontroll](validation/2026-10-09-concurrent-map-layers.md) dokumenterer neste leveranse.
+Lagregisteret er forberedt for åtte ID-er; bare tre kilder er koblet inn.
+
 Hovedretningen er brukerakseptert. Korrigert planvisning er testet med reelle
 Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
 [ny kontrollrapport](validation/2026-10-09-future-development-display.md),
@@ -93,7 +100,7 @@ Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
 
 ## Funksjonelle gap i Utforsk i kart
 
-**Status:** Brukerruten viser nå selvstendige karttemaer. Tabellen nedenfor
+**Status:** Brukerruten viser nå uavhengige kartlag. Tabellen nedenfor
 beskriver beholdt analysefunksjonalitet og framtidige behov; den innebærer
 ikke at kryssanalyse fortsatt er tilgjengelig i den nye kartflyten.
 

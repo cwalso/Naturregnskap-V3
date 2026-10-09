@@ -108,20 +108,24 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 
 ## Utforsk i kart
 
-Brukeren velger ett selvstendig karttema: Grunnkart nivå 0, Verdsatte
-naturtyper eller framtidige utbyggingsformål. Nivå 0 er standard.
-Faglig rolle, aktivt tema, tegnforklaring og kilde er tydelige.
+Brukeren krysser av uavhengige kartlag: Grunnkart nivå 0, framtidig utbygging
+og Verdsatte naturtyper. Nivå 0 er standard. Grupper er Regnskapsgrunnlag,
+Plandata og Supplerende temadata. 0–3 aktive lag støttes; alle av viser basen.
+Aktive lag viser egen gjennomsiktighetskontroll, tegnforklaring og kilde.
 
-En kompakt select håndterer også 6–8 framtidige temaer uten ny navigasjon.
-Det er ingen fri lagkombinasjon eller generell GIS-katalog.
+Avkryssingslisten har begrenset høyde og kan senere romme åtte implementerte
+lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, plan,
+naturtyper, kommunemaske/grense. Nivå 0 er 30 % gjennomsiktig som standard;
+øvrige lag er ugjennomsiktige. Ingen fri flytting av lag eller GIS-katalog.
 Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
 Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 
-På desktop ligger kart og temapanel ved siden av hverandre. På mobil
-ligger de i én kolonne. Kontroller er minst 44 px, og visningen skal ikke
+På desktop ligger lagvelger og tegnforklaring/filter ved siden av kartet.
+På mobil kan velgeren åpnes/lukkes over kartet; den er lukket ved første
+åpning på mobil. Tegnforklaring/filter ligger under kartet. Kontroller er minst 44 px, og visningen skal ikke
 ha horisontal scrolling ved 390 px.
 
-Temabytte, filtrering, objektvalg og resize bevarer senter/oppløsning.
+Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
 Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
 viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter
 og eksisterende grønn/gul symbolikk. Bebygd og vann skjules; forklaringen
@@ -131,7 +135,7 @@ Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
 ## Resultatdesign i beholdt analyseverksted
 
 Føringene nedenfor gjelder den beholdte analysepresentasjonen, ikke de tre
-selvstendige karttemaene.
+uavhengige kartlagene.
 
 Overlayresultater skal presenteres med hovedtall først.
 

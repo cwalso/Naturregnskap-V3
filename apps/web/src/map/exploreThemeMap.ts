@@ -7,6 +7,7 @@ import OlMap from 'ol/Map'
 import View from 'ol/View'
 import ImageTile from 'ol/ImageTile'
 import TileState from 'ol/TileState'
+import { getCacheKey } from 'ol/tilecoord'
 import ImageState from 'ol/ImageState'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
@@ -21,29 +22,30 @@ import { register } from 'ol/proj/proj4'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import { filterRegisteredNature, municipalValueLegend, type MunicipalNatureFilter, type MunicipalValuedNature } from '../api/municipalValuedNature'
 import { nationalLandCover2025, valuedNature } from '../datasets/registry'
-import type { MapThemeId } from '../features/explore-map/mapThemes'
+import { initialMapLayers, mapLayers, type MapLayerId, type MapLayerState } from '../features/explore-map/mapThemes'
+import { getIntersection, isEmpty } from 'ol/extent'
 import { ACCOUNT_CRS, ACCOUNT_DETAIL_MAX_RESOLUTION, accountTileGrid, buildRawAccountTileUrl, loadAccountDisplayTileBlob, loadOverviewRaster } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
 import { createFutureDevelopmentDisplaySource } from './futureDevelopmentDisplay'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
-export type ThemeMapStatus = 'idle' | 'loading' | 'ready' | 'error'
-export interface ThemeMapContext {
+export type LayerMapStatus = 'idle' | 'loading' | 'ready' | 'error'
+export interface LayerMapContext {
   boundary: MunicipalityBoundary | null
-  theme: MapThemeId
+  layers: MapLayerState
   data: MunicipalValuedNature | null
   filter: MunicipalNatureFilter
   selectedId: string | null
 }
-export interface ThemeMapController {
-  update(context: ThemeMapContext): void
+export interface LayerMapController {
+  update(context: LayerMapContext): void
   fitToMunicipality(): void
   setSelectionHandler(handler: ((id: string | null) => void) | null): void
   destroy(): void
 }
 
-export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: MapThemeId, status: ThemeMapStatus) => void): ThemeMapController {
+export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: MapLayerId, status: LayerMapStatus, municipalityNumber: string | null) => void): LayerMapController {
   const accountSource = new XYZ({ projection: ACCOUNT_CRS, tileGrid: accountTileGrid, tilePixelRatio: 2, transition: 0,
     tileUrlFunction: (tileCoord) => buildRawAccountTileUrl(nationalLandCover2025.visualSource.endpoint, tileCoord),
     tileLoadFunction: (tile, url) => {
@@ -84,10 +86,10 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
   const mask = new VectorLayer({ source: maskSource, className: 'explore-theme-mask', style: new Style({ fill: new Fill({ color: '#F7F9F8' }) }) })
   const border = new VectorLayer({ source: borderSource, style: new Style({ stroke: new Stroke({ color: '#005B42', width: 2 }) }) })
   const view = new View({ projection: ACCOUNT_CRS, center: [270000, 7040000], resolution: 100, enableRotation: false })
-  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, nature, plan, localities, mask, border] })
+  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, plan, nature, localities, mask, border] })
   let destroyed = false
   let boundary: MunicipalityBoundary | null = null
-  let activeTheme: MapThemeId = 'level0'
+  let activeLayers = initialMapLayers()
   let pendingFit = false
   let overviewRequest = 0
   let overviewUrl: string | null = null
@@ -96,27 +98,26 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
   let previousData: MunicipalValuedNature | null = null
   let previousFilter = ''
   let selectionHandler: ((id: string | null) => void) | null = null
-  const listeners = [natureSource].flatMap((source) => {
-    const layer = nature
-    const theme: MapThemeId = 'valued-nature'
-    return (['imageloadstart', 'imageloadend', 'imageloaderror'] as const).map((event) => source.on(event, (e) => {
-      if (destroyed || !layer.getVisible() || activeTheme !== theme || !boundary) return
-      const size = map.getSize(), resolution = view.getResolution()
-      const current = size && resolution ? source.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
-      if (e.image !== current) return
-      onStatus(theme, event === 'imageloadstart' ? 'loading' : event === 'imageloadend' ? 'ready' : 'error')
-    }))
-  })
-  let planLoading = 0
-  let planError = false
-  let tilesLoading = 0
-  let tileError = false
+  const physicalLayers = {
+    level0: [overview, detail],
+    'future-development': [plan],
+    'valued-nature': [nature, localities],
+  }
+  for (const definition of mapLayers) {
+    physicalLayers[definition.id].forEach((layer, index) => {
+      layer.set('mapLayerId', definition.id)
+      layer.setZIndex(definition.zIndex + (definition.id === 'valued-nature' ? index : 0))
+    })
+  }
+  mask.setZIndex(1000); border.setZIndex(1001)
+  const listeners = (['imageloadstart', 'imageloadend', 'imageloaderror'] as const).map((event) => natureSource.on(event, (e) => {
+    if (destroyed || !nature.getVisible() || !boundary) return
+    const size = map.getSize(), resolution = view.getResolution()
+    const current = size && resolution ? natureSource.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
+    if (e.image === current) syncStatus()
+  }))
   const tileListeners = (['tileloadstart', 'tileloadend', 'tileloaderror'] as const).map((event) => accountSource.on(event, () => {
-    tilesLoading = Math.max(0, tilesLoading + (event === 'tileloadstart' ? 1 : -1))
-    if (event === 'tileloaderror') tileError = true
-    if (!destroyed && boundary && activeTheme === 'level0' && view.getResolution()! < detail.getMaxResolution()) {
-      onStatus('level0', tileError ? 'error' : tilesLoading ? 'loading' : 'ready')
-    }
+    if (!destroyed && boundary && activeLayers.level0.visible) syncStatus()
   }))
   function fit() {
     if (!borderSource.getFeatures().length) return
@@ -131,27 +132,56 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
   observer?.observe(target)
   window.addEventListener('resize', resize)
   map.on('singleclick', (event) => {
-    if (activeTheme !== 'valued-nature' || !borderSource.getFeatures()[0]?.getGeometry()?.intersectsCoordinate(event.coordinate)) return
+    if ((!activeLayers['valued-nature'].visible || activeLayers['valued-nature'].opacity === 0) || !borderSource.getFeatures()[0]?.getGeometry()?.intersectsCoordinate(event.coordinate)) return
     const hits = localitySource.getFeatures().filter((feature) => feature.getGeometry()?.intersectsCoordinate(event.coordinate))
       .sort((a, b) => b.get('priority') - a.get('priority'))
     selectionHandler?.(hits[0] ? String(hits[0].getId()) : null)
   })
+  // Only current viewport tiles affect status; late errors from a former view/municipality are ignored.
+  function tileStatus(layer: TileLayer<XYZ>): LayerMapStatus {
+    const source = layer.getSource()
+    const size = map.getSize(), resolution = view.getResolution()
+    const extent = borderSource.getExtent()
+    if (!source || !size || !resolution || !extent) return 'loading'
+    const visibleExtent = getIntersection(view.calculateExtent(size), extent)
+    if (isEmpty(visibleExtent)) return 'ready'
+    const grid = source.getTileGrid()!
+    const zoom = grid.getZForResolution(resolution, source.zDirection)
+    const cache = layer.getRenderer()?.getTileCache()
+    if (!cache) return 'loading'
+    let loading = false, error = false
+    grid.forEachTileCoord(visibleExtent, zoom, (tc) => {
+      // OpenLayers 10 owns rendered tiles in the layer renderer. Reading the source
+      // directly would create a new IDLE tile and report permanent loading.
+      const key = getCacheKey(source, source.getKey(), tc[0], tc[1], tc[2])
+      const state = cache.containsKey(key) ? (cache.peek(key) as ImageTile).getState() : TileState.IDLE
+      if (state === TileState.ERROR) error = true
+      if (state === TileState.IDLE || state === TileState.LOADING) loading = true
+    })
+    return error ? 'error' : loading ? 'loading' : 'ready'
+  }
   function syncStatus() {
-    if (!boundary) { onStatus(activeTheme, 'idle'); return }
-    if (activeTheme === 'level0') {
-      const coarse = view.getResolution()! >= detail.getMaxResolution()
-      onStatus(activeTheme, coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileError ? 'error' : tilesLoading ? 'loading' : 'ready')
-    } else if (activeTheme === 'future-development') {
-      onStatus(activeTheme, planError ? 'error' : planLoading ? 'loading' : 'ready')
-    } else if (activeTheme === 'valued-nature' && filtered) onStatus(activeTheme, 'ready')
-    else {
-      const source = natureSource
-      const size = map.getSize(), resolution = view.getResolution()
-      const image = size && resolution ? source.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
-      onStatus(activeTheme, image?.getState() === ImageState.LOADED ? 'ready' : image?.getState() === ImageState.ERROR ? 'error' : 'loading')
+    for (const definition of mapLayers) {
+      const { visible, opacity } = activeLayers[definition.id]
+      let status: LayerMapStatus = 'idle'
+      if (boundary && visible) {
+        if (opacity === 0) status = 'ready'
+        else if (definition.id === 'level0') {
+          const coarse = view.getResolution()! >= detail.getMaxResolution()
+          status = coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileStatus(detail)
+        } else if (definition.id === 'future-development') status = tileStatus(plan)
+        else if (filtered) status = 'ready'
+        else {
+          const size = map.getSize(), resolution = view.getResolution()
+          const image = size && resolution ? natureSource.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
+          status = image?.getState() === ImageState.LOADED ? 'ready' : image?.getState() === ImageState.ERROR ? 'error' : 'loading'
+        }
+      }
+      onStatus(definition.id, status, boundary?.properties.number ?? null)
     }
   }
   map.on('moveend', syncStatus)
+  map.on('rendercomplete', syncStatus)
   async function configureOverview(number: string) {
     const request = ++overviewRequest
     try {
@@ -162,19 +192,19 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
       const source = new ImageStatic({ url: overviewUrl, imageExtent: [...raster.extent], projection: ACCOUNT_CRS, interpolate: false })
       source.on('imageloadend', () => { if (!destroyed && request === overviewRequest) { overviewReady = true; syncStatus() } })
       source.on('imageloaderror', () => { if (!destroyed && request === overviewRequest) { overviewFailed = true; syncStatus() } })
-      overview.setSource(source); overview.setVisible(activeTheme === 'level0')
+      overview.setSource(source); overview.setVisible(activeLayers.level0.visible)
     } catch { if (!destroyed && request === overviewRequest) { overviewFailed = true; syncStatus() } }
   }
   return {
     update(next) {
       if (destroyed) return
-      activeTheme = next.theme
+      activeLayers = next.layers
       if (boundary !== next.boundary) {
         const changed = boundary?.properties.number !== next.boundary?.properties.number
         boundary = next.boundary
         borderSource.clear(); maskSource.clear(); localitySource.clear()
-        plan.getSource()?.dispose(); plan.setSource(null); planLoading = 0; planError = false
-        overviewRequest++; overviewReady = false; overviewFailed = false; tileError = false
+        plan.getSource()?.dispose(); plan.setSource(null)
+        overviewRequest++; overviewReady = false; overviewFailed = false
         overview.getSource()?.dispose(); overview.setSource(null); overview.setVisible(false)
         if (overviewUrl) URL.revokeObjectURL(overviewUrl)
         overviewUrl = null
@@ -194,17 +224,14 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
           plan.setSource(source)
           for (const event of ['tileloadstart', 'tileloadend', 'tileloaderror'] as const) {
             source.on(event, () => {
-              if (destroyed || plan.getSource() !== source) return
-              planLoading = Math.max(0, planLoading + (event === 'tileloadstart' ? 1 : -1))
-              if (event === 'tileloaderror') planError = true
-              if (activeTheme === 'future-development') syncStatus()
+              if (!destroyed && plan.getSource() === source && activeLayers['future-development'].visible) syncStatus()
             })
           }
           if (changed) pendingFit = true
           void configureOverview(boundary.properties.number)
         } else pendingFit = false
       }
-      const data = activeTheme === 'valued-nature' && next.data?.municipalityNumber === boundary?.properties.number ? next.data : null
+      const data = activeLayers['valued-nature'].visible && next.data?.municipalityNumber === boundary?.properties.number ? next.data : null
       const key = JSON.stringify(next.filter)
       filtered = data !== null && (!!next.filter.natureType || !!next.filter.value)
       if (previousData !== data || previousFilter !== key) {
@@ -217,11 +244,15 @@ export function createExploreThemeMap(target: HTMLElement, onStatus: (theme: Map
       selectedId = next.selectedId && localitySource.getFeatureById(next.selectedId) ? next.selectedId : null
       localities.changed()
       detail.setMaxResolution(ACCOUNT_DETAIL_MAX_RESOLUTION)
-      overview.setVisible(boundary !== null && activeTheme === 'level0' && overview.getSource() !== null)
-      detail.setVisible(boundary !== null && activeTheme === 'level0')
-      nature.setVisible(boundary !== null && activeTheme === 'valued-nature' && !filtered)
-      localities.setVisible(boundary !== null && activeTheme === 'valued-nature' && data !== null)
-      plan.setVisible(boundary !== null && activeTheme === 'future-development')
+      overview.setVisible(boundary !== null && activeLayers.level0.visible && overview.getSource() !== null)
+      detail.setVisible(boundary !== null && activeLayers.level0.visible)
+      nature.setVisible(boundary !== null && activeLayers['valued-nature'].visible && !filtered)
+      localities.setVisible(boundary !== null && activeLayers['valued-nature'].visible && data !== null)
+      plan.setVisible(boundary !== null && activeLayers['future-development'].visible)
+      for (const definition of mapLayers) {
+        for (const layer of physicalLayers[definition.id]) layer.setOpacity(activeLayers[definition.id].opacity)
+      }
+      mask.setVisible(boundary !== null && mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0))
       resize(); syncStatus()
     },
     fitToMunicipality() { if (!destroyed) fit() },

@@ -1394,8 +1394,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
         </h1>
         <p>
-          Velg Grunnkart nivå 0, Verdsatte naturtyper eller framtidige
-          utbyggingsformål. Ett selvstendig karttema vises om gangen.
+          Kombiner Grunnkart nivå 0, framtidig utbygging og Verdsatte naturtyper.
+          Slå kartlag av og på, og tilpass gjennomsiktigheten.
         </p>
       </header>
 

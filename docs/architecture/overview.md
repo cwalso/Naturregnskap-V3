@@ -84,15 +84,26 @@ theme
 UI-komponenter skal ikke eie datakildekunnskap eller skjulte fagregler.
 
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat
-og identitet. Beregningsgrid og kildegeometri skilles. Den aktive nye
-kartflyten viser WMS-kontekst, beregnet grid-treff og valgt kildegeometrisk
+og identitet. Beregningsgrid og kildegeometri skilles. Den beholdte
+analyseflyten viser WMS-kontekst, beregnet grid-treff og valgt kildegeometrisk
 omriss som forskjellige ting, uten å beregne nye tall.
 
-## Selvstendige karttemaer i Utforsk i kart
+## Uavhengige kartlag i Utforsk i kart
 
 `ExploreThemesWorkspace` er koblet til App-ruten. `exploreThemeMap` har én
 OpenLayers-instans for nivå 0, naturtyper og planavsetninger. Et lite typet
-temaregister styrer velger, faglig rolle, kildebeskrivelse og tegnforklaring.
+lagregister styrer velger, faglig rolle, kildebeskrivelse, tegnforklaring,
+filtertype, standard synlighet/opasitet og zIndex. Synlighet/opasitet lagres
+uavhengig per implementert ID. Fem andre ID-er er reservert, uten nye kilder.
+Grunnkart ligger på zIndex 10, plan 20, naturtype-WMS 30 og kildegeometri 31;
+kommunemasken og grensen ligger på 1000/1001. Gjennomsiktighet gjelder alle
+fysiske deler av samme logiske lag. Nivå 0 starter med opasitet 0,7, øvrige 1.
+Grunnkart/plan kan skjules uten å endre naturtypefilter eller objektvalg.
+Naturtypelaget skjult fjerner objektvalg; filteret bevares. REST-kall avbrytes
+ved skjuling/kommunebytte, og sene svar får ikke ny eier. Status eies per lag
+og kommune; skjulte lag viser ikke feil. Rasterstatus leser aktuelle fliser
+fra OpenLayers-rendererens eksisterende cache, uten å opprette statusfliser.
+Ingen request- eller resultatcache er endret.
 Tidligere kart-/analysekomponenter er beholdt og monteres ikke på ruten.
 
 Nivå 0 gjenbruker `loadOverviewRaster` og `loadAccountDisplayTileBlob`.
@@ -118,10 +129,13 @@ uten analysegridets stripefjerning. Dette er visningsfliser, uten arealtall,
 analyse-ID, analysemasker eller ny resultatcache. Grove utsnitt krever fortsatt
 klargjort kommuneoversikt (foreløpig Trondheim). Ved kommunebytte/destruksjon
 avbrytes konsumenten og sene fliser ignoreres.
-Masken utenfor kommunen og kommunegrensen ligger over aktivt tema.
-Kommunevalg/reset tilpasser utsnitt; tema/filter/objekt/resize gjør det ikke.
+Masken utenfor kommunen og kommunegrensen ligger over aktive lag.
+Med alle lag av eller helt gjennomsiktige skjules masken; bakgrunnskartet
+og grensen vises. Kommunevalg/reset tilpasser utsnitt;
+lag/opasitet/filter/objekt/resize gjør det ikke.
 
-Se [ny beslutning](../decisions/2026-10-09-v3-independent-map-themes.md).
+Se [gjeldende beslutning](../decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[lagkontroll med reelle data](../validation/2026-10-09-concurrent-map-layers.md).
 [Korreksjon av planpresentasjonen](../decisions/2026-10-09-v3-future-development-display.md)
 og [reell Trondheim-kontroll](../validation/2026-10-09-future-development-display.md)
 dokumenterer den siste endringen. Testpublisering skjer fra PR-branchen uten merge.
@@ -164,8 +178,8 @@ kartbildet.
 
 ## Utforsk i kart
 
-Gjeldende brukerflyt er kommune → selvstendig karttema → eventuell
-temafiltrering og lokalitetsinformasjon. Ingen automatisk kryssanalyse.
+Gjeldende brukerflyt er kommune → ett eller flere kartlag → eventuell
+naturtypefiltrering og lokalitetsinformasjon. Ingen automatisk kryssanalyse.
 
 Den beholdte analyseflyten er område → datagrunnlag → resultat →
 stedfesting. Den skal kunne reaktiveres senere uten å endre metodene

@@ -31,7 +31,7 @@ vi.mock('../src/map/exploreAnalysisMap', () => ({ createExploreAnalysisMap: vi.f
   newMap.onStatus = onStatus
   return newMap
 }) }))
-vi.mock('../src/map/exploreThemeMap', () => ({ createExploreThemeMap: vi.fn(() => ({
+vi.mock('../src/map/exploreThemeMap', () => ({ createExploreLayerMap: vi.fn(() => ({
   update: newMap.update, fitToMunicipality: newMap.fitToMunicipality, destroy: newMap.destroy,
   setSelectionHandler: newMap.setLocalitySelectionHandler,
 })) }))
@@ -490,7 +490,7 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Åpne Utforsk i kart/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('combobox', { name: 'Velg karttema' })).toHaveValue('level0')
+    expect(screen.getByRole('checkbox', { name: 'Grunnkart nivå 0' })).toBeChecked()
   })
 
   it('åpner Villreinområder med kart og faglig innhold', async () => {
@@ -536,9 +536,9 @@ describe('sidestruktur og Oversikt', () => {
     await chooseTrondheim()
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: /Interaktivt kart: Grunnkart nivå 0/ })).toHaveAttribute('tabindex', '0')
-    expect(screen.getByRole('combobox', { name: 'Velg karttema' })).toHaveValue('level0')
-    expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ theme: 'level0', data: null }))
+    expect(screen.getByRole('region', { name: /Interaktivt kart i Trondheim/ })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('checkbox', { name: 'Grunnkart nivå 0' })).toBeChecked()
+    expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ layers: expect.objectContaining({ level0: { visible: true, opacity: 0.7 } }), data: null }))
     expect(calculate).not.toHaveBeenCalled()
     expect(screen.queryByRole('button', { name: /Eget område|Zoom til treff|Finn resultatet/ })).not.toBeInTheDocument()
     expect(screen.queryByText('Flere datalag')).not.toBeInTheDocument()

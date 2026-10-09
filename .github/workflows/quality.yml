@@ -50,6 +50,9 @@ jobs:
       - name: Browser render regression
         run: npm run test:browser
 
+      - name: Independent layers render regression
+        run: npm run test:browser:layers
+
   backend:
     name: Backend test and Ruff
     runs-on: ubuntu-latest

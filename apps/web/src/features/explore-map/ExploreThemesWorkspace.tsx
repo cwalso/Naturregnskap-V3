@@ -1,43 +1,55 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { Municipality, MunicipalityBoundary } from '../../api/municipalities'
 import { filterRegisteredNature, getMunicipalValuedNature, municipalValueLegend, noMunicipalNatureFilter, type MunicipalNatureFilter, type MunicipalValuedNature } from '../../api/municipalValuedNature'
-import { createExploreThemeMap, type ThemeMapController, type ThemeMapStatus } from '../../map/exploreThemeMap'
-import { mapThemes, mapThemeById, type MapThemeId } from './mapThemes'
+import { createExploreLayerMap, type LayerMapController, type LayerMapStatus } from '../../map/exploreThemeMap'
+import { initialMapLayers, mapLayers, mapLayerRoles, type MapLayerId, type MapLayerState } from './mapThemes'
 import './ExploreThemesWorkspace.css'
 
 interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null }
 interface Choice { owner: string; filter: MunicipalNatureFilter; selectedId: string | null; search: string; limit: number }
 const freshChoice = (owner: string): Choice => ({ owner, filter: noMunicipalNatureFilter, selectedId: null, search: '', limit: 60 })
+interface MapStatus { owner: string | null; layers: Partial<Record<MapLayerId, LayerMapStatus>> }
 
 export function ExploreThemesWorkspace({ municipality, boundary }: Props) {
-  const [theme, setTheme] = useState<MapThemeId>('level0')
-  const definition = mapThemeById(theme)
-  const owner = `${municipality.number}:${theme}`
+  const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
+  const [pickerOpen, setPickerOpen] = useState(() => !window.matchMedia?.('(max-width: 900px)').matches)
+  const owner = municipality.number
   const [storedChoice, setChoice] = useState<Choice>(() => freshChoice(owner))
   const choice = storedChoice.owner === owner ? storedChoice : freshChoice(owner)
   const [records, setRecords] = useState<{ number: string; status: 'loading' | 'ready' | 'error'; data: MunicipalValuedNature | null; error?: string } | null>(null)
-  const [mapState, setMapState] = useState<{ theme: MapThemeId; status: ThemeMapStatus }>({ theme, status: 'idle' })
+  const [mapState, setMapState] = useState<MapStatus>({ owner: null, layers: {} })
   const [creationError, setCreationError] = useState<string | null>(null)
   const element = useRef<HTMLDivElement>(null)
-  const controller = useRef<ThemeMapController | null>(null)
+  const controller = useRef<LayerMapController | null>(null)
   const id = useId()
-  const activeBoundary = boundary?.properties.number === municipality.number ? boundary : null
-  const activeRecords = records?.number === municipality.number && theme === 'valued-nature' ? records : null
+  const activeBoundary = boundary?.properties.number === owner ? boundary : null
+  const natureVisible = layers['valued-nature'].visible
+  const activeRecords = records?.number === owner && natureVisible ? records : null
   const data = activeRecords?.status === 'ready' ? activeRecords.data : null
   const visible = data ? filterRegisteredNature(data, choice.filter) : []
   const selected = visible.find((item) => item.id === choice.selectedId)
+  const activeDefinitions = mapLayers.filter((item) => layers[item.id].visible).sort((a, b) => a.zIndex - b.zIndex)
   const updateChoice = (update: Partial<Choice>) => setChoice({ ...choice, ...update, owner })
+  function toggleLayer(layerId: MapLayerId, visible: boolean) {
+    setLayers((previous) => ({ ...previous, [layerId]: { ...previous[layerId], visible } }))
+    if (layerId === 'valued-nature' && !visible) updateChoice({ selectedId: null })
+  }
 
   useEffect(() => {
     if (!element.current) return
-    try { controller.current = createExploreThemeMap(element.current, (theme, status) => setMapState({ theme, status })) }
+    try { controller.current = createExploreLayerMap(element.current, (layer, status, number) => setMapState((previous) => {
+      if (previous.owner === number && previous.layers[layer] === status) return previous
+      return { owner: number, layers: { ...(previous.owner === number ? previous.layers : {}), [layer]: status } }
+    })) }
     catch (error) { setCreationError(error instanceof Error ? error.message : 'Kartet kunne ikke opprettes.') }
     return () => { controller.current?.destroy(); controller.current = null }
   }, [])
   useEffect(() => {
-    if (theme !== 'valued-nature' || !activeBoundary) return
+    if (!natureVisible || !activeBoundary) return
     const abort = new AbortController()
-    setRecords({ number: activeBoundary.properties.number, status: 'loading', data: null })
+    // Keep a completed municipality result while the layer is hidden; other toggles never reload it.
+    setRecords((previous) => previous?.number === activeBoundary.properties.number && previous.status === 'ready'
+      ? previous : { number: activeBoundary.properties.number, status: 'loading', data: null })
     void getMunicipalValuedNature(activeBoundary, abort.signal).then((data) => {
       if (!abort.signal.aborted) setRecords({ number: data.municipalityNumber, status: 'ready', data })
     }).catch((error: unknown) => {
@@ -45,40 +57,67 @@ export function ExploreThemesWorkspace({ municipality, boundary }: Props) {
         error: error instanceof Error ? error.message : 'Naturtypeoversikten kunne ikke hentes.' })
     })
     return () => abort.abort()
-  }, [theme, activeBoundary])
+  }, [natureVisible, activeBoundary])
   useEffect(() => {
-    controller.current?.update({ boundary: activeBoundary, theme, data, filter: choice.filter, selectedId: selected?.id ?? null })
-  }, [activeBoundary, theme, data, choice.filter, selected?.id])
+    controller.current?.update({ boundary: activeBoundary, layers, data, filter: choice.filter, selectedId: selected?.id ?? null })
+  }, [activeBoundary, layers, data, choice.filter, selected?.id])
   useEffect(() => {
     controller.current?.setSelectionHandler((selectedId) => setChoice((previous) => ({ ...(previous.owner === owner ? previous : freshChoice(owner)), selectedId })))
     return () => controller.current?.setSelectionHandler(null)
   }, [owner])
-  const status = mapState.theme === theme ? mapState.status : 'loading'
   const filteredTypes = data?.natureTypes.filter((name) => name.toLocaleLowerCase('nb').includes(choice.search.trim().toLocaleLowerCase('nb')) || name === choice.filter.natureType) ?? []
 
-  return <section className="explore-themes" aria-label="Selvstendige kartvisninger">
-    <div className="explore-themes__selector">
-      <label htmlFor={`${id}-theme`}>Velg karttema</label>
-      <select id={`${id}-theme`} value={theme} onChange={(event) => {
-        const next = event.target.value as MapThemeId
-        setTheme(next); setChoice(freshChoice(`${municipality.number}:${next}`))
-      }}>{mapThemes.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
-      <span className="explore-themes__role">{definition.role}</span>
-    </div>
-    <p className="explore-themes__description">{definition.description}</p>
+  return <section className="explore-themes" aria-label="Kart med flere lag">
     <div className="explore-themes__body">
-      <section className="explore-themes__map" aria-label={`Karttema: ${definition.name}`}>
-        <header><strong>{definition.name} – {municipality.name}</strong><button type="button" disabled={!activeBoundary} onClick={() => controller.current?.fitToMunicipality()}>Vis hele kommunen</button></header>
-        <div ref={element} className="explore-themes__canvas" role="region" aria-label={`Interaktivt kart: ${definition.name} i ${municipality.name}`} tabIndex={0} />
+      <section className="explore-themes__map" aria-label="Kommunekart">
+        <header><strong>Utforsk i kart – {municipality.name}</strong><button type="button" disabled={!activeBoundary} onClick={() => controller.current?.fitToMunicipality()}>Vis hele kommunen</button></header>
+        <div ref={element} className="explore-themes__canvas" role="region" aria-label={`Interaktivt kart i ${municipality.name}`} tabIndex={0} />
         {!activeBoundary && <p role="status">Venter på kommunegrensen…</p>}
-        {activeBoundary && status === 'loading' && <p role="status">Laster {definition.name.toLocaleLowerCase('nb')}…</p>}
-        {(creationError || status === 'error') && <p role="alert">{creationError ?? `Kartdata for ${definition.name} kunne ikke vises. Dette er en datafeil, ikke fravær av registreringer.`}</p>}
+        {creationError && <p role="alert">{creationError}</p>}
+        {activeDefinitions.length === 0 && <p>Alle temalag er slått av. Bakgrunnskartet vises.</p>}
       </section>
-      <aside className="explore-themes__panel" aria-label="Tema og tegnforklaring">
+      <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
+        <button type="button" className="explore-themes__picker-toggle" aria-expanded={pickerOpen} aria-controls={`${id}-layers`} onClick={() => setPickerOpen((open) => !open)}>
+          Kartlag · {activeDefinitions.length} aktive <span aria-hidden="true">{pickerOpen ? '−' : '+'}</span>
+        </button>
+        <div id={`${id}-layers`} hidden={!pickerOpen}>
+          <p>Slå lag av og på uavhengig. Kombinasjonen er en kartvisning; ingen overlapp beregnes.</p>
+          <div className="explore-themes__layer-list">
+            {mapLayerRoles.map((role) => <fieldset key={role}><legend>{role}</legend>
+              {mapLayers.filter((item) => item.role === role).map((definition) => {
+                const settings = layers[definition.id]
+                const transparency = Math.round((1 - settings.opacity) * 100)
+                const status = mapState.owner === owner ? mapState.layers[definition.id] : 'idle'
+                return <div className="explore-themes__layer" key={definition.id}>
+                  <label className="explore-themes__layer-choice"><input type="checkbox" checked={settings.visible} onChange={(event) => toggleLayer(definition.id, event.target.checked)} />{definition.name}</label>
+                  {settings.visible && <>
+                    <label className="explore-themes__opacity" htmlFor={`${id}-opacity-${definition.id}`}>Gjennomsiktighet <output htmlFor={`${id}-opacity-${definition.id}`}>{transparency} %</output></label>
+                    <input id={`${id}-opacity-${definition.id}`} type="range" min="0" max="100" step="5" value={transparency} aria-label={`Gjennomsiktighet – ${definition.name}`} onChange={(event) => setLayers((previous) => ({ ...previous, [definition.id]: { ...previous[definition.id], opacity: 1 - Number(event.target.value) / 100 } }))} />
+                    {activeBoundary && status === 'loading' && <p role="status">Laster {definition.name.toLocaleLowerCase('nb')}…</p>}
+                    {status === 'error' && <p role="alert">Kartdata for {definition.name} kunne ikke vises. Dette er en datafeil, ikke fravær av registreringer.</p>}
+                  </>}
+                </div>
+              })}
+            </fieldset>)}
+          </div>
+          <small>Grunnkart nederst, framtidig utbygging over og naturtyper øverst. Kommunegrensen ligger over alle lag.</small>
+        </div>
+      </aside>
+      {activeDefinitions.length > 0 && <aside className="explore-themes__panel explore-themes__info" aria-label="Aktive lag og tegnforklaring">
         <h2>Tegnforklaring</h2>
-        <ul className="explore-themes__legend">{definition.legend.map((item) => <li key={item.label}><i style={{ backgroundColor: item.color }} aria-hidden="true" />{item.label}</li>)}</ul>
-        <p>{definition.note}</p>
-        {theme === 'valued-nature' && <>
+        {activeDefinitions.map((definition) => <section className="explore-themes__layer-info" key={definition.id} aria-label={`Tegnforklaring: ${definition.name}`}>
+          <h3>{definition.name}</h3><span className="explore-themes__role">{definition.role}</span>
+          <ul className="explore-themes__legend">{definition.legend.map((item) => <li key={item.label}><i style={{ backgroundColor: item.color }} aria-hidden="true" />{item.label}</li>)}</ul>
+          <details className="explore-themes__source"><summary>Om {definition.name.toLocaleLowerCase('nb')}</summary>
+            <p>{definition.description}</p><p>{definition.note}</p><p>{definition.source}</p>
+            <p>Kartlaget avgrenses visuelt til valgt kommune. Lagvalg, gjennomsiktighet, filter og lokalitetsvalg beholder kartutsnittet.</p>
+            {definition.id === 'level0' && <p>Kommuneoversikten bruker et klargjort raster der det finnes; detaljkartet bruker samme eksisterende WMS-klassifisering. Klargjort kommuneoversikt finnes foreløpig for Trondheim.</p>}
+            {definition.id === 'valued-nature' && <p>Fire verdikategorier hentes romlig mot kommunegrensen. Alle-visningen bruker WMS; filtrerte utvalg viser kildens lokalitetsgeometri med samme verdifarger. Filtrene gjelder bare dette laget.</p>}
+            {definition.id === 'future-development' && <p>Arealbruksstatus 2 og arealformål i 1000-/2000-serien. Bare Natur og Jordbruk innenfor disse formålene vises. Bebygd og vann skjules. Planer og datadekning varierer mellom kommuner.</p>}
+          </details>
+        </section>)}
+        {natureVisible && <section className="explore-themes__nature-filter" aria-label="Filter og lokaliteter for Verdsatte naturtyper">
+          <h3>Utforsk naturtypene</h3>
           {(!activeRecords || activeRecords.status === 'loading') && <p role="status">Henter kommunens registrerte lokaliteter og naturtyper…</p>}
           {activeRecords?.status === 'error' && <p role="alert">{activeRecords.error} WMS-kartet kan fortsatt vises. Filter og lokalitetsinformasjon er utilgjengelig; dette er ikke null treff.</p>}
           {data && <>
@@ -104,14 +143,8 @@ export function ExploreThemesWorkspace({ municipality, boundary }: Props) {
               {selected && <section aria-label="Valgt lokalitet"><h3>{selected.name}</h3><p>{selected.natureType} · {selected.value}</p><p>Objekt-ID: {selected.id}<br />Kilde-ID: {selected.sourceId}</p><button type="button" onClick={() => updateChoice({ selectedId: null })}>Fjern valg</button></section>}
             </>}
           </>}
-        </>}
-        <details className="explore-themes__source"><summary>Kilde og avgrensning</summary><p>{definition.source}</p>
-          <p>Karttemaet avgrenses visuelt til valgt kommune. Temabytte, filter og lokalitetsvalg beholder kartutsnittet.</p>
-          {theme === 'level0' && <p>Kommuneoversikten bruker et klargjort raster der det finnes; detaljkartet bruker samme eksisterende WMS-klassifisering. Klargjort kommuneoversikt finnes foreløpig for Trondheim.</p>}
-          {theme === 'valued-nature' && <p>Alle lokaliteter fra de fire verdikategoriene hentes romlig mot kommunegrensen. Alle-visningen bruker WMS; filtrerte utvalg viser kildens lokalitetsgeometri med samme verdifarger. Dette er ingen kryssanalyse.</p>}
-          {theme === 'future-development' && <p>Arealbruksstatus 2 og arealformål i 1000-/2000-serien. Kildens planflater vises uten fratrekk av Bebygd eller analysegridets stripebehandling. Planer og datadekning varierer mellom kommuner.</p>}
-        </details>
-      </aside>
+        </section>}
+      </aside>}
     </div>
   </section>
 }

@@ -109,14 +109,15 @@ disse formålene. Bebygd, vann og ugyldige piksler skjules. Planstatus/formål
 dokumenterer planavsetning, ikke sikkert framtidig naturtap eller regnskapsendring.
 
 Planområdene kan senere brukes som analyseområder i den beholdte
-kryssanalyseflyten. Kryssanalysen startes ikke fra dagens karttemavelger.
+kryssanalyseflyten. Kryssanalysen startes ikke fra dagens lagvelger. Samtidig visning av lag
+er visuell utforsking; den beregner ikke overlapp eller endrer regnskapet.
 Supplerende naturtyper og heldekkende nivå 0 holdes metodisk adskilt.
 
 ## 8. Eget tegnet område
 
 Tegnet polygon er implementert som analyseområde i den beholdte
 metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
-arbeidsflaten; primærmodellen nå er tre selvstendige karttemaer.
+arbeidsflaten; primærmodellen nå er tre uavhengige kartlag.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 
