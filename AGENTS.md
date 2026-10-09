@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -88,41 +88,59 @@ Gjeldende regel er:
 
 Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et fast rutenett på ca. **21,16 meter** per analysepiksel. Mer detaljert økosystemklassifisering kan bruke finere rutenett der implementert.
 
-## 7. Utforsk i kart – gjeldende arbeidsflyt
+## 7. Utforsk i kart – uavhengige kartlag
 
-`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+Gjeldende branch viser tre uavhengige kartlag i `#utforsk-i-kart`:
 
-Primærflyten er:
+1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
+2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
+3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-1. **Velg analyseområde**
-2. **Velg hva området skal krysses med**
-3. **Les resultat**
-4. **Finn resultatet i kartet**
+Avkryssing tillater 0–3 aktive lag. Alle av viser bakgrunnskartet. Hvert aktivt
+lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → plan →
+naturtyper/lokalitetsvalg → kommunemaske/grense. Nivå 0 starter med 30 %
+gjennomsiktighet; plan/naturtyper med 0 %. Klassifisering og farger er uendret.
+Lagvalg, gjennomsiktighet, filter, objektvalg og resize bevarer utsnittet.
+Bare kommunevalg og «Vis hele kommunen» tilpasser det. Andre lagvalg bevarer
+naturtypefilter og valgt objekt. Å skjule naturtypelaget fjerner objektvalg,
+men bevarer filteret. Ingen kryssanalyse startes ved lagvalg.
 
-Analyseområder som er implementert:
+`ExploreThemesWorkspace`, `exploreThemeMap` og et lite `mapThemes`-register
+eier denne visningen. Registeret gir navn, faglig rolle, kilde, beskrivelse
+og tegnforklaring, standard synlighet/opasitet, tegnerekkefølge og filtertype.
+Bare implementerte lag vises. Fem interne ID-er er reservert for framtidige
+lag; ingen nye kilder/placeholder-kontroller er innført. Mobilvelgeren kan
+lukkes over kartet. Ikke bygg generell GIS-klient eller lagkatalog.
 
-- framtidig utbygging fra kommuneplan
-- eget polygon tegnet i kartet
+Naturtypelisten hentes mot hele kommunepolygonet fra REST-kilden. Den er
+uavhengig av plan og viser bare registrerte naturtyper. WMS bruker kildens
+fire verdidelag; filtrering viser kildens polygoner, med samme verdifarger.
+Manglende data/registrering skal skilles fra feil og fravær av naturverdi.
 
-Analysegrunnlag som er implementert i analyseverkstedet:
+Planvisningen bruker det eksisterende status-2/formål-1000/2000-filteret.
+Den selvstendige visningen viser bare dagens Natur og Jordbruk innenfor
+planformålene. Bebygd, vann og ugyldige piksler skjules. Pikselvis sammenstilling
+bruker eksisterende klasser, EPSG:25833 og råflispipeline; grove utsnitt
+aggregerer treff på nivå 9 med svakere farge for små felt. Smale treff beholdes
+i kartpresentasjonen. Analysemetode, grid, stripebehandling og cache er uendret.
 
-- Natur og jordbruk fra Grunnkart
-- Verdsatte naturtyper
+Nivå 0 gjenbruker kommuneoversiktsraster og eksisterende klassifiserte
+WMS-fliser på detaljnivå. Bare Trondheim har klargjort oversiktsraster nå.
+WMS-laget har maksimal målestokk 1:50 000; et transparent bilde ved et grovere
+utsnitt er ikke dokumentert fravær av data.
 
-De tallbaserte overlayanalysene er per 08.10.2026 bare klargjort for Trondheim
-(5001), fordi `overview/index.json` bare inneholder et kommunevis
-oversiktsraster for Trondheim. Ikke beskriv arbeidsflyten som nasjonalt
-beregningsklar før tilsvarende grunnlag finnes og er validert for flere
-kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
-rasteranalysene.
-
-Resultatet skal være lesbart som tall uten karttolking. Når resultatet finnes, er kartet hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste. Ikke erstatt analyseflyten med en stor lagvelger.
+Analyseverkstedet, polygonverktøyene og metodene beholdes i kode og tester,
+men monteres ikke på Utforsk-ruten. De skal først kobles tilbake i en egen
+oppgave. De tre kartvisningene og korrigert planvisning er manuelt godkjent;
+den nye lagstyringen leveres for videre brukertest, uten å reaktivere analyse.
+Ingen metode, analyse-ID, nevner, UTM-korreksjon eller resultatcache endres.
 
 ## 8. Tegnet polygon
 
 Eget polygon skal behandles som et analyseområde på samme måte som framtidig utbygging, ikke som en separat analysefamilie.
 
-Gjeldende implementasjon støtter:
+Den beholdte implementasjonen støtter følgende; kontrollene er midlertidig
+skjult i den nye offentlige kartflyten:
 
 - start tegning
 - punkter/hjørner i kart
@@ -202,7 +220,7 @@ Ingen av disse skal presenteres som samme tilstand.
 3. Ikke opprett nye temasider eller analysefamilier uten faglig avklaring.
 4. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov.
 5. Legg fagregler og analysemetode utenfor presentasjonskomponenter.
-6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt; Verdsatte naturtyper vises som kildepolygoner.
+6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt. I det beholdte analyseverkstedet vises Verdsatte naturtyper som ordinær WMS-kontekst, beregnet treff som grense/fyll fra eksisterende rastermaske og valgt lokalitet som kildegeometrisk omriss. Ikke kall rastertreffet eksakt naturtypegeometri.
 7. Kjør relevante tester, lint og build før avslutning.
 8. Oppdater levende dokumentasjon og legg til ADR når en reell arkitekturbeslutning tas.
 9. Gamle ADR-er er historikk og skal normalt ikke omskrives.

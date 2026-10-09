@@ -202,7 +202,7 @@ function ValuedNaturePage({
           </span>
           {onOpenFutureDevelopmentAnalysis && municipalityName && (
             <button type="button" onClick={onOpenFutureDevelopmentAnalysis}>
-              Åpne analyse i kart <span aria-hidden="true">→</span>
+              Åpne Utforsk i kart <span aria-hidden="true">→</span>
             </button>
           )}
         </article>

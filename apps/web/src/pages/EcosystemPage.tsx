@@ -156,7 +156,7 @@ export function EcosystemPage({
             økosystemtypen i Grunnkartet.
           </span>
           <button type="button" onClick={onOpenMap}>
-            Åpne analyse i kart <span aria-hidden="true">→</span>
+            Åpne Utforsk i kart <span aria-hidden="true">→</span>
           </button>
         </article>
         <article>

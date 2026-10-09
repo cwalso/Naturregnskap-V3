@@ -1,10 +1,30 @@
 # Brukerhistorier – analyse og beslutningsstøtte
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 Dette dokumentet beskriver brukerbehovene som skal styre analysefunksjonaliteten
 i V3. Status skilles mellom det som er implementert i prototypen og det som
 fortsatt er framtidig.
+
+## Gjeldende kartflyt og status
+
+Utforsk i kart viser nå Grunnkart nivå 0, Verdsatte naturtyper og Framtidig
+utbygging som tre uavhengige kartlag. Brukeren kan kombinere 0–3 lag og
+endre gjennomsiktighet uten automatisk zoom. Ingen kryssanalyse startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
+ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
+uten beregnet overlappsareal. Lagvalg og objektvalg bevarer kartutsnittet.
+Filteret påvirker bare naturtypelaget; andre lagvalg bevarer filter og valg.
+Alle av viser bakgrunnskartet. Lagvelgeren kan lukkes på mobil.
+Framtidig utbygging viser dagens Natur og Jordbruk innenfor planformålene.
+Bebygd, vann og ugyldige piksler skjules; ingen arealtall beregnes i visningen.
+
+Delene nedenfor beskriver den **beholdte analysekoden og framtidige analysebehov**.
+Beskrivelser av analyseverkstedet, samtidige plan-/tema-/trefflag og aktiv
+analyse gjelder denne beholdte implementasjonen, ikke dagens Utforsk-rute.
+Analyser som allerede finnes på temasider er beholdt. Kryssanalyse i Utforsk
+kan først kobles tilbake i en egen oppgave. De tre visningene er manuelt
+godkjent; samtidige lag er neste visuelle leveranse. Se
+[beslutning](../decisions/2026-10-09-v3-concurrent-map-layers.md).
 
 ## 1. Hovedbruker og arbeidsflyt
 
@@ -20,7 +40,7 @@ Brukeren skal ikke måtte starte med å velge mange kartlag. Primærflyten er:
 Kartet brukes til stedfesting. Resultatet skal være forståelig som tall og tekst
 før brukeren tolker kartet.
 
-Arbeidsflyten er implementert i brukerflaten, men de rasterbaserte tallanalysene
+Arbeidsflyten er implementert i det beholdte analyseverkstedet, men de rasterbaserte tallanalysene
 krever et klargjort kommunevis Grunnkart-raster. Repoet har per 08.10.2026 bare
 dette for Trondheim (5001). Statusene «implementert prototype» nedenfor betyr
 derfor implementert og testbar for denne prototypekommunen, ikke nasjonal
@@ -45,46 +65,19 @@ Dagens prototype kan:
 Dette er beslutningsstøtte. Resultatet skal ikke omtales som sikkert framtidig
 naturtap eller naturfaglig konsekvensutredning.
 
-## 3. Eget polygon – implementert prototype
+## 3. Eget polygon – kode beholdt, inngang midlertidig skjult
 
-**Status: implementert prototype**
+**Status: analyse-/kartkode implementert; ikke tilgjengelig i ny arbeidsflate**
 
-Som bruker ønsker jeg å tegne et område direkte i kartet og få samme type
-analyse som for framtidig utbygging.
+Behovet for å tegne et område og analysere det som framtidig utbygging består.
+Den tidligere tegneflyten med start, punkter, angre, ferdig, avbryt, tegn på
+nytt og fjern er beholdt i kode, men inngangen er midlertidig skjult under
+utskiftingen av kartpresentasjonen. Ikke beskriv den som aktiv brukerfunksjon.
 
-Dagens prototype støtter:
-
-- start tegning
-- registrering av polygonpunkter
-- angre siste punkt
-- ferdig
-- avbryt
-- tegn på nytt
-- fjern område
-
-Det tegnede området:
-
-- rasteriseres
-- begrenses i beregningen til gyldige, ikke-transparente piksler i det
-  klargjorte kommunevise rasteret
-- analyseres på samme overordnede rasterpipeline som øvrig overlay
-- kan krysses med Natur og jordbruk
-- kan krysses med Verdsatte naturtyper
-
-Den tegnede geometrien vises som en dempet, stiplet ramme og beholdes når
-kartet opprettes på nytt ved sidenavigasjon i samme økt. Rammen ligger over
-trefflaget, med transparent innside, slik at den fortsatt synes også når hele
-polygonet gir treff. «Tegn på nytt» starter en ny tegning; «Fjern område» fjerner området
-og går tilbake til framtidig utbygging. Dette er ikke lagring mellom økter.
-
-Ved endringer skal det testes at gammel analyse/cache ikke følger med når
-brukeren bytter mellom framtidig utbygging og eget polygon.
-
-Tegnet område får en UUID-basert `analysisId` ved fullført tegning, uavhengig av
-kartinstans. Samme område beholder identiteten ved bytte av datagrunnlag.
-Regresjonstester dekker unik ID etter ny kartinstans, plan → polygon A → polygon
-B → plan og sene svar etter områdebytte. Tall og treffmaske brukes bare når
-resultatets ID og kommune stemmer med aktiv analyse.
+Rasterisering, gyldige kildepiksler, begge overlaygrunnlag, UUID ved fullført
+tegning og cache-/stale-isolasjon er uendret. Regresjonstester for plan →
+polygon A → polygon B → plan og ny kartinstans beholdes. Reaktivering krever
+ny eksplisitt oppgave og visuell kontroll av tegning og kartinteraksjon.
 
 ## 4. Natur og jordbruk – implementert prototype
 
@@ -99,7 +92,7 @@ Resultatet skal minst vise:
 - berørt Jordbruk i dekar
 - relevant andel av analyseområdet når nevneren er metodisk riktig
 - økosystemfordeling der den er beregnet
-- knapp for å finne resultatet i kartet
+- direkte stedfesting i kartet uten ekstra Finn-/Zoom-handling
 
 Prosentandeler skal ikke vises dersom nevneren ikke kan dokumenteres.
 
@@ -200,7 +193,7 @@ relevant.
 Analyseverktøyet skal:
 
 - fungere på mobil og desktop
-- være tydelig i tegnemodus
+- være tydelig i tegnemodus dersom tegneinngangen reaktiveres
 - ikke starte unødvendige parallelle analyser ved React-rerender
 - gjenbruke identiske rasterfliser
 - begrense samtidige nettverkskall
@@ -223,63 +216,46 @@ treffene forholder seg til valgt analyseområde.
 
 Gjeldende interaksjon og akseptansekriterier:
 
-1. Analyseområdet og treffområdet kan skilles visuelt, også uten bare å tolke
-   farge. Brukeren kan se både områdets ramme og hvilke deler som gir treff.
-2. «Zoom til treff» gjør relevant resultat synlig og gir et
-   forståelig utsnitt, også for små eller spredte treff. Brukeren skal ikke
-   måtte tolke flere nesten like lag for å finne treffet.
-3. Valg av verdikategori, naturtype eller annet delresultat gjenspeiles
-   tydelig i kartet og markeres i resultatvisningen. Aktivt valg er synlig og
-   kan nullstilles; det følger ikke med til et annet analyseområde.
-4. Tegnforklaring og status beskriver aktivt område, datagrunnlag, treff og
-   eventuelt filter. Kart og tall deler analyseidentitet og gyldig avgrensning,
-   mens beregningsgrid og kildegeometri holdes adskilt.
-5. Null registrerte treff, skjult resultat, manglende grunnlag, lasting og
-   teknisk feil har ulike forståelige tilstander. Tomt kart alene er ikke
-   en tilstrekkelig forklaring. Null treff betyr ikke fravær av naturverdi.
-6. Flyten område → datagrunnlag → resultat → stedfesting fungerer på mobil og
-   desktop. Tegnekontroller, resultatvalg, kartutsnitt og status prøves i en
-   virkelig nettleser med berøring og tastatur; små enhetstester erstatter
-   ikke denne kontrollen.
+1. Hele gyldige planmasken vises blå, naturtypelokalitetene som ordinær WMS,
+   og beregnet overlapp lilla med lys kant. Plan, tema og treff skal være
+   synlige samtidig og kunne skilles ved kommuneutsnitt og nær zoom.
+2. Treff vises direkte. Filter, objektvalg, temabytte og innkomne resultat
+   skal bevare brukerens utsnitt. Bare kommune/reset tilpasser utsnittet.
+3. Verdi-/naturtypefilter gjenspeiles i treffmaske og liste. Aktivt filter
+   forklares; hovedtallene gjelder hele analysen. Filter og valgt objekt
+   nullstilles ved kommune-, analyse- eller datagrunnlagsbytte.
+4. Natur/Jordbruk viser klassene fra `overlay.cleaned`, mens planlaget viser
+   hele `analysisMask`, også gyldige bebygde/vannpiksler. Treffgrensene følger
+   eksisterende analysegrid, uten smoothing eller ny faglig metode.
+5. Null registrerte treff, manglende grunnlag, lasting, beregningsfeil og
+   visningsfeil har forskjellige tilstander. Ingen registrering betyr ikke
+   fravær av naturverdi. Dekning og forbehold er sekundært, men tilgjengelig.
+6. Flyten fungerer på desktop og ved 390 px, med Kart/Resultat-snarveier og
+   minst 44 px kontroller. Zoom inn/ut, panorering og temarundtur kontrolleres
+   med reelle data. Faktisk sammensatt render skal regresjonstestes; DOM og
+   state alene er ikke akseptbevis.
 
-Natur- og Jordbruk-kortene velger tilhørende treffmaske og finner den i kartet.
-Verdikategori og naturtype filtrerer faktiske berørte kildeobjekter i både
-kart og liste. Svake hele lokaliteter viser kontekst; sterkt fyll følger
-gyldige analyse-/verdimasker.
-«Zoom til treff» beholder aktivt delresultat, gjør det synlig og
-tilpasser utsnittet til alle valgte treff. «Vis alle» nullstiller filteret for Verdsatte naturtyper, mens
-«Vis alle treff» nullstiller Natur/Jordbruk. Område- og datagrunnlagsbytte nullstiller filter og skjult resultat.
-Uten treff flyttes ikke kartet til en tom maske; statusen forklarer null treff
-og analyseområdets ramme beholdes.
-
-Kartet har en kompakt kontekst med område, datagrunnlag, aktivt valg, status og
-egen tegnforklaring for resultatmasken. Analyseområdet vises dempet, mens
-treff vises med sterk fyllfarge og lys kant. Kartmasken for Natur/Jordbruk
-beholder det beregnede analysegridet også ved nær zoom; visningen henter ikke
-en annen treffmaske fra mer detaljerte kartfliser. Dette endrer ingen tall,
-rastermetode eller kommuneavgrensning.
-
-På mobil finnes snarveier mellom kart og resultat og tegnehandlinger ved
-kartet. Beregningsfeil, visningsfeil, lasting, utilgjengelig grunnlag, null
-treff og skjult resultat forklares som forskjellige tilstander. Generell
-objektinformasjon for andre analysegrunnlag, flere tema og
-plansammenligning er fortsatt framtidige behov.
+A–E er visuelt kontrollert med reelle Trondheim-data 09.10.2026. De betyr
+naturtyper alene, plan alene, plan + tema uten trefflag, plan + tema +
+beregnet overlapp og plan × Natur/Jordbruk. Det beholdte analyseverkstedet bruker de
+to siste resultatvisningene. Metode, grid, nevner, filter og cache er bevart.
+Tegneinngangen er midlertidig skjult. Flere tema og plansammenligning er
+fortsatt framtidige behov.
 
 ## 12. Objektinformasjon for aktiv analyse
 
 **Status: implementert for Verdsatte naturtyper; øvrige objektflyter er TODO**
 
-Kart og kompakt resultatliste deler valgt lokalitet, filtrering på verdi og
-naturtype og Vis alle. Listevalg markerer og finner samme kildeobjekt i
-kartet; kartvalg markerer raden og detaljene uten å flytte hele siden.
+Kart og kompakt resultatliste deler valgt lokalitet og filtrering på verdi
+og naturtype. Listevalg markerer kildeobjektets omriss i kartet; kartvalg
+markerer raden og detaljene. Ingen av valgene zoomer eller flytter kartet.
 Detaljer viser navn, naturtype, verdi, kilde-ID og registrert overlappsareal
 med prototypeforbehold. Hovedresultat er antall og unikt areal; verdifordeling
-bruker høyeste verdi, mens objekter/naturtype fortsatt viser registrert areal.
+bruker høyeste verdi, mens objekter/naturtype viser registrert areal.
 
-Etter resultatet er område/datagrunnlag sammenleggbart, og kartet er hovedflate.
-Tegn på nytt og Fjern område er fortsatt tilgjengelige. Zoom til treff er
-kompakt og beholder filteret. Mobil bruker separate kart-/resultatflater og
-44 px kontroller, uten et permanent objektpanel oppå kartet.
+Kartet er hovedflate. Dekning/metode er sammenleggbart og sekundært. Mobil
+har Kart/Resultat-snarveier og 44 px kontroller. Tegneinngangen og Finn-/Zoom-
+handlingene er skjult, mens gammel metode-/kartkode er beholdt.
 
 Dekning hentes separat for aktiv kommune/analysisId. Registrert dekning, ingen
 registrert dekning, ukjent/lasting og teknisk feil formidles forskjellig.
@@ -300,7 +276,7 @@ Akseptansekriterier:
 
 ## 13. Flere egne områder og innlasting
 
-**Status: TODO – ett tegnet polygon er dekket; områdeliste og innlasting mangler**
+**Status: TODO – enkeltpolygonkode beholdt, inngang skjult; områdeliste og innlasting mangler**
 
 Mulige behov er navngiving, valg, fjerning og sammenligning av flere egne
 områder samt innlasting av egne arealer/planer. Dette er framtidige

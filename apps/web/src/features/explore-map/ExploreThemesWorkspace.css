@@ -1,0 +1,39 @@
+.explore-themes { min-width: 0; }
+.explore-themes__role { color: #005e5d; font-size: .9rem; }
+.explore-themes__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 330px); grid-template-areas: "map controls" "map info"; grid-template-rows: auto 1fr; gap: 1.25rem; align-items: start; }
+.explore-themes__body > * { min-width: 0; }
+.explore-themes__map { grid-area: map; overflow: hidden; border: 1px solid #c7dedd; border-radius: .5rem; background: #f7f9f8; }
+.explore-themes__map header { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; padding: .8rem; }
+.explore-themes__map > p { padding: 0 .8rem; }
+.explore-themes__canvas { width: 100%; height: min(68vh, 750px); min-height: 460px; background: #f7f9f8; }
+.explore-themes__panel { border: 1px solid #c7dedd; border-radius: .5rem; padding: 1rem; overflow-wrap: anywhere; }
+.explore-themes__panel h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+.explore-themes__panel p, .explore-themes__legend { font-size: .9rem; }
+.explore-themes button, .explore-themes select, .explore-themes input { min-height: 44px; font: inherit; max-width: 100%; }
+.explore-themes button { background: white; border: 1px solid #005e5d; border-radius: .3rem; color: #005e5d; padding: .5rem .7rem; cursor: pointer; text-align: left; }
+.explore-themes select, .explore-themes input { width: 100%; min-width: 0; padding: .4rem; border: 1px solid #819b96; border-radius: .3rem; background: white; }
+.explore-themes__panel label { display: block; font-size: .9rem; font-weight: 700; margin: 1rem 0 .4rem; }
+.explore-themes__panel select { margin-bottom: .6rem; }
+.explore-themes__legend { list-style: none; padding: 0; display: grid; gap: .6rem; }
+.explore-themes__legend li { display: flex; align-items: center; gap: .6rem; }
+.explore-themes__legend i { flex: 0 0 1rem; height: 1rem; border: 1px solid #78847f; }
+.explore-themes__localities { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
+.explore-themes__localities button { width: 100%; margin-bottom: .5rem; }
+.explore-themes small { display: block; font-weight: 400; font-size: .8rem; }
+.explore-themes button[aria-pressed=true] { background: #e5eeee; box-shadow: inset 3px 0 #005e5d; }
+.explore-themes summary { cursor: pointer; min-height: 44px; padding-top: .7rem; font-weight: 700; }
+.explore-themes__source { border-top: 1px solid #c7dedd; margin-top: 1rem; }
+.explore-themes :is(button, input, select, .explore-themes__canvas):focus-visible { outline: 3px solid #ed6b06; outline-offset: -3px; }
+.explore-themes__controls { grid-area: controls; }
+.explore-themes__info { grid-area: info; }
+.explore-themes__picker-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; font-weight: 700 !important; }
+.explore-themes__layer-list { max-height: 60vh; overflow-y: auto; }
+.explore-themes__controls fieldset { min-width: 0; padding: .5rem 0; margin: 1rem 0; border: 0; border-top: 1px solid #c7dedd; }
+.explore-themes__controls legend { font-size: .85rem; font-weight: 700; color: #005e5d; padding-right: .5rem; }
+.explore-themes__controls .explore-themes__layer-choice { display: flex; align-items: center; gap: .6rem; margin: 0; min-height: 44px; font-weight: 600; cursor: pointer; }
+.explore-themes__controls input[type=checkbox] { width: 20px; height: 20px; min-height: 0; flex: 0 0 20px; accent-color: #005e5d; }
+.explore-themes__controls input[type=range] { border: 0; padding: 0; background: transparent; accent-color: #005e5d; }
+.explore-themes__controls .explore-themes__opacity { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 400; margin: .2rem 0 0; }
+.explore-themes__layer-info + .explore-themes__layer-info, .explore-themes__nature-filter { border-top: 1px solid #c7dedd; margin-top: 1rem; padding-top: 1rem; }
+.explore-themes__layer-info h3 { margin: 0 0 .3rem; font-size: 1rem; }
+@media (max-width: 900px) { .explore-themes__body { grid-template-columns: 1fr; grid-template-areas: "controls" "map" "info"; grid-template-rows: auto; } .explore-themes__canvas { min-height: 400px; height: 56vh; } }

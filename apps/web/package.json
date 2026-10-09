@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:browser": "node tests/browser/check-explore-map-render.mjs",
+    "test:browser:live": "node tests/browser/check-explore-map-live.mjs",
+    "test:browser:workspace": "node tests/browser/check-explore-workspace-live.mjs",
+    "test:browser:themes": "node tests/browser/check-explore-themes-live.mjs",
+    "test:browser:layers": "node tests/browser/check-explore-layers-render.mjs"
   },
   "dependencies": {
     "ol": "^10.6.1",
@@ -27,6 +32,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "jsdom": "^26.1.0",
+    "playwright": "^1.56.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.40.0",
     "vite": "^7.1.3",

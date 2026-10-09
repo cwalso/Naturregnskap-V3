@@ -8,7 +8,7 @@ Den offentlige testflaten ligger på:
 
 https://cwalso.github.io/Naturregnskap-V3/
 
-**Status i repoet: 08.10.2026**
+**Status i repoet: 09.10.2026**
 
 ## Faglig skille
 
@@ -46,39 +46,43 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+Oppgavebranchen viser tre uavhengige kartlag:
 
-Arbeidsflyten er:
+1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
+2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
+3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-```text
-velg analyseområde
-        ↓
-velg datagrunnlag
-        ↓
-les resultat
-        ↓
-finn resultatet i kartet
-```
+`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–3 lag
+med avkryssing og egen gjennomsiktighet. Nivå 0 ligger nederst (30 %
+gjennomsiktighet som standard), plan i midten og naturtyper øverst.
+Kommunemaske/grense ligger over alle; bakgrunnskartet vises også med alle av.
+Lagvalg, gjennomsiktighet, søk, filter og lokalitetsvalg beholder utsnittet.
+Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
+Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
+men bare de tre implementerte lagene vises. Planvisningen bruker uendret
+DiBK-filter og viser dagens
+Natur og Jordbruk innenfor planformålene, med eksisterende grønn/gul symbolikk.
+Bebygd, vann og ugyldige piksler skjules. Dette er kartpresentasjon, ikke
+bokført naturtap eller prognose for faktisk framtidig naturtap.
 
-Analyseområder som er implementert:
+Kommuneoversikten for Grunnkart gjenbruker det klargjorte Trondheim-rasteret.
+Ved innzooming brukes samme eksisterende klassifisering og WMS-fliser.
+WMS-laget har maksimal målestokk 1:50 000.
 
-- områder satt av til framtidig utbygging i kommuneplan
-- eget polygon tegnet i kartet
+Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
+beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
+Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
 
-Analysegrunnlag som er implementert:
+[Flere samtidige kartlag](docs/decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[kontrollrapport med skjermbilder](docs/validation/2026-10-09-concurrent-map-layers.md) dokumenterer gjeldende flyt.
 
-- Natur og jordbruk fra Grunnkart for arealanalyse
-- Verdsatte naturtyper
-
-Resultatene er prototypebasert beslutningsstøtte. De skal ikke omtales som
-autoritative regnskapstall uten egen metodisk beslutning og validering.
-
-De rasterbaserte tallanalysene krever et klargjort kommunevis
-oversiktsraster. Repoet inneholder per 08.10.2026 bare et slikt raster for
-Trondheim (5001). Analyseverkstedet og temasidene kan åpnes for andre kommuner,
-men Natur/Jordbruk-overlay, Verdsatte naturtyper-overlay, skogstatistikk og
-våtmarksstatistikk returnerer da at beregningen ikke er klargjort. Dynamiske
-kartlag og kommunevise tematreff har en annen og bredere dekning.
+[Beslutning om selvstendige karttemaer](docs/decisions/2026-10-09-v3-independent-map-themes.md)
+beskriver den tidligere presentasjonen og avgrensningen.
+[Kontrollrapport og skjermbilder](docs/validation/2026-10-09-independent-map-themes.md)
+viser den opprinnelige branch-kontrollen.
+[Korrigert planvisning og nye skjermbilder](docs/validation/2026-10-09-future-development-display.md)
+dokumenterer Natur/Jordbruk-visningen. Testpublisering skjer fra PR-branchen
+via eksisterende Pages-workflow; ingen merge til main inngår.
 
 ## Offentlig demoarkitektur
 

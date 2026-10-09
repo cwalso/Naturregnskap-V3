@@ -1,6 +1,6 @@
 # Visuelle føringer for Kommunale naturregnskap
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## Status
 
@@ -108,30 +108,34 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 
 ## Utforsk i kart
 
-`Utforsk i kart` skal være et analyseverksted, ikke en lagkatalog.
+Brukeren krysser av uavhengige kartlag: Grunnkart nivå 0, framtidig utbygging
+og Verdsatte naturtyper. Nivå 0 er standard. Grupper er Regnskapsgrunnlag,
+Plandata og Supplerende temadata. 0–3 aktive lag støttes; alle av viser basen.
+Aktive lag viser egen gjennomsiktighetskontroll, tegnforklaring og kilde.
 
-Hovedhierarkiet er:
+Avkryssingslisten har begrenset høyde og kan senere romme åtte implementerte
+lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, plan,
+naturtyper, kommunemaske/grense. Nivå 0 er 30 % gjennomsiktig som standard;
+øvrige lag er ugjennomsiktige. Ingen fri flytting av lag eller GIS-katalog.
+Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
+Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 
-1. **Velg analyseområde**
-2. **Kryss området med**
-3. **Resultat**
-4. **Les og stedfest resultatet**
+På desktop ligger lagvelger og tegnforklaring/filter ved siden av kartet.
+På mobil kan velgeren åpnes/lukkes over kartet; den er lukket ved første
+åpning på mobil. Tegnforklaring/filter ligger under kartet. Kontroller er minst 44 px, og visningen skal ikke
+ha horisontal scrolling ved 390 px.
 
-På desktop:
+Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
+Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
+viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter
+og eksisterende grønn/gul symbolikk. Bebygd og vann skjules; forklaringen
+skiller kartpresentasjon fra bokført eller prognostisert naturtap.
+Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
 
-- kartet er hovedflate
-- analysepanelet ligger ved siden av
-- resultatkortene skal være lett skannbare
-- sekundære kartinnstillinger kan ligge i sammenleggbart felt
+## Resultatdesign i beholdt analyseverksted
 
-På mobil:
-
-- kart og analyse skal kunne brukes uten horisontal scrolling
-- knapper skal ha tilstrekkelig størrelse og luft
-- tegnemodus skal være tydelig
-- resultatet skal kunne leses uten at kartet er synlig samtidig
-
-## Resultatdesign
+Føringene nedenfor gjelder den beholdte analysepresentasjonen, ikke de tre
+uavhengige kartlagene.
 
 Overlayresultater skal presenteres med hovedtall først.
 
@@ -144,34 +148,42 @@ Eksempel:
 
 Detaljfordeling kommer etter hovedtallet.
 
-Etter resultatet skal kartet være hovedflate. «Zoom til treff» er en kompakt
-handling som beholder aktivt filter; brukeren skal ellers se treffene direkte.
-Område/datagrunnlag er sammenleggbart etter beregning, med lett tilgang til
-endre, tegn på nytt og fjern.
+Kartet viser resultatet direkte med et kompakt sidepanel. Antall berørte
+lokaliteter, unikt overlappsareal, verdifordeling og lokalitetsliste er primært.
+Dekning, metode og forbehold ligger i et sekundært sammenleggbart felt.
 
-Prototypen skiller analyseområde fra treff med en dempet ramme og sterk
-treffmarkering med lys kant. Eget polygon bruker en dempet stiplet ramme med
-transparent innside over treffene. Kommunegrensen ligger fortsatt øverst. Resultatkort for
-Natur/Jordbruk styrer rastertreff; kategori-/naturtypevalg for Verdsatte
-naturtyper styrer faktiske lokaliteter i både kart og liste.
-Valgt delresultat markeres i panelet og kartets status/tegnforklaring.
-«Zoom til treff» beholder valget og viser alle valgte treff;
-«Vis alle» nullstiller Verdsatte naturtyper; «Vis alle treff» nullstiller Natur/Jordbruk. Null treff, skjult resultat, lasting og teknisk
-feil har forskjellige tekstlige tilstander. Akseptansekriteriene står i
-[brukerhistorien om tydelige overlaytreff](analysis-user-stories.md#11-tydelige-overlaytreff-i-kartet).
-Videre kontroller skal følge eksisterende V3-komponenter og flyten område →
-datagrunnlag → resultat → stedfesting. Mobil bruk må prøves med berøring og
-lesbare resultater, uten at kartkontroller dominerer oppgaven.
+Kartografi i den beholdte analysearbeidsflaten:
 
-Kontekst og tegnforklaring ligger utenfor selve kartflaten, med kortere status
-på mobil. Mobil har snarveier mellom kart og resultat, trykkbare resultatkort
-og Angre punkt/Ferdig/Avbryt under kartflaten under tegning. Tegneknappene
-skal ikke dekke steder der brukeren setter punkter. Primærhandling og
-mobilkontroller skal ha minst 44 px høyde.
+- framtidig utbygging: blå flater og mørk blå kant fra hele gyldige planmasken
+- Verdsatte naturtyper: ordinær WMS med datakildens etablerte farger
+- beregnet naturtypeoverlapp: lilla fyll og tydelig lys kant over plan og tema
+- Natur/Jordbruk: grønt/oker fra eksisterende klassifiserte treffmaske
+- valgt lokalitet: mørkt kildegeometrisk omriss med lys kant
+- kommunegrense over vanlig vektormaske utenfor kommunen
+
+Treffgrensene følger eksisterende ca. 21,16 m analysegrid. De skal ikke
+fremstilles som naturtypens eksakte geometri. Kantbredden er en visuell
+markering i skjermpiksler, ikke et ekstra beregnet areal.
+
+Brukeren zoomer og panorerer selv. Temabytte, filter, objektvalg og innkomne
+analyseresultater skal ikke tilpasse utsnittet. «Vis hele kommunen» er eneste
+reset-handling i arbeidsflaten. «Zoom til treff» og «Finn resultatet i kartet»
+er skjult sammen med den eldre kartflyten.
+
+Verdikategori/naturtype filtrerer treff og lokalitetsliste, mens hovedtallene
+fortsatt gjelder hele analysen. Aktivt filter forklares eksplisitt; naturtype-
+og objekttall kan dobbelttelle, mens verdiandeler bygger på høyeste verdi.
+Filter og valgt lokalitet nullstilles ved kommune-/analyse-/grunnlagsbytte.
+Null treff, lasting og teknisk feil er forskjellige tilstander.
+
+På mobil står kart og resultat under hverandre med Kart/Resultat-snarveier.
+Kontroller har minst 44 px høyde, og brukerflaten skal fungere ved 390 px uten
+horisontal scrolling. Tegneinngangen er midlertidig skjult; gammel
+metode-/kartkode er beholdt. Den må få egen visuell gate før reaktivering.
 
 ## Tegnemodus
 
-Når brukeren tegner polygon:
+Før tegneinngangen reaktiveres skal følgende fortsatt gjelde:
 
 - det skal være åpenbart at kartet er i tegnemodus
 - kontrollene Angre punkt, Ferdig og Avbryt skal være tilgjengelige
@@ -200,8 +212,8 @@ For WMS skal tjenestens `GetLegendGraphic` foretrekkes når den er korrekt og
 forståelig. Manuell symbolikk skal ikke gjettes.
 
 Analyseverkstedets egen resultatmaske har en separat tegnforklaring fra
-visningskoden: dempet ramme for analyseområde, mørk grønn for Natur, oransje
-for Jordbruk og valgt resultatfarge for Verdsatte naturtyper. Den beskriver
+visningskoden: blått planområde, grønt for Natur, oker for Jordbruk og lilla
+beregnet overlapp for Verdsatte naturtyper. Den beskriver
 prototypeoverlapp og erstatter ikke datakildenes faglige tegnforklaringer.
 
 ## Tilgjengelighet

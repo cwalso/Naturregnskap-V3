@@ -1,6 +1,6 @@
 # Grunnkart 2025 i V3-prototypen – datakilder og rasteranalyse
 
-**Sist oppdatert: 08.10.2026**  
+**Sist oppdatert: 09.10.2026**
 **Datasett:** Nasjonalt grunnkart for arealanalyse – årsversjon 2025  
 **Metadata UUID:** `28c28e3a-d88f-4a34-8c60-5efe6d56a44d`
 
@@ -157,7 +157,9 @@ en autoritativ analysekilde eller nøyaktig vektoravgrensning.
 
 ## Tegnet polygon
 
-Brukeren kan tegne eget polygon i kartet.
+Tegning av eget polygon er implementert i beholdt kode. Inngangen er
+midlertidig skjult i den nye `Utforsk i kart`-arbeidsflaten. Metoden nedenfor
+er uendret og gjelder den beholdte polygonanalysen.
 
 Polygonet:
 

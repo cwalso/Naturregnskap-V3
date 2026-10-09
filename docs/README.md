@@ -1,6 +1,6 @@
 # Dokumentasjon – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 Denne siden viser hvilke dokumenter som er levende styringsdokumenter og hvilke
 som er historiske beslutningslogger.
@@ -61,6 +61,21 @@ senere beslutninger har endret retningen.
 - kildegeometri, objektvalg og høyeste verdi ved overlapp i analyseverkstedet
 
 Se `decisions/`.
+
+Gjeldende Utforsk-rute viser tre uavhengige kartlag uten automatisk kryssanalyse.
+Se [samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[A–L-kontroll med skjermbilder](validation/2026-10-09-concurrent-map-layers.md). De tidligere tre
+kartvisningene og korrigert planvisning er manuelt godkjent.
+
+Tidligere overgang til selvstendige karttemaer er dokumentert i [tidligere beslutning](decisions/2026-10-09-v3-independent-map-themes.md)
+og [validering med skjermbilder](validation/2026-10-09-independent-map-themes.md).
+Denne beslutningen erstatter den aktive kartflyten i
+`2026-10-09-v3-explore-analysis-map.md`; analysemetoden og verkstedet beholdes.
+[Korrigert planpresentasjon](decisions/2026-10-09-v3-future-development-display.md)
+presiserer at bare Natur/Jordbruk innenfor planformålene vises.
+[Ny Trondheim-kontroll](validation/2026-10-09-future-development-display.md)
+inkluderer råpikselkontroll, referansesammenligning og faktiske skjermbilder.
+Pages-testpublisering gjøres fra PR-branchen uten merge.
 
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av
