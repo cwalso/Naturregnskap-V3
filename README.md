@@ -46,45 +46,30 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+Oppgavebranchen viser tre selvstendige karttemaer:
 
-Arbeidsflyten er:
+1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
+2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
+3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-```text
-velg analyseområde
-        ↓
-velg datagrunnlag
-        ↓
-les resultat
-        ↓
-finn resultatet i kartet
-```
+`ExploreThemesWorkspace` og `exploreThemeMap` viser bare ett tema om gangen.
+Søk i registrerte naturtyper, verdi-/naturtypefilter og lokalitetsvalg
+beholder utsnittet. Planvisningen bruker kildeplanen og det eksisterende
+filteret, uten å skjule allerede bebygde arealer.
 
-Den nye arbeidsflaten bruker framtidig utbygging fra kommuneplan × ett
-valgt analysegrunnlag. Tegnet polygon er beholdt i metode-/kartkoden, men
-tegneinngangen er midlertidig skjult. Kartet viser resultat direkte;
-filter-, objekt- og temavalg endrer ikke utsnittet. Brukeren zoomer og
-panorerer selv, eller velger «Vis hele kommunen».
+Kommuneoversikten for Grunnkart gjenbruker det klargjorte Trondheim-rasteret.
+Ved innzooming brukes samme eksisterende klassifisering og WMS-fliser.
+WMS-laget har maksimal målestokk 1:50 000.
 
-Kart og kompakt resultatpanel bruker `ExploreAnalysisWorkspace`.
-[Beslutning om ny kartpresentasjon](docs/decisions/2026-10-09-v3-explore-analysis-map.md)
-beskriver lagene, visuell kontroll og avgrensningen mot beregningsmetoden.
-Endringen er først publisert på Pages etter merge og vellykket deploy.
+Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
+beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
+Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
 
-Analysegrunnlag som er implementert:
-
-- Natur og jordbruk fra Grunnkart for arealanalyse
-- Verdsatte naturtyper
-
-Resultatene er prototypebasert beslutningsstøtte. De skal ikke omtales som
-autoritative regnskapstall uten egen metodisk beslutning og validering.
-
-De rasterbaserte tallanalysene krever et klargjort kommunevis
-oversiktsraster. Repoet inneholder per 08.10.2026 bare et slikt raster for
-Trondheim (5001). Analyseverkstedet og temasidene kan åpnes for andre kommuner,
-men Natur/Jordbruk-overlay, Verdsatte naturtyper-overlay, skogstatistikk og
-våtmarksstatistikk returnerer da at beregningen ikke er klargjort. Dynamiske
-kartlag og kommunevise tematreff har en annen og bredere dekning.
+[Beslutning om selvstendige karttemaer](docs/decisions/2026-10-09-v3-independent-map-themes.md)
+beskriver presentasjon og avgrensning.
+[Kontrollrapport og skjermbilder](docs/validation/2026-10-09-independent-map-themes.md)
+viser branchens reelle Trondheim-kontroller. Endringen er ikke publisert;
+ekstern testpublisering håndteres separat.
 
 ## Offentlig demoarkitektur
 

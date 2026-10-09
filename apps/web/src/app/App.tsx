@@ -36,7 +36,7 @@ import {
   loadMunicipalityThematicCoverage,
 } from '../data/municipalityWorkspace'
 import { AccountOverview } from '../features/account-overview/AccountOverview'
-import { ExploreAnalysisWorkspace } from '../features/explore-map/ExploreAnalysisWorkspace'
+import { ExploreThemesWorkspace } from '../features/explore-map/ExploreThemesWorkspace'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
 import { createUnavailableAccountOverview, type AccountOverviewData } from '../features/account-overview/model'
@@ -276,8 +276,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     if (
-      (activeView !== 'utforsk-i-kart'
-        && activeView !== 'tema-forest'
+      (activeView !== 'tema-forest'
         && activeEcosystemId === null
         && activeView !== 'tema-valued-nature')
       || !selectedMunicipality
@@ -368,7 +367,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   useEffect(() => {
     const needsGrunnkartBreakdown = activeView === 'tema-forest'
       || activeEcosystemId !== null
-      || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'grunnkart')
     const analysis = activeView === 'utforsk-i-kart'
       ? mapAnalysisResult
       : plannedDevelopment
@@ -407,7 +405,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     const needsValuedNature = activeView === 'tema-valued-nature'
-      || (activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'valued-nature')
     const analysis = activeView === 'utforsk-i-kart'
       ? mapAnalysisResult
       : plannedDevelopment
@@ -528,7 +525,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, boundaryData])
 
   useEffect(() => {
-    const analysis = activeView === 'utforsk-i-kart' && plannedDevelopmentAnalysisTarget === 'valued-nature' ? mapAnalysisResult : activeView === 'tema-valued-nature' ? plannedDevelopment : null
+    const analysis = activeView === 'tema-valued-nature' ? plannedDevelopment : null
     if (analysis?.status !== 'available') {
       setPlannedCoverageGap(null)
       setPlannedCoverageGapState('idle')
@@ -1392,13 +1389,13 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
       <header className="content-page__intro map-page__intro">
-        <p className="content-page__eyebrow">Kart og analyse</p>
+        <p className="content-page__eyebrow">Utforsk geografiske datagrunnlag</p>
         <h1 id="explore-map-title">
           Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
         </h1>
         <p>
-          Velg et analyseområde og kryss det med natur- og arealdata. Resultatet
-          vises som tydelige tall og kan stedfestes direkte i kartet.
+          Velg Grunnkart nivå 0, Verdsatte naturtyper eller framtidige
+          utbyggingsformål. Ett selvstendig karttema vises om gangen.
         </p>
       </header>
 
@@ -1409,16 +1406,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <div className="map-page__flow" aria-label="Arbeidsflyt">
-            <span><b>1</b> Velg område</span>
-            <span><b>2</b> Velg datagrunnlag</span>
-            <span><b>3</b> Les og stedfest resultatet</span>
-          </div>
-          <ExploreAnalysisWorkspace municipality={selectedMunicipality} boundary={boundaryData}
-            result={plannedDevelopment} state={plannedDevelopmentState}
-            target={plannedDevelopmentAnalysisTarget === 'valued-nature' ? 'valued-nature' : 'grunnkart'} onTargetChange={changeAnalysisTarget}
-            valued={plannedValuedNature} valuedState={plannedValuedNatureState}
-            coverage={plannedCoverageGap} coverageState={plannedCoverageGapState} />
+          <ExploreThemesWorkspace municipality={selectedMunicipality} boundary={boundaryData} />
         </>
       )}
     </section>

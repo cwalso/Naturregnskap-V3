@@ -100,22 +100,22 @@ Naturregnskapets bebygde/opparbeidede areal og det separate Kart over grå
 arealer er beslektede, men ikke identiske størrelser. De skal ikke blandes uten
 metodisk avklaring.
 
-## 7. Fremtidig arealbruk er analyse
+## 7. Fremtidig arealbruk og analyse
 
-Områder satt av til framtidig utbygging brukes som analyseområde. Analysen kan
-vise hvilken natur eller hvilke registrerte naturverdier som ligger innenfor
-området.
+Framtidige utbyggingsformål kan utforskes som selvstendige plandata.
+Planstatus/formål dokumenterer planavsetningen, ikke fysisk ubebygd mark,
+sikkert framtidig naturtap eller regnskapsendring. Områdene kan inkludere
+eksisterende bebyggelse, fortetting og transformasjon.
 
-Dette er beslutningsstøtte, ikke selve naturregnskapet.
-
-Prototypen skal ikke beskrive dette som en naturfaglig konsekvensutredning eller
-som et sikkert framtidig naturtap.
+Planområdene kan senere brukes som analyseområder i den beholdte
+kryssanalyseflyten. Kryssanalysen startes ikke fra dagens karttemavelger.
+Supplerende naturtyper og heldekkende nivå 0 holdes metodisk adskilt.
 
 ## 8. Eget tegnet område
 
 Tegnet polygon er implementert som analyseområde i den beholdte
 metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
-arbeidsflaten; primærmodellen nå er framtidig utbygging × ett analysetema.
+arbeidsflaten; primærmodellen nå er tre selvstendige karttemaer.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 

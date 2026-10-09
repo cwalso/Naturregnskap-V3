@@ -62,11 +62,12 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
-Ny kartpresentasjon er koblet til `#utforsk-i-kart` i denne kodeversjonen
-etter visuell kontroll A–E med reelle Trondheim-data. Se
-[`2026-10-09-v3-explore-analysis-map.md`](decisions/2026-10-09-v3-explore-analysis-map.md).
-Den presiserer presentasjonsbeslutningen fra 08.10.2026 uten å endre metode.
-Publisering på Pages krever merge og vellykket deploy.
+Gjeldende Utforsk-rute viser tre selvstendige karttemaer uten automatisk
+kryssanalyse. Se [ny beslutning](decisions/2026-10-09-v3-independent-map-themes.md)
+og [validering med skjermbilder](validation/2026-10-09-independent-map-themes.md).
+Denne beslutningen erstatter den aktive kartflyten i
+`2026-10-09-v3-explore-analysis-map.md`; analysemetoden og verkstedet beholdes.
+Branchen er lokalt kontrollert, men ikke merget eller publisert.
 
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av

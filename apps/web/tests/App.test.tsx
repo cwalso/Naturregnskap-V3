@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -30,6 +31,10 @@ vi.mock('../src/map/exploreAnalysisMap', () => ({ createExploreAnalysisMap: vi.f
   newMap.onStatus = onStatus
   return newMap
 }) }))
+vi.mock('../src/map/exploreThemeMap', () => ({ createExploreThemeMap: vi.fn(() => ({
+  update: newMap.update, fitToMunicipality: newMap.fitToMunicipality, destroy: newMap.destroy,
+  setSelectionHandler: newMap.setLocalitySelectionHandler,
+})) }))
 
 const municipalityListSource = [
   { kommunenummer: '5001', kommunenavnNorsk: 'Trondheim' },
@@ -483,9 +488,9 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getAllByText(/Datasettet er ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
-    fireEvent.click(screen.getByRole('button', { name: /Åpne analyse/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Åpne Utforsk i kart/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('radio', { name: /Verdsatte naturtyper/ })).toBeChecked()
+    expect(screen.getByRole('combobox', { name: 'Velg karttema' })).toHaveValue('level0')
   })
 
   it('åpner Villreinområder med kart og faglig innhold', async () => {
@@ -523,16 +528,18 @@ describe('sidestruktur og Oversikt', () => {
     await vi.waitFor(() => expect(map.setThematicLayerVisible).toHaveBeenCalledWith('infrastructure-free-nature', true))
   })
 
-  it('viser nytt avgrenset analysekart med ett tema og uten tegne-/zoom-til-treff-kontroller', async () => {
+  it('starter med selvstendig nivå 0 uten automatisk plananalyse', async () => {
     mockMunicipalityFlow()
+    const calculate = vi.spyOn(plannedAnalysis, 'calculatePlannedDevelopment')
     const createMap = vi.fn(() => mapMock())
     render(<App createMap={createMap} />)
     await chooseTrondheim()
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: /Interaktivt analysekart/ })).toHaveAttribute('tabindex', '0')
-    expect(screen.getByRole('radio', { name: 'Natur og jordbruk' })).toBeChecked()
-    expect(screen.getByRole('radio', { name: 'Verdsatte naturtyper' })).not.toBeChecked()
+    expect(screen.getByRole('region', { name: /Interaktivt kart: Grunnkart nivå 0/ })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('combobox', { name: 'Velg karttema' })).toHaveValue('level0')
+    expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ theme: 'level0', data: null }))
+    expect(calculate).not.toHaveBeenCalled()
     expect(screen.queryByRole('button', { name: /Eget område|Zoom til treff|Finn resultatet/ })).not.toBeInTheDocument()
     expect(screen.queryByText('Flere datalag')).not.toBeInTheDocument()
     expect(createMap).not.toHaveBeenCalled()
@@ -603,16 +610,6 @@ function analysisFixture(id: string, offset: number, index: number): plannedAnal
   }
 }
 
-function breakdownFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis): plannedAnalysis.PlannedNatureBreakdown {
-  return {
-    municipalityNumber: '5001', analysisId: analysis.analysisId, status: 'available',
-    source: 'NIBIO Grunnkart for arealanalyse', level: 'okosystemtypeniva1',
-    methodVersion: 'planned-nature-types-v2', tileCount: 1, pixelMeters: 21.15625,
-    classificationPixelMeters: 10.578125, classifiedAreaKm2: 0.001, unclassifiedAreaKm2: 0,
-    metrics: [{ id: 'skog', label: `${analysis.analysisId}-resultat`, color: '#9ECC73', areaKm2: 0.001, sharePercent: 100 }],
-  }
-}
-
 function valuedFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis): valuedAnalysis.PlannedValuedNatureAnalysis {
   const indices = Uint32Array.from(Array.from(analysis.overlay.analysisMask).flatMap((value, index) => value ? [index] : []))
   return {
@@ -628,38 +625,39 @@ function valuedFixture(analysis: plannedAnalysis.PlannedDevelopmentAnalysis): va
   }
 }
 
-async function openAnalysisWorkspace(result = analysisFixture('planned:5001', 0, 0)) {
-  mockMunicipalityFlow()
+function PreservedAnalysisFixture({ plan, valued, valuedState = 'idle' }: {
+  plan: plannedAnalysis.PlannedDevelopmentAnalysis
+  valued: valuedAnalysis.PlannedValuedNatureAnalysis | null
+  valuedState?: 'idle' | 'loading' | 'error'
+}) {
+  const [target, setTarget] = useState<'grunnkart' | 'valued-nature'>('grunnkart')
+  return <ExploreAnalysisWorkspace municipality={{ number: '5001', name: 'Trondheim' }} boundary={null}
+    result={plan} state="idle" target={target} onTargetChange={setTarget}
+    valued={valued} valuedState={valuedState} coverage={null} coverageState="idle" />
+}
+function openAnalysisWorkspace(options: { valued?: valuedAnalysis.PlannedValuedNatureAnalysis | null; valuedState?: 'idle' | 'loading' | 'error' } = {}) {
   Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', { configurable: true, value: vi.fn() })
-  vi.spyOn(plannedAnalysis, 'calculatePlannedDevelopment').mockResolvedValue(result)
-  vi.spyOn(plannedAnalysis, 'calculatePlannedNatureBreakdown').mockResolvedValue(breakdownFixture(result))
-  vi.spyOn(valuedAnalysis, 'calculatePlannedValuedNatureAnalysis').mockResolvedValue(valuedFixture(result))
-  render(<App createMap={() => mapMock()} />)
-  await chooseTrondheim()
-  fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
-  await screen.findByText('25 % av gyldig analyseareal')
-  return result
+  const plan = analysisFixture('planned:5001', 0, 0)
+  const view = render(<PreservedAnalysisFixture plan={plan} valued={options.valued === undefined ? valuedFixture(plan) : options.valued} valuedState={options.valuedState} />)
+  return { plan, view }
 }
 
-describe('new analysis workspace presentation and stale results', () => {
-  it('uses the existing shares of the whole valid area and shows both masks automatically', async () => {
-    const plan = await openAnalysisWorkspace()
+describe('preserved analysis workspace presentation and stale results', () => {
+  it('uses the shares of the whole valid area and shows both masks automatically', () => {
+    const { plan } = openAnalysisWorkspace()
     expect(screen.getByText('50 % av gyldig analyseareal')).toBeInTheDocument()
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ plan, showNatureAgriculture: true, showValuedNature: false, valued: null }))
     expect(newMap.fitToMunicipality).not.toHaveBeenCalled()
   })
-
-  it('links list and map selection without fitting, and filters both by value/type/all', async () => {
-    const plan = await openAnalysisWorkspace()
-    const valued = valuedFixture(plan)
-    vi.mocked(valuedAnalysis.calculatePlannedValuedNatureAnalysis).mockResolvedValue({
-      ...valued, affectedFeatureCount: 2,
+  it('links list and map selection without fitting, and filters both by value/type/all', () => {
+    const valued = valuedFixture(analysisFixture('planned:5001', 0, 0))
+    openAnalysisWorkspace({ valued: { ...valued, affectedFeatureCount: 2,
       localities: [...valued.localities, { ...valued.localities[0], id: '2', name: 'Enga', natureType: 'Naturbeitemark', value: 'Middels verdi' }],
       valueMetrics: [...valued.valueMetrics, { ...valued.valueMetrics[0], label: 'Middels verdi' }],
       typeMetrics: [...valued.typeMetrics, { ...valued.typeMetrics[0], label: 'Naturbeitemark' }],
-    })
+    } })
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    const list = within(await screen.findByRole('list', { name: 'Berørte lokaliteter' }))
+    const list = within(screen.getByRole('list', { name: 'Berørte lokaliteter' }))
     fireEvent.click(list.getByRole('button', { name: /Lokaliteten/ }))
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ selectedLocalityId: '1' }))
     act(() => newMap.setLocalitySelectionHandler.mock.lastCall![0]('2'))
@@ -673,66 +671,52 @@ describe('new analysis workspace presentation and stale results', () => {
     expect(list.getAllByRole('button')).toHaveLength(2)
     expect(newMap.fitToMunicipality).not.toHaveBeenCalled()
   })
-
-  it('removes stale valued results and selection during theme round trip', async () => {
-    await openAnalysisWorkspace()
+  it('removes stale valued results and selection during theme round trip', () => {
+    openAnalysisWorkspace()
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    fireEvent.click(await screen.findByRole('button', { name: /^Stor verdi/ }))
+    fireEvent.click(screen.getByRole('button', { name: /^Stor verdi/ }))
     fireEvent.click(screen.getByRole('radio', { name: 'Natur og jordbruk' }))
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ valued: null, showValuedNature: false, showNatureAgriculture: true }))
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    await screen.findByRole('button', { name: /^Stor verdi/ })
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ selection: { kind: 'all' }, selectedLocalityId: null }))
     expect(newMap.fitToMunicipality).not.toHaveBeenCalled()
   })
-
-  it('ignores a late response from a theme that is no longer active', async () => {
-    const plan = await openAnalysisWorkspace()
-    let resolve!: (value: valuedAnalysis.PlannedValuedNatureAnalysis) => void
-    vi.mocked(valuedAnalysis.calculatePlannedValuedNatureAnalysis).mockImplementation(() => new Promise((done) => { resolve = done }))
+  it('ignores a late valued result when its theme is no longer active', () => {
+    const { plan, view } = openAnalysisWorkspace({ valued: null, valuedState: 'loading' })
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    await screen.findByText('Beregner berørte naturtypelokaliteter…')
+    expect(screen.getByText('Beregner berørte naturtypelokaliteter…')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('radio', { name: 'Natur og jordbruk' }))
-    await act(async () => resolve(valuedFixture(plan)))
+    view.rerender(<PreservedAnalysisFixture plan={plan} valued={valuedFixture(plan)} />)
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ valued: null, showNatureAgriculture: true }))
     expect(screen.queryByRole('list', { name: 'Berørte lokaliteter' })).not.toBeInTheDocument()
   })
-
-  it('reports service failure as technical error while retaining the ordinary theme', async () => {
-    await openAnalysisWorkspace()
-    vi.mocked(valuedAnalysis.calculatePlannedValuedNatureAnalysis).mockRejectedValue(new Error('HTTP 503'))
+  it('reports service failure as technical error while retaining the ordinary theme', () => {
+    openAnalysisWorkspace({ valued: null, valuedState: 'error' })
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    expect(await screen.findByRole('alert')).toHaveTextContent('Teknisk feil')
+    expect(screen.getByRole('alert')).toHaveTextContent('Teknisk feil')
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ valued: null, showValuedNature: true }))
-    expect(screen.queryByRole('list', { name: 'Berørte lokaliteter' })).not.toBeInTheDocument()
   })
-
-  it('distinguishes no registered hits from absent natural value or unknown coverage', async () => {
-    const plan = await openAnalysisWorkspace()
-    vi.mocked(valuedAnalysis.calculatePlannedValuedNatureAnalysis).mockResolvedValue({ ...valuedFixture(plan), affectedFeatureCount: 0, uniqueOverlapAreaKm2: 0, localities: [], valueMetrics: [], typeMetrics: [], allOverlapPixelIndices: new Uint32Array() })
+  it('distinguishes no registered hits from absent natural value or unknown coverage', () => {
+    const plan = analysisFixture('planned:5001', 0, 0)
+    openAnalysisWorkspace({ valued: { ...valuedFixture(plan), affectedFeatureCount: 0, uniqueOverlapAreaKm2: 0, localities: [], valueMetrics: [], typeMetrics: [], allOverlapPixelIndices: new Uint32Array() } })
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    expect(await screen.findByText(/Ingen registrerte treff/)).toHaveTextContent('ikke fravær av naturverdi')
+    expect(screen.getByText(/Ingen registrerte treff/)).toHaveTextContent('ikke fravær av naturverdi')
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-    expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ showValuedNature: true }))
   })
-
-  it('reports map service failure independently of valid calculated numbers', async () => {
-    await openAnalysisWorkspace()
+  it('reports map service failure independently of valid calculated numbers', () => {
+    openAnalysisWorkspace()
     fireEvent.click(screen.getByRole('radio', { name: 'Verdsatte naturtyper' }))
-    await screen.findByRole('button', { name: /^Stor verdi/ })
     act(() => newMap.onStatus('error'))
     expect(screen.getByRole('alert')).toHaveTextContent('Temakartet kunne ikke hentes')
     expect(screen.getByText('Unikt overlappsareal')).toBeInTheDocument()
   })
-
-  it('provides mobile result navigation without adding drawing controls', async () => {
-    await openAnalysisWorkspace()
+  it('provides mobile result navigation without adding drawing controls', () => {
+    openAnalysisWorkspace()
     fireEvent.click(screen.getByRole('button', { name: 'Resultat' }))
     expect(document.querySelector('#explore-result')!.scrollIntoView).toHaveBeenCalled()
     expect(screen.queryByRole('button', { name: /Eget område|Tegn på nytt|Angre punkt/ })).not.toBeInTheDocument()
   })
 })
-
 
 describe('workspace rejects unrelated input without misleading numbers', () => {
   const municipality = { number: '5001', name: 'Trondheim' }

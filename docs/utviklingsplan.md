@@ -17,7 +17,7 @@ GitHub Pages-prototype med:
 - kommuneoversikt
 - Naturtapet
 - prioriterte temasider
-- analyseverksted i kart
+- tre selvstendige karttemaer på oppgavebranchen; analyseverkstedet beholdt i kode
 - framtidig utbygging som analyseområde
 - tegnet polygon som analyseområde i beholdt kode; inngang midlertidig skjult
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
@@ -44,7 +44,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
 | Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
-| Utforsk i kart – analyseverksted | ✅ prototype | Område → datagrunnlag → resultat → stedfesting |
+| Utforsk i kart – selvstendige temaer | ✅ branch / manuell aksept gjenstår | Nivå 0, registrerte naturtyper og framtidige planformål; ingen automatisk kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
@@ -69,36 +69,27 @@ Temasidesettet er låst til:
 
 Ikke legg til nye temasider uten eksplisitt beslutning.
 
-## Analyseverkstedet
+## Selvstendige karttemaer og beholdt analyseverksted
 
-Aktiv offentlig arbeidsflate i denne kodeversjonen bruker framtidig
-utbygging × ett analysetema. Eget tegnet polygon er beholdt i
-metode-/kartkoden, men inngangen er midlertidig skjult.
+På oppgavebranchen er Utforsk i kart gjort om til tre selvstendige visninger:
+nivå 0 som standard, Verdsatte naturtyper og framtidige utbyggingsformål.
+Ett tema er aktivt om gangen. Ingen automatisk plan-/overlappsberegning kjøres.
+Søkbare kommunale naturtypevalg bygger på alle registrerte lokaliteter
+i de fire verdikategoriene, ikke bare lokaliteter berørt av plan.
 
-Gjeldende analysegrunnlag:
+Analyseverkstedet, tegning og alle metoder beholdes for senere reaktivering.
+Natur/Jordbruk- og naturtypeoverlapp er fortsatt Trondheim-klargjorte
+prototypeberegninger. Ingen nye temaer eller analysegrunnlag er innført.
 
-- Natur og jordbruk
-- Verdsatte naturtyper
-
-Arbeidsflyten er implementert generelt i brukerflaten, men tallberegningene er
-per 08.10.2026 bare klargjort for Trondheim (5001). Dette skyldes at repoet bare
-har et kommunevis oversiktsraster for Trondheim. Temakart og direkte
-tematjenester har ikke nødvendigvis samme geografiske begrensning.
-
-Nye analysegrunnlag skal legges til først når brukerbehov, analysekilde,
-resultattype og datadekning er avklart.
+Manuell brukeraksept og ekstern testpublisering gjenstår. Se
+[beslutning](decisions/2026-10-09-v3-independent-map-themes.md) og
+[kontrollrapport](validation/2026-10-09-independent-map-themes.md).
 
 ## Funksjonelle gap i Utforsk i kart
 
-**Ny separat kartpresentasjon:** `ExploreAnalysisWorkspace` og
-`ExploreAnalysisMap` er koblet til App-ruten i denne kodeversjonen. A–E er
-visuelt kontrollert 09.10.2026 med reelle Trondheim-data: naturtyper alene,
-plan alene, begge uten trefflag, tydelig beregnet overlapp og Natur/Jordbruk.
-DiBK ga HTTP 200/PNG for frontendens uendrede GetMap-kall; tidligere blokkering
-lå i testmiljøets proxy. Zoom inn/ut, pan, temarundtur og 390 px er kontrollert.
-Gammel kart-/metodekode er beholdt. Ingen nye analysegrunnlag eller metode er
-innført. Dette er branch-status; Pages oppdateres først etter merge/deploy.
-Se [ny beslutning](decisions/2026-10-09-v3-explore-analysis-map.md).
+**Status:** Brukerruten viser nå selvstendige karttemaer. Tabellen nedenfor
+beskriver beholdt analysefunksjonalitet og framtidige behov; den innebærer
+ikke at kryssanalyse fortsatt er tilgjengelig i den nye kartflyten.
 
 Status nedenfor gjelder relevant brukerfunksjonalitet i analyseverkstedet,
 ikke bare at et datasett eller kartlag finnes på en temaside. TODO-ene er

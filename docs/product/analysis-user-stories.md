@@ -6,6 +6,21 @@ Dette dokumentet beskriver brukerbehovene som skal styre analysefunksjonaliteten
 i V3. Status skilles mellom det som er implementert i prototypen og det som
 fortsatt er framtidig.
 
+## Gjeldende kartflyt og status
+
+Utforsk i kart viser nå Grunnkart nivå 0, Verdsatte naturtyper og Framtidig
+utbygging som tre selvstendige temaer, ett om gangen. Ingen kryssanalyse
+startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
+ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
+uten beregnet overlappsareal. Temabytte og objektvalg bevarer kartutsnittet.
+
+Delene nedenfor beskriver den **beholdte analysekoden og framtidige analysebehov**.
+Beskrivelser av analyseverkstedet, samtidige plan-/tema-/trefflag og aktiv
+analyse gjelder denne beholdte implementasjonen, ikke dagens Utforsk-rute.
+Analyser som allerede finnes på temasider er beholdt. Kryssanalyse i Utforsk
+kan først kobles tilbake i en egen oppgave etter manuell godkjenning av de
+tre kartvisningene. Se [beslutning](../decisions/2026-10-09-v3-independent-map-themes.md).
+
 ## 1. Hovedbruker og arbeidsflyt
 
 Primærbrukeren er en kommunal arealplanlegger.
@@ -20,7 +35,7 @@ Brukeren skal ikke måtte starte med å velge mange kartlag. Primærflyten er:
 Kartet brukes til stedfesting. Resultatet skal være forståelig som tall og tekst
 før brukeren tolker kartet.
 
-Arbeidsflyten er implementert i brukerflaten, men de rasterbaserte tallanalysene
+Arbeidsflyten er implementert i det beholdte analyseverkstedet, men de rasterbaserte tallanalysene
 krever et klargjort kommunevis Grunnkart-raster. Repoet har per 08.10.2026 bare
 dette for Trondheim (5001). Statusene «implementert prototype» nedenfor betyr
 derfor implementert og testbar for denne prototypekommunen, ikke nasjonal
@@ -217,7 +232,7 @@ Gjeldende interaksjon og akseptansekriterier:
 
 A–E er visuelt kontrollert med reelle Trondheim-data 09.10.2026. De betyr
 naturtyper alene, plan alene, plan + tema uten trefflag, plan + tema +
-beregnet overlapp og plan × Natur/Jordbruk. Offentlig arbeidsflate bruker de
+beregnet overlapp og plan × Natur/Jordbruk. Det beholdte analyseverkstedet bruker de
 to siste resultatvisningene. Metode, grid, nevner, filter og cache er bevart.
 Tegneinngangen er midlertidig skjult. Flere tema og plansammenligning er
 fortsatt framtidige behov.

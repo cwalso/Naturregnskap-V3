@@ -108,30 +108,28 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 
 ## Utforsk i kart
 
-`Utforsk i kart` skal være et analyseverksted, ikke en lagkatalog.
+Brukeren velger ett selvstendig karttema: Grunnkart nivå 0, Verdsatte
+naturtyper eller framtidige utbyggingsformål. Nivå 0 er standard.
+Faglig rolle, aktivt tema, tegnforklaring og kilde er tydelige.
 
-Hovedhierarkiet er:
+En kompakt select håndterer også 6–8 framtidige temaer uten ny navigasjon.
+Det er ingen fri lagkombinasjon eller generell GIS-katalog.
+Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
+Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 
-1. **Velg analyseområde**
-2. **Kryss området med**
-3. **Resultat**
-4. **Les og stedfest resultatet**
+På desktop ligger kart og temapanel ved siden av hverandre. På mobil
+ligger de i én kolonne. Kontroller er minst 44 px, og visningen skal ikke
+ha horisontal scrolling ved 390 px.
 
-På desktop:
+Temabytte, filtrering, objektvalg og resize bevarer senter/oppløsning.
+Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Kildeplanen kan
+omfatte eksisterende bebyggelse; dette forklares kort ved tegnforklaringen.
+Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
 
-- kartet er hovedflate
-- analysepanelet ligger ved siden av
-- resultatkortene skal være lett skannbare
-- sekundære kartinnstillinger kan ligge i sammenleggbart felt
+## Resultatdesign i beholdt analyseverksted
 
-På mobil:
-
-- kart og analyse skal kunne brukes uten horisontal scrolling
-- knapper skal ha tilstrekkelig størrelse og luft
-- ved senere reaktivering skal tegnemodus være tydelig
-- resultatet skal kunne leses uten at kartet er synlig samtidig
-
-## Resultatdesign
+Føringene nedenfor gjelder den beholdte analysepresentasjonen, ikke de tre
+selvstendige karttemaene.
 
 Overlayresultater skal presenteres med hovedtall først.
 
@@ -148,7 +146,7 @@ Kartet viser resultatet direkte med et kompakt sidepanel. Antall berørte
 lokaliteter, unikt overlappsareal, verdifordeling og lokalitetsliste er primært.
 Dekning, metode og forbehold ligger i et sekundært sammenleggbart felt.
 
-Kartografi i den nye arbeidsflaten:
+Kartografi i den beholdte analysearbeidsflaten:
 
 - framtidig utbygging: blå flater og mørk blå kant fra hele gyldige planmasken
 - Verdsatte naturtyper: ordinær WMS med datakildens etablerte farger

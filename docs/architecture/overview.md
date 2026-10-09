@@ -88,23 +88,34 @@ og identitet. Beregningsgrid og kildegeometri skilles. Den aktive nye
 kartflyten viser WMS-kontekst, beregnet grid-treff og valgt kildegeometrisk
 omriss som forskjellige ting, uten å beregne nye tall.
 
-## Separat kartpresentasjon i Utforsk i kart
+## Selvstendige karttemaer i Utforsk i kart
 
-`ExploreAnalysisWorkspace` er koblet til `App.tsx` i denne kodeversjonen.
-Komponenten mottar eksisterende resultater og tilstander; den eier ikke
-nettverkskall eller analyser. `ExploreAnalysisMap` har egen OpenLayers-instans
-med kommunegrense, planresultat, valgt grunnlag og filtrering som input.
-Den gamle `municipalityMap` monteres ikke for denne ruten. Temasider og andre
-kart er uendret. Gammel arbeidsflate og metode-/tegningskode beholdes.
+`ExploreThemesWorkspace` er koblet til App-ruten. `exploreThemeMap` har én
+OpenLayers-instans for nivå 0, naturtyper og planavsetninger. Et lite typet
+temaregister styrer velger, faglig rolle, kildebeskrivelse og tegnforklaring.
+Tidligere kart-/analysekomponenter er beholdt og monteres ikke på ruten.
 
-Ny arbeidsflate er framtidig utbygging × Natur/Jordbruk eller Verdsatte
-naturtyper. Tegneinngangen er midlertidig skjult. Ordinær kommuneavgrensende
-vektormaske skjuler alt utenfor kommunen, uten Canvas-renderklipp.
+Nivå 0 gjenbruker `loadOverviewRaster` og `loadAccountDisplayTileBlob`.
+Kommuneoversikten gjelder Trondheim; detaljene bruker de samme råflisene,
+klassifiseringen og request-cachen som øvrige Grunnkart-visninger.
+Det finnes ingen ny nivå-0-klassifisering.
 
-Visuell gate A–E er kontrollert med reelle Trondheim-data, inkludert manuell
-zoom/pan, temarundtur og 390 px. Faktisk render-regresjon inngår i Quality Gate.
-Se [beslutning](../decisions/2026-10-09-v3-explore-analysis-map.md). Publisering
-på Pages krever merge og vellykket deploy; kontrollen er utført på branchen.
+`municipalValuedNature` henter alle objekt-ID-er med romlig interseksjon
+mot kommunepolygonet og deretter attributter/geometri i grupper. Fire
+arbeidere begrenser samtidige kall; avkortede svar deles og kontrolleres.
+Bare fullførte, ikke-avbrutte resultater caches, for maksimalt 16 kommuner.
+Dette er en kildeoversikt, uten analyse-ID, overlappraster eller arealtall.
+Alle-visningen bruker kildens fire verdidelag i WMS. Filtrert visning bruker
+EPSG:25833-kildepolygoner med samme kategori-/verdifarger.
+
+Plantemaet gjenbruker filter og fyllstil fra `buildPlanTileUrl`, men viser
+dynamisk kilde-WMS fremfor analysegridets gyldige/striperyddede mask.
+Masken utenfor kommunen og kommunegrensen ligger over aktivt tema.
+Kommunevalg/reset tilpasser utsnitt; tema/filter/objekt/resize gjør det ikke.
+
+Se [ny beslutning](../decisions/2026-10-09-v3-independent-map-themes.md).
+Dette er branch-status. Ingen merge eller offentlig Pages-publisering er
+utført som del av leveransen.
 
 ## Dagens datatilgang
 
@@ -144,25 +155,12 @@ kartbildet.
 
 ## Utforsk i kart
 
-`Utforsk i kart` er et analyseverksted.
+Gjeldende brukerflyt er kommune → selvstendig karttema → eventuell
+temafiltrering og lokalitetsinformasjon. Ingen automatisk kryssanalyse.
 
-Gjeldende arbeidsflyt:
-
-```text
-analyseområde
-  ├─ framtidig utbygging
-  └─ eget tegnet polygon (kode beholdt; inngang midlertidig skjult)
-        ↓
-analysegrunnlag
-  ├─ Natur og jordbruk
-  └─ Verdsatte naturtyper
-        ↓
-resultat
-        ↓
-stedfesting i kart
-```
-
-Dette er ikke en generell GIS-lagvelger.
+Den beholdte analyseflyten er område → datagrunnlag → resultat →
+stedfesting. Den skal kunne reaktiveres senere uten å endre metodene
+beskrevet nedenfor.
 
 ## Rasteranalyse
 

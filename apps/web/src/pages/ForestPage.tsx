@@ -139,7 +139,7 @@ export function ForestPage({
             økosystemtype skog i Grunnkartet.
           </span>
           <button type="button" onClick={onOpenMap}>
-            Åpne analyse i kart <span aria-hidden="true">→</span>
+            Åpne Utforsk i kart <span aria-hidden="true">→</span>
           </button>
         </article>
         <article>

@@ -88,39 +88,40 @@ Gjeldende regel er:
 
 Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et fast rutenett på ca. **21,16 meter** per analysepiksel. Mer detaljert økosystemklassifisering kan bruke finere rutenett der implementert.
 
-## 7. Utforsk i kart – gjeldende arbeidsflyt
+## 7. Utforsk i kart – selvstendige temaer
 
-`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+Gjeldende branch viser tre selvstendige karttemaer i `#utforsk-i-kart`:
 
-Primærflyten er:
+1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
+2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
+3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
 
-1. **Velg analyseområde**
-2. **Velg hva området skal krysses med**
-3. **Les resultat**
-4. **Les og stedfest resultatet i kartet**
+Bare ett tema er aktivt. Temabytte rydder filtre og lokalitetsvalg, men
+beholder senter/oppløsning. Bare kommunevalg og «Vis hele kommunen» tilpasser
+utsnittet. Ingen kryssanalyse startes ved åpning eller temabytte.
 
-Aktiv offentlig arbeidsflate i denne kodeversjonen er **framtidig utbygging
-fra kommuneplan × ett valgt analysegrunnlag**. Tegnet polygon er implementert
-i den beholdte metode-/kartkoden, men inngangen er midlertidig skjult i
-`Utforsk i kart` under utskiftingen av kartpresentasjonen.
+`ExploreThemesWorkspace`, `exploreThemeMap` og et lite `mapThemes`-register
+eier denne visningen. Registeret gir navn, faglig rolle, kilde, beskrivelse
+og tegnforklaring. Ikke bygg generell GIS-klient eller lagkatalog.
 
-Analysegrunnlag som er implementert i analyseverkstedet:
+Naturtypelisten hentes mot hele kommunepolygonet fra REST-kilden. Den er
+uavhengig av plan og viser bare registrerte naturtyper. WMS bruker kildens
+fire verdidelag; filtrering viser kildens polygoner, med samme verdifarger.
+Manglende data/registrering skal skilles fra feil og fravær av naturverdi.
 
-- Natur og jordbruk fra Grunnkart
-- Verdsatte naturtyper
+Planvisningen bruker det eksisterende status-2/formål-1000/2000-filteret.
+Den viser kildeplanens avsetninger, også på eksisterende bebyggelse, uten
+analysegridets stripebehandling eller mekanisk fratrekk av Bebygd.
 
-De tallbaserte overlayanalysene er per 08.10.2026 bare klargjort for Trondheim
-(5001), fordi `overview/index.json` bare inneholder et kommunevis
-oversiktsraster for Trondheim. Ikke beskriv arbeidsflyten som nasjonalt
-beregningsklar før tilsvarende grunnlag finnes og er validert for flere
-kommuner. Dynamiske kartlag og kommunevise tematreff kan ha bredere dekning enn
-rasteranalysene.
+Nivå 0 gjenbruker kommuneoversiktsraster og eksisterende klassifiserte
+WMS-fliser på detaljnivå. Bare Trondheim har klargjort oversiktsraster nå.
+WMS-laget har maksimal målestokk 1:50 000; et transparent bilde ved et grovere
+utsnitt er ikke dokumentert fravær av data.
 
-Resultatet skal være lesbart som tall uten karttolking. Kartet er
-hovedarbeidsflaten med et kompakt resultatpanel og koblet lokalitetsliste.
-Filter-, objekt- og temavalg skal ikke flytte kartutsnittet. Brukeren zoomer og
-panorerer selv; bare kommunebytte og «Vis hele kommunen» tilpasser utsnittet.
-Ikke erstatt analyseflyten med en stor lagvelger.
+Analyseverkstedet, polygonverktøyene og metodene beholdes i kode og tester,
+men monteres ikke på Utforsk-ruten. De skal først kobles tilbake i en egen
+oppgave etter manuell godkjenning av de selvstendige kartvisningene.
+Ingen metode, analyse-ID, nevner, UTM-korreksjon eller resultatcache endres.
 
 ## 8. Tegnet polygon
 
@@ -207,7 +208,7 @@ Ingen av disse skal presenteres som samme tilstand.
 3. Ikke opprett nye temasider eller analysefamilier uten faglig avklaring.
 4. Ikke innfør nye rammeverk eller tunge avhengigheter uten konkret behov.
 5. Legg fagregler og analysemetode utenfor presentasjonskomponenter.
-6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt. I den nye kartflyten vises Verdsatte naturtyper som ordinær WMS-kontekst, beregnet treff som grense/fyll fra eksisterende rastermaske og valgt lokalitet som kildegeometrisk omriss. Ikke kall rastertreffet eksakt naturtypegeometri.
+6. Kart, tall og tabeller for samme analyse skal bygge på samme resultat, identitet og gyldige avgrensning. Beregningsgrid og kartgeometri holdes adskilt. I det beholdte analyseverkstedet vises Verdsatte naturtyper som ordinær WMS-kontekst, beregnet treff som grense/fyll fra eksisterende rastermaske og valgt lokalitet som kildegeometrisk omriss. Ikke kall rastertreffet eksakt naturtypegeometri.
 7. Kjør relevante tester, lint og build før avslutning.
 8. Oppdater levende dokumentasjon og legg til ADR når en reell arkitekturbeslutning tas.
 9. Gamle ADR-er er historikk og skal normalt ikke omskrives.
