@@ -1,0 +1,1379 @@
+{
+  "stage": "B",
+  "gates": {
+    "A-responsive-panels": {
+      "status": "passed",
+      "measurements": [
+        {
+          "width": 828,
+          "height": 712,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "width": 648,
+          "height": 652,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "width": 390,
+          "height": 270,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "width": 320,
+          "height": 186,
+          "overflow": 0,
+          "mapCreations": 2
+        }
+      ]
+    },
+    "A-existing-navigation": {
+      "status": "passed",
+      "before": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 62.320817901238364
+      },
+      "after": {
+        "center": [
+          268229.8470925663,
+          7034037.319251381
+        ],
+        "resolution": 82.23281222652106
+      }
+    },
+    "B-seven-layers-and-geography": {
+      "status": "passed",
+      "evidence": {
+        "level0": {
+          "count": 184189,
+          "sample": {
+            "pixel": [
+              704.5,
+              37.5
+            ],
+            "coordinate": [
+              275674.10937499965,
+              7050716.685501544
+            ],
+            "rgba": [
+              188,
+              215,
+              231,
+              179
+            ]
+          },
+          "visible": true,
+          "opacity": 0.7,
+          "zIndex": 10,
+          "params": {},
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            208,
+            227,
+            238,
+            255
+          ],
+          "basePixel": [
+            254,
+            254,
+            254,
+            255
+          ]
+        },
+        "future-development": {
+          "count": 948,
+          "sample": {
+            "pixel": [
+              589.5,
+              177.5
+            ],
+            "coordinate": [
+              268507.21531635727,
+              7041991.770995371
+            ],
+            "rgba": [
+              159,
+              205,
+              117,
+              61
+            ]
+          },
+          "visible": true,
+          "opacity": 1,
+          "zIndex": 20,
+          "params": {},
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            165,
+            176,
+            155,
+            255
+          ],
+          "basePixel": [
+            168,
+            168,
+            168,
+            255
+          ]
+        },
+        "valued-nature": {
+          "count": 24374,
+          "sample": {
+            "pixel": [
+              525.5,
+              135.5
+            ],
+            "coordinate": [
+              264518.68297067797,
+              7044609.245347222
+            ],
+            "rgba": [
+              230,
+              230,
+              0,
+              255
+            ]
+          },
+          "visible": true,
+          "opacity": 1,
+          "zIndex": 30,
+          "params": {
+            "LAYERS": "kuverdi_noe_verdi,kuverdi_middels_verdi,kuverdi_stor_verdi,kuverdi_svært_stor_verdi",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            230,
+            230,
+            0,
+            255
+          ],
+          "basePixel": [
+            162,
+            162,
+            162,
+            255
+          ]
+        },
+        "protected-areas": {
+          "count": 4273,
+          "sample": {
+            "pixel": [
+              513.5,
+              132.5
+            ],
+            "coordinate": [
+              263770.8331558631,
+              7044796.207800927
+            ],
+            "rgba": [
+              175,
+              0,
+              0,
+              255
+            ]
+          },
+          "visible": true,
+          "opacity": 1,
+          "zIndex": 40,
+          "params": {
+            "LAYERS": "naturvern_klasser_omrade",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            175,
+            0,
+            0,
+            255
+          ],
+          "basePixel": [
+            149,
+            149,
+            149,
+            255
+          ]
+        },
+        "intact-nature": {
+          "count": 21582,
+          "sample": {
+            "pixel": [
+              511.5,
+              150.5
+            ],
+            "coordinate": [
+              263646.19152006065,
+              7043674.433078704
+            ],
+            "rgba": [
+              204,
+              233,
+              126,
+              166
+            ]
+          },
+          "visible": true,
+          "opacity": 0.65,
+          "zIndex": 12,
+          "params": {
+            "LAYERS": "status",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            209,
+            228,
+            158,
+            255
+          ],
+          "basePixel": [
+            217,
+            217,
+            217,
+            255
+          ]
+        },
+        "wild-reindeer": {
+          "validEmptyTrondheim": true,
+          "count": 0,
+          "sample": null,
+          "visible": true,
+          "opacity": 1,
+          "zIndex": 15,
+          "params": {
+            "LAYERS": "villrein_leveomrade",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833"
+        },
+        "grey-areas": {
+          "count": 84480,
+          "sample": {
+            "pixel": [
+              467.5,
+              130.5
+            ],
+            "coordinate": [
+              260904.07553240616,
+              7044920.849436729
+            ],
+            "rgba": [
+              0,
+              0,
+              0,
+              183
+            ]
+          },
+          "visible": true,
+          "opacity": 0.75,
+          "zIndex": 11,
+          "params": {
+            "LAYERS": "graa_arealer",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833",
+          "composedPixel": [
+            33,
+            33,
+            33,
+            255
+          ],
+          "basePixel": [
+            116,
+            116,
+            116,
+            255
+          ]
+        }
+      },
+      "order": [
+        {
+          "id": "level0",
+          "z": 10,
+          "visible": true
+        },
+        {
+          "id": "level0",
+          "z": 10,
+          "visible": true
+        },
+        {
+          "id": "grey-areas",
+          "z": 11,
+          "visible": true
+        },
+        {
+          "id": "intact-nature",
+          "z": 12,
+          "visible": true
+        },
+        {
+          "id": "wild-reindeer",
+          "z": 15,
+          "visible": true
+        },
+        {
+          "id": "protected-areas",
+          "z": 40,
+          "visible": true
+        },
+        {
+          "id": "future-development",
+          "z": 20,
+          "visible": true
+        },
+        {
+          "id": "valued-nature",
+          "z": 30,
+          "visible": true
+        },
+        {
+          "id": "valued-nature",
+          "z": 31,
+          "visible": true
+        }
+      ]
+    },
+    "B-nature-filter-and-object": {
+      "status": "passed",
+      "selected": "2089403",
+      "filter": {
+        "natureType": "Frisk lågurtfuruskog",
+        "value": "Stor verdi"
+      },
+      "preservesView": true
+    },
+    "B-grey-presentations-and-legends": {
+      "status": "passed",
+      "products": {
+        "Grå arealer": {
+          "count": 84480,
+          "sample": {
+            "pixel": [
+              298.5,
+              130.5
+            ],
+            "coordinate": [
+              260904.07553240616,
+              7044920.849436729
+            ],
+            "rgba": [
+              0,
+              0,
+              0,
+              183
+            ]
+          },
+          "visible": true,
+          "opacity": 0.75,
+          "zIndex": 11,
+          "params": {
+            "LAYERS": "graa_arealer",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833"
+        },
+        "Andel uten vegetasjon": {
+          "count": 61291,
+          "sample": {
+            "pixel": [
+              317.5,
+              131.5
+            ],
+            "coordinate": [
+              262088.1710725297,
+              7044858.528618827
+            ],
+            "rgba": [
+              99,
+              99,
+              99,
+              116
+            ]
+          },
+          "visible": true,
+          "opacity": 0.75,
+          "zIndex": 11,
+          "params": {
+            "LAYERS": "andel_uten_vegetasjon",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833"
+        },
+        "Andel med vegetasjon": {
+          "count": 61291,
+          "sample": {
+            "pixel": [
+              317.5,
+              131.5
+            ],
+            "coordinate": [
+              262088.1710725297,
+              7044858.528618827
+            ],
+            "rgba": [
+              106,
+              178,
+              125,
+              116
+            ]
+          },
+          "visible": true,
+          "opacity": 0.75,
+          "zIndex": 11,
+          "params": {
+            "LAYERS": "andel_med_vegetasjon",
+            "VERSION": "1.3.0",
+            "TRANSPARENT": true
+          },
+          "projection": "EPSG:25833"
+        }
+      },
+      "order": [
+        "Verneområder",
+        "Verdsatte naturtyper",
+        "Framtidig utbygging",
+        "Villrein",
+        "Inngrepsfri natur (INON)",
+        "Grå arealer",
+        "Grunnkart nivå 0"
+      ]
+    },
+    "B-municipality-and-reindeer": {
+      "status": "passed",
+      "evidence": {
+        "count": 42019,
+        "sample": {
+          "pixel": [
+            460.5,
+            41.5
+          ],
+          "coordinate": [
+            201237.14736882632,
+            6925059.297816358
+          ],
+          "rgba": [
+            0,
+            169,
+            230,
+            255
+          ]
+        },
+        "visible": true,
+        "opacity": 1,
+        "zIndex": 15,
+        "params": {
+          "LAYERS": "villrein_leveomrade",
+          "VERSION": "1.3.0",
+          "TRANSPARENT": true
+        },
+        "projection": "EPSG:25833",
+        "composedPixel": [
+          0,
+          169,
+          230,
+          255
+        ],
+        "basePixel": [
+          254,
+          254,
+          254,
+          255
+        ]
+      },
+      "municipalityReset": true
+    }
+  },
+  "requests": [
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?lang=no&outputformat=json-stat2&valueCodes%5BRegion%5D=5001&valueCodes%5BArealKlasse%5D=01%2C02%2C03%2C04%2C05%2C06%2C07%2C08-09%2C10-11%2C12-13%2C14%2C15-16%2C17%2C18%2C19%2C20%2C21%2C24%2C22.01%2C22.02&valueCodes%5BContentsCode%5D=Areal&valueCodes%5BTid%5D=top%281%29",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner/5001/omrade",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1078.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1078.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1079.png",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=251328.00%2C7020400.00%2C262160.00%2C7031232.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=272992.00%2C7009568.00%2C283824.00%2C7020400.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=262160.00%2C7009568.00%2C272992.00%2C7020400.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=251328.00%2C7042064.00%2C262160.00%2C7052896.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=251328.00%2C7009568.00%2C262160.00%2C7020400.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=283824.00%2C7020400.00%2C294656.00%2C7031232.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=283824.00%2C7031232.00%2C294656.00%2C7042064.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=283824.00%2C7042064.00%2C294656.00%2C7052896.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=240496.00%2C7020400.00%2C251328.00%2C7031232.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=240496.00%2C7009568.00%2C251328.00%2C7020400.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=240496.00%2C7042064.00%2C251328.00%2C7052896.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=240496.00%2C7031232.00%2C251328.00%2C7042064.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://nap.ft.dibk.no/services/wms/kommuneplaner/?service=WMS&version=1.3.0&request=GetMap&layers=kparealformalomrade&sld_body=%3C%3Fxml+version%3D%221.0%22+encoding%3D%22UTF-8%22%3F%3E%3CStyledLayerDescriptor+version%3D%221.0.0%22+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%3E%3CNamedLayer%3E%3CName%3Ekparealformalomrade%3C%2FName%3E%3CUserStyle%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CCssParameter+name%3D%22fill%22%3E%23000000%3C%2FCssParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FNamedLayer%3E%3C%2FStyledLayerDescriptor%3E&crs=EPSG%3A25833&bbox=283824.00%2C7009568.00%2C294656.00%2C7020400.00&width=512&height=512&format=image%2Fpng8&transparent=true&filter=%3CFilter+xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%3E%3CAnd%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Earealbruksstatus%3C%2FPropertyName%3E%3CLiteral%3E2%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3COr%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E1*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3CPropertyIsLike+wildCard%3D%22*%22+singleChar%3D%22%3F%22+escapeChar%3D%22%21%22%3E%3CPropertyName%3Earealform%C3%A5l%3C%2FPropertyName%3E%3CLiteral%3E2*%3C%2FLiteral%3E%3C%2FPropertyIsLike%3E%3C%2FOr%3E%3C%2FAnd%3E%3C%2FFilter%3E",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/services/naturtyper_kuverdi/MapServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=kuverdi_noe_verdi%2Ckuverdi_middels_verdi%2Ckuverdi_stor_verdi%2Ckuverdi_sv%C3%A6rt_stor_verdi&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/services/vern/mapserver/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=naturvern_klasser_omrade&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/wms?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=status&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=villrein_leveomrade&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=graa_arealer&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=graa_arealer",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=andel_uten_vegetasjon",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=andel_uten_vegetasjon&WIDTH=828&HEIGHT=712&CRS=EPSG%3A25833&BBOX=242301.3113888865%2C7008681.293827159%2C293902.94861111185%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=andel_med_vegetasjon",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=andel_med_vegetasjon&WIDTH=828&HEIGHT=712&CRS=EPSG%3A25833&BBOX=242301.3113888865%2C7008681.293827159%2C293902.94861111185%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=andel_med_vegetasjon&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/services/vern/mapserver/WMSServer?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=naturvern_klasser_omrade",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=villrein_leveomrade",
+      "status": 200
+    },
+    {
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=andel_med_vegetasjon",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/wms?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image%2Fpng&SLD_VERSION=1.1.0&LAYER=status",
+      "status": 200
+    },
+    {
+      "url": "https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?lang=no&outputformat=json-stat2&valueCodes%5BRegion%5D=3431&valueCodes%5BArealKlasse%5D=01%2C02%2C03%2C04%2C05%2C06%2C07%2C08-09%2C10-11%2C12-13%2C14%2C15-16%2C17%2C18%2C19%2C20%2C21%2C24%2C22.01%2C22.02&valueCodes%5BContentsCode%5D=Areal&valueCodes%5BTid%5D=top%281%29",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner/3431/omrade",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/287/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/287/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/287/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/287/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/535.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/535.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/535.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/285/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/535.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/283/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/284/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/286/535.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/287/536.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/282/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=villrein_leveomrade&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=164557.97415123344%2C6871653.465802468%2C257430.75584876502%2C6928364.804197531",
+      "status": 200
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1763411892689-2acd58cd8ac1?auto=format&fit=crop&q=82&w=1400",
+      "status": 403
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1772325652571-f1406f80ee01?auto=format&fit=crop&q=82&w=1400",
+      "status": 403
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1672307737210-fe901d0fd798?auto=format&fit=crop&q=82&w=1400",
+      "status": 403
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=villrein_leveomrade&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    }
+  ],
+  "errors": []
+}

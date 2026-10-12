@@ -31,4 +31,36 @@ miljøets policyproxy; ingen syntetiske data brukes i denne kontrollen.
 [390 px](2026-10-12-explore-design-v2/A/A-390-settings.png),
 [320 px](2026-10-12-explore-design-v2/A/A-320-settings.png).
 
-Delsteg B og C gjenstår. Ingen publisering på grunnlag av A alene.
+## Delsteg B – eksisterende funksjoner i V2-panelene
+
+Alle sju uavhengige lag, individuell opasitet og fast tegnerekkefølge beholdes.
+Registeret og kartmotoren er uendret. Den godkjente rekkefølgen i laglisten er
+separat fra tegnerekkefølgen. Grå arealer har tre native radiovalg og kildens
+matching GetLegendGraphic. Samlet legend viser aktive lag øverst til nederst.
+Kildetekst, forbehold og INON januar 2023 beholdes.
+
+`RegisteredNaturePanel` bruker eksisterende `filterRegisteredNature` og
+kommuneavgrenset REST-metode: faktisk Trondheim-kontroll ga 1529 lokaliteter
+og 90 naturtyper. Dropdowns prioriteres, navnesøk kan utvides, aktivt filter
+vises i lagraden og ved kartet. Lokalitetsliste og faktiske kartvalg åpner
+samme `RegisteredNatureDetails`, med navn, naturtype, verdi, objekt-ID og
+kilde-ID. Retur til filter bevarer valg. Skjuling av naturtypelaget fjerner
+objektvalg og bevarer filter, som før. Ingen fit eller analyse utløses.
+
+Testport B bestått: 127 frontendtester, lint og build. 30 backendtester og
+Ruff bestått. Begge eksisterende Chromium-renderkontroller bestått; disse
+bruker kontrollerte fixtures for regresjon og er ikke live kildevalidering.
+Ny separat live-kontroll verifiserer hvert lag alene, alle sju, alle av,
+opasitet, naturtypefilter og objektinformasjon, tre gråarealprodukter,
+kildelegender og kommunebytte. Sammensatte skjermpiksler sammenlignes med
+bakgrunn ved et punkt innenfor faktisk kommunegeometri. Villrein er gyldig
+tomt i Trondheim og synlig i Dovre. Browserkontrollen bruker ordinær meny
+etter kommunebytte, fordi eksisterende kommunevalg navigerer til oversikten.
+
+[Kontroller og kildeforespørsler](2026-10-12-explore-design-v2/B/checks.json).
+[Filter](2026-10-12-explore-design-v2/B/B-filter-desktop.png),
+[objekt](2026-10-12-explore-design-v2/B/B-object-desktop.png),
+[alle sju](2026-10-12-explore-design-v2/B/B-all-seven.png),
+[Dovre villrein](2026-10-12-explore-design-v2/B/B-Dovre-villrein.png).
+
+Delsteg C gjenstår. Ingen publisering på grunnlag av B alene.

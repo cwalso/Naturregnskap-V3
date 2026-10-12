@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { Municipality, MunicipalityBoundary } from '../../api/municipalities'
 import type { ThematicCoverageResponse } from '../../api/thematicCoverage'
-import { filterRegisteredNature, getMunicipalValuedNature, municipalValueLegend, noMunicipalNatureFilter, type MunicipalNatureFilter, type MunicipalValuedNature } from '../../api/municipalValuedNature'
+import { filterRegisteredNature, getMunicipalValuedNature, noMunicipalNatureFilter, type MunicipalNatureFilter, type MunicipalValuedNature } from '../../api/municipalValuedNature'
 import { createExploreLayerMap, type LayerMapController, type LayerMapStatus } from '../../map/exploreThemeMap'
 import { greyPresentations, type GreyPresentation, initialMapLayers, mapLayers, mapLayerRoles, type MapLayerId, type MapLayerState, type MapLayerDefinition } from './mapThemes'
+import { RegisteredNatureDetails, RegisteredNaturePanel } from './RegisteredNaturePanel'
 import { ExploreMapIcon } from './ExploreMapIcon'
 import './ExploreThemesWorkspace.css'
 
 interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error' }
 interface Choice { owner: string; filter: MunicipalNatureFilter; selectedId: string | null; search: string; limit: number }
 const freshChoice = (owner: string): Choice => ({ owner, filter: noMunicipalNatureFilter, selectedId: null, search: '', limit: 60 })
+const displayOrder: MapLayerId[] = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer', 'grey-areas']
 interface MapStatus { owner: string | null; layers: Partial<Record<MapLayerId, LayerMapStatus>> }
 
 function ServiceLegend({ url, description }: { url: string; description: string }) {
@@ -24,13 +26,13 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const grey = greyPresentations.find((item) => item.layer === greyPresentation)!
   const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
   const [pickerOpen, setPickerOpen] = useState(false)
-  const [storedPanel, setPanel] = useState<{ owner: string; value: MapLayerId | 'legend' } | null>(null)
+  const [storedPanel, setPanel] = useState<{ owner: string; value: MapLayerId | 'legend' | 'object' } | null>(null)
   const panel = storedPanel?.owner === municipality.number ? storedPanel.value : null
   const panelElement = useRef<HTMLElement>(null)
   const opener = useRef<HTMLElement | null>(null)
   const pickerButton = useRef<HTMLButtonElement>(null)
-  function openPanel(value: MapLayerId | 'legend') {
-    opener.current = document.activeElement as HTMLElement
+  function openPanel(value: MapLayerId | 'legend' | 'object') {
+    if (value !== 'object') opener.current = document.activeElement as HTMLElement
     setPickerOpen(false); setPanel({ owner: municipality.number, value })
   }
   const closePanel = useCallback(() => {
@@ -73,7 +75,10 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const updateChoice = (update: Partial<Choice>) => setChoice({ ...choice, ...update, owner })
   function toggleLayer(layerId: MapLayerId, visible: boolean) {
     setLayers((previous) => ({ ...previous, [layerId]: { ...previous[layerId], visible } }))
-    if (layerId === 'valued-nature' && !visible) updateChoice({ selectedId: null })
+    if (layerId === 'valued-nature' && !visible) {
+      updateChoice({ selectedId: null })
+      if (panel === 'valued-nature' || panel === 'object') closePanel()
+    }
   }
 
   useEffect(() => {
@@ -103,39 +108,24 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     controller.current?.update({ boundary: activeBoundary, layers, greyPresentation, data, filter: choice.filter, selectedId: selected?.id ?? null })
   }, [activeBoundary, layers, greyPresentation, data, choice.filter, selected?.id])
   useEffect(() => {
-    controller.current?.setSelectionHandler((selectedId) => setChoice((previous) => ({ ...(previous.owner === owner ? previous : freshChoice(owner)), selectedId })))
+    controller.current?.setSelectionHandler((selectedId) => {
+      setChoice((previous) => ({ ...(previous.owner === owner ? previous : freshChoice(owner)), selectedId }))
+      if (selectedId) {
+        opener.current = element.current
+        setPickerOpen(false); setPanel({ owner, value: 'object' })
+      } else setPanel((previous) => previous?.value === 'object' ? { owner, value: 'valued-nature' } : previous)
+    })
     return () => controller.current?.setSelectionHandler(null)
   }, [owner])
   const filteredTypes = data?.natureTypes.filter((name) => name.toLocaleLowerCase('nb').includes(choice.search.trim().toLocaleLowerCase('nb')) || name === choice.filter.natureType) ?? []
 
-  const natureFilter = natureVisible ? <section className="explore-themes__nature-filter" aria-label="Filter og lokaliteter for Verdsatte naturtyper">
-          <h3>Utforsk naturtypene</h3>
-          {(!activeRecords || activeRecords.status === 'loading') && <p role="status">Henter kommunens registrerte lokaliteter og naturtyper…</p>}
-          {activeRecords?.status === 'error' && <p role="alert">{activeRecords.error} WMS-kartet kan fortsatt vises. Filter og lokalitetsinformasjon er utilgjengelig; dette er ikke null treff.</p>}
-          {data && <>
-            <p>{data.localities.length} registrerte lokaliteter · {data.natureTypes.length} naturtyper i kommunen. Oversikten omfatter også lokaliteter som krysser kommunegrensen.</p>
-            {data.localities.length === 0 ? <p>Ingen registrerte lokaliteter i denne kilden. Det dokumenterer ikke fravær av naturverdi.</p> : <>
-              <label htmlFor={`${id}-search`}>Søk i naturtyper</label>
-              <input id={`${id}-search`} type="search" value={choice.search} placeholder="Skriv del av naturtypenavnet" onChange={(event) => updateChoice({ search: event.target.value })} />
-              <label htmlFor={`${id}-type`}>Naturtype</label>
-              <select id={`${id}-type`} value={choice.filter.natureType ?? ''} onChange={(event) => updateChoice({ filter: { ...choice.filter, natureType: event.target.value || null }, selectedId: null, limit: 60 })}>
-                <option value="">Alle registrerte naturtyper</option>{filteredTypes.map((name) => <option key={name} value={name}>{name}</option>)}
-              </select>
-              {filteredTypes.length === 0 && <p>Ingen naturtypenavn samsvarer med søket.</p>}
-              <label htmlFor={`${id}-value`}>Verdikategori</label>
-              <select id={`${id}-value`} value={choice.filter.value ?? ''} onChange={(event) => updateChoice({ filter: { ...choice.filter, value: event.target.value || null }, selectedId: null, limit: 60 })}>
-                <option value="">Alle fire verdikategorier</option>{municipalValueLegend.map((item) => <option key={item.label}>{item.label}</option>)}
-              </select>
-              <button type="button" onClick={() => setChoice(freshChoice(owner))}>Vis alle registrerte lokaliteter</button>
-              <p aria-live="polite">Kart og liste viser {visible.length} registrerte lokaliteter{choice.filter.natureType ? ` · ${choice.filter.natureType}` : ''}{choice.filter.value ? ` · ${choice.filter.value}` : ''}.</p>
-              <details open={visible.length <= 60 || undefined}><summary>Lokaliteter ({visible.length})</summary>
-                <ul className="explore-themes__localities" aria-label="Registrerte lokaliteter">{visible.slice(0, choice.limit).map((item) => <li key={item.id}><button type="button" aria-pressed={selected?.id === item.id} onClick={() => updateChoice({ selectedId: item.id })}><strong>{item.name === 'Ikke oppgitt' ? `Lokalitet ${item.id}` : item.name}</strong><small>{item.natureType} · {item.value}</small></button></li>)}</ul>
-                {visible.length > choice.limit && <button type="button" onClick={() => updateChoice({ limit: choice.limit + 60 })}>Vis flere lokaliteter</button>}
-              </details>
-              {selected && <section aria-label="Valgt lokalitet"><h3>{selected.name}</h3><p>{selected.natureType} · {selected.value}</p><p>Objekt-ID: {selected.id}<br />Kilde-ID: {selected.sourceId}</p><button type="button" onClick={() => updateChoice({ selectedId: null })}>Fjern valg</button></section>}
-            </>}
-          </>}
-        </section> : null
+  const natureFilter = natureVisible ? <>
+    {(!activeRecords || activeRecords.status === 'loading') && <p role="status">Henter kommunens registrerte lokaliteter og naturtyper…</p>}
+    {activeRecords?.status === 'error' && <p role="alert">{activeRecords.error} WMS-kartet kan fortsatt vises. Filter og lokalitetsinformasjon er utilgjengelig; dette er ikke null treff.</p>}
+    {data && <RegisteredNaturePanel id={id} data={data} filter={choice.filter} search={choice.search} types={filteredTypes} localities={visible} selectedId={selected?.id ?? null} limit={choice.limit}
+      onFilter={(filter) => updateChoice({ filter, selectedId: null, limit: 60 })} onSearch={(search) => updateChoice({ search })} onReset={() => setChoice(freshChoice(owner))}
+      onSelect={(selectedId) => { updateChoice({ selectedId }); openPanel('object') }} onMore={() => updateChoice({ limit: choice.limit + 60 })} />}
+  </> : null
   const definition = mapLayers.find((item) => item.id === panel)
   function layerStatus(item: MapLayerDefinition) {
     if (!layers[item.id as MapLayerId].visible || !activeBoundary || mapState.owner !== owner) return null
@@ -174,10 +164,10 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>
         <div id={`${id}-layers`} className="explore-themes__layer-list">
           {mapLayerRoles.map((role) => <fieldset key={role}><legend>{role}</legend>
-            {mapLayers.filter((item) => item.role === role).map((item) => <div className={`explore-themes__layer ${layers[item.id].visible ? 'is-active' : ''}`} key={item.id}>
+            {mapLayers.filter((item) => item.role === role).sort((a, b) => displayOrder.indexOf(a.id) - displayOrder.indexOf(b.id)).map((item) => <div className={`explore-themes__layer ${layers[item.id].visible ? 'is-active' : ''}`} key={item.id}>
               <label className="explore-themes__layer-choice"><input type="checkbox" aria-label={item.name} checked={layers[item.id].visible} onChange={(event) => toggleLayer(item.id, event.target.checked)} /><span>{item.name}{item.id === 'intact-nature' && <small>Januar 2023</small>}{layers[item.id].visible && layers[item.id].opacity === 0 && <small>Helt gjennomsiktig</small>}{item.id === 'valued-nature' && (choice.filter.natureType || choice.filter.value) && <small>Filter aktivt</small>}</span></label>
               <button type="button" className="explore-themes__icon-button" aria-label={`Innstillinger for ${item.name}`} aria-expanded={panel === item.id} aria-controls={`${id}-detail`} onClick={() => openPanel(item.id)}><ExploreMapIcon name="settings" /></button>
-              <div className="explore-themes__layer-status">{layerStatus(item)}</div>
+              <div className="explore-themes__layer-status">{mapState.owner === owner && layers[item.id].visible && mapState.layers[item.id] === 'error' && <small>Kartdata kunne ikke vises</small>}</div>
             </div>)}
           </fieldset>)}
           <p className="explore-themes__footnote">Temadata supplerer regnskapsgrunnlaget. Lagvalg starter ingen analyse.</p>
@@ -190,21 +180,27 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
           {!activeBoundary && <p className="explore-themes__map-notice" role="status">Venter på kommunegrensen…</p>}
           {creationError && <p className="explore-themes__map-notice" role="alert">{creationError}</p>}
           {activeDefinitions.length === 0 && <p className="explore-themes__map-notice">Alle temalag er slått av. Bakgrunnskartet vises.</p>}
+          {natureVisible && (choice.filter.natureType || choice.filter.value) && <button type="button" className="explore-themes__filter-chip" aria-label="Åpne aktivt naturtypefilter" onClick={() => openPanel('valued-nature')}><ExploreMapIcon name="settings" /><span>{[choice.filter.natureType, choice.filter.value].filter(Boolean).join(' · ')}</span></button>}
+          {activeDefinitions.length >= 5 && <button type="button" className="explore-themes__many-layers" onClick={() => openPanel('legend')}>{activeDefinitions.length} lag vises · Se tegnforklaring</button>}
           <button type="button" className="explore-themes__floating-legend" onClick={() => openPanel('legend')}><ExploreMapIcon name="legend" />Tegnforklaring</button>
         </div>
         <footer><span>{activeDefinitions.length} aktive kartlag</span><span>Supplerende kartvisning</span></footer>
+        <div className="sr-only">{activeDefinitions.filter((item) => item.id !== panel).map((item) => <div key={item.id}>{layerStatus(item)}</div>)}</div>
         <p id={`${id}-instructions`} className="sr-only">Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.</p>
       </section>
-      {panel && <aside ref={panelElement} id={`${id}-detail`} className="explore-themes__panel explore-themes__info" aria-label={definition ? `Innstillinger: ${definition.name}` : 'Aktive lag og tegnforklaring'}>
-        <header className="explore-themes__detail-heading"><button type="button" className="explore-themes__detail-back explore-themes__icon-button" aria-label="Tilbake til kartlag" onClick={closePanel}><ExploreMapIcon name="back" /></button><div><small>{definition?.role ?? 'Aktive kartlag'}</small><h2>{definition?.name ?? 'Tegnforklaring'}</h2></div><button type="button" className="explore-themes__icon-button" aria-label="Lukk detaljpanel" onClick={closePanel}><ExploreMapIcon name="close" /></button></header>
+      {panel && <aside ref={panelElement} id={`${id}-detail`} className="explore-themes__panel explore-themes__info" aria-label={panel === 'object' ? 'Objektinformasjon' : definition ? `Innstillinger: ${definition.name}` : 'Aktive lag og tegnforklaring'}>
+        <header className="explore-themes__detail-heading"><button type="button" className="explore-themes__detail-back explore-themes__icon-button" aria-label="Tilbake til kartlag" onClick={closePanel}><ExploreMapIcon name="back" /></button><div><small>{panel === 'object' ? 'Verdsatte naturtyper' : definition?.role ?? 'Aktive kartlag'}</small><h2>{panel === 'object' ? 'Objektinformasjon' : definition?.name ?? 'Tegnforklaring'}</h2></div><button type="button" className="explore-themes__icon-button" aria-label="Lukk detaljpanel" onClick={closePanel}><ExploreMapIcon name="close" /></button></header>
         <div className="explore-themes__detail-scroll">
           {definition && <>
             {!layers[definition.id].visible && <p className="explore-themes__reference">Dette laget er slått av.<button type="button" onClick={() => toggleLayer(definition.id, true)}>Aktiver {definition.name}</button></p>}
             {definition.id === 'valued-nature' && natureFilter}
             <section className="explore-themes__opacity-settings"><label htmlFor={`${id}-opacity-${definition.id}`}>Gjennomsiktighet <output htmlFor={`${id}-opacity-${definition.id}`}>{Math.round((1 - layers[definition.id].opacity) * 100)} %</output></label><input id={`${id}-opacity-${definition.id}`} type="range" min="0" max="100" step="5" value={Math.round((1 - layers[definition.id].opacity) * 100)} aria-label={`Gjennomsiktighet – ${definition.name}`} onChange={(event) => setLayers((previous) => ({ ...previous, [definition.id]: { ...previous[definition.id], opacity: 1 - Number(event.target.value) / 100 } }))} /><div><span>Ugjennomsiktig</span><span>Helt gjennomsiktig</span></div></section>
-            {definition.id === 'grey-areas' && <label>Framstilling – Grå arealer<select value={greyPresentation} onChange={(event) => setGreyPresentation(event.target.value as GreyPresentation)}>{greyPresentations.map((item) => <option key={item.layer} value={item.layer}>{item.label}</option>)}</select></label>}
+            {definition.id === 'grey-areas' && <fieldset className="explore-themes__presentations"><legend>Framstilling – Grå arealer</legend>{greyPresentations.map((item) => <label key={item.layer}><input type="radio" name={`${id}-grey`} value={item.layer} checked={greyPresentation === item.layer} onChange={() => setGreyPresentation(item.layer)} />{item.label}</label>)}</fieldset>}
+
+            {layerStatus(definition)}
             {layerInfo(definition)}
           </>}
+          {panel === 'object' && selected && <RegisteredNatureDetails locality={selected} municipality={municipality} onBack={() => setPanel({ owner, value: 'valued-nature' })} onClear={() => { updateChoice({ selectedId: null }); setPanel({ owner, value: 'valued-nature' }) }} />}
           {panel === 'legend' && (activeDefinitions.length ? [...activeDefinitions].reverse().map(layerInfo) : <p>Ingen aktive kartlag. Bakgrunnskartet vises.</p>)}
         </div>
       </aside>}
