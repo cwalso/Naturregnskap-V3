@@ -32,7 +32,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const opener = useRef<HTMLElement | null>(null)
   const pickerButton = useRef<HTMLButtonElement>(null)
   function openPanel(value: MapLayerId | 'legend' | 'object') {
-    if (value !== 'object') opener.current = document.activeElement as HTMLElement
+    opener.current = document.activeElement as HTMLElement
     setPickerOpen(false); setPanel({ owner: municipality.number, value })
   }
   const closePanel = useCallback(() => {

@@ -112,3 +112,7 @@ Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).
 [Godkjent panelstruktur](decisions/2026-10-12-v3-explore-design-v2.md) og
 [implementeringskontroll](validation/2026-10-12-explore-design-v2.md) beskriver
 A/B/C, reelle kartkontroller, faktiske screenshots og visuell sammenligning.
+
+[Sluttverifikasjon før ny publisering](validation/2026-10-12-explore-design-v2-final.md)
+viderefører start-HEAD f9a2eba med ny fokusregresjon, 128 frontendtester og
+reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.

@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ExploreThemesWorkspace } from '../src/features/explore-map/ExploreThemesWorkspace'
 import type { MunicipalityBoundary } from '../src/api/municipalities'
@@ -22,6 +22,21 @@ const legend = () => fireEvent.click(screen.getAllByRole('button', { name: 'Tegn
 const lastContext = () => controller.update.mock.calls.at(-1)![0]
 
 describe('uavhengige kartlag i V2-paneler', () => {
+  it('returnerer fokus til kartet når lokalitetskortets objektpanel lukkes', async () => {
+    request.mockResolvedValue(data)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    fireEvent.click(checkbox('Verdsatte naturtyper'))
+    const openingButton = screen.getByRole('button', { name: 'Innstillinger for Verdsatte naturtyper' })
+    vi.spyOn(openingButton, 'getClientRects').mockReturnValue([{}] as unknown as DOMRectList)
+    openingButton.focus(); fireEvent.click(openingButton)
+    const locality = await screen.findByRole('button', { name: /Myra/ })
+    locality.focus(); fireEvent.click(locality)
+    expect(screen.getByRole('complementary', { name: 'Objektinformasjon' })).toBeInTheDocument()
+    fireEvent.keyDown(window, { key: 'Escape' })
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Interaktivt kart i Trondheim' })).toHaveFocus())
+    expect(lastContext().selectedId).toBe('123')
+    expect(controller.fitToMunicipality).not.toHaveBeenCalled()
+  })
   it('beholder filter, objekt og opasitet når andre lag eller paneler endres', async () => {
     request.mockResolvedValue(data)
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
