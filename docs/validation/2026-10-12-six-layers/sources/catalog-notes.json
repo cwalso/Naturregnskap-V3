@@ -1,0 +1,26 @@
+{
+  "checked": "2026-10-12",
+  "catalogs": {
+    "INON": {
+      "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/inngrepsfrinatur",
+      "layer": "status",
+      "reference": "januar 2023",
+      "serviceUpdate": "2024-04-30",
+      "license": "NLOD",
+      "attribution": "Miljødirektoratet - inngrepsfri natur 01.2023"
+    },
+    "Villrein": {
+      "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/villrein",
+      "license": "NLOD",
+      "attribution": "Kilde: Villreinbasen, Miljødirektoratet",
+      "year": "Ingen felles referansedato publisert"
+    },
+    "Vern": {
+      "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/vern",
+      "license": "NLOD",
+      "year": "Ingen felles referansedato publisert",
+      "note": "Katalog viser kart3/aa-lagnavn. V3s offisielle kart-tjeneste og aktuelle a-lagnavn er kontrollert direkte."
+    }
+  },
+  "access": "Katalogenes HTML var blokkert av shell-proxyen, men lest fra offisielle URL-er gjennom web-verktøyet. WMS/REST/GetMap/legender ble hentet direkte fra kart/kart3, med Access-Control-Allow-Origin: *. Ingen syntetiske kartdata i live-kontroll."
+}

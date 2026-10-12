@@ -90,16 +90,19 @@ Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et 
 
 ## 7. Utforsk i kart – uavhengige kartlag
 
-Gjeldende branch viser tre uavhengige kartlag i `#utforsk-i-kart`:
+Gjeldende branch viser seks uavhengige kartlag i `#utforsk-i-kart`:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
 3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
+4. Verneområder – vedtatt vern, kildens fem verneformklasser; forslag skjules.
+5. Inngrepsfri natur (INON) – status januar 2023, tre avstandssoner.
+6. Villrein – registrerte biologiske leveområder, uten undertemavalg.
 
-Avkryssing tillater 0–3 aktive lag. Alle av viser bakgrunnskartet. Hvert aktivt
-lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → plan →
-naturtyper/lokalitetsvalg → kommunemaske/grense. Nivå 0 starter med 30 %
-gjennomsiktighet; plan/naturtyper med 0 %. Grunnkart-klassifisering og farger er uendret.
+Avkryssing tillater 0–6 aktive lag; alle 64 kombinasjoner er kontrollert. Alle av viser bakgrunnskartet. Hvert aktivt
+lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → INON →
+Villrein → plan → naturtyper/lokalitetsvalg → verneområder → kommunemaske/grense.
+Nivå 0 starter med 30 %, INON med 35 %, øvrige lag med 0 % gjennomsiktighet. Grunnkart-klassifisering og farger er uendret.
 Planlaget har mørk grønn/gul diagonalskravur og transparent tint; legend matcher.
 Skravuren legges på planlagets isolerte canvas i skjermpiksler etter rendering,
 uten å endre kildefliser, geografisk støtte, analysemasker eller cache.
@@ -113,8 +116,14 @@ men bevarer filteret. Ingen kryssanalyse startes ved lagvalg.
 `ExploreThemesWorkspace`, `exploreThemeMap` og et lite `mapThemes`-register
 eier denne visningen. Registeret gir navn, faglig rolle, kilde, beskrivelse
 og tegnforklaring, standard synlighet/opasitet, tegnerekkefølge og filtertype.
-Bare implementerte lag vises. Fem interne ID-er er reservert for framtidige
-lag; ingen nye kilder/placeholder-kontroller er innført. Mobilvelgeren kan
+Bare implementerte lag vises. To interne ID-er er fortsatt reservert for grå
+arealer og FKB-Grønnstruktur; ingen uvirksomme kontroller vises. Nye lag bruker
+verifisert WMS i EPSG:25833 og kildens GetLegendGraphic. INON-år vises alltid
+ved aktiv legend. Transparente, dekodede WMS-bilder er gyldige tomme utsnitt.
+Villrein gjenbruker eksisterende kommunevise registreringsstatus; ingen nye
+areal-/overlappsberegninger eller resultatcacher startes. Lag, image-eier og
+kommuneeier må stemme før sene svar får status. Regional/ufullstendig dekning
+skal forklares separat fra tomt bilde og kildefeil. Mobilvelgeren kan
 lukkes over kartet. Ikke bygg generell GIS-klient eller lagkatalog.
 
 Naturtypelisten hentes mot hele kommunepolygonet fra REST-kilden. Den er

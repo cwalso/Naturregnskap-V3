@@ -10,7 +10,7 @@ await mkdir(output, { recursive: true })
 const server = await createServer({ server: { host: '127.0.0.1', port: 5186, strictPort: true }, plugins: [{ name: 'expose-layers-map', transform(code, id) {
   if (id.endsWith('/src/map/exploreThemeMap.ts')) return code.replace('  let destroyed = false', '  globalThis.__layersMap = map\n  let destroyed = false')
 } }] })
-let browser, rejectNextNature = false, releaseFailure, failureStarted
+let browser, rejectNextNature = false, rejectNextProtected = false, emptyReindeer = false, releaseFailure, failureStarted
 const errors = []
 try {
   await server.listen()
@@ -20,13 +20,13 @@ try {
   await page.route('https://**/*', async (route) => {
     const url = new URL(route.request().url())
     const nature = url.pathname.includes('naturtyper_kuverdi')
-    if (nature && rejectNextNature) {
-      rejectNextNature = false; failureStarted?.()
+    if ((nature && rejectNextNature) || (url.pathname.includes('/vern/') && rejectNextProtected)) {
+      rejectNextNature = false; rejectNextProtected = false; failureStarted?.()
       await new Promise((resolve) => { releaseFailure = resolve })
       await route.fulfill({ status: 503, body: 'Controlled late failure' }); return
     }
     const params = Object.fromEntries([...url.searchParams].map(([k, v]) => [k.toLowerCase(), v]))
-    const bytes = await page.evaluate(({ bbox, width, height, kind }) => {
+    const bytes = await page.evaluate(({ bbox, width, height, kind, empty }) => {
       const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height
       const ctx = canvas.getContext('2d')
       function rect(color, minX, minY, maxX, maxY) {
@@ -38,13 +38,16 @@ try {
         rect('#00FF00', 270500, 7000000, 272000, 7070000)
         rect('#FF0000', 272000, 7000000, 290000, 7070000)
       } else if (kind === 'plan') rect('#000000', 267000, 7032000, 274000, 7034000)
+      else if (kind === 'protected') rect('#D440C4', 267000, 7032000, 269000, 7034000)
+      else if (kind === 'inon') rect('#7EAF40', 270000, 7032000, 273000, 7034000)
+      else if (kind === 'reindeer') { if (!empty) rect('#008ED5', 270000, 7032000, 271000, 7034000) }
       else if (kind === 'nature') {
         rect('#AF0C0C', 267000, 7032000, 269000, 7034000)
         rect('#AF0C0C', 264000, 7032000, 265500, 7034000)
       } else { ctx.fillStyle = '#dddddd'; ctx.fillRect(0, 0, width, height) }
       return canvas.toDataURL().split(',')[1]
     }, { bbox: params.bbox?.split(',').map(Number), width: Number(params.width ?? 256), height: Number(params.height ?? 256),
-      kind: nature ? 'nature' : url.hostname === 'wms.nibio.no' ? 'account' : url.hostname === 'nap.ft.dibk.no' ? 'plan' : 'base' })
+      empty: emptyReindeer, kind: url.pathname.includes('/vern/') ? 'protected' : url.pathname.includes('inngrepsfrinatur') ? 'inon' : url.pathname.includes('/villrein/') ? 'reindeer' : nature ? 'nature' : url.hostname === 'wms.nibio.no' ? 'account' : url.hostname === 'nap.ft.dibk.no' ? 'plan' : 'base' })
     await route.fulfill({ contentType: 'image/png', body: Buffer.from(bytes, 'base64') })
   })
   await page.goto('http://127.0.0.1:5186/tests/browser/layers-fixture.html')
@@ -99,7 +102,7 @@ try {
   await set('level0', true, 0.7)
   const belowNature = await pixel([268000, 7033000])
   await set('valued-nature', true)
-  assert.deepEqual(await page.evaluate(() => window.layersRenderFixture.statuses), { level0: 'ready', 'future-development': 'ready', 'valued-nature': 'ready' })
+  assert.deepEqual(await page.evaluate(() => window.layersRenderFixture.statuses), { level0: 'ready', 'future-development': 'ready', 'valued-nature': 'ready', 'protected-areas': 'idle', 'intact-nature': 'idle', 'wild-reindeer': 'idle' })
   close(await pixel([268000, 7033000]), [175, 12, 12, 255]) // Nature above opaque plan/Grunnkart.
   contains(await hatchPatch([270000, 7033000]), [40, 100, 59, 255])
   close(await pixel([265000, 7033000]), [247, 249, 248, 255])
@@ -125,6 +128,30 @@ try {
   await set('level0', false); await set('future-development', false)
   close(await pixel([268000, 7033000]), [221, 221, 221, 255])
   assert.deepEqual(await state(), before)
+  // New official-service adapters: controlled pixels prove actual compositing and isolation.
+  await set('wild-reindeer', true, 1); close(await pixel([270500, 7033000]), [0, 142, 213, 255])
+  await set('wild-reindeer', true, 0.5); close(await pixel([270500, 7033000]), [111, 182, 217, 255])
+  await set('wild-reindeer', true, 1); await set('intact-nature', true, 1)
+  close(await pixel([270500, 7033000]), [0, 142, 213, 255]) // Villrein above broad INON fill.
+  close(await pixel([272000, 7033000]), [126, 175, 64, 255])
+  await set('protected-areas', true, 1); close(await pixel([268000, 7033000]), [212, 64, 196, 255])
+  const ids = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer']
+  for (let bits = 0; bits < 64; bits++) {
+    const visibility = await page.evaluate(({ bits, ids }) => {
+      ids.forEach((id, i) => window.layersRenderFixture.layer(id, !!(bits & (1 << i))))
+      return globalThis.__layersMap.getLayers().getArray().filter((l) => l.get('mapLayerId')).map((l) => ({ id: l.get('mapLayerId'), visible: l.getVisible() }))
+    }, { bits, ids })
+    visibility.forEach((l) => assert.equal(l.visible, !!(bits & (1 << ids.indexOf(l.id)))))
+  }
+  await paint(); close(await pixel([268000, 7033000]), [212, 64, 196, 255]) // Vern above existing nature polygons.
+  emptyReindeer = true
+  await page.evaluate(() => globalThis.__layersMap.getLayers().getArray().find((l) => l.get('mapLayerId') === 'wild-reindeer').getSource().updateParams({ VALIDATION_EMPTY: 'yes' }))
+  await paint(); await page.waitForFunction(() => window.layersRenderFixture.statuses['wild-reindeer'] === 'empty')
+  const protectedStarted = new Promise((resolve) => { failureStarted = resolve }); rejectNextProtected = true
+  await page.evaluate(() => globalThis.__layersMap.getLayers().getArray().find((l) => l.get('mapLayerId') === 'protected-areas').getSource().updateParams({ VALIDATION_LATE_ERROR: 'yes' }))
+  await protectedStarted; await set('protected-areas', false); releaseFailure(); await page.waitForTimeout(150)
+  assert.equal(await page.evaluate(() => window.layersRenderFixture.statuses['protected-areas']), 'idle')
+  assert.deepEqual(await state(), before)
   await page.evaluate(() => window.layersRenderFixture.destroy())
   assert.equal(await page.locator('#map .ol-viewport').count(), 0)
   // Check the real React picker with its production CSS, not a copy of its markup.
@@ -142,5 +169,5 @@ try {
   }
   await page.evaluate(() => window.layersRenderFixture.unmountWorkspace())
   assert.deepEqual(errors, [])
-  console.log('Layer render regression passed: real composed pixels, screen-space hatch/tint, repeat-render and device ratio, real picker width/slider bounds, independent visibility/opacity, fixed order, filters, masking, selection, late inactive error and cleanup.')
+  console.log('Layer render regression passed: real composed pixels, screen-space hatch/tint, repeat-render and device ratio, new layer composition, 64 combinations, empty WMS and late inactive error, real picker width/slider bounds, independent visibility/opacity, fixed order, filters, masking, selection, late inactive error and cleanup.')
 } finally { await browser?.close(); await server.close() }

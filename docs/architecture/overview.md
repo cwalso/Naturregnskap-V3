@@ -91,19 +91,31 @@ omriss som forskjellige ting, uten å beregne nye tall.
 ## Uavhengige kartlag i Utforsk i kart
 
 `ExploreThemesWorkspace` er koblet til App-ruten. `exploreThemeMap` har én
-OpenLayers-instans for nivå 0, naturtyper og planavsetninger. Et lite typet
+OpenLayers-instans for seks lag, inkludert vern, INON og villrein. Et lite typet
 lagregister styrer velger, faglig rolle, kildebeskrivelse, tegnforklaring,
 filtertype, standard synlighet/opasitet og zIndex. Synlighet/opasitet lagres
-uavhengig per implementert ID. Fem andre ID-er er reservert, uten nye kilder.
-Grunnkart ligger på zIndex 10, plan 20, naturtype-WMS 30 og kildegeometri 31;
-kommunemasken og grensen ligger på 1000/1001. Gjennomsiktighet gjelder alle
-fysiske deler av samme logiske lag. Nivå 0 starter med opasitet 0,7, øvrige 1.
+uavhengig per implementert ID. To andre ID-er er reservert, uten nye kilder.
+Grunnkart ligger på zIndex 10, INON 12, Villrein 15, plan 20,
+naturtype-WMS 30, kildegeometri 31 og verneområder 40.
+Kommunemasken og grensen ligger på 1000/1001. Gjennomsiktighet gjelder alle
+fysiske deler av samme logiske lag. Nivå 0 starter med opasitet 0,7,
+INON med 0,65, øvrige med 1.
 Grunnkart/plan kan skjules uten å endre naturtypefilter eller objektvalg.
 Naturtypelaget skjult fjerner objektvalg; filteret bevares. REST-kall avbrytes
 ved skjuling/kommunebytte, og sene svar får ikke ny eier. Status eies per lag
 og kommune; skjulte lag viser ikke feil. Rasterstatus leser aktuelle fliser
 fra OpenLayers-rendererens eksisterende cache, uten å opprette statusfliser.
 Ingen request- eller resultatcache er endret.
+Tre nye ImageWMS-kilder er definert i samme register og koblet til samme kart.
+De bruker EPSG:25833, egne klasse-navn, synlighet/opasitet/status og samme
+kommunemaske. Bare vedtatt, klasseinndelt vern vises. INON `status` er januar
+2023; Villrein viser biologiske leveområder. Kildens GetLegendGraphic brukes.
+Dekodet, transparent WMS gir `empty`, ikke `error`. En WeakMap over selve
+image-wrapperen memoiserer kun denne visuelle statusen; det er ingen ny
+resultatcache. Image/lag/kommune-eier kontrolleres mot gjeldende viewport.
+App sender allerede eksisterende kommunevise registreringsstatus til panelet.
+Villrein kan dermed vise bekreftet null registreringer, treff eller ukjent
+registreringsdekning uten nye query-/areal-/overlappsberegninger.
 Tidligere kart-/analysekomponenter er beholdt og monteres ikke på ruten.
 
 Nivå 0 gjenbruker `loadOverviewRaster` og `loadAccountDisplayTileBlob`.

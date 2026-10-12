@@ -17,7 +17,7 @@ GitHub Pages-prototype med:
 - kommuneoversikt
 - Naturtapet
 - prioriterte temasider
-- tre uavhengige kartlag på oppgavebranchen; analyseverkstedet beholdt i kode
+- seks uavhengige kartlag på oppgavebranchen; analyseverkstedet beholdt i kode
 - framtidig utbygging som analyseområde
 - tegnet polygon som analyseområde i beholdt kode; inngang midlertidig skjult
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
@@ -44,7 +44,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
 | Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
-| Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Tre lag med avkryssing, egen gjennomsiktighet og mobilvelger; godkjent planvisning beholdt, ingen kryssanalyse |
+| Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Seks lag med avkryssing, egen gjennomsiktighet og mobilvelger; godkjent planvisning beholdt, ingen kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
@@ -71,9 +71,10 @@ Ikke legg til nye temasider uten eksplisitt beslutning.
 
 ## Samtidige kartlag og beholdt analyseverksted
 
-De tre kartvisningene og korrigert planvisning er manuelt godkjent. Neste
-leveranse på samme branch lar brukeren kombinere nivå 0, framtidig utbygging
-og Verdsatte naturtyper med uavhengig avkryssing og gjennomsiktighet.
+De tre kartvisningene og korrigert planvisning er manuelt godkjent. Gjeldende
+leveranse på samme branch lar brukeren kombinere nivå 0, framtidig utbygging,
+Verdsatte naturtyper, Verneområder, INON og Villrein med uavhengig avkryssing
+og gjennomsiktighet.
 Alle lag kan slås av; basen vises. Fast rekkefølge bevarer naturtyper og
 kommunegrense øverst. Mobilvelgeren kan lukkes. Naturtypefilter og valg
 påvirkes ikke av de andre lagene. Ingen automatisk tallanalyse kjøres.
@@ -85,11 +86,15 @@ i de fire verdikategoriene, ikke bare lokaliteter berørt av plan.
 
 Analyseverkstedet, tegning og alle metoder beholdes for senere reaktivering.
 Natur/Jordbruk- og naturtypeoverlapp er fortsatt Trondheim-klargjorte
-prototypeberegninger. Ingen nye temaer eller analysegrunnlag er innført.
+prototypeberegninger. Tre supplerende kartlag er lagt til; ingen nye
+analysegrunnlag eller beregninger er innført.
 
 [Samtidige lag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
 [visuell A–L-kontroll](validation/2026-10-09-concurrent-map-layers.md) dokumenterer neste leveranse.
-Lagregisteret er forberedt for åtte ID-er; bare tre kilder er koblet inn.
+Lagregisteret er forberedt for åtte ID-er; seks kilder er koblet inn.
+[Ny kilde-/kartkontroll](validation/2026-10-12-six-explore-layers.md) dokumenterer vern, INON og
+Villrein i Trondheim og Dovre. INON er januar 2023, øvrige nye kilder er
+løpende tjenester. Ingen beregninger eller nye analysegrunnlag er koblet inn.
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 fjerner range-marginenes 4 px overbredde og innfører mørk grønn/gul
 skravur i planlaget. Av/på, filter, lagrekkefølge og beregninger er uendret.
@@ -100,6 +105,15 @@ Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
 [planpresentasjon](decisions/2026-10-09-v3-future-development-display.md),
 [beslutning](decisions/2026-10-09-v3-independent-map-themes.md) og
 [kontrollrapport](validation/2026-10-09-independent-map-themes.md).
+
+## Åpent UX-forbedringspunkt – naturtypefilter og kart i synsfeltet
+
+**Status: åpent / ikke løst i leveransen med seks lag.** Når brukeren åpner
+naturtypefilteret langt nede på siden, forsvinner kartet fra synsfeltet.
+Vurder plassering eller en passende kart-/filterarbeidsflate i en egen
+UX-oppgave. Denne leveransen beholder layout/arbeidsflyt, med vertikal
+scrolling i laglisten ved mange aktive lag og uten horisontal scrolling.
+Ingen sticky kart, automatisk scroll/zoom eller filterombygging er innført.
 
 ## Funksjonelle gap i Utforsk i kart
 

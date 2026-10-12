@@ -117,7 +117,7 @@ Supplerende naturtyper og heldekkende nivå 0 holdes metodisk adskilt.
 
 Tegnet polygon er implementert som analyseområde i den beholdte
 metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
-arbeidsflaten; primærmodellen nå er tre uavhengige kartlag.
+arbeidsflaten; primærmodellen nå er seks uavhengige kartlag.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 

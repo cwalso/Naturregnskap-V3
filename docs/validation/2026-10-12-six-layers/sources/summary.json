@@ -1,0 +1,795 @@
+[
+  {
+    "name": "vern-cap",
+    "url": "https://kart.miljodirektoratet.no/arcgis/services/vern/mapserver/WMSServer?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0",
+    "status": "200",
+    "error": null,
+    "bytes": 26803,
+    "service": {
+      "Title": "Verneområder og foreslåtte verneområder",
+      "Abstract": "Verneområder og foreslåtte verneområder",
+      "Fees": "",
+      "AccessConstraints": "NLOD"
+    },
+    "layers": [
+      {
+        "name": "foreslatt_naturvern_grense",
+        "title": "foreslatt_naturvern_grense",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>foreslatt_naturvern_grense</ns0:Title>\n          <ns0:LegendURL width=\"198\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=foreslatt_naturvern_grense\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "foreslatt_naturvern_omrade",
+        "title": "foreslatt_naturvern_omrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>foreslatt_naturvern_omrade</ns0:Title>\n          <ns0:LegendURL width=\"156\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=foreslatt_naturvern_omrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "naturvern_grense",
+        "title": "naturvern_grense",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>naturvern_grense</ns0:Title>\n          <ns0:LegendURL width=\"126\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_grense\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "naturvern_teiggrensepunkt",
+        "title": "naturvern_teiggrensepunkt",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>naturvern_teiggrensepunkt</ns0:Title>\n          <ns0:LegendURL width=\"108\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_teiggrensepunkt\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "naturvern_klasser_omrade",
+        "title": "naturvern_klasser_omrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>naturvern_klasser_omrade</ns0:Title>\n          <ns0:LegendURL width=\"132\" height=\"108\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_klasser_omrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "naturvern_omrade",
+        "title": "naturvern_omrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>naturvern_omrade</ns0:Title>\n          <ns0:LegendURL width=\"90\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_omrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      }
+    ]
+  },
+  {
+    "name": "inon-cap",
+    "url": "https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0",
+    "status": "200",
+    "error": null,
+    "bytes": 20707,
+    "service": {
+      "Title": "GeoServer Web Map Service",
+      "Abstract": "A compliant implementation of WMS plus most of the SLD extension (dynamic styling). Can also generate PDF, SVG, KML, GeoRSS",
+      "Fees": "NONE",
+      "AccessConstraints": "NONE"
+    },
+    "layers": [
+      {
+        "name": "endring_1988_2008",
+        "title": "endring_1988_2008",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_endring</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_endring</ns0:Title>\n          <ns0:LegendURL width=\"215\" height=\"120\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_1988_2008\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "endring_1988_2023",
+        "title": "endring_1988_2023",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_endring</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_endring</ns0:Title>\n          <ns0:LegendURL width=\"215\" height=\"120\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_1988_2023\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "endring_2008_2013",
+        "title": "endring_2008_2013",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_endring</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_endring</ns0:Title>\n          <ns0:LegendURL width=\"215\" height=\"120\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2008_2013\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "endring_2013_2018",
+        "title": "endring_2013_2018",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_endring</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_endring</ns0:Title>\n          <ns0:LegendURL width=\"215\" height=\"120\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2013_2018\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "endring_2018_2023",
+        "title": "endring_2018_2023",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_endring</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_endring</ns0:Title>\n          <ns0:LegendURL width=\"215\" height=\"120\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2018_2023\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "status",
+        "title": "status",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_status</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_status</ns0:Title>\n          <ns0:LegendURL width=\"251\" height=\"60\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "status_1988",
+        "title": "status_1988",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_status</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_status</ns0:Title>\n          <ns0:LegendURL width=\"251\" height=\"60\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_1988\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "status_2008",
+        "title": "status_2008",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_status</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_status</ns0:Title>\n          <ns0:LegendURL width=\"251\" height=\"60\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2008\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "status_2013",
+        "title": "status_2013",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_status</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_status</ns0:Title>\n          <ns0:LegendURL width=\"251\" height=\"60\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2013\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "status_2018",
+        "title": "status_2018",
+        "abstract": "",
+        "crs": [
+          "EPSG:25833",
+          "CRS:84"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>inngrepsfrinatur_status</ns0:Name>\n          <ns0:Title>inngrepsfrinatur_status</ns0:Title>\n          <ns0:LegendURL width=\"251\" height=\"60\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:type=\"simple\" ns1:href=\"https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2018\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      }
+    ]
+  },
+  {
+    "name": "reindeer-cap",
+    "url": "https://kart3.miljodirektoratet.no/arcgis/services/villrein/MapServer/WMSServer?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0",
+    "status": "200",
+    "error": null,
+    "bytes": 35996,
+    "service": {
+      "Title": "villrein",
+      "Abstract": "WMS",
+      "Fees": "",
+      "AccessConstraints": "NLOD (https://data.norge.no/nlod)"
+    },
+    "layers": [
+      {
+        "name": "villrein_helarsbeite",
+        "title": "villrein_helarsbeite",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_helarsbeite</ns0:Title>\n          <ns0:LegendURL width=\"138\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_helarsbeite\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_barmarksbeite",
+        "title": "villrein_barmarksbeite",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_barmarksbeite</ns0:Title>\n          <ns0:LegendURL width=\"150\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_barmarksbeite\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_vinterbeite",
+        "title": "villrein_vinterbeite",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_vinterbeite</ns0:Title>\n          <ns0:LegendURL width=\"138\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_vinterbeite\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_sommer_host_beite",
+        "title": "villrein_sommer_host_beite",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_sommer_host_beite</ns0:Title>\n          <ns0:LegendURL width=\"174\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_sommer_host_beite\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_kalvingsomrade",
+        "title": "villrein_kalvingsomrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_kalvingsomrade</ns0:Title>\n          <ns0:LegendURL width=\"138\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_kalvingsomrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_trekkomrade",
+        "title": "villrein_trekkomrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_trekkomrade</ns0:Title>\n          <ns0:LegendURL width=\"138\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_trekkomrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_leveomrade",
+        "title": "villrein_leveomrade",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_leveomrade</ns0:Title>\n          <ns0:LegendURL width=\"132\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_leveomrade\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      },
+      {
+        "name": "villrein_leveomrade_grense",
+        "title": "villrein_leveomrade_grense",
+        "abstract": "",
+        "crs": [
+          "CRS:84",
+          "EPSG:4326",
+          "EPSG:25833",
+          "EPSG:32631",
+          "EPSG:32632",
+          "EPSG:32633",
+          "EPSG:32634",
+          "EPSG:32635",
+          "EPSG:32636",
+          "EPSG:25831",
+          "EPSG:25832",
+          "EPSG:25834",
+          "EPSG:25835",
+          "EPSG:25836",
+          "EPSG:4258",
+          "EPSG:3857",
+          "EPSG:102100"
+        ],
+        "styles": [
+          "<ns0:Style xmlns:ns0=\"http://www.opengis.net/wms\" xmlns:ns1=\"http://www.w3.org/1999/xlink\">\n          <ns0:Name>default</ns0:Name>\n          <ns0:Title>villrein_leveomrade_grense</ns0:Title>\n          <ns0:LegendURL width=\"174\" height=\"18\">\n            <ns0:Format>image/png</ns0:Format>\n            <ns0:OnlineResource ns1:href=\"https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_leveomrade_grense\" ns1:type=\"simple\" />\n          </ns0:LegendURL>\n        </ns0:Style>\n      "
+        ]
+      }
+    ]
+  },
+  {
+    "name": "vern-rest",
+    "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer?f=pjson",
+    "status": "200",
+    "error": null,
+    "bytes": 3376,
+    "rest": {
+      "serviceDescription": "Naturvernområder",
+      "description": "",
+      "copyrightText": "Miljødirektoratet",
+      "layers": [
+        {
+          "id": 0,
+          "name": "naturvern_omrade",
+          "parentLayerId": -1,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon"
+        },
+        {
+          "id": 1,
+          "name": "naturvern_klasser_omrade",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon"
+        },
+        {
+          "id": 2,
+          "name": "naturvern_teiggrensepunkt",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPoint"
+        },
+        {
+          "id": 3,
+          "name": "naturvern_grense",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolyline"
+        },
+        {
+          "id": 4,
+          "name": "foreslatt_naturvern_omrade",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon"
+        },
+        {
+          "id": 5,
+          "name": "foreslatt_naturvern_grense",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon"
+        }
+      ],
+      "supportedQueryFormats": "JSON, geoJSON",
+      "documentInfo": {
+        "Title": "",
+        "Author": "",
+        "Comments": "Naturvernområder",
+        "Subject": "Verneområder",
+        "Category": "",
+        "AntialiasingMode": "None",
+        "TextAntialiasingMode": "Force",
+        "Keywords": "Vern"
+      }
+    }
+  },
+  {
+    "name": "reindeer-rest",
+    "url": "https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer?f=pjson",
+    "status": "200",
+    "error": null,
+    "bytes": 8123,
+    "rest": {
+      "serviceDescription": "Datasettet inneholder data fra nasjonale villreinområder. På Norges fastland\nfinnes 24 villreinområder, hvorav 10 er utpekt som nasjonale villreinområder.\nDisse er Forollhogna, Hardangervidda, Knutshø, Nordfjella, Reinheimen-Breheimen,\nRondane, Setesdal-Austhei, Setesdal-Ryfylke, Snøhetta og Sølnkletten.\n\nDatasettet viser yttergrenser for villreinbestandenes biologiske leveområde. I\ntillegg vises funksjonsområder der dette er kartlagt. Funksjonsområdene i\ndatasettet er trekkområde, beiteområde og kalvingsområde. Den største polygonen\nfor hvert villreinområde viser yttergrensen for leveområdet. De mindre\npolygonene innenfor leveområdet er funksjonsområder.\n\nMerk at begrepet \"nasjonalt villreinområde\" også brukes om soneavgrensninger i\nregionale planer for de 10 nasjonale villreinområdene. Disse soneavgrensningene\ner ikke del av dette datasettet, og de sammenfaller ikke nødvendigvis med de\nbiologiske leveområdene.",
+      "description": "Datasettet inneholder data fra nasjonale villreinområder. På Norges fastland\nfinnes 24 villreinområder, hvorav 10 er utpekt som nasjonale villreinområder.\nDisse er Forollhogna, Hardangervidda, Knutshø, Nordfjella, Reinheimen-Breheimen,\nRondane, Setesdal-Austhei, Setesdal-Ryfylke, Snøhetta og Sølnkletten.\n\nDatasettet viser yttergrenser for villreinbestandenes biologiske leveområde. I\ntillegg vises funksjonsområder der dette er kartlagt. Funksjonsområdene i\ndatasettet er trekkområde, beiteområde og kalvingsområde. Den største polygonen\nfor hvert villreinområde viser yttergrensen for leveområdet. De mindre\npolygonene innenfor leveområdet er funksjonsområder.\n\nMerk at begrepet \"nasjonalt villreinområde\" også brukes om soneavgrensninger i\nregionale planer for de 10 nasjonale villreinområdene. Disse soneavgrensningene\ner ikke del av dette datasettet, og de sammenfaller ikke nødvendigvis med de\nbiologiske leveområdene.",
+      "copyrightText": "Miljødirektoratet",
+      "layers": [
+        {
+          "id": 0,
+          "name": "villrein_leveomrade_grense",
+          "parentLayerId": -1,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 1,
+          "name": "villrein_leveomrade",
+          "parentLayerId": -1,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 2,
+          "name": "villrein_trekkomrade",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 3,
+          "name": "villrein_kalvingsomrade",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 4,
+          "name": "villrein_beiteomrade",
+          "parentLayerId": -1,
+          "defaultVisibility": false,
+          "subLayerIds": [
+            5,
+            7,
+            8,
+            9
+          ],
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Group Layer",
+          "supportsDynamicLegends": false
+        },
+        {
+          "id": 5,
+          "name": "villrein_sommer_host_beite",
+          "parentLayerId": 4,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 7,
+          "name": "villrein_vinterbeite",
+          "parentLayerId": 4,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 8,
+          "name": "villrein_barmarksbeite",
+          "parentLayerId": 4,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        },
+        {
+          "id": 9,
+          "name": "villrein_helarsbeite",
+          "parentLayerId": 4,
+          "defaultVisibility": true,
+          "subLayerIds": null,
+          "minScale": 0,
+          "maxScale": 0,
+          "type": "Feature Layer",
+          "geometryType": "esriGeometryPolygon",
+          "supportsDynamicLegends": true
+        }
+      ],
+      "supportedQueryFormats": "JSON, geoJSON, PBF",
+      "documentInfo": {
+        "Title": "Villreinområder",
+        "Author": "",
+        "Comments": "Datasettet inneholder data fra nasjonale villreinområder. På Norges fastland\nfinnes 24 villreinområder, hvorav 10 er utpekt som nasjonale villreinområder.\nDisse er Forollhogna, Hardangervidda, Knutshø, Nordfjella, Reinheimen-Breheimen,\nRondane, Setesdal-Austhei, Setesdal-Ryfylke, Snøhetta og Sølnkletten.\n\nDatasettet viser yttergrenser for villreinbestandenes biologiske leveområde. I\ntillegg vises funksjonsområder der dette er kartlagt. Funksjonsområdene i\ndatasettet er trekkområde, beiteområde og kalvingsområde. Den største polygonen\nfor hvert villreinområde viser yttergrensen for leveområdet. De mindre\npolygonene innenfor leveområdet er funksjonsområder.\n\nMerk at begrepet \"nasjonalt villreinområde\" også brukes om soneavgrensninger i\nregionale planer for de 10 nasjonale villreinområdene. Disse soneavgrensningene\ner ikke del av dette datasettet, og de sammenfaller ikke nødvendigvis med de\nbiologiske leveområdene.",
+        "Subject": "Datasettet inneholder data fra nasjonale villreinområder.",
+        "Category": "",
+        "Version": "3.3.0",
+        "AntialiasingMode": "Fast",
+        "TextAntialiasingMode": "Force",
+        "Keywords": "villrein"
+      }
+    }
+  },
+  {
+    "name": "inon-catalog",
+    "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/inngrepsfrinatur",
+    "status": "000",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n",
+    "bytes": 0
+  },
+  {
+    "name": "vern-catalog",
+    "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/vern",
+    "status": "000",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n",
+    "bytes": 0
+  },
+  {
+    "name": "reindeer-catalog",
+    "url": "https://kartkatalog.miljodirektoratet.no/MapService/Details/villrein",
+    "status": "000",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n",
+    "bytes": 0
+  }
+]

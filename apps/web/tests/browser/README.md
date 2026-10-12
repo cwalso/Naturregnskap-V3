@@ -7,6 +7,7 @@ npx playwright install chromium
 npm run test:browser
 npm run test:browser:layers
 npm run test:browser:themes
+npm run test:browser:six:live
 npm run test:browser:live
 npm run test:browser:workspace
 ```
@@ -16,7 +17,7 @@ En allerede installert Chromium kan velges med `CHROMIUM_PATH`.
 `BROWSER_OUTPUT` velger outputmappe; standard er den ignorerte
 `.browser-results/`. Skriptene starter/lukker egne Vite-servere: 5182 for
 analysefixtures, 5181 for trinnvis analyselive-kontroll, 5184 for offentlig
-App-rute med samtidige lag og 5186 for lagfixtures.
+App-rute med de opprinnelige tre lagene, 5187 for seks reelle lag og 5186 for lagfixtures.
 
 `test:browser` bruker ekte OpenLayers og Chromium med kontrollerte WMS-bilder,
 plan-/treffmasker og lokalitetsgeometri. Den leser piksler fra det sammensatte
@@ -65,3 +66,12 @@ Status 09.10.2026: Reelle tjenester og A–L er kontrollert på oppgavebranchen.
 Se docs/validation/2026-10-09-concurrent-map-layers.md. Visuell vurdering av
 faktiske screenshots inngår; fixtures er ikke kildevalidering. Pages kan
 testpubliseres fra samme PR-branch med eksisterende workflow, uten merge.
+
+`test:browser:six:live` kontrollerer nye lag alene/med Grunnkart, flere nye,
+alle seks, ingen, egen opasitet, INON-år/kildelegend, naturtypefilter, manuell
+navigasjon, 390 px og kommunebytte. Dovre har faktisk villreinkart, Trondheim
+har gyldig tomt bilde og null registreringer. Source-canvas, et punkt innenfor
+kommunepolygonet og faktisk sammensatt skjermpiksel sammenlignes mot base.
+Reelle karttjenester og browser-screenshots er akseptgrunnlag; kontrollerte
+fixtures brukes separat til regresjon av 64 kombinasjoner, WMS-tomstatus,
+sen feil fra skjult lag, maskering, opasitet, rekkefølge og opprydding.

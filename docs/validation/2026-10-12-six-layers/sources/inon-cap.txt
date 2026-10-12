@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?><WMS_Capabilities version="1.3.0" updateSequence="3643" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms https://kart.miljodirektoratet.no/geoserver/schemas/wms/1.3.0/capabilities_1_3_0.xsd">
+  <Service>
+    <Name>WMS</Name>
+    <Title>GeoServer Web Map Service</Title>
+    <Abstract>A compliant implementation of WMS plus most of the SLD extension (dynamic styling). Can also generate PDF, SVG, KML, GeoRSS</Abstract>
+    <KeywordList>
+      <Keyword>WFS</Keyword>
+      <Keyword>WMS</Keyword>
+      <Keyword>GEOSERVER</Keyword>
+    </KeywordList>
+    <OnlineResource xlink:type="simple" xlink:href="http://geoserver.org"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Miljødataseksjonen Trondheim</ContactPerson>
+        <ContactOrganization>Miljødirektoratet</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Teknisk ansvarlig for karttjeneste</ContactPosition>
+      <ContactAddress>
+        <AddressType>Postadresse</AddressType>
+        <Address>Postboks 5672 Sluppen</Address>
+        <City>Trondheim</City>
+        <StateOrProvince>Sør-Trøndelag</StateOrProvince>
+        <PostCode/>
+        <Country>Norway</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>73580500</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>73580501</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>wms@miljodir.no</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>NONE</Fees>
+    <AccessConstraints>NONE</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?SERVICE=WMS&amp;"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?SERVICE=WMS&amp;"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/json;type=utfgrid</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml;mode=networklink</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>image/vnd.jpeg-png</Format>
+        <Format>image/vnd.jpeg-png8</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <Format>text/html; subtype=openlayers2</Format>
+        <Format>text/html; subtype=openlayers3</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+      <Format>JSON</Format>
+    </Exception>
+    <Layer>
+      <Title>GeoServer Web Map Service</Title>
+      <Abstract>A compliant implementation of WMS plus most of the SLD extension (dynamic styling). Can also generate PDF, SVG, KML, GeoRSS</Abstract>
+      <!--Limited list of EPSG projections:-->
+      <CRS>EPSG:32633</CRS>
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:3575</CRS>
+      <CRS>EPSG:32632</CRS>
+      <CRS>EPSG:32634</CRS>
+      <CRS>EPSG:25832</CRS>
+      <CRS>EPSG:25833</CRS>
+      <CRS>EPSG:25834</CRS>
+      <CRS>EPSG:900913</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-60586.6248806544</westBoundLongitude>
+        <eastBoundLongitude>1114154.68059336</eastBoundLongitude>
+        <southBoundLatitude>57.707205591892766</southBoundLatitude>
+        <northBoundLatitude>7937592.65164308</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" minx="-60586.6248806544" miny="57.707205591892766" maxx="1114154.68059336" maxy="7937592.65164308"/>
+      <Layer queryable="1" opaque="0">
+        <Name>endring_1988_2008</Name>
+        <Title>endring_1988_2008</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_endring_1988_2018</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.942805219396423</westBoundLongitude>
+          <eastBoundLongitude>31.927704781468844</eastBoundLongitude>
+          <southBoundLatitude>57.75561665586104</southBoundLatitude>
+          <northBoundLatitude>71.55559702481482</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.942805219396423" miny="57.75561665586104" maxx="31.927704781468844" maxy="71.55559702481482"/>
+        <BoundingBox CRS="EPSG:25833" minx="-77165.8454" miny="6448695.6822" maxx="1114809.1677" maxy="7939447.2811"/>
+        <Style>
+          <Name>inngrepsfrinatur_endring</Name>
+          <Title>inngrepsfrinatur_endring</Title>
+          <LegendURL width="215" height="120">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_1988_2008"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>endring_1988_2023</Name>
+        <Title>endring_1988_2023</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_endring_1988_2023</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.6351547258964048</westBoundLongitude>
+          <eastBoundLongitude>31.92210822395326</eastBoundLongitude>
+          <southBoundLatitude>57.7564040945189</southBoundLatitude>
+          <northBoundLatitude>71.54888371729534</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.6351547258964048" miny="57.7564040945189" maxx="31.92210822395326" maxy="71.54888371729534"/>
+        <BoundingBox CRS="EPSG:25833" minx="-65662.643871377" miny="6448782.23135284" maxx="1114792.57557904" maxy="7938756.86699037"/>
+        <Style>
+          <Name>inngrepsfrinatur_endring</Name>
+          <Title>inngrepsfrinatur_endring</Title>
+          <LegendURL width="215" height="120">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_1988_2023"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>endring_2008_2013</Name>
+        <Title>endring_2008_2013</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_endring_2008_2013</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-60586.6248806544</westBoundLongitude>
+          <eastBoundLongitude>1114154.68059336</eastBoundLongitude>
+          <southBoundLatitude>6448697.51511663</southBoundLatitude>
+          <northBoundLatitude>7937592.65164308</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-60586.6248806544" miny="6448697.51511663" maxx="1114154.68059336" maxy="7937592.65164308"/>
+        <BoundingBox CRS="EPSG:25833" minx="-60586.6248806544" miny="6448697.51511663" maxx="1114154.68059336" maxy="7937592.65164308"/>
+        <Style>
+          <Name>inngrepsfrinatur_endring</Name>
+          <Title>inngrepsfrinatur_endring</Title>
+          <LegendURL width="215" height="120">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2008_2013"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>endring_2013_2018</Name>
+        <Title>endring_2013_2018</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_endring_2013_2018</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.5472538485176023</westBoundLongitude>
+          <eastBoundLongitude>31.91048307338624</eastBoundLongitude>
+          <southBoundLatitude>57.756535602716276</southBoundLatitude>
+          <northBoundLatitude>71.5549207639417</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.5472538485176023" miny="57.756535602716276" maxx="31.91048307338624" maxy="71.5549207639417"/>
+        <BoundingBox CRS="EPSG:25833" minx="-62147.3815843167" miny="6448697.51511663" maxx="1114147.79826864" maxy="7939447.2811"/>
+        <Style>
+          <Name>inngrepsfrinatur_endring</Name>
+          <Title>inngrepsfrinatur_endring</Title>
+          <LegendURL width="215" height="120">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2013_2018"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>endring_2018_2023</Name>
+        <Title>endring_2018_2023</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_endring_2018_2023</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.4897411956529295</westBoundLongitude>
+          <eastBoundLongitude>31.876112114715493</eastBoundLongitude>
+          <southBoundLatitude>57.787152967031474</southBoundLatitude>
+          <northBoundLatitude>71.54301524404585</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.4897411956529295" miny="57.787152967031474" maxx="31.876112114715493" maxy="71.54301524404585"/>
+        <BoundingBox CRS="EPSG:25833" minx="-60314.6519005955" miny="6452017.2133161" maxx="1113207.03678577" maxy="7938124.7533057"/>
+        <Style>
+          <Name>inngrepsfrinatur_endring</Name>
+          <Title>inngrepsfrinatur_endring</Title>
+          <LegendURL width="215" height="120">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=endring_2018_2023"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>status</Name>
+        <Title>status</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_status_2018</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.9485451287469248</westBoundLongitude>
+          <eastBoundLongitude>31.939593463376657</eastBoundLongitude>
+          <southBoundLatitude>57.75244779273346</southBoundLatitude>
+          <northBoundLatitude>71.56031361811455</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.9485451287469248" miny="57.75244779273346" maxx="31.939593463376657" maxy="71.56031361811455"/>
+        <BoundingBox CRS="EPSG:25833" minx="-77241.8719729077" miny="6448384.20188035" maxx="1115114.19792588" maxy="7939974.38977349"/>
+        <Style>
+          <Name>inngrepsfrinatur_status</Name>
+          <Title>inngrepsfrinatur_status</Title>
+          <LegendURL width="251" height="60">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>status_1988</Name>
+        <Title>status_1988</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_status_1988</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.9485451287469248</westBoundLongitude>
+          <eastBoundLongitude>31.935102266706554</eastBoundLongitude>
+          <southBoundLatitude>57.752683373547136</southBoundLatitude>
+          <northBoundLatitude>71.56032046868484</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.9485451287469248" miny="57.752683373547136" maxx="31.935102266706554" maxy="71.56032046868484"/>
+        <BoundingBox CRS="EPSG:25833" minx="-77241.8719729077" miny="6448384.20188035" maxx="1114941.73191577" maxy="7939974.38977349"/>
+        <Style>
+          <Name>inngrepsfrinatur_status</Name>
+          <Title>inngrepsfrinatur_status</Title>
+          <LegendURL width="251" height="60">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_1988"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>status_2008</Name>
+        <Title>status_2008</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_status_2008</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-1.1559962958732353</westBoundLongitude>
+          <eastBoundLongitude>31.594067886768467</eastBoundLongitude>
+          <southBoundLatitude>57.707205591892766</southBoundLatitude>
+          <northBoundLatitude>71.62779211846417</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-1.1559962958732353" miny="57.707205591892766" maxx="31.594067886768467" maxy="71.62779211846417"/>
+        <BoundingBox CRS="EPSG:25833" minx="-83097.6796875" miny="6440926.0" maxx="1099768.625" maxy="7947433.0"/>
+        <Style>
+          <Name>inngrepsfrinatur_status</Name>
+          <Title>inngrepsfrinatur_status</Title>
+          <LegendURL width="251" height="60">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2008"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>status_2013</Name>
+        <Title>status_2013</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_status_2013</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-1.1559962958732353</westBoundLongitude>
+          <eastBoundLongitude>31.594067886768467</eastBoundLongitude>
+          <southBoundLatitude>57.707205591892766</southBoundLatitude>
+          <northBoundLatitude>71.62779211846417</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-1.1559962958732353" miny="57.707205591892766" maxx="31.594067886768467" maxy="71.62779211846417"/>
+        <BoundingBox CRS="EPSG:25833" minx="-83097.6796875" miny="6440926.0" maxx="1099768.625" maxy="7947433.0"/>
+        <Style>
+          <Name>inngrepsfrinatur_status</Name>
+          <Title>inngrepsfrinatur_status</Title>
+          <LegendURL width="251" height="60">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2013"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>status_2018</Name>
+        <Title>status_2018</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>tbl_status_2018</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25833</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-0.9485545367811699</westBoundLongitude>
+          <eastBoundLongitude>31.939171405445357</eastBoundLongitude>
+          <southBoundLatitude>57.752471651419505</southBoundLatitude>
+          <northBoundLatitude>71.56035113822561</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-0.9485545367811699" miny="57.752471651419505" maxx="31.939171405445357" maxy="71.56035113822561"/>
+        <BoundingBox CRS="EPSG:25833" minx="-77241.1200000001" miny="6448384.21" maxx="1115096.80806636" maxy="7939978.5"/>
+        <Style>
+          <Name>inngrepsfrinatur_status</Name>
+          <Title>inngrepsfrinatur_status</Title>
+          <LegendURL width="251" height="60">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=status_2018"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

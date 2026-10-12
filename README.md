@@ -46,20 +46,26 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-Oppgavebranchen viser tre uavhengige kartlag:
+Oppgavebranchen viser seks uavhengige kartlag:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
 3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
+4. Verneområder – vedtatt vern, fem verneformklasser.
+5. Inngrepsfri natur (INON) – januar 2023, tre avstandssoner.
+6. Villrein – registrerte biologiske leveområder fra Villreinbasen.
 
-`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–3 lag
+`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–6 lag
 med avkryssing og egen gjennomsiktighet. Nivå 0 ligger nederst (30 %
-gjennomsiktighet som standard), plan i midten og naturtyper øverst.
+gjennomsiktighet), så INON (35 %) og Villrein, deretter plan/naturtyper og
+verneområder. Øvrige lag starter med 0 % ekstra gjennomsiktighet.
 Kommunemaske/grense ligger over alle; bakgrunnskartet vises også med alle av.
 Lagvalg, gjennomsiktighet, søk, filter og lokalitetsvalg beholder utsnittet.
 Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
 Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
-men bare de tre implementerte lagene vises. Planvisningen bruker uendret
+men bare de seks implementerte lagene vises. Nye WMS-lag bruker kildens
+symboler/legender og kommuneavgrensning, uten areal- eller overlappsberegning.
+Villrein er automatisk kontrollert i Dovre (registreringer) og Trondheim (ingen). Planvisningen bruker uendret
 DiBK-filter og viser dagens
 Natur og Jordbruk innenfor planformålene, med mørk grønn/gul diagonalskravur
 og transparent tint. Grunnkartets vanlige klassefarger er uendret.
@@ -73,6 +79,9 @@ WMS-laget har maksimal målestokk 1:50 000.
 Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
 beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
 Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
+
+[Seks lag, kildekontroll og nye skjermbilder](docs/validation/2026-10-12-six-explore-layers.md)
+dokumenterer gjeldende leveranse.
 
 [Visuell korreksjon av lagpanel og skravur](docs/validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer de siste skjermbildene og kontrollene.

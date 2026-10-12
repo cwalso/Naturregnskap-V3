@@ -1394,7 +1394,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
         </h1>
         <p>
-          Kombiner Grunnkart nivå 0, framtidig utbygging og Verdsatte naturtyper.
+          Kombiner Grunnkart nivå 0 og framtidig utbygging med Verdsatte naturtyper,
+          Verneområder, Inngrepsfri natur og Villrein.
           Slå kartlag av og på, og tilpass gjennomsiktigheten.
         </p>
       </header>
@@ -1406,7 +1407,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <ExploreThemesWorkspace municipality={selectedMunicipality} boundary={boundaryData} />
+          <ExploreThemesWorkspace municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
         </>
       )}
     </section>

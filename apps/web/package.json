@@ -12,7 +12,8 @@
     "test:browser:live": "node tests/browser/check-explore-map-live.mjs",
     "test:browser:workspace": "node tests/browser/check-explore-workspace-live.mjs",
     "test:browser:themes": "node tests/browser/check-explore-themes-live.mjs",
-    "test:browser:layers": "node tests/browser/check-explore-layers-render.mjs"
+    "test:browser:layers": "node tests/browser/check-explore-layers-render.mjs",
+    "test:browser:six:live": "node tests/browser/check-explore-six-layers-live.mjs"
   },
   "dependencies": {
     "ol": "^10.6.1",

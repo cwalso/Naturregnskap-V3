@@ -109,14 +109,18 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 ## Utforsk i kart
 
 Brukeren krysser av uavhengige kartlag: Grunnkart nivå 0, framtidig utbygging
-og Verdsatte naturtyper. Nivå 0 er standard. Grupper er Regnskapsgrunnlag,
-Plandata og Supplerende temadata. 0–3 aktive lag støttes; alle av viser basen.
+og Verdsatte naturtyper, Verneområder, Inngrepsfri natur (INON) og Villrein.
+Nivå 0 er standard. Grupper er Regnskapsgrunnlag,
+Plandata og Supplerende temadata. 0–6 aktive lag støttes; alle av viser basen.
 Aktive lag viser egen gjennomsiktighetskontroll, tegnforklaring og kilde.
 
 Avkryssingslisten har begrenset høyde og kan senere romme åtte implementerte
-lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, plan,
-naturtyper, kommunemaske/grense. Nivå 0 er 30 % gjennomsiktig som standard;
-øvrige lag er ugjennomsiktige. Ingen fri flytting av lag eller GIS-katalog.
+lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, INON,
+Villrein, plan, naturtyper, verneområder og kommunemaske/grense. Nivå 0
+starter med 30 %, INON med 35 %, øvrige med 0 % ekstra gjennomsiktighet.
+De tre nye lagene bruker offisielle symboler og GetLegendGraphic. INON-år
+er synlig uten å åpne kildebeskrivelsen. Tomt bilde, regional datadekning
+og kildefeil forklares forskjellig. Ingen fri flytting av lag eller GIS-katalog.
 Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
 Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 

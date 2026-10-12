@@ -30,7 +30,7 @@ describe('uavhengige kartlag', () => {
     fireEvent.change(screen.getByRole('slider', { name: 'Gjennomsiktighet – Grunnkart nivå 0' }), { target: { value: '50' } })
     expect(screen.getByRole('region', { name: 'Valgt lokalitet' })).toHaveTextContent('source-123')
     expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({
-      layers: { level0: { visible: true, opacity: 0.5 }, 'future-development': { visible: true, opacity: 1 }, 'valued-nature': { visible: true, opacity: 1 } },
+      layers: expect.objectContaining({ level0: { visible: true, opacity: 0.5 }, 'future-development': { visible: true, opacity: 1 }, 'valued-nature': { visible: true, opacity: 1 } }),
       filter: { natureType: 'Rikmyr', value: null }, selectedId: '123', data,
     }))
     const calls = request.mock.calls.length
@@ -91,8 +91,8 @@ describe('uavhengige kartlag', () => {
   })
   it('har tre faglige grupper, ingen uvirksomme lag og en velger som kan lukkes uten å fjerne kartet', () => {
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    expect(screen.getAllByRole('checkbox')).toHaveLength(3)
-    for (const role of ['Regnskapsgrunnlag', 'Plandata', 'Supplerende temadata']) expect(within(screen.getByRole('group', { name: role })).getAllByRole('checkbox')).toHaveLength(1)
+    expect(screen.getAllByRole('checkbox')).toHaveLength(6)
+    for (const role of ['Regnskapsgrunnlag', 'Plandata', 'Supplerende temadata']) expect(within(screen.getByRole('group', { name: role })).getAllByRole('checkbox')).toHaveLength(role === 'Supplerende temadata' ? 4 : 1)
     fireEvent.click(screen.getByRole('button', { name: /Kartlag/ }))
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Interaktivt kart i Trondheim' })).toBeInTheDocument()
@@ -100,4 +100,38 @@ describe('uavhengige kartlag', () => {
     expect(controller.destroy).not.toHaveBeenCalled()
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   })
+  it('støtter alle 64 kombinasjoner uten å endre utsnitt, og har kildelegend og INON-år', async () => {
+    request.mockResolvedValue(data)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    const names = ['Grunnkart nivå 0', 'Framtidig utbygging', 'Verdsatte naturtyper', 'Verneområder', 'Inngrepsfri natur (INON)', 'Villrein']
+    const ids = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer']
+    const choices = names.map(checkbox) as HTMLInputElement[]
+    for (let bits = 0; bits < 64; bits++) {
+      await act(async () => { choices.forEach((input, i) => { if (input.checked !== !!(bits & (1 << i))) fireEvent.click(input) }) })
+      const state = controller.update.mock.calls.at(-1)![0].layers
+      ids.forEach((id, i) => expect(state[id].visible).toBe(!!(bits & (1 << i))))
+      expect(document.querySelectorAll('.explore-themes__layer-info')).toHaveLength(ids.filter((_, i) => bits & (1 << i)).length)
+    }
+    expect(screen.getByText('Status: januar 2023')).toBeInTheDocument()
+    expect(screen.getAllByRole('img')).toHaveLength(3)
+    fireEvent.change(screen.getByRole('slider', { name: 'Gjennomsiktighet – Inngrepsfri natur (INON)' }), { target: { value: '75' } })
+    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ layers: expect.objectContaining({ 'intact-nature': { visible: true, opacity: 0.25 }, 'wild-reindeer': { visible: true, opacity: 1 } }) }))
+    expect(controller.fitToMunicipality).not.toHaveBeenCalled()
+  }, 15000)
+  it('skiller tomt villreinbilde og bekreftet null registreringer fra feil og gammel kommune', () => {
+    const coverage = { municipalityNumber: '5001', municipalityName: 'Trondheim', methodVersion: 'thematic-intersection-v1' as const, warnings: [], results: [{ datasetId: 'wild-reindeer-areas' as const, status: 'no_hit' as const, featureCount: 0, note: '' }] }
+    const view = render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} coverage={coverage} />)
+    fireEvent.click(checkbox('Villrein'))
+    act(() => statusHandler('wild-reindeer', 'empty', '5001'))
+    expect(screen.getByText(/Ingen registrerte leveområder for villrein/)).toBeInTheDocument()
+    expect(screen.getByText(/gyldig, tomt bilde/)).toBeInTheDocument()
+    view.rerender(<ExploreThemesWorkspace municipality={{ number: '3431', name: 'Dovre' }} boundary={null} coverage={coverage} coverageState="loading" />)
+    expect(screen.queryByText(/Ingen registrerte leveområder/)).not.toBeInTheDocument()
+    expect(screen.getByText(/Kontrollerer kommunens villreinregistreringer/)).toBeInTheDocument()
+    act(() => statusHandler('wild-reindeer', 'error', '5001'))
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    fireEvent.click(checkbox('Villrein'))
+    expect(screen.queryByText(/Kontrollerer kommunens villreinregistreringer/)).not.toBeInTheDocument()
+  })
+
 })

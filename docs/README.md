@@ -62,8 +62,10 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
-Gjeldende Utforsk-rute viser tre uavhengige kartlag uten automatisk kryssanalyse.
-Se [samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
+Gjeldende Utforsk-rute viser seks uavhengige kartlag uten automatisk kryssanalyse.
+Se [seks lag og kildevalg](decisions/2026-10-12-v3-six-explore-layers.md),
+[reell Trondheim-/Dovre-kontroll](validation/2026-10-12-six-explore-layers.md) og
+[samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
 [A–L-kontroll med skjermbilder](validation/2026-10-09-concurrent-map-layers.md). De tidligere tre
 kartvisningene og korrigert planvisning er manuelt godkjent.
 

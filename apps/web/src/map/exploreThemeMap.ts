@@ -22,7 +22,7 @@ import { register } from 'ol/proj/proj4'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import { filterRegisteredNature, municipalValueLegend, type MunicipalNatureFilter, type MunicipalValuedNature } from '../api/municipalValuedNature'
 import { nationalLandCover2025, valuedNature } from '../datasets/registry'
-import { initialMapLayers, mapLayers, type MapLayerId, type MapLayerState } from '../features/explore-map/mapThemes'
+import { initialMapLayers, mapLayers, supplementalMapLayers, type SupplementalMapLayerId, type MapLayerId, type MapLayerState } from '../features/explore-map/mapThemes'
 import { getIntersection, isEmpty } from 'ol/extent'
 import { ACCOUNT_CRS, ACCOUNT_DETAIL_MAX_RESOLUTION, accountTileGrid, buildRawAccountTileUrl, loadAccountDisplayTileBlob, loadOverviewRaster } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
@@ -31,7 +31,7 @@ import { hatchFutureDevelopment } from './futureDevelopmentSymbology'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
-export type LayerMapStatus = 'idle' | 'loading' | 'ready' | 'error'
+export type LayerMapStatus = 'idle' | 'loading' | 'ready' | 'empty' | 'error'
 export interface LayerMapContext {
   boundary: MunicipalityBoundary | null
   layers: MapLayerState
@@ -66,6 +66,13 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
   const nature = new ImageLayer({ source: natureSource, visible: false, className: 'explore-registered-nature' })
   const plan = new TileLayer<XYZ>({ visible: false, className: 'explore-future-development' })
   plan.on('postrender', hatchFutureDevelopment)
+  const supplemental = Object.fromEntries(supplementalMapLayers.map((definition) => [definition.id,
+    new ImageLayer({ source: new ImageWMS({ url: definition.visualSource.endpoint,
+      params: { LAYERS: definition.visualSource.layer, VERSION: '1.3.0', TRANSPARENT: true },
+      projection: ACCOUNT_CRS, ratio: 1, crossOrigin: 'anonymous', attributions: definition.source }),
+      visible: false, className: `explore-${definition.id}` }),
+  ])) as Record<SupplementalMapLayerId, ImageLayer<ImageWMS>>
+  const supplementalLayers = Object.values(supplemental)
   const localitySource = new VectorSource()
   const styles = new Map<string, Style[]>()
   let selectedId: string | null = null
@@ -88,7 +95,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
   const mask = new VectorLayer({ source: maskSource, className: 'explore-theme-mask', style: new Style({ fill: new Fill({ color: '#F7F9F8' }) }) })
   const border = new VectorLayer({ source: borderSource, style: new Style({ stroke: new Stroke({ color: '#005B42', width: 2 }) }) })
   const view = new View({ projection: ACCOUNT_CRS, center: [270000, 7040000], resolution: 100, enableRotation: false })
-  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, plan, nature, localities, mask, border] })
+  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, ...supplementalLayers, plan, nature, localities, mask, border] })
   let destroyed = false
   let boundary: MunicipalityBoundary | null = null
   let activeLayers = initialMapLayers()
@@ -104,6 +111,9 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     level0: [overview, detail],
     'future-development': [plan],
     'valued-nature': [nature, localities],
+    'intact-nature': [supplemental['intact-nature']],
+    'wild-reindeer': [supplemental['wild-reindeer']],
+    'protected-areas': [supplemental['protected-areas']],
   }
   for (const definition of mapLayers) {
     physicalLayers[definition.id].forEach((layer, index) => {
@@ -112,12 +122,15 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     })
   }
   mask.setZIndex(1000); border.setZIndex(1001)
-  const listeners = (['imageloadstart', 'imageloadend', 'imageloaderror'] as const).map((event) => natureSource.on(event, (e) => {
-    if (destroyed || !nature.getVisible() || !boundary) return
-    const size = map.getSize(), resolution = view.getResolution()
-    const current = size && resolution ? natureSource.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
-    if (e.image === current) syncStatus()
-  }))
+  const listeners = [nature, ...supplementalLayers].flatMap((layer) => {
+    const source = layer.getSource()!
+    return (['imageloadstart', 'imageloadend', 'imageloaderror'] as const).map((event) => source.on(event, (e) => {
+      if (destroyed || !layer.getVisible() || !boundary) return
+      const size = map.getSize(), resolution = view.getResolution()
+      const current = size && resolution ? source.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
+      if (e.image === current) syncStatus()
+    }))
+  })
   const tileListeners = (['tileloadstart', 'tileloadend', 'tileloaderror'] as const).map((event) => accountSource.on(event, () => {
     if (!destroyed && boundary && activeLayers.level0.visible) syncStatus()
   }))
@@ -162,6 +175,28 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     })
     return error ? 'error' : loading ? 'loading' : 'ready'
   }
+  const emptyImages = new WeakMap<object, boolean>()
+  function imageStatus(source: ImageWMS, checkEmpty = false): LayerMapStatus {
+    const size = map.getSize(), resolution = view.getResolution()
+    const image = size && resolution ? source.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
+    if (image?.getState() === ImageState.ERROR) return 'error'
+    if (image?.getState() !== ImageState.LOADED) return 'loading'
+    if (!checkEmpty) return 'ready'
+    // A transparent, successfully decoded WMS image is a valid empty view.
+    // Memoization belongs only to this image's status, never an analysis/result cache.
+    let empty = emptyImages.get(image)
+    if (empty === undefined) {
+      const native = image.getImage(), canvas = document.createElement('canvas')
+      canvas.width = native.width; canvas.height = native.height
+      const context = canvas.getContext('2d')!
+      context.drawImage(native, 0, 0)
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data
+      empty = true
+      for (let i = 3; i < pixels.length; i += 4) if (pixels[i]) { empty = false; break }
+      emptyImages.set(image, empty)
+    }
+    return empty ? 'empty' : 'ready'
+  }
   function syncStatus() {
     for (const definition of mapLayers) {
       const { visible, opacity } = activeLayers[definition.id]
@@ -172,12 +207,8 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
           const coarse = view.getResolution()! >= detail.getMaxResolution()
           status = coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileStatus(detail)
         } else if (definition.id === 'future-development') status = tileStatus(plan)
-        else if (filtered) status = 'ready'
-        else {
-          const size = map.getSize(), resolution = view.getResolution()
-          const image = size && resolution ? natureSource.getImage(view.calculateExtent(size), resolution, window.devicePixelRatio || 1, view.getProjection()) : null
-          status = image?.getState() === ImageState.LOADED ? 'ready' : image?.getState() === ImageState.ERROR ? 'error' : 'loading'
-        }
+        else if (definition.id === 'valued-nature') status = filtered ? 'ready' : imageStatus(natureSource)
+        else status = imageStatus(supplemental[definition.id].getSource()!, true)
       }
       onStatus(definition.id, status, boundary?.properties.number ?? null)
     }
@@ -211,7 +242,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
         if (overviewUrl) URL.revokeObjectURL(overviewUrl)
         overviewUrl = null
         previousData = null
-        for (const layer of [overview, detail, nature, plan, localities]) layer.setExtent(undefined)
+        for (const layer of [overview, detail, nature, plan, localities, ...supplementalLayers]) layer.setExtent(undefined)
         if (boundary) {
           const feature = new GeoJSON().readFeatures(boundary, { dataProjection: 'EPSG:4326', featureProjection: ACCOUNT_CRS })[0]
           borderSource.addFeature(feature)
@@ -220,7 +251,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
             const polygons = geometry instanceof Polygon ? [geometry.getCoordinates()] : geometry.getCoordinates()
             const world = [[-4000000, -1000000], [5000000, -1000000], [5000000, 12000000], [-4000000, 12000000], [-4000000, -1000000]]
             maskSource.addFeature(new Feature(new MultiPolygon([[world, ...polygons.map((rings) => [...rings[0]].reverse())], ...polygons.flatMap((rings) => rings.slice(1).map((hole) => [hole]))])))
-            for (const layer of [overview, detail, nature, plan, localities]) layer.setExtent(geometry.getExtent())
+            for (const layer of [overview, detail, nature, plan, localities, ...supplementalLayers]) layer.setExtent(geometry.getExtent())
           }
           const source = createFutureDevelopmentDisplaySource(boundary.properties.number, borderSource.getExtent()!)
           plan.setSource(source)
@@ -251,6 +282,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       nature.setVisible(boundary !== null && activeLayers['valued-nature'].visible && !filtered)
       localities.setVisible(boundary !== null && activeLayers['valued-nature'].visible && data !== null)
       plan.setVisible(boundary !== null && activeLayers['future-development'].visible)
+      for (const definition of supplementalMapLayers) supplemental[definition.id].setVisible(boundary !== null && activeLayers[definition.id].visible)
       for (const definition of mapLayers) {
         for (const layer of physicalLayers[definition.id]) layer.setOpacity(activeLayers[definition.id].opacity)
       }
@@ -265,7 +297,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       for (const listener of [...listeners, ...tileListeners]) listener.target?.removeEventListener(listener.type, listener.listener)
       if (overviewUrl) URL.revokeObjectURL(overviewUrl)
       overview.getSource()?.dispose(); plan.getSource()?.dispose()
-      for (const source of [accountSource, natureSource, localitySource, maskSource, borderSource]) source.dispose()
+      for (const source of [accountSource, natureSource, localitySource, maskSource, borderSource, ...supplementalLayers.map((layer) => layer.getSource()!)]) source.dispose()
       selectionHandler = null; map.dispose()
     },
   }

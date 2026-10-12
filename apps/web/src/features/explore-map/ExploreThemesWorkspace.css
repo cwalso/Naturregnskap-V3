@@ -37,3 +37,6 @@
 .explore-themes__layer-info + .explore-themes__layer-info, .explore-themes__nature-filter { border-top: 1px solid #c7dedd; margin-top: 1rem; padding-top: 1rem; }
 .explore-themes__layer-info h3 { margin: 0 0 .3rem; font-size: 1rem; }
 @media (max-width: 900px) { .explore-themes__body { grid-template-columns: 1fr; grid-template-areas: "controls" "map" "info"; grid-template-rows: auto; } .explore-themes__canvas { min-height: 400px; height: 56vh; } }
+
+.explore-themes__service-legend img { display: block; max-width: 100%; height: auto; background: white; padding: .25rem; }
+.explore-themes__reference { font-weight: 600; }

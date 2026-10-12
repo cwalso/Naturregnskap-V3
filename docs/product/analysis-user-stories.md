@@ -9,7 +9,8 @@ fortsatt er framtidig.
 ## Gjeldende kartflyt og status
 
 Utforsk i kart viser nå Grunnkart nivå 0, Verdsatte naturtyper og Framtidig
-utbygging som tre uavhengige kartlag. Brukeren kan kombinere 0–3 lag og
+utbygging, Verneområder, INON og Villrein som seks uavhengige kartlag.
+Brukeren kan kombinere 0–6 lag og
 endre gjennomsiktighet uten automatisk zoom. Ingen kryssanalyse startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
 ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
 uten beregnet overlappsareal. Lagvalg og objektvalg bevarer kartutsnittet.
@@ -17,6 +18,9 @@ Filteret påvirker bare naturtypelaget; andre lagvalg bevarer filter og valg.
 Alle av viser bakgrunnskartet. Lagvelgeren kan lukkes på mobil.
 Framtidig utbygging viser dagens Natur og Jordbruk innenfor planformålene.
 Bebygd, vann og ugyldige piksler skjules; ingen arealtall beregnes i visningen.
+INON viser januar 2023, ikke status 2026. Vern og Villrein er løpende
+kildetjenester uten felles referansedato. Villrein viser leveområder;
+registreringsstatus gjenbrukes fra kommunevalget og er ikke en ny analyse.
 
 Delene nedenfor beskriver den **beholdte analysekoden og framtidige analysebehov**.
 Beskrivelser av analyseverkstedet, samtidige plan-/tema-/trefflag og aktiv

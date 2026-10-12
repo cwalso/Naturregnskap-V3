@@ -1,5 +1,6 @@
 import { municipalValueLegend } from '../../api/municipalValuedNature'
 import { futureDevelopmentLegend } from '../../map/futureDevelopmentSymbology'
+import { protectedAreas, infrastructureFreeNature, wildReindeerAreas, type WmsVisualSource } from '../../datasets/registry'
 
 // Reserved identities are internal; only implemented layers appear in the picker.
 export type MapLayerIdentity = 'level0' | 'future-development' | 'valued-nature'
@@ -17,7 +18,48 @@ export interface MapLayerDefinition {
   defaultOpacity: number
   zIndex: number
   filter: 'none' | 'registered-nature'
+  visualSource?: WmsVisualSource
+  reference?: string
+  metadataUrl?: string
+  legendImage?: { url: string; description: string }
 }
+
+function serviceLegend(source: WmsVisualSource, description: string) {
+  const query = new URLSearchParams({ SERVICE: 'WMS', REQUEST: 'GetLegendGraphic', VERSION: '1.3.0', FORMAT: 'image/png', LAYER: source.layer })
+  return { url: `${source.endpoint}?${query}`, description }
+}
+const inonSource = { ...infrastructureFreeNature.visualSource, supportedCrs: ['EPSG:25833', 'CRS:84'] } as const
+const protectedSource = { ...protectedAreas.visualSource, layer: 'naturvern_klasser_omrade', title: 'Klasseinndelte, vedtatte verneområder' }
+export const supplementalMapLayers = [
+  {
+    id: 'intact-nature', name: 'Inngrepsfri natur (INON)', role: 'Supplerende temadata', source: infrastructureFreeNature.attribution,
+    description: 'Områder minst 1 km i luftlinje fra tyngre tekniske inngrep, fordelt på 1–3 km, 3–5 km og villmarkspreget natur (minst 5 km).',
+    note: 'Statusgrunnlaget er januar 2023, ikke dagens situasjon i 2026. Avstand til inngrep er en supplerende indikator, ikke økosystemtype eller mål på naturtilstand. Ingen endringsanalyse eller arealberegning utføres.',
+    reference: 'Status: januar 2023', metadataUrl: infrastructureFreeNature.metadataUrl,
+    visualSource: inonSource, legend: [],
+    legendImage: serviceLegend(inonSource, 'INON: minst 5 km (villmarkspreget natur), 3–5 km (sone 1), 1–3 km (sone 2) fra inngrep.'),
+    defaultVisible: false, defaultOpacity: 0.65, zIndex: 12, filter: 'none',
+  },
+  {
+    id: 'wild-reindeer', name: 'Villrein', role: 'Supplerende temadata', source: wildReindeerAreas.attribution,
+    description: 'Registrerte biologiske leveområder for villrein fra Villreinbasen.',
+    note: 'Regional kartlegging i Sør-Norge. Leveområder betyr ikke at villrein oppholder seg overalt til enhver tid. Grensene er ikke regionale planers sonegrenser. Null registreringer er ikke en generell vurdering av naturkvalitet.',
+    reference: 'Løpende kildetjeneste · ingen felles referansedato', metadataUrl: 'https://kartkatalog.miljodirektoratet.no/MapService/Details/villrein',
+    visualSource: wildReindeerAreas.visualSource, legend: [],
+    legendImage: serviceLegend(wildReindeerAreas.visualSource, 'Villrein leveområde: blå prikket flate med blå grense.'),
+    defaultVisible: false, defaultOpacity: 1, zIndex: 15, filter: 'none',
+  },
+  {
+    id: 'protected-areas', name: 'Verneområder', role: 'Supplerende temadata', source: protectedAreas.attribution,
+    description: 'Vedtatte verneområder med kildens klasseinndeling: nasjonalpark, naturreservat, landskapsvernområde, marint verneområde og annen fredning.',
+    note: 'Foreslåtte verneområder vises ikke. Formelt vern er supplerende temadata og dokumenterer ikke alene naturtilstand. Dataene er ikke låst til en årsversjon.',
+    reference: 'Løpende vernedata · vedtatt vern', metadataUrl: 'https://kartkatalog.miljodirektoratet.no/MapService/Details/vern',
+    visualSource: protectedSource, legend: [],
+    legendImage: serviceLegend(protectedSource, 'Verneform: annen fredning, landskapsvernområde, marint verneområde, nasjonalpark og naturreservat, med kildens farger og skravur.'),
+    defaultVisible: false, defaultOpacity: 1, zIndex: 40, filter: 'none',
+  },
+] as const satisfies readonly MapLayerDefinition[]
+export type SupplementalMapLayerId = typeof supplementalMapLayers[number]['id']
 
 export const mapLayers = [
   {
@@ -37,6 +79,7 @@ export const mapLayers = [
     note: 'Mørk grønn og gul skravur markerer planlaget over en delvis transparent bakgrunn. Bebygd areal, vann og ukjente piksler skjules. Kartet viser dagens arealdekke innenfor planavsetninger, ikke bokført naturtap eller en prognose for faktisk framtidig naturtap.',
     legend: futureDevelopmentLegend,
   },
+  ...supplementalMapLayers,
 ] as const satisfies readonly MapLayerDefinition[]
 export type MapLayerId = typeof mapLayers[number]['id']
 export interface MapLayerSettings { readonly visible: boolean; readonly opacity: number }

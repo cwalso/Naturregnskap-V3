@@ -1,0 +1,731 @@
+{
+ "currentVersion": 10.91,
+ "id": 1,
+ "name": "naturvern_klasser_omrade",
+ "type": "Feature Layer",
+ "description": "",
+ "geometryType": "esriGeometryPolygon",
+ "sourceSpatialReference": {
+  "wkid": 25833,
+  "latestWkid": 25833
+ },
+ "copyrightText": "",
+ "parentLayer": null,
+ "subLayers": [],
+ "minScale": 0,
+ "maxScale": 0,
+ "drawingInfo": {
+  "renderer": {
+   "type": "uniqueValue",
+   "field1": "verneformAggregert",
+   "field2": null,
+   "field3": null,
+   "defaultSymbol": null,
+   "defaultLabel": null,
+   "uniqueValueInfos": [
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSBackwardDiagonal",
+      "color": [
+       225,
+       125,
+       255,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        200,
+        100,
+        225,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "annenFredning",
+     "label": "Annen fredning",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSBackwardDiagonal",
+      "color": [
+       0,
+       225,
+       0,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        50,
+        100,
+        50,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "landskapsvernområde",
+     "label": "Landskapsvernområde",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSBackwardDiagonal",
+      "color": [
+       255,
+       128,
+       0,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        255,
+        128,
+        0,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "marintVerneområde",
+     "label": "Marint verneområde",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSBackwardDiagonal",
+      "color": [
+       0,
+       125,
+       0,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        50,
+        150,
+        50,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "nasjonalpark",
+     "label": "Nasjonalpark",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSBackwardDiagonal",
+      "color": [
+       255,
+       0,
+       0,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        175,
+        0,
+        0,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "naturreservat",
+     "label": "Naturreservat",
+     "description": ""
+    }
+   ],
+   "fieldDelimiter": ","
+  },
+  "transparency": 0,
+  "labelingInfo": null
+ },
+ "defaultVisibility": false,
+ "extent": {
+  "xmin": -383818.5499999998,
+  "ymin": 6448253.720000001,
+  "xmax": 1099462.6900000004,
+  "ymax": 9000718.77,
+  "spatialReference": {
+   "wkid": 25833,
+   "latestWkid": 25833
+  }
+ },
+ "hasAttachments": false,
+ "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+ "displayField": "naturvernId",
+ "typeIdField": null,
+ "subtypeFieldName": null,
+ "subtypeField": null,
+ "defaultSubtypeCode": null,
+ "fields": [
+  {
+   "name": "naturvernId",
+   "type": "esriFieldTypeString",
+   "alias": "lokalId",
+   "length": 10,
+   "domain": null
+  },
+  {
+   "name": "cddaId",
+   "type": "esriFieldTypeString",
+   "alias": "cddaId",
+   "length": 20,
+   "domain": null
+  },
+  {
+   "name": "navn",
+   "type": "esriFieldTypeString",
+   "alias": "navn",
+   "length": 100,
+   "domain": null
+  },
+  {
+   "name": "offisieltNavn",
+   "type": "esriFieldTypeString",
+   "alias": "offisielt navn",
+   "length": 150,
+   "domain": null
+  },
+  {
+   "name": "faktaark",
+   "type": "esriFieldTypeString",
+   "alias": "faktaark",
+   "length": 255,
+   "domain": null
+  },
+  {
+   "name": "verneform",
+   "type": "esriFieldTypeString",
+   "alias": "verneform",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_Verneform",
+    "description": "Kodeliste for Verneform",
+    "codedValues": [
+     {
+      "name": "biotopvern",
+      "code": "Biotopvern"
+     },
+     {
+      "name": "biotopvern (Svalbardmiljøloven)",
+      "code": "BiotopvernSvalbard"
+     },
+     {
+      "name": "biotopvern etter viltloven",
+      "code": "BiotopvernVilt"
+     },
+     {
+      "name": "dyrefredningsområde",
+      "code": "Dyrefredningsomrade"
+     },
+     {
+      "name": "dyrelivsfredning",
+      "code": "Dyrelivsfredning"
+     },
+     {
+      "name": "geotopvern (Svalbardmiljøloven)",
+      "code": "GeotopvernSvalbard"
+     },
+     {
+      "name": "landskapsvernområde",
+      "code": "Landskapsvernomraade"
+     },
+     {
+      "name": "landskapsvernområde med dyrelivsfredning",
+      "code": "LandskapsvernomraadeDyrelivsfredning"
+     },
+     {
+      "name": "landskapsvernområde med plante- og dyrelivsfredning",
+      "code": "LandskapsvernomraadePlanteOgDyrelivsfredning"
+     },
+     {
+      "name": "landskapsvernområde med plantelivsfredning",
+      "code": "LandskapsvernomraadePlantelivsfredning"
+     },
+     {
+      "name": "marint verneområde (annet lovverk)",
+      "code": "MarintVerneomraadeAnnet"
+     },
+     {
+      "name": "marint verneområde (naturmangfoldloven)",
+      "code": "MarintVerneomraade"
+     },
+     {
+      "name": "midlertidig verna område/objekt",
+      "code": "MidlertidigVernaOmraade"
+     },
+     {
+      "name": "nasjonalpark",
+      "code": "Nasjonalpark"
+     },
+     {
+      "name": "nasjonalpark (Svalbardmiljøloven)",
+      "code": "NasjonalparkSvalbard"
+     },
+     {
+      "name": "naturminne",
+      "code": "Naturminne"
+     },
+     {
+      "name": "naturreservat",
+      "code": "Naturreservat"
+     },
+     {
+      "name": "naturreservat (Svalbardmiljøloven)",
+      "code": "NaturreservatSvalbard"
+     },
+     {
+      "name": "plante- og dyrefredningsområde",
+      "code": "PlanteOgDyrefredningsomraade"
+     },
+     {
+      "name": "plante- og dyrelivsfredning",
+      "code": "PlanteOgDyrelivsfredning"
+     },
+     {
+      "name": "plantefredningsområde",
+      "code": "Plantefredningsomraade"
+     },
+     {
+      "name": "plantelivsfredning",
+      "code": "Plantelivsfredning"
+     },
+     {
+      "name": "landskapsvernområde med biotopvern",
+      "code": "LandskapsvernomraadeBiotopvern"
+     },
+     {
+      "name": "Naturreservat (Jan Mayen)",
+      "code": "NaturreservatJanMayen"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "verneforskrift",
+   "type": "esriFieldTypeString",
+   "alias": "verneforskrift",
+   "length": 200,
+   "domain": null
+  },
+  {
+   "name": "vernedato",
+   "type": "esriFieldTypeDate",
+   "alias": "vernedato",
+   "length": 8,
+   "domain": null
+  },
+  {
+   "name": "foerstegangVernet",
+   "type": "esriFieldTypeDate",
+   "alias": "førstegangVernet",
+   "length": 8,
+   "domain": null
+  },
+  {
+   "name": "verneplan",
+   "type": "esriFieldTypeString",
+   "alias": "verneplan",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_VernVerneplan",
+    "description": "Kodeliste for VernVerneplan",
+    "codedValues": [
+     {
+      "name": "Verneplan for nasjonalparker og andre større verneområder",
+      "code": "VerneplanNasjonalpark"
+     },
+     {
+      "name": "Verneplan for våtmark",
+      "code": "VerneplanVatmark"
+     },
+     {
+      "name": "Verneplan for myr",
+      "code": "VerneplanMyr"
+     },
+     {
+      "name": "Verneplan for edelløvskog/rike løvskoger",
+      "code": "VerneplanLoevskog"
+     },
+     {
+      "name": "Verneplan for sjøfugl",
+      "code": "VerneplanSjoefugl"
+     },
+     {
+      "name": "Skogvern",
+      "code": "Skogvern"
+     },
+     {
+      "name": "Marin verneplan",
+      "code": "MarinVerneplan"
+     },
+     {
+      "name": "Annet vern eller verneplan",
+      "code": "AnnetVern"
+     },
+     {
+      "name": "Kvartærgeologi",
+      "code": "Kvartaergeologi"
+     },
+     {
+      "name": "Fossiler",
+      "code": "Fossiler"
+     },
+     {
+      "name": "Ikke vurdert",
+      "code": "IkkeVurdert"
+     },
+     {
+      "name": "Supplerende vern",
+      "code": "SupplerendeVern"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "kommune",
+   "type": "esriFieldTypeString",
+   "alias": "kommune",
+   "length": 200,
+   "domain": null
+  },
+  {
+   "name": "forvaltningsmyndighet",
+   "type": "esriFieldTypeString",
+   "alias": "forvaltningsmyndighet",
+   "length": 255,
+   "domain": null
+  },
+  {
+   "name": "forvaltningsmyndighetType",
+   "type": "esriFieldTypeString",
+   "alias": "forvaltningsmyndighetType",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_ForvaltningsmyndighetType",
+    "description": "Kodeliste for ForvaltningsmyndighetType",
+    "codedValues": [
+     {
+      "name": "Fylkesmann",
+      "code": "Fylkesmann"
+     },
+     {
+      "name": "Kommune",
+      "code": "Kommune"
+     },
+     {
+      "name": "Nasjonalparkstyre",
+      "code": "Nasjonalparkstyre"
+     },
+     {
+      "name": "Verneområdestyre",
+      "code": "Verneomraadestyre"
+     },
+     {
+      "name": "Sysselmannen",
+      "code": "Sysselmannen"
+     },
+     {
+      "name": "Fylkesmann og kommune",
+      "code": "FylkesmannOgKommune"
+     },
+     {
+      "name": "Ikke vurdert",
+      "code": "IkkeVurdert"
+     },
+     {
+      "name": "Statsforvalter og Kommune",
+      "code": "StatsforvalterOgKommune"
+     },
+     {
+      "name": "Statsforvalter",
+      "code": "Statsforvalter"
+     },
+     {
+      "name": "Sysselmesteren",
+      "code": "Sysselmesteren"
+     },
+     {
+      "name": "Statsforvalter og tilsynsutvalg",
+      "code": "StatsforvalterOgTilsynsutvalg"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "iucn",
+   "type": "esriFieldTypeString",
+   "alias": "iucn",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_IUCN",
+    "description": "Kodeliste for IUCN",
+    "codedValues": [
+     {
+      "name": "IUCN IA",
+      "code": "IUCN_IA"
+     },
+     {
+      "name": "IUCN IB",
+      "code": "IUCN_IB"
+     },
+     {
+      "name": "IUCN II",
+      "code": "IUCN_II"
+     },
+     {
+      "name": "IUCN III",
+      "code": "IUCN_III"
+     },
+     {
+      "name": "IUCN IV",
+      "code": "IUCN_IV"
+     },
+     {
+      "name": "IUCN V",
+      "code": "IUCN_V"
+     },
+     {
+      "name": "IUCN VI",
+      "code": "IUCN_VI"
+     },
+     {
+      "name": "Ingen - ikke vurdert",
+      "code": "IkkeVurdert"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "revisjon",
+   "type": "esriFieldTypeString",
+   "alias": "revisjon",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_VernRevidert",
+    "description": "Kodeliste for VernRevidert",
+    "codedValues": [
+     {
+      "name": "Ikke revidert",
+      "code": "IkkeRevidert"
+     },
+     {
+      "name": "Revidert",
+      "code": "Revidert"
+     },
+     {
+      "name": "Under revisjon",
+      "code": "UnderRevisjon"
+     },
+     {
+      "name": "Ikke vurdert",
+      "code": "IkkeVurdert"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "majorEcosystemType",
+   "type": "esriFieldTypeString",
+   "alias": "majorEcosystemType",
+   "length": 50,
+   "domain": {
+    "type": "codedValue",
+    "name": "Kode_MajorEcosystemType",
+    "description": "Kodeliste for MajorEcosystemType",
+    "codedValues": [
+     {
+      "name": "Marin",
+      "code": "Marin"
+     },
+     {
+      "name": "Marin og terrestrisk",
+      "code": "MarinOgTerrestrisk"
+     },
+     {
+      "name": "Terrestrisk",
+      "code": "Terrestrisk"
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "SHAPE",
+   "type": "esriFieldTypeGeometry",
+   "alias": "SHAPE",
+   "domain": null
+  },
+  {
+   "name": "GlobalID",
+   "type": "esriFieldTypeGlobalID",
+   "alias": "GlobalId",
+   "length": 38,
+   "domain": null
+  },
+  {
+   "name": "verneformAggregert",
+   "type": "esriFieldTypeString",
+   "alias": "verneformAggregert",
+   "length": 255,
+   "domain": null
+  },
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  },
+  {
+   "name": "NaturvernFKID",
+   "type": "esriFieldTypeGUID",
+   "alias": "NaturvernFKID",
+   "length": 38,
+   "domain": null
+  },
+  {
+   "name": "SHAPE.STArea()",
+   "type": "esriFieldTypeDouble",
+   "alias": "SHAPE.STArea()",
+   "domain": null
+  },
+  {
+   "name": "SHAPE.STLength()",
+   "type": "esriFieldTypeDouble",
+   "alias": "SHAPE.STLength()",
+   "domain": null
+  }
+ ],
+ "geometryField": {
+  "name": "SHAPE",
+  "type": "esriFieldTypeGeometry",
+  "alias": "SHAPE"
+ },
+ "indexes": [
+  {
+   "name": "I102verneform",
+   "fields": "verneform",
+   "isAscending": true,
+   "isUnique": false,
+   "description": ""
+  },
+  {
+   "name": "G102naturvernId",
+   "fields": "naturvernId",
+   "isAscending": true,
+   "isUnique": false,
+   "description": ""
+  },
+  {
+   "name": "UUID_69",
+   "fields": "GlobalID",
+   "isAscending": true,
+   "isUnique": true,
+   "description": ""
+  },
+  {
+   "name": "gdb_ct3_69",
+   "fields": "OBJECTID",
+   "isAscending": true,
+   "isUnique": false,
+   "description": ""
+  },
+  {
+   "name": "S20_idx",
+   "fields": "SHAPE",
+   "isAscending": true,
+   "isUnique": true,
+   "description": ""
+  }
+ ],
+ "subtypes": [],
+ "relationships": [
+  {
+   "id": 0,
+   "name": "Naturvern_Kommune",
+   "relatedTableId": 11,
+   "role": "esriRelRoleOrigin",
+   "keyField": "naturvernId",
+   "cardinality": "esriRelCardinalityOneToMany",
+   "composite": false
+  },
+  {
+   "id": 1,
+   "name": "Naturvern_Nettverk",
+   "relatedTableId": 12,
+   "role": "esriRelRoleOrigin",
+   "keyField": "naturvernId",
+   "cardinality": "esriRelCardinalityOneToMany",
+   "composite": false
+  }
+ ],
+ "canModifyLayer": true,
+ "canScaleSymbols": false,
+ "hasLabels": false,
+ "capabilities": "Map,Query,Data",
+ "maxRecordCount": 2000,
+ "supportsStatistics": true,
+ "supportsAdvancedQueries": true,
+ "supportedQueryFormats": "JSON, geoJSON",
+ "isDataVersioned": false,
+ "ownershipBasedAccessControlForFeatures": {"allowOthersToQuery": true},
+ "useStandardizedQueries": true,
+ "advancedQueryCapabilities": {
+  "useStandardizedQueries": true,
+  "supportsStatistics": true,
+  "supportsHavingClause": true,
+  "supportsCountDistinct": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsPagination": true,
+  "supportsTrueCurve": true,
+  "supportsReturningQueryExtent": true,
+  "supportsQueryWithDistance": true,
+  "supportsSqlExpression": true
+ },
+ "supportsDatumTransformation": true,
+ "hasGeometryProperties": true,
+ "geometryProperties": {
+  "shapeAreaFieldName": "SHAPE.STArea()",
+  "shapeLengthFieldName": "SHAPE.STLength()",
+  "units": "esriMeters"
+ },
+ "dateFieldsTimeReference": null,
+ "supportsCoordinatesQuantization": true
+}
