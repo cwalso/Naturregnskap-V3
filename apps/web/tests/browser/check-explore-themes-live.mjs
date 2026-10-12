@@ -241,7 +241,7 @@ try {
     await painted(); await screenshot('L-mobile-closed')
     assert.equal(await page.getByRole('checkbox').count(), 0)
     assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 3)
-    await toggle.click(); assert.equal(await page.getByRole('checkbox').count(), 6); await panelLayout(); await screenshot('L-mobile-open')
+    await toggle.click(); assert.equal(await page.getByRole('checkbox').count(), 7); await panelLayout(); await screenshot('L-mobile-open')
     for (const [ids, name] of [[['future-development'], 'L-mobile-future'], [Object.keys(names), 'L-mobile-all'], [[], 'L-mobile-none']]) {
       await layers(ids); assert.deepEqual(await viewState(), before)
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))

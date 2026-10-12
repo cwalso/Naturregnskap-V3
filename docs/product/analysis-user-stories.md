@@ -9,8 +9,8 @@ fortsatt er framtidig.
 ## Gjeldende kartflyt og status
 
 Utforsk i kart viser nå Grunnkart nivå 0, Verdsatte naturtyper og Framtidig
-utbygging, Verneområder, INON og Villrein som seks uavhengige kartlag.
-Brukeren kan kombinere 0–6 lag og
+utbygging, Verneområder, INON, Villrein og Grå arealer som sju uavhengige kartlag.
+Brukeren kan kombinere 0–7 lag og
 endre gjennomsiktighet uten automatisk zoom. Ingen kryssanalyse startes der. Naturtypefilteret gjelder kommunens registrerte lokaliteter,
 ikke planoverlapp; objektinformasjon viser kilde-ID og registrerte egenskaper,
 uten beregnet overlappsareal. Lagvalg og objektvalg bevarer kartutsnittet.
@@ -292,3 +292,15 @@ hvordan lagring, størrelsesgrenser og datakvalitet formidles. Områdene skal ha
 eksplisitt identitet, kilde og rolle. Innlasting skal valideres før analyse;
 en egen tegning skal ikke automatisk erstatte gjeldende plan. Plansammenligning
 krever egen faglig beslutning om gjeldende og foreslått arealbruk, jf. del 7.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).

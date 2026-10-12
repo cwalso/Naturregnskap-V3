@@ -46,7 +46,7 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-Oppgavebranchen viser seks uavhengige kartlag:
+Oppgavebranchen viser sju uavhengige kartlag:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
@@ -54,16 +54,17 @@ Oppgavebranchen viser seks uavhengige kartlag:
 4. Verneområder – vedtatt vern, fem verneformklasser.
 5. Inngrepsfri natur (INON) – januar 2023, tre avstandssoner.
 6. Villrein – registrerte biologiske leveområder fra Villreinbasen.
+7. Grå arealer – offisielt kartprodukt testversjon 1, med kildebaserte vegetasjonsandeler.
 
-`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–6 lag
+`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–7 lag
 med avkryssing og egen gjennomsiktighet. Nivå 0 ligger nederst (30 %
-gjennomsiktighet), så INON (35 %) og Villrein, deretter plan/naturtyper og
+gjennomsiktighet), så Grå arealer (25 %), INON (35 %) og Villrein, deretter plan/naturtyper og
 verneområder. Øvrige lag starter med 0 % ekstra gjennomsiktighet.
 Kommunemaske/grense ligger over alle; bakgrunnskartet vises også med alle av.
 Lagvalg, gjennomsiktighet, søk, filter og lokalitetsvalg beholder utsnittet.
 Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
 Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
-men bare de seks implementerte lagene vises. Nye WMS-lag bruker kildens
+men bare de sju implementerte lagene vises. Nye WMS-lag bruker kildens
 symboler/legender og kommuneavgrensning, uten areal- eller overlappsberegning.
 Villrein er automatisk kontrollert i Dovre (registreringer) og Trondheim (ingen). Planvisningen bruker uendret
 DiBK-filter og viser dagens
@@ -245,3 +246,15 @@ Start her:
 Gamle ADR-er er historiske beslutningslogger og skal normalt ikke omskrives.
 Nyere ADR-er og dagens eksplisitte levende dokumentasjon gjelder når retningen
 er endret.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).

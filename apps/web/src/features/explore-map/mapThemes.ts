@@ -18,6 +18,7 @@ export interface MapLayerDefinition {
   defaultOpacity: number
   zIndex: number
   filter: 'none' | 'registered-nature'
+  maxResolution?: number
   visualSource?: WmsVisualSource
   reference?: string
   metadataUrl?: string
@@ -25,12 +26,35 @@ export interface MapLayerDefinition {
 }
 
 function serviceLegend(source: WmsVisualSource, description: string) {
-  const query = new URLSearchParams({ SERVICE: 'WMS', REQUEST: 'GetLegendGraphic', VERSION: '1.3.0', FORMAT: 'image/png', LAYER: source.layer })
+  const query = new URLSearchParams({ SERVICE: 'WMS', REQUEST: 'GetLegendGraphic', VERSION: '1.3.0', FORMAT: 'image/png', SLD_VERSION: source.legend.sldVersion, LAYER: source.layer })
   return { url: `${source.endpoint}?${query}`, description }
 }
+export const greyAreaSource: WmsVisualSource = {
+  type: 'wms', endpoint: 'https://wms.nibio.no/cgi-bin/graastruktur', layer: 'graa_arealer',
+  title: 'Kart over grå arealer – testversjon 1', version: '1.3.0',
+  supportedCrs: ['EPSG:25833', 'EPSG:3857', 'EPSG:4258'], legend: { format: 'image/png', sldVersion: '1.1.0' },
+}
+export const greyPresentations = [
+  { layer: 'graa_arealer', label: 'Grå arealer', description: 'Kildens avgrensning av grå arealer.', legendImage: serviceLegend(greyAreaSource, 'Grå arealer: kildens grå flate.') },
+  { layer: 'andel_uten_vegetasjon', label: 'Andel uten vegetasjon', description: 'Kildens estimerte andel uten vegetasjon innenfor hvert gråarealobjekt, i prosent.', legendImage: serviceLegend({ ...greyAreaSource, layer: 'andel_uten_vegetasjon' }, 'Andel uten vegetasjon: kildens prosentklasser.') },
+  { layer: 'andel_med_vegetasjon', label: 'Andel med vegetasjon', description: 'Kildens estimerte andel med vegetasjon innenfor hvert gråarealobjekt, i prosent.', legendImage: serviceLegend({ ...greyAreaSource, layer: 'andel_med_vegetasjon' }, 'Andel med vegetasjon: kildens prosentklasser.') },
+] as const
+export type GreyPresentation = typeof greyPresentations[number]['layer']
+
 const inonSource = { ...infrastructureFreeNature.visualSource, supportedCrs: ['EPSG:25833', 'CRS:84'] } as const
 const protectedSource = { ...protectedAreas.visualSource, layer: 'naturvern_klasser_omrade', title: 'Klasseinndelte, vedtatte verneområder' }
 export const supplementalMapLayers = [
+  {
+    id: 'grey-areas', name: 'Grå arealer', role: 'Supplerende temadata',
+    source: 'Miljødirektoratet, Kartverket, NIBIO og SSB · karttjeneste: NIBIO',
+    visualSource: greyAreaSource, maxResolution: 70,
+    description: 'Det offisielle kartproduktets grå arealer: utbygde eller sterkt påvirkede områder, inkludert tilhørende arealer. Velg avgrensning eller kildens vegetasjonsandeler.',
+    note: 'Testversjon 1 bygger på en testutgave av Grunnkart fra 2025 og supplerende kilder med ulik alder. Grå arealer er ikke identisk med Bebygd i nivå 0 og betyr ikke ledig areal eller fortettingspotensial. Vegetasjonsandeler er kildeestimater per objekt, ikke kommunale andeler eller egne beregninger. Visning ved 1:250 000 eller nærmere; manglende flate kan skyldes kartgrunnlaget.',
+    reference: 'Kartprodukt: versjon 1 · WMS: testversjon 1 · sammensatt kildegrunnlag',
+    metadataUrl: 'https://data.norge.no/nb/data-services/f241d863-8e66-3b23-b740-bfe6f1a5af80/kart-over-gra-arealer-wms-testversjon-1',
+    legend: [], legendImage: greyPresentations[0].legendImage,
+    defaultVisible: false, defaultOpacity: 0.75, zIndex: 11, filter: 'none',
+  },
   {
     id: 'intact-nature', name: 'Inngrepsfri natur (INON)', role: 'Supplerende temadata', source: infrastructureFreeNature.attribution,
     description: 'Områder minst 1 km i luftlinje fra tyngre tekniske inngrep, fordelt på 1–3 km, 3–5 km og villmarkspreget natur (minst 5 km).',

@@ -117,7 +117,7 @@ Supplerende naturtyper og heldekkende nivå 0 holdes metodisk adskilt.
 
 Tegnet polygon er implementert som analyseområde i den beholdte
 metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
-arbeidsflaten; primærmodellen nå er seks uavhengige kartlag.
+arbeidsflaten; primærmodellen nå er sju uavhengige kartlag.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 
@@ -163,3 +163,15 @@ automatisert beslutningsstøtte skal omtales som mulig videreutvikling.
 
 Første versjon bør først og fremst etablere et felles og etterprøvbart
 regnskapsgrunnlag og en forståelig måte å bruke det på.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).

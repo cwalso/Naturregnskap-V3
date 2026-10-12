@@ -91,15 +91,15 @@ omriss som forskjellige ting, uten å beregne nye tall.
 ## Uavhengige kartlag i Utforsk i kart
 
 `ExploreThemesWorkspace` er koblet til App-ruten. `exploreThemeMap` har én
-OpenLayers-instans for seks lag, inkludert vern, INON og villrein. Et lite typet
+OpenLayers-instans for sju lag, inkludert vern, INON, villrein og Grå arealer. Et lite typet
 lagregister styrer velger, faglig rolle, kildebeskrivelse, tegnforklaring,
 filtertype, standard synlighet/opasitet og zIndex. Synlighet/opasitet lagres
-uavhengig per implementert ID. To andre ID-er er reservert, uten nye kilder.
-Grunnkart ligger på zIndex 10, INON 12, Villrein 15, plan 20,
+uavhengig per implementert ID. FKB-Grønnstruktur-ID er reservert uten montert kilde eller aktiv kontroll, fordi offentlig bruksrett er uavklart.
+Grunnkart ligger på zIndex 10, Grå arealer 11, INON 12, Villrein 15, plan 20,
 naturtype-WMS 30, kildegeometri 31 og verneområder 40.
 Kommunemasken og grensen ligger på 1000/1001. Gjennomsiktighet gjelder alle
 fysiske deler av samme logiske lag. Nivå 0 starter med opasitet 0,7,
-INON med 0,65, øvrige med 1.
+INON med 0,65, Grå arealer med 0,75, øvrige med 1.
 Grunnkart/plan kan skjules uten å endre naturtypefilter eller objektvalg.
 Naturtypelaget skjult fjerner objektvalg; filteret bevares. REST-kall avbrytes
 ved skjuling/kommunebytte, og sene svar får ikke ny eier. Status eies per lag
@@ -404,3 +404,15 @@ docs/
 ```
 
 Ikke fyll strukturen med abstraksjoner før funksjonalitet krever dem.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).

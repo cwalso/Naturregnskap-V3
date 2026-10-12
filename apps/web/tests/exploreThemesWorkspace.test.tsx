@@ -91,8 +91,8 @@ describe('uavhengige kartlag', () => {
   })
   it('har tre faglige grupper, ingen uvirksomme lag og en velger som kan lukkes uten å fjerne kartet', () => {
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    expect(screen.getAllByRole('checkbox')).toHaveLength(6)
-    for (const role of ['Regnskapsgrunnlag', 'Plandata', 'Supplerende temadata']) expect(within(screen.getByRole('group', { name: role })).getAllByRole('checkbox')).toHaveLength(role === 'Supplerende temadata' ? 4 : 1)
+    expect(screen.getAllByRole('checkbox')).toHaveLength(7)
+    for (const role of ['Regnskapsgrunnlag', 'Plandata', 'Supplerende temadata']) expect(within(screen.getByRole('group', { name: role })).getAllByRole('checkbox')).toHaveLength(role === 'Supplerende temadata' ? 5 : 1)
     fireEvent.click(screen.getByRole('button', { name: /Kartlag/ }))
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Interaktivt kart i Trondheim' })).toBeInTheDocument()
@@ -100,24 +100,39 @@ describe('uavhengige kartlag', () => {
     expect(controller.destroy).not.toHaveBeenCalled()
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   })
-  it('støtter alle 64 kombinasjoner uten å endre utsnitt, og har kildelegend og INON-år', async () => {
+  it('støtter alle 128 kombinasjoner uten å endre utsnitt, og har kildelegend og INON-år', async () => {
     request.mockResolvedValue(data)
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    const names = ['Grunnkart nivå 0', 'Framtidig utbygging', 'Verdsatte naturtyper', 'Verneområder', 'Inngrepsfri natur (INON)', 'Villrein']
-    const ids = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer']
+    const names = ['Grunnkart nivå 0', 'Framtidig utbygging', 'Verdsatte naturtyper', 'Verneområder', 'Inngrepsfri natur (INON)', 'Villrein', 'Grå arealer']
+    const ids = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer', 'grey-areas']
     const choices = names.map(checkbox) as HTMLInputElement[]
-    for (let bits = 0; bits < 64; bits++) {
+    for (let bits = 0; bits < 128; bits++) {
       await act(async () => { choices.forEach((input, i) => { if (input.checked !== !!(bits & (1 << i))) fireEvent.click(input) }) })
       const state = controller.update.mock.calls.at(-1)![0].layers
       ids.forEach((id, i) => expect(state[id].visible).toBe(!!(bits & (1 << i))))
       expect(document.querySelectorAll('.explore-themes__layer-info')).toHaveLength(ids.filter((_, i) => bits & (1 << i)).length)
     }
     expect(screen.getByText('Status: januar 2023')).toBeInTheDocument()
-    expect(screen.getAllByRole('img')).toHaveLength(3)
+    expect(screen.getAllByRole('img')).toHaveLength(4)
     fireEvent.change(screen.getByRole('slider', { name: 'Gjennomsiktighet – Inngrepsfri natur (INON)' }), { target: { value: '75' } })
     expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ layers: expect.objectContaining({ 'intact-nature': { visible: true, opacity: 0.25 }, 'wild-reindeer': { visible: true, opacity: 1 } }) }))
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   }, 15000)
+  it('bytter bare gråarealframstilling og matching kildelegend, og viser målestokkforbehold', () => {
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    expect(screen.queryByRole('checkbox', { name: /FKB/ })).not.toBeInTheDocument()
+    fireEvent.click(checkbox('Grå arealer'))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Framstilling – Grå arealer' }), { target: { value: 'andel_med_vegetasjon' } })
+    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ greyPresentation: 'andel_med_vegetasjon', layers: expect.objectContaining({ level0: { visible: true, opacity: 0.7 }, 'grey-areas': { visible: true, opacity: 0.75 } }) }))
+    expect(screen.getByAltText('Andel med vegetasjon: kildens prosentklasser.')).toHaveAttribute('src', expect.stringContaining('LAYER=andel_med_vegetasjon'))
+    expect(screen.getByAltText('Andel med vegetasjon: kildens prosentklasser.')).toHaveAttribute('src', expect.stringContaining('SLD_VERSION=1.1.0'))
+    act(() => statusHandler('grey-areas', 'out-of-scale', '5001'))
+    expect(screen.getByText(/Zoom inn for å se kartdata/)).toBeInTheDocument()
+    expect(screen.queryByText(/gyldig, tomt bilde/)).not.toBeInTheDocument()
+    fireEvent.click(checkbox('Grå arealer')); fireEvent.click(checkbox('Grå arealer'))
+    expect(screen.getByRole('combobox', { name: 'Framstilling – Grå arealer' })).toHaveValue('andel_med_vegetasjon')
+    expect(controller.fitToMunicipality).not.toHaveBeenCalled()
+  })
   it('skiller tomt villreinbilde og bekreftet null registreringer fra feil og gammel kommune', () => {
     const coverage = { municipalityNumber: '5001', municipalityName: 'Trondheim', methodVersion: 'thematic-intersection-v1' as const, warnings: [], results: [{ datasetId: 'wild-reindeer-areas' as const, status: 'no_hit' as const, featureCount: 0, note: '' }] }
     const view = render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} coverage={coverage} />)

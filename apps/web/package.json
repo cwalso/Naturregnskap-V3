@@ -13,7 +13,8 @@
     "test:browser:workspace": "node tests/browser/check-explore-workspace-live.mjs",
     "test:browser:themes": "node tests/browser/check-explore-themes-live.mjs",
     "test:browser:layers": "node tests/browser/check-explore-layers-render.mjs",
-    "test:browser:six:live": "node tests/browser/check-explore-six-layers-live.mjs"
+    "test:browser:six:live": "node tests/browser/check-explore-six-layers-live.mjs",
+    "test:browser:grey:live": "node tests/browser/check-explore-grey-layers-live.mjs"
   },
   "dependencies": {
     "ol": "^10.6.1",

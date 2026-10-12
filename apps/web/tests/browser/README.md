@@ -73,5 +73,10 @@ navigasjon, 390 px og kommunebytte. Dovre har faktisk villreinkart, Trondheim
 har gyldig tomt bilde og null registreringer. Source-canvas, et punkt innenfor
 kommunepolygonet og faktisk sammensatt skjermpiksel sammenlignes mot base.
 Reelle karttjenester og browser-screenshots er akseptgrunnlag; kontrollerte
-fixtures brukes separat til regresjon av 64 kombinasjoner, WMS-tomstatus,
+fixtures brukes separat til regresjon av 128 kombinasjoner, WMS-tomstatus,
 sen feil fra skjult lag, maskering, opasitet, rekkefølge og opprydding.
+
+`npm run test:browser:grey:live` bruker port 5188 og reelle tjenester i
+Trondheim/Dovre: tre kildeframstillinger, Grå arealer med basis/plan/alle sju,
+opasitet, filter/objektvalg, mobil 390 px, navigasjon og kommunebytte.
+FKB-Grønnstruktur er ikke koblet inn fordi offentlig bruksrett er uavklart.

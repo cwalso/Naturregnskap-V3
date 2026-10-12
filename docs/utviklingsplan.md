@@ -17,7 +17,7 @@ GitHub Pages-prototype med:
 - kommuneoversikt
 - Naturtapet
 - prioriterte temasider
-- seks uavhengige kartlag på oppgavebranchen; analyseverkstedet beholdt i kode
+- sju uavhengige kartlag på oppgavebranchen; analyseverkstedet beholdt i kode
 - framtidig utbygging som analyseområde
 - tegnet polygon som analyseområde i beholdt kode; inngang midlertidig skjult
 - overlay mot Natur/Jordbruk og Verdsatte naturtyper
@@ -43,7 +43,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Verneområder | ✅ prototype | Supplerende temaside og kart |
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
-| Bynaturen / grå arealer | 🟡 | Temaside etablert; direkte integrasjon mot eget gråarealdatasett kan videreutvikles |
+| Bynaturen / grå arealer | 🟡 | Temaside beholdt; offisiell gråareal-WMS i Utforsk, uten analyseintegrasjon |
 | Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Seks lag med avkryssing, egen gjennomsiktighet og mobilvelger; godkjent planvisning beholdt, ingen kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
@@ -73,7 +73,7 @@ Ikke legg til nye temasider uten eksplisitt beslutning.
 
 De tre kartvisningene og korrigert planvisning er manuelt godkjent. Gjeldende
 leveranse på samme branch lar brukeren kombinere nivå 0, framtidig utbygging,
-Verdsatte naturtyper, Verneområder, INON og Villrein med uavhengig avkryssing
+Verdsatte naturtyper, Verneområder, INON, Villrein og Grå arealer med uavhengig avkryssing
 og gjennomsiktighet.
 Alle lag kan slås av; basen vises. Fast rekkefølge bevarer naturtyper og
 kommunegrense øverst. Mobilvelgeren kan lukkes. Naturtypefilter og valg
@@ -91,7 +91,7 @@ analysegrunnlag eller beregninger er innført.
 
 [Samtidige lag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
 [visuell A–L-kontroll](validation/2026-10-09-concurrent-map-layers.md) dokumenterer neste leveranse.
-Lagregisteret er forberedt for åtte ID-er; seks kilder er koblet inn.
+Lagregisteret er forberedt for åtte ID-er; sju kilder er koblet inn.
 [Ny kilde-/kartkontroll](validation/2026-10-12-six-explore-layers.md) dokumenterer vern, INON og
 Villrein i Trondheim og Dovre. INON er januar 2023, øvrige nye kilder er
 løpende tjenester. Ingen beregninger eller nye analysegrunnlag er koblet inn.
@@ -108,7 +108,7 @@ Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
 
 ## Åpent UX-forbedringspunkt – naturtypefilter og kart i synsfeltet
 
-**Status: åpent / ikke løst i leveransen med seks lag.** Når brukeren åpner
+**Status: åpent / ikke løst i leveransen med sju lag.** Når brukeren åpner
 naturtypefilteret langt nede på siden, forsvinner kartet fra synsfeltet.
 Vurder plassering eller en passende kart-/filterarbeidsflate i en egen
 UX-oppgave. Denne leveransen beholder layout/arbeidsflyt, med vertikal
@@ -245,3 +245,15 @@ Levende dokumenter som skal holdes oppdatert:
 
 Historiske ADR-er under `docs/decisions/` skal normalt ikke omskrives. Nye
 beslutninger dokumenteres i nye ADR-er.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).

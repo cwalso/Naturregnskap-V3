@@ -109,15 +109,15 @@ Ikke anta at dagens Unsplash-motiver er endelige.
 ## Utforsk i kart
 
 Brukeren krysser av uavhengige kartlag: Grunnkart nivå 0, framtidig utbygging
-og Verdsatte naturtyper, Verneområder, Inngrepsfri natur (INON) og Villrein.
+og Verdsatte naturtyper, Verneområder, Inngrepsfri natur (INON), Villrein og Grå arealer.
 Nivå 0 er standard. Grupper er Regnskapsgrunnlag,
-Plandata og Supplerende temadata. 0–6 aktive lag støttes; alle av viser basen.
+Plandata og Supplerende temadata. 0–7 aktive lag støttes; alle av viser basen.
 Aktive lag viser egen gjennomsiktighetskontroll, tegnforklaring og kilde.
 
 Avkryssingslisten har begrenset høyde og kan senere romme åtte implementerte
-lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, INON,
+lag; ingen uvirksomme avkryssinger vises. Fast rekkefølge: nivå 0, Grå arealer, INON,
 Villrein, plan, naturtyper, verneområder og kommunemaske/grense. Nivå 0
-starter med 30 %, INON med 35 %, øvrige med 0 % ekstra gjennomsiktighet.
+starter med 30 %, INON med 35 %, Grå arealer med 25 %, øvrige med 0 % ekstra gjennomsiktighet.
 De tre nye lagene bruker offisielle symboler og GetLegendGraphic. INON-år
 er synlig uten å åpne kildebeskrivelsen. Tomt bilde, regional datadekning
 og kildefeil forklares forskjellig. Ingen fri flytting av lag eller GIS-katalog.
@@ -232,3 +232,15 @@ prototypeoverlapp og erstatter ikke datakildenes faglige tegnforklaringer.
 - tastaturfokus skal være synlig
 - farge skal ikke være eneste bærer av informasjon
 - mobilvisning skal være reelt brukbar, ikke bare teknisk responsiv
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).

@@ -186,7 +186,7 @@ try {
   })
   await gate('5-new-layers', async () => { await layers(newer); await legends(); await screenshot('5-new-layers'); assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 3); return { state: await layerState() } })
   await gate('6-all-six', async () => {
-    await layers(Object.keys(names)); await legends(); await page.locator('.explore-themes__layer-list').evaluate((e) => { e.scrollTop = 0 }); await screenshot('6-all-six'); await page.locator('.explore-themes__layer-list').evaluate((e) => { e.scrollTop = e.scrollHeight }); await screenshot('6-all-six-panel-bottom'); assert.equal(await page.getByRole('checkbox').count(), 6); assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 6)
+    await layers(Object.keys(names)); await legends(); await page.locator('.explore-themes__layer-list').evaluate((e) => { e.scrollTop = 0 }); await screenshot('6-all-six'); await page.locator('.explore-themes__layer-list').evaluate((e) => { e.scrollTop = e.scrollHeight }); await screenshot('6-all-six-panel-bottom'); assert.equal(await page.getByRole('checkbox').count(), 7); assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 6)
     assert.deepEqual(await viewState(), initialView); return { state: await layerState(), layout: await panelLayout(), hatch: await hatchPixels() }
   })
   await gate('7-none', async () => { await layers([]); await screenshot('7-none'); assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 0); assert.ok(await page.getByText(/Alle temalag er slått av/).isVisible()); return {} })

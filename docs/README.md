@@ -62,7 +62,7 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
-Gjeldende Utforsk-rute viser seks uavhengige kartlag uten automatisk kryssanalyse.
+Gjeldende Utforsk-rute viser sju uavhengige kartlag uten automatisk kryssanalyse.
 Se [seks lag og kildevalg](decisions/2026-10-12-v3-six-explore-layers.md),
 [reell Trondheim-/Dovre-kontroll](validation/2026-10-12-six-explore-layers.md) og
 [samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
@@ -94,3 +94,15 @@ vurderes i samme PR.
 
 Hvis dokumentasjonen ikke oppdateres fordi endringen er ren refaktorering eller
 feilretting uten endret kontrakt, bør dette være bevisst.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).

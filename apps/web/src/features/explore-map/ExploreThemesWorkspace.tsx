@@ -3,7 +3,7 @@ import type { Municipality, MunicipalityBoundary } from '../../api/municipalitie
 import type { ThematicCoverageResponse } from '../../api/thematicCoverage'
 import { filterRegisteredNature, getMunicipalValuedNature, municipalValueLegend, noMunicipalNatureFilter, type MunicipalNatureFilter, type MunicipalValuedNature } from '../../api/municipalValuedNature'
 import { createExploreLayerMap, type LayerMapController, type LayerMapStatus } from '../../map/exploreThemeMap'
-import { initialMapLayers, mapLayers, mapLayerRoles, type MapLayerId, type MapLayerState } from './mapThemes'
+import { greyPresentations, type GreyPresentation, initialMapLayers, mapLayers, mapLayerRoles, type MapLayerId, type MapLayerState } from './mapThemes'
 import './ExploreThemesWorkspace.css'
 
 interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error' }
@@ -19,6 +19,8 @@ function ServiceLegend({ url, description }: { url: string; description: string 
 }
 
 export function ExploreThemesWorkspace({ municipality, boundary, coverage, coverageState = 'idle' }: Props) {
+  const [greyPresentation, setGreyPresentation] = useState<GreyPresentation>('graa_arealer')
+  const grey = greyPresentations.find((item) => item.layer === greyPresentation)!
   const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
   const [pickerOpen, setPickerOpen] = useState(() => !window.matchMedia?.('(max-width: 900px)').matches)
   const owner = municipality.number
@@ -68,8 +70,8 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     return () => abort.abort()
   }, [natureVisible, activeBoundary])
   useEffect(() => {
-    controller.current?.update({ boundary: activeBoundary, layers, data, filter: choice.filter, selectedId: selected?.id ?? null })
-  }, [activeBoundary, layers, data, choice.filter, selected?.id])
+    controller.current?.update({ boundary: activeBoundary, layers, greyPresentation, data, filter: choice.filter, selectedId: selected?.id ?? null })
+  }, [activeBoundary, layers, greyPresentation, data, choice.filter, selected?.id])
   useEffect(() => {
     controller.current?.setSelectionHandler((selectedId) => setChoice((previous) => ({ ...(previous.owner === owner ? previous : freshChoice(owner)), selectedId })))
     return () => controller.current?.setSelectionHandler(null)
@@ -102,6 +104,12 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
                   {settings.visible && <>
                     <label className="explore-themes__opacity" htmlFor={`${id}-opacity-${definition.id}`}>Gjennomsiktighet <output htmlFor={`${id}-opacity-${definition.id}`}>{transparency} %</output></label>
                     <input id={`${id}-opacity-${definition.id}`} type="range" min="0" max="100" step="5" value={transparency} aria-label={`Gjennomsiktighet – ${definition.name}`} onChange={(event) => setLayers((previous) => ({ ...previous, [definition.id]: { ...previous[definition.id], opacity: 1 - Number(event.target.value) / 100 } }))} />
+                    {definition.id === 'grey-areas' && <label>Framstilling – Grå arealer
+                      <select value={greyPresentation} onChange={(event) => setGreyPresentation(event.target.value as GreyPresentation)}>
+                        {greyPresentations.map((item) => <option key={item.layer} value={item.layer}>{item.label}</option>)}
+                      </select>
+                    </label>}
+                    {status === 'out-of-scale' && <p role="status">Grå arealer vises ved målestokk 1:250 000 eller nærmere. Zoom inn for å se kartdata.</p>}
                     {activeBoundary && status === 'loading' && <p role="status">Laster {definition.name.toLocaleLowerCase('nb')}…</p>}
                     {status === 'empty' && <p role="status">Karttjenesten returnerte et gyldig, tomt bilde for dette utsnittet.</p>}
                     {status === 'error' && <p role="alert">Kartdata for {definition.name} kunne ikke vises. Dette er en datafeil, ikke fravær av registreringer.</p>}
@@ -110,7 +118,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
               })}
             </fieldset>)}
           </div>
-          <small>Grunnkart nederst, så INON og Villrein, deretter plan og naturtyper. Verneområder og kommunegrense ligger øverst.</small>
+          <small>Grunnkart nederst, så Grå arealer, INON og Villrein, deretter plan og naturtyper. Verneområder og kommunegrense ligger øverst.</small>
         </div>
       </aside>
       {activeDefinitions.length > 0 && <aside className="explore-themes__panel explore-themes__info" aria-label="Aktive lag og tegnforklaring">
@@ -118,7 +126,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         {activeDefinitions.map((definition) => <section className="explore-themes__layer-info" key={definition.id} aria-label={`Tegnforklaring: ${definition.name}`}>
           <h3>{definition.name}</h3><span className="explore-themes__role">{definition.role}</span>
           {'reference' in definition && <p className="explore-themes__reference">{definition.reference}</p>}
-          {'legendImage' in definition && <ServiceLegend key={definition.legendImage.url} {...definition.legendImage} />}
+          {definition.id === 'grey-areas' ? <><p>{grey.description}</p><ServiceLegend key={grey.legendImage.url} {...grey.legendImage} /></> : 'legendImage' in definition && <ServiceLegend key={definition.legendImage.url} {...definition.legendImage} />}
           {definition.id === 'wild-reindeer' && <p role="status">{reindeerCoverage?.status === 'no_hit'
             ? 'Ingen registrerte leveområder for villrein i kommunen i denne kilden. Dette er en gyldig tom visning, ikke en kartfeil.'
             : reindeerCoverage?.status === 'hit' ? 'Kilden har registrerte leveområder som krysser kommunegrensen.'
@@ -127,7 +135,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
           {definition.legend.length > 0 && <ul className="explore-themes__legend">{definition.legend.map((item) => <li key={item.label}><i style={{ background: 'background' in item ? item.background : item.color }} aria-hidden="true" />{item.label}</li>)}</ul>}
           <details className="explore-themes__source"><summary>Om {definition.name.toLocaleLowerCase('nb')}</summary>
             <p>{definition.description}</p><p>{definition.note}</p><p>{definition.source}</p>
-            {'metadataUrl' in definition && <p><a href={definition.metadataUrl} target="_blank" rel="noreferrer">Offisiell kilde og tjeneste · NLOD</a></p>}
+            {'metadataUrl' in definition && <p><a href={definition.metadataUrl} target="_blank" rel="noreferrer">Offisiell kilde, metadata og bruksvilkår</a></p>}
             <p>Kartlaget avgrenses visuelt til valgt kommune. Lagvalg, gjennomsiktighet, filter og lokalitetsvalg beholder kartutsnittet.</p>
             {definition.id === 'level0' && <p>Kommuneoversikten bruker et klargjort raster der det finnes; detaljkartet bruker samme eksisterende WMS-klassifisering. Klargjort kommuneoversikt finnes foreløpig for Trondheim.</p>}
             {definition.id === 'valued-nature' && <p>Fire verdikategorier hentes romlig mot kommunegrensen. Alle-visningen bruker WMS; filtrerte utvalg viser kildens lokalitetsgeometri med samme verdifarger. Filtrene gjelder bare dette laget.</p>}

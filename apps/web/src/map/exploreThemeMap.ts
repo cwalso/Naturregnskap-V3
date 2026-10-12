@@ -22,7 +22,7 @@ import { register } from 'ol/proj/proj4'
 import type { MunicipalityBoundary } from '../api/municipalities'
 import { filterRegisteredNature, municipalValueLegend, type MunicipalNatureFilter, type MunicipalValuedNature } from '../api/municipalValuedNature'
 import { nationalLandCover2025, valuedNature } from '../datasets/registry'
-import { initialMapLayers, mapLayers, supplementalMapLayers, type SupplementalMapLayerId, type MapLayerId, type MapLayerState } from '../features/explore-map/mapThemes'
+import { initialMapLayers, mapLayers, supplementalMapLayers, type GreyPresentation, type SupplementalMapLayerId, type MapLayerId, type MapLayerState } from '../features/explore-map/mapThemes'
 import { getIntersection, isEmpty } from 'ol/extent'
 import { ACCOUNT_CRS, ACCOUNT_DETAIL_MAX_RESOLUTION, accountTileGrid, buildRawAccountTileUrl, loadAccountDisplayTileBlob, loadOverviewRaster } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
@@ -31,10 +31,11 @@ import { hatchFutureDevelopment } from './futureDevelopmentSymbology'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
-export type LayerMapStatus = 'idle' | 'loading' | 'ready' | 'empty' | 'error'
+export type LayerMapStatus = 'idle' | 'loading' | 'ready' | 'empty' | 'out-of-scale' | 'error'
 export interface LayerMapContext {
   boundary: MunicipalityBoundary | null
   layers: MapLayerState
+  greyPresentation?: GreyPresentation
   data: MunicipalValuedNature | null
   filter: MunicipalNatureFilter
   selectedId: string | null
@@ -70,7 +71,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     new ImageLayer({ source: new ImageWMS({ url: definition.visualSource.endpoint,
       params: { LAYERS: definition.visualSource.layer, VERSION: '1.3.0', TRANSPARENT: true },
       projection: ACCOUNT_CRS, ratio: 1, crossOrigin: 'anonymous', attributions: definition.source }),
-      visible: false, className: `explore-${definition.id}` }),
+      maxResolution: 'maxResolution' in definition ? definition.maxResolution : undefined, visible: false, className: `explore-${definition.id}` }),
   ])) as Record<SupplementalMapLayerId, ImageLayer<ImageWMS>>
   const supplementalLayers = Object.values(supplemental)
   const localitySource = new VectorSource()
@@ -111,6 +112,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     level0: [overview, detail],
     'future-development': [plan],
     'valued-nature': [nature, localities],
+    'grey-areas': [supplemental['grey-areas']],
     'intact-nature': [supplemental['intact-nature']],
     'wild-reindeer': [supplemental['wild-reindeer']],
     'protected-areas': [supplemental['protected-areas']],
@@ -208,7 +210,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
           status = coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileStatus(detail)
         } else if (definition.id === 'future-development') status = tileStatus(plan)
         else if (definition.id === 'valued-nature') status = filtered ? 'ready' : imageStatus(natureSource)
-        else status = imageStatus(supplemental[definition.id].getSource()!, true)
+        else status = 'maxResolution' in definition && view.getResolution()! >= definition.maxResolution ? 'out-of-scale' : imageStatus(supplemental[definition.id].getSource()!, true)
       }
       onStatus(definition.id, status, boundary?.properties.number ?? null)
     }
@@ -232,6 +234,9 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     update(next) {
       if (destroyed) return
       activeLayers = next.layers
+      const greySource = supplemental['grey-areas'].getSource()!
+      const greyPresentation = next.greyPresentation ?? 'graa_arealer'
+      if (greySource.getParams().LAYERS !== greyPresentation) greySource.updateParams({ LAYERS: greyPresentation })
       if (boundary !== next.boundary) {
         const changed = boundary?.properties.number !== next.boundary?.properties.number
         boundary = next.boundary

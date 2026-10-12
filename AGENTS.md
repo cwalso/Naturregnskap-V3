@@ -90,7 +90,7 @@ Grunnkart-raster og analyser bruker EPSG:25833. Plan-/polygonanalysen bruker et 
 
 ## 7. Utforsk i kart – uavhengige kartlag
 
-Gjeldende branch viser seks uavhengige kartlag i `#utforsk-i-kart`:
+Gjeldende branch viser sju uavhengige kartlag i `#utforsk-i-kart`:
 
 1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
 2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
@@ -98,11 +98,12 @@ Gjeldende branch viser seks uavhengige kartlag i `#utforsk-i-kart`:
 4. Verneområder – vedtatt vern, kildens fem verneformklasser; forslag skjules.
 5. Inngrepsfri natur (INON) – status januar 2023, tre avstandssoner.
 6. Villrein – registrerte biologiske leveområder, uten undertemavalg.
+7. Grå arealer – offisielt kartprodukt testversjon 1, med kildebaserte vegetasjonsandeler.
 
-Avkryssing tillater 0–6 aktive lag; alle 64 kombinasjoner er kontrollert. Alle av viser bakgrunnskartet. Hvert aktivt
-lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → INON →
+Avkryssing tillater 0–7 aktive lag; alle 128 kombinasjoner er kontrollert. Alle av viser bakgrunnskartet. Hvert aktivt
+lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → Grå arealer → INON →
 Villrein → plan → naturtyper/lokalitetsvalg → verneområder → kommunemaske/grense.
-Nivå 0 starter med 30 %, INON med 35 %, øvrige lag med 0 % gjennomsiktighet. Grunnkart-klassifisering og farger er uendret.
+Nivå 0 starter med 30 %, INON med 35 %, Grå arealer med 25 %, øvrige lag med 0 % gjennomsiktighet. Grunnkart-klassifisering og farger er uendret.
 Planlaget har mørk grønn/gul diagonalskravur og transparent tint; legend matcher.
 Skravuren legges på planlagets isolerte canvas i skjermpiksler etter rendering,
 uten å endre kildefliser, geografisk støtte, analysemasker eller cache.
@@ -116,8 +117,7 @@ men bevarer filteret. Ingen kryssanalyse startes ved lagvalg.
 `ExploreThemesWorkspace`, `exploreThemeMap` og et lite `mapThemes`-register
 eier denne visningen. Registeret gir navn, faglig rolle, kilde, beskrivelse
 og tegnforklaring, standard synlighet/opasitet, tegnerekkefølge og filtertype.
-Bare implementerte lag vises. To interne ID-er er fortsatt reservert for grå
-arealer og FKB-Grønnstruktur; ingen uvirksomme kontroller vises. Nye lag bruker
+Bare implementerte lag vises. FKB-Grønnstruktur har fortsatt reservert ID, men offentlig bruksrett er uavklart; ingen aktiv kontroll eller kilde monteres. Nye lag bruker
 verifisert WMS i EPSG:25833 og kildens GetLegendGraphic. INON-år vises alltid
 ved aktiv legend. Transparente, dekodede WMS-bilder er gyldige tomme utsnitt.
 Villrein gjenbruker eksisterende kommunevise registreringsstatus; ingen nye
@@ -272,3 +272,15 @@ Ved avslutning skal Codex oppgi:
 ## 15. Kostnads- og utviklingsmiljø
 
 Arbeidsflyten skal kunne gjennomføres fra nettleser med GitHub/Codex uten å være avhengig av en bestemt lokal PC eller nye betalte runtime-tjenester. Ikke innfør infrastruktur med løpende kostnader uten eksplisitt beslutning.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).

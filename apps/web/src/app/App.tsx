@@ -1395,7 +1395,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </h1>
         <p>
           Kombiner Grunnkart nivå 0 og framtidig utbygging med Verdsatte naturtyper,
-          Verneområder, Inngrepsfri natur og Villrein.
+          Verneområder, Inngrepsfri natur, Villrein og Grå arealer.
           Slå kartlag av og på, og tilpass gjennomsiktigheten.
         </p>
       </header>

@@ -1,0 +1,4 @@
+GetFeatureInfo results:
+
+Layer 'graa_arealer'
+  Feature 0:
