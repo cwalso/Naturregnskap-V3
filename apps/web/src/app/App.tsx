@@ -1389,15 +1389,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const mapView = (
     <section className="content-page map-page" aria-labelledby="explore-map-title">
       <header className="content-page__intro map-page__intro">
-        <p className="content-page__eyebrow">Utforsk geografiske datagrunnlag</p>
-        <h1 id="explore-map-title">
-          Utforsk i kart{selectedMunicipality ? ` – ${selectedMunicipality.name}` : ''}
-        </h1>
-        <p>
-          Kombiner Grunnkart nivå 0 og framtidig utbygging med Verdsatte naturtyper,
-          Verneområder, Inngrepsfri natur, Villrein og Grå arealer.
-          Slå kartlag av og på, og tilpass gjennomsiktigheten.
-        </p>
+        <div><p className="content-page__eyebrow">Naturregnskap / Kart</p><h1 id="explore-map-title">Utforsk i kart</h1></div>
+        <p>Se datagrunnlaget. Kombiner kartlag.<br />Undersøk registrert natur.</p>
       </header>
 
       {!selectedMunicipality ? (
@@ -1494,7 +1487,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${activeView === 'utforsk-i-kart' ? 'app-shell--explore' : ''}`}>
       <a className="skip-link" href="#main-content">Hopp til hovedinnhold</a>
       <SiteHeader
         activeView={activeView}

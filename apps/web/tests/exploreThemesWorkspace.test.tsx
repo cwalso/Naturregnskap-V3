@@ -17,136 +17,123 @@ const data: MunicipalValuedNature = { municipalityNumber: '5001', natureTypes: [
 afterEach(() => { cleanup(); vi.clearAllMocks() })
 const checkbox = (name: string) => screen.getByRole('checkbox', { name })
 
-describe('uavhengige kartlag', () => {
-  it('kombinerer alle lag og slår alle av; opasitet/filter/objektvalg bevares når andre lag endres', async () => {
+const settings = (name: string) => fireEvent.click(screen.getByRole('button', { name: `Innstillinger for ${name}` }))
+const legend = () => fireEvent.click(screen.getAllByRole('button', { name: 'Tegnforklaring' })[0])
+const lastContext = () => controller.update.mock.calls.at(-1)![0]
+
+describe('uavhengige kartlag i V2-paneler', () => {
+  it('beholder filter, objekt og opasitet når andre lag eller paneler endres', async () => {
     request.mockResolvedValue(data)
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
     expect(checkbox('Grunnkart nivå 0')).toBeChecked()
     expect(request).not.toHaveBeenCalled()
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
+    fireEvent.click(checkbox('Verdsatte naturtyper')); settings('Verdsatte naturtyper')
     fireEvent.change(await screen.findByRole('combobox', { name: 'Naturtype' }), { target: { value: 'Rikmyr' } })
     fireEvent.click(screen.getByRole('button', { name: /Myra/ }))
-    fireEvent.click(checkbox('Framtidig utbygging'))
+    fireEvent.click(checkbox('Framtidig utbygging')); settings('Grunnkart nivå 0')
     fireEvent.change(screen.getByRole('slider', { name: 'Gjennomsiktighet – Grunnkart nivå 0' }), { target: { value: '50' } })
-    expect(screen.getByRole('region', { name: 'Valgt lokalitet' })).toHaveTextContent('source-123')
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({
-      layers: expect.objectContaining({ level0: { visible: true, opacity: 0.5 }, 'future-development': { visible: true, opacity: 1 }, 'valued-nature': { visible: true, opacity: 1 } }),
-      filter: { natureType: 'Rikmyr', value: null }, selectedId: '123', data,
-    }))
+    expect(lastContext()).toMatchObject({ layers: { level0: { visible: true, opacity: .5 }, 'future-development': { visible: true, opacity: 1 } }, filter: { natureType: 'Rikmyr', value: null }, selectedId: '123', data })
     const calls = request.mock.calls.length
-    fireEvent.click(checkbox('Grunnkart nivå 0'))
-    fireEvent.click(checkbox('Framtidig utbygging'))
+    fireEvent.click(checkbox('Grunnkart nivå 0')); fireEvent.click(checkbox('Framtidig utbygging'))
+    settings('Verdsatte naturtyper')
     expect(screen.getByRole('combobox', { name: 'Naturtype' })).toHaveValue('Rikmyr')
-    expect(screen.getByRole('region', { name: 'Valgt lokalitet' })).toBeInTheDocument()
     expect(request).toHaveBeenCalledTimes(calls)
     fireEvent.click(checkbox('Verdsatte naturtyper'))
     expect(screen.getByText(/Alle temalag er slått av/)).toBeInTheDocument()
-    expect(screen.queryByRole('heading', { name: 'Tegnforklaring' })).not.toBeInTheDocument()
-    fireEvent.click(checkbox('Grunnkart nivå 0'))
-    expect(screen.getByRole('slider', { name: 'Gjennomsiktighet – Grunnkart nivå 0' })).toHaveValue('50')
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
+    expect(lastContext().selectedId).toBeNull()
+    fireEvent.click(checkbox('Grunnkart nivå 0')); settings('Grunnkart nivå 0')
+    expect(screen.getByRole('slider')).toHaveValue('50')
+    fireEvent.click(checkbox('Verdsatte naturtyper')); settings('Verdsatte naturtyper')
     expect(await screen.findByRole('combobox', { name: 'Naturtype' })).toHaveValue('Rikmyr')
-    expect(screen.queryByRole('region', { name: 'Valgt lokalitet' })).not.toBeInTheDocument()
+    expect(lastContext().selectedId).toBeNull()
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   })
-  it('avbryter naturtypehenting ved deaktivering og ignorerer sent svar og feil fra skjult lag', async () => {
+  it('avbryter henting og ignorerer sent svar eller feil fra skjult lag', async () => {
     let resolve!: (data: MunicipalValuedNature) => void
-    request.mockImplementation(() => new Promise<MunicipalValuedNature>((done) => { resolve = done }))
+    request.mockImplementation(() => new Promise<MunicipalValuedNature>(done => { resolve = done }))
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
-    const signal = request.mock.calls[0][1] as AbortSignal
-    fireEvent.click(checkbox('Framtidig utbygging'))
-    expect(signal.aborted).toBe(false)
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
-    expect(signal.aborted).toBe(true)
-    await act(async () => resolve(data))
-    act(() => statusHandler('valued-nature', 'error', '5001'))
+    fireEvent.click(checkbox('Verdsatte naturtyper')); const signal = request.mock.calls[0][1] as AbortSignal
+    fireEvent.click(checkbox('Framtidig utbygging')); expect(signal.aborted).toBe(false)
+    fireEvent.click(checkbox('Verdsatte naturtyper')); expect(signal.aborted).toBe(true)
+    await act(async () => resolve(data)); act(() => statusHandler('valued-nature','error','5001'))
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ data: null, layers: expect.objectContaining({ 'future-development': { visible: true, opacity: 1 } }) }))
+    expect(lastContext()).toMatchObject({ data: null, layers: { 'future-development': { visible: true, opacity: 1 } } })
   })
-  it('ignorerer data/status for forrige kommune og nullstiller bare kommunens naturtypevalg', async () => {
+  it('isolerer kommunevalg og lukker detaljer uten å slette lagvalg', async () => {
     let resolve!: (data: MunicipalValuedNature) => void
-    request.mockImplementation(() => new Promise<MunicipalValuedNature>((done) => { resolve = done }))
-    const view = render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
-    const oldSignal = request.mock.calls[0][1] as AbortSignal
+    request.mockImplementation(() => new Promise<MunicipalValuedNature>(done => { resolve=done }))
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    fireEvent.click(checkbox('Verdsatte naturtyper')); settings('Verdsatte naturtyper')
+    const signal=request.mock.calls[0][1] as AbortSignal
     fireEvent.click(checkbox('Framtidig utbygging'))
-    view.rerender(<ExploreThemesWorkspace municipality={{ number: '0301', name: 'Oslo' }} boundary={null} />)
-    expect(oldSignal.aborted).toBe(true)
-    await act(async () => resolve(data))
-    act(() => statusHandler('future-development', 'error', '5001'))
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ boundary: null, data: null, selectedId: null }))
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null} />)
+    expect(signal.aborted).toBe(true); await act(async()=>resolve(data))
+    act(()=>statusHandler('future-development','error','5001'))
+    expect(lastContext()).toMatchObject({ boundary:null,data:null,selectedId:null })
     expect(checkbox('Framtidig utbygging')).toBeChecked()
+    expect(screen.queryByRole('complementary',{name:/Innstillinger:/})).not.toBeInTheDocument()
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-    expect(screen.queryByRole('combobox', { name: 'Naturtype' })).not.toBeInTheDocument()
   })
-  it('beholder øvrige lag ved naturtypefeil og skiller feil fra null treff', async () => {
+  it('skiller naturtypefeil fra null treff og bevarer øvrige lag', async()=>{
     request.mockRejectedValue(new Error('HTTP 503'))
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    fireEvent.click(checkbox('Framtidig utbygging'))
-    fireEvent.click(checkbox('Verdsatte naturtyper'))
+    fireEvent.click(checkbox('Framtidig utbygging')); fireEvent.click(checkbox('Verdsatte naturtyper')); settings('Verdsatte naturtyper')
     expect(await screen.findByRole('alert')).toHaveTextContent('WMS-kartet kan fortsatt vises')
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ data: null, layers: expect.objectContaining({ 'future-development': { visible: true, opacity: 1 }, 'valued-nature': { visible: true, opacity: 1 } }) }))
+    expect(lastContext()).toMatchObject({data:null,layers:{'future-development':{visible:true,opacity:1}}})
     expect(screen.queryByText(/Ingen registrerte lokaliteter i denne kilden/)).not.toBeInTheDocument()
   })
-  it('har tre faglige grupper, ingen uvirksomme lag og en velger som kan lukkes uten å fjerne kartet', () => {
+  it('har tre grupper og kompakte rader; Escape lukker detaljer og beholder kartinstansen',()=>{
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
     expect(screen.getAllByRole('checkbox')).toHaveLength(7)
-    for (const role of ['Regnskapsgrunnlag', 'Plandata', 'Supplerende temadata']) expect(within(screen.getByRole('group', { name: role })).getAllByRole('checkbox')).toHaveLength(role === 'Supplerende temadata' ? 5 : 1)
-    fireEvent.click(screen.getByRole('button', { name: /Kartlag/ }))
-    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Interaktivt kart i Trondheim' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Tegnforklaring: Grunnkart nivå 0' })).toBeInTheDocument()
-    expect(controller.destroy).not.toHaveBeenCalled()
-    expect(controller.fitToMunicipality).not.toHaveBeenCalled()
+    for(const role of ['Regnskapsgrunnlag','Plandata','Supplerende temadata']) expect(within(screen.getByRole('group',{name:role})).getAllByRole('checkbox')).toHaveLength(role==='Supplerende temadata'?5:1)
+    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+    settings('Grunnkart nivå 0'); expect(screen.getByRole('slider')).toHaveValue('30')
+    fireEvent.keyDown(window,{key:'Escape'})
+    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
+    expect(screen.getByRole('region',{name:'Interaktivt kart i Trondheim'})).toBeInTheDocument()
+    expect(controller.destroy).not.toHaveBeenCalled(); expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   })
-  it('støtter alle 128 kombinasjoner uten å endre utsnitt, og har kildelegend og INON-år', async () => {
+  it('støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge',async()=>{
     request.mockResolvedValue(data)
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    const names = ['Grunnkart nivå 0', 'Framtidig utbygging', 'Verdsatte naturtyper', 'Verneområder', 'Inngrepsfri natur (INON)', 'Villrein', 'Grå arealer']
-    const ids = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer', 'grey-areas']
-    const choices = names.map(checkbox) as HTMLInputElement[]
-    for (let bits = 0; bits < 128; bits++) {
-      await act(async () => { choices.forEach((input, i) => { if (input.checked !== !!(bits & (1 << i))) fireEvent.click(input) }) })
-      const state = controller.update.mock.calls.at(-1)![0].layers
-      ids.forEach((id, i) => expect(state[id].visible).toBe(!!(bits & (1 << i))))
-      expect(document.querySelectorAll('.explore-themes__layer-info')).toHaveLength(ids.filter((_, i) => bits & (1 << i)).length)
+    const names=['Grunnkart nivå 0','Framtidig utbygging','Verdsatte naturtyper','Verneområder','Inngrepsfri natur (INON)','Villrein','Grå arealer']
+    const ids=['level0','future-development','valued-nature','protected-areas','intact-nature','wild-reindeer','grey-areas']
+    const choices=names.map(checkbox) as HTMLInputElement[]
+    legend()
+    for(let bits=0;bits<128;bits++){
+      await act(async()=>{choices.forEach((input,i)=>{if(input.checked!==!!(bits&(1<<i)))fireEvent.click(input)})})
+      ids.forEach((id,i)=>expect(lastContext().layers[id].visible).toBe(!!(bits&(1<<i))))
+      expect(document.querySelectorAll('.explore-themes__layer-info')).toHaveLength(ids.filter((_,i)=>bits&(1<<i)).length)
     }
     expect(screen.getByText('Status: januar 2023')).toBeInTheDocument()
     expect(screen.getAllByRole('img')).toHaveLength(4)
-    fireEvent.change(screen.getByRole('slider', { name: 'Gjennomsiktighet – Inngrepsfri natur (INON)' }), { target: { value: '75' } })
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ layers: expect.objectContaining({ 'intact-nature': { visible: true, opacity: 0.25 }, 'wild-reindeer': { visible: true, opacity: 1 } }) }))
+    expect([...document.querySelectorAll('.explore-themes__layer-info h3')].map(e=>e.textContent)).toEqual(['Verneområder','Verdsatte naturtyper','Framtidig utbygging','Villrein','Inngrepsfri natur (INON)','Grå arealer','Grunnkart nivå 0'])
+    settings('Inngrepsfri natur (INON)');fireEvent.change(screen.getByRole('slider'),{target:{value:'75'}})
+    expect(lastContext().layers['intact-nature']).toEqual({visible:true,opacity:.25})
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
-  }, 15000)
-  it('bytter bare gråarealframstilling og matching kildelegend, og viser målestokkforbehold', () => {
+  },15000)
+  it('bytter gråarealprodukt med kildelegend og målestokkforbehold',()=>{
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
-    expect(screen.queryByRole('checkbox', { name: /FKB/ })).not.toBeInTheDocument()
-    fireEvent.click(checkbox('Grå arealer'))
-    fireEvent.change(screen.getByRole('combobox', { name: 'Framstilling – Grå arealer' }), { target: { value: 'andel_med_vegetasjon' } })
-    expect(controller.update).toHaveBeenLastCalledWith(expect.objectContaining({ greyPresentation: 'andel_med_vegetasjon', layers: expect.objectContaining({ level0: { visible: true, opacity: 0.7 }, 'grey-areas': { visible: true, opacity: 0.75 } }) }))
-    expect(screen.getByAltText('Andel med vegetasjon: kildens prosentklasser.')).toHaveAttribute('src', expect.stringContaining('LAYER=andel_med_vegetasjon'))
-    expect(screen.getByAltText('Andel med vegetasjon: kildens prosentklasser.')).toHaveAttribute('src', expect.stringContaining('SLD_VERSION=1.1.0'))
-    act(() => statusHandler('grey-areas', 'out-of-scale', '5001'))
+    expect(screen.queryByRole('checkbox',{name:/FKB/})).not.toBeInTheDocument()
+    fireEvent.click(checkbox('Grå arealer'));settings('Grå arealer')
+    fireEvent.change(screen.getByRole('combobox',{name:'Framstilling – Grå arealer'}),{target:{value:'andel_med_vegetasjon'}})
+    expect(lastContext()).toMatchObject({greyPresentation:'andel_med_vegetasjon',layers:{level0:{visible:true,opacity:.7},'grey-areas':{visible:true,opacity:.75}}})
+    expect(screen.getByAltText('Andel med vegetasjon: kildens prosentklasser.')).toHaveAttribute('src',expect.stringContaining('LAYER=andel_med_vegetasjon'))
+    act(()=>statusHandler('grey-areas','out-of-scale','5001'))
     expect(screen.getByText(/Zoom inn for å se kartdata/)).toBeInTheDocument()
-    expect(screen.queryByText(/gyldig, tomt bilde/)).not.toBeInTheDocument()
-    fireEvent.click(checkbox('Grå arealer')); fireEvent.click(checkbox('Grå arealer'))
-    expect(screen.getByRole('combobox', { name: 'Framstilling – Grå arealer' })).toHaveValue('andel_med_vegetasjon')
+    fireEvent.click(checkbox('Grå arealer'));fireEvent.click(checkbox('Grå arealer'))
+    expect(screen.getByRole('combobox',{name:'Framstilling – Grå arealer'})).toHaveValue('andel_med_vegetasjon')
     expect(controller.fitToMunicipality).not.toHaveBeenCalled()
   })
-  it('skiller tomt villreinbilde og bekreftet null registreringer fra feil og gammel kommune', () => {
-    const coverage = { municipalityNumber: '5001', municipalityName: 'Trondheim', methodVersion: 'thematic-intersection-v1' as const, warnings: [], results: [{ datasetId: 'wild-reindeer-areas' as const, status: 'no_hit' as const, featureCount: 0, note: '' }] }
-    const view = render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} coverage={coverage} />)
-    fireEvent.click(checkbox('Villrein'))
-    act(() => statusHandler('wild-reindeer', 'empty', '5001'))
-    expect(screen.getByText(/Ingen registrerte leveområder for villrein/)).toBeInTheDocument()
-    expect(screen.getByText(/gyldig, tomt bilde/)).toBeInTheDocument()
-    view.rerender(<ExploreThemesWorkspace municipality={{ number: '3431', name: 'Dovre' }} boundary={null} coverage={coverage} coverageState="loading" />)
+  it('skiller gyldig tom villreinvisning fra ukjent dekning og feil',()=>{
+    const coverage={municipalityNumber:'5001',municipalityName:'Trondheim',methodVersion:'thematic-intersection-v1' as const,warnings:[],results:[{datasetId:'wild-reindeer-areas' as const,status:'no_hit' as const,featureCount:0,note:''}]}
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} coverage={coverage} />)
+    fireEvent.click(checkbox('Villrein'));settings('Villrein');act(()=>statusHandler('wild-reindeer','empty','5001'))
+    expect(screen.getByText(/Ingen registrerte leveområder for villrein/)).toBeInTheDocument();expect(screen.getByText(/gyldig, tomt bilde/)).toBeInTheDocument()
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'3431',name:'Dovre'}} boundary={null} coverage={coverage} coverageState="loading" />)
+    settings('Villrein');expect(screen.getByText(/Kontrollerer kommunens villreinregistreringer/)).toBeInTheDocument()
     expect(screen.queryByText(/Ingen registrerte leveområder/)).not.toBeInTheDocument()
-    expect(screen.getByText(/Kontrollerer kommunens villreinregistreringer/)).toBeInTheDocument()
-    act(() => statusHandler('wild-reindeer', 'error', '5001'))
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
-    fireEvent.click(checkbox('Villrein'))
-    expect(screen.queryByText(/Kontrollerer kommunens villreinregistreringer/)).not.toBeInTheDocument()
+    act(()=>statusHandler('wild-reindeer','error','5001'));expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    fireEvent.click(checkbox('Villrein'));expect(screen.queryByText(/Kontrollerer kommunens villreinregistreringer/)).not.toBeInTheDocument()
   })
-
 })

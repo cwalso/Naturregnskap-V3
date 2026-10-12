@@ -489,7 +489,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
     fireEvent.click(screen.getByRole('button', { name: /Åpne Utforsk i kart/ }))
-    expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Utforsk i kart' })).toBeInTheDocument()
     expect(screen.getByRole('checkbox', { name: 'Grunnkart nivå 0' })).toBeChecked()
   })
 
@@ -535,7 +535,7 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={createMap} />)
     await chooseTrondheim()
     fireEvent.click(screen.getByRole('link', { name: 'Utforsk i kart' }))
-    expect(screen.getByRole('heading', { name: 'Utforsk i kart – Trondheim' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Utforsk i kart' })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /Interaktivt kart i Trondheim/ })).toHaveAttribute('tabindex', '0')
     expect(screen.getByRole('checkbox', { name: 'Grunnkart nivå 0' })).toBeChecked()
     expect(newMap.update).toHaveBeenLastCalledWith(expect.objectContaining({ layers: expect.objectContaining({ level0: { visible: true, opacity: 0.7 } }), data: null }))
