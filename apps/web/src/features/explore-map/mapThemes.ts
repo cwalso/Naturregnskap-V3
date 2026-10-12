@@ -1,4 +1,5 @@
 import { municipalValueLegend } from '../../api/municipalValuedNature'
+import { futureDevelopmentLegend } from '../../map/futureDevelopmentSymbology'
 
 // Reserved identities are internal; only implemented layers appear in the picker.
 export type MapLayerIdentity = 'level0' | 'future-development' | 'valued-nature'
@@ -11,7 +12,7 @@ export interface MapLayerDefinition {
   source: string
   description: string
   note: string
-  legend: readonly { label: string; color: string }[]
+  legend: readonly { label: string; color: string; background?: string }[]
   defaultVisible: boolean
   defaultOpacity: number
   zIndex: number
@@ -33,8 +34,8 @@ export const mapLayers = [
   {
     id: 'future-development', defaultVisible: false, defaultOpacity: 1, zIndex: 20, filter: 'none', name: 'Framtidig utbygging', role: 'Plandata', source: 'DiBK · kommuneplanens arealdel',
     description: 'Natur og jordbruk innenfor områder avsatt til framtidige utbyggingsformål i kommuneplanen.',
-    note: 'Bebygd areal, vann og ukjente piksler skjules. Kartet viser dagens arealdekke innenfor planavsetninger, ikke bokført naturtap eller en prognose for faktisk framtidig naturtap.',
-    legend: [{ label: 'Natur', color: '#9ECC73' }, { label: 'Jordbruk', color: '#FFD16E' }],
+    note: 'Mørk grønn og gul skravur markerer planlaget over en delvis transparent bakgrunn. Bebygd areal, vann og ukjente piksler skjules. Kartet viser dagens arealdekke innenfor planavsetninger, ikke bokført naturtap eller en prognose for faktisk framtidig naturtap.',
+    legend: futureDevelopmentLegend,
   },
 ] as const satisfies readonly MapLayerDefinition[]
 export type MapLayerId = typeof mapLayers[number]['id']

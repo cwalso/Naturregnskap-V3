@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 09.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -99,7 +99,12 @@ Gjeldende branch viser tre uavhengige kartlag i `#utforsk-i-kart`:
 Avkryssing tillater 0–3 aktive lag. Alle av viser bakgrunnskartet. Hvert aktivt
 lag har egen gjennomsiktighet. Fast rekkefølge er bakgrunn → nivå 0 → plan →
 naturtyper/lokalitetsvalg → kommunemaske/grense. Nivå 0 starter med 30 %
-gjennomsiktighet; plan/naturtyper med 0 %. Klassifisering og farger er uendret.
+gjennomsiktighet; plan/naturtyper med 0 %. Grunnkart-klassifisering og farger er uendret.
+Planlaget har mørk grønn/gul diagonalskravur og transparent tint; legend matcher.
+Skravuren legges på planlagets isolerte canvas i skjermpiksler etter rendering,
+uten å endre kildefliser, geografisk støtte, analysemasker eller cache.
+Range-kontroller har null margin og blokkvisning, slik at 100 % bredde passer
+i laglisten uten horisontal scrolling.
 Lagvalg, gjennomsiktighet, filter, objektvalg og resize bevarer utsnittet.
 Bare kommunevalg og «Vis hele kommunen» tilpasser det. Andre lagvalg bevarer
 naturtypefilter og valgt objekt. Å skjule naturtypelaget fjerner objektvalg,

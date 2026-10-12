@@ -1,6 +1,6 @@
 # Arkitekturoversikt – Kommunale naturregnskap V3
 
-**Sist oppdatert: 09.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 ## Mål
 
@@ -129,6 +129,12 @@ uten analysegridets stripefjerning. Dette er visningsfliser, uten arealtall,
 analyse-ID, analysemasker eller ny resultatcache. Grove utsnitt krever fortsatt
 klargjort kommuneoversikt (foreløpig Trondheim). Ved kommunebytte/destruksjon
 avbrytes konsumenten og sene fliser ignoreres.
+Planlagets isolerte canvas får mørk grønn/gul diagonalskravur i `postrender`
+fra `futureDevelopmentSymbology`. Eksisterende klasse/alfapiksler bevarer
+plasseringen; mellom linjene brukes 24 % tintalfa. 8-pikslers periode og
+2-pikslers linjebånd følger skjermens pixelRatio, ikke kildeflisens zoom.
+Lagenes eksisterende opasitet skalerer både linjer og tint. Samme symboldata
+lager CSS-gradient i legend. Ingen kilde-/visningsfliscache endres.
 Masken utenfor kommunen og kommunegrensen ligger over aktive lag.
 Med alle lag av eller helt gjennomsiktige skjules masken; bakgrunnskartet
 og grensen vises. Kommunevalg/reset tilpasser utsnitt;

@@ -1,6 +1,6 @@
 # Visuelle føringer for Kommunale naturregnskap
 
-**Sist oppdatert: 09.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 ## Status
 
@@ -128,7 +128,11 @@ ha horisontal scrolling ved 390 px.
 Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
 Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
 viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter
-og eksisterende grønn/gul symbolikk. Bebygd og vann skjules; forklaringen
+og mørk grønn/gul diagonalskravur over transparent tint. Natur og Jordbruk har
+motsatt skravurretning. Linjeavstand og -bredde er stabile i skjermpiksler
+ved zoom og forskjellig skjermoppløsning; legend viser samme mønster.
+Range-kontroller skal passe innenfor innholdsbredde uten standardmarginer
+som skaper horisontal scrolling. Bebygd og vann skjules; forklaringen
 skiller kartpresentasjon fra bokført eller prognostisert naturtap.
 Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
 

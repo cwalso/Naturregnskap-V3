@@ -1,0 +1,106 @@
+[
+  {
+    "width": 1440,
+    "client": 296,
+    "scroll": 300,
+    "overflowX": "auto",
+    "ranges": [
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      }
+    ]
+  },
+  {
+    "width": 1000,
+    "client": 296,
+    "scroll": 300,
+    "overflowX": "auto",
+    "ranges": [
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 296,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      }
+    ]
+  },
+  {
+    "width": 900,
+    "client": 770,
+    "scroll": 774,
+    "overflowX": "auto",
+    "ranges": [
+      {
+        "width": 770,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 770,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 770,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "client": 332,
+    "scroll": 336,
+    "overflowX": "auto",
+    "ranges": [
+      {
+        "width": 332,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 332,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      },
+      {
+        "width": 332,
+        "rightOverflow": 2,
+        "margin": "2px",
+        "boxSizing": "border-box"
+      }
+    ]
+  }
+]

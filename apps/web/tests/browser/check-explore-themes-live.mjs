@@ -43,6 +43,31 @@ async function pixels() {
     return counts
   }, Array.from(bytes))
 }
+async function hatchPixels() {
+  return page.evaluate(() => {
+    const canvas = document.querySelector('.explore-future-development canvas')
+    const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data
+    const colors = { natureInk: [40, 100, 59], agricultureInk: [150, 112, 0], natureTint: [158, 204, 115], agricultureTint: [255, 209, 110] }
+    const counts = Object.fromEntries(Object.keys(colors).map((key) => [key, 0]))
+    for (let i = 0; i < data.length; i += 4) {
+      if (!data[i + 3]) continue
+      for (const [key, color] of Object.entries(colors)) if (color.every((v, c) => Math.abs(v - data[i + c]) <= 3)) counts[key]++
+    }
+    return counts
+  })
+}
+async function panelLayout() {
+  const result = await page.evaluate(() => {
+    const list = document.querySelector('.explore-themes__layer-list'), bounds = list.getBoundingClientRect()
+    return { width: innerWidth, clientWidth: list.clientWidth, scrollWidth: list.scrollWidth,
+      ranges: [...list.querySelectorAll('input[type=range]')].map((e) => ({ margin: getComputedStyle(e).margin, rightOverflow: e.getBoundingClientRect().right - bounds.right })),
+      pageScrollWidth: document.documentElement.scrollWidth }
+  })
+  assert.equal(result.scrollWidth, result.clientWidth, JSON.stringify(result))
+  assert.ok(result.ranges.every((range) => range.rightOverflow <= 0 && range.margin === '0px'), JSON.stringify(result))
+  assert.ok(result.pageScrollWidth <= result.width)
+  return result
+}
 const names = { level0: 'Grunnkart nivå 0', 'future-development': 'Framtidig utbygging', 'valued-nature': 'Verdsatte naturtyper' }
 async function layers(ids) {
   for (const [id, name] of Object.entries(names)) await page.getByRole('checkbox', { name, exact: true }).setChecked(ids.includes(id))
@@ -106,16 +131,25 @@ try {
     assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), ids.length)
     const counts = await pixels()
     if (ids.includes('valued-nature')) assert.ok(counts.valued > 30, JSON.stringify(counts))
-    if (ids.includes('future-development')) assert.ok(counts.nature > 100 && counts.agriculture > 30, JSON.stringify(counts))
+    const hatch = ids.includes('future-development') ? await hatchPixels() : null
+    if (hatch) for (const count of Object.values(hatch)) assert.ok(count > 0, JSON.stringify(hatch))
     if (ids.length === 0) {
       assert.deepEqual(counts, { nature: 0, agriculture: 0, built: 0, valued: 0, plan: 0 })
       assert.ok(await page.evaluate(() => globalThis.__themeMap.getLayers().getArray()[0].getVisible()))
       assert.ok(await page.getByText('Alle temalag er slått av. Bakgrunnskartet vises.').isVisible())
     }
     assert.equal(counts.plan, 0)
-    return { active: ids, pixels: counts, layers: state }
+    return { active: ids, pixels: counts, hatch, layout: await panelLayout(), layers: state }
   })
   await layers(Object.keys(names))
+  await gate('M-panel-widths', async () => {
+    const measurements = []
+    for (const width of [1440, 1000, 900, 390]) {
+      await page.setViewportSize({ width, height: 1100 }); await painted(); measurements.push(await panelLayout())
+    }
+    await page.setViewportSize({ width: 1440, height: 1100 }); await painted()
+    return { measurements }
+  })
   await gate('I-opacity-order', async () => {
     const before = await viewState(), state = await layerState()
     assert.ok(state.find((l) => l.id === 'level0').zIndex < state.find((l) => l.id === 'future-development').zIndex)
@@ -183,6 +217,22 @@ try {
     await page.getByRole('button', { name: 'Vis hele kommunen' }).click(); await painted(); assert.deepEqual(await viewState(), initialView)
     return { before, zoomed, moved, manualReset: true }
   })
+  await gate('N-detail-hatch', async () => {
+    const before = await viewState()
+    const map = page.locator('.explore-themes__canvas')
+    await map.scrollIntoViewIfNeeded(); await map.focus()
+    for (let i = 0; i < 4; i++) { await page.locator('.explore-themes__canvas .ol-zoom-in').click(); await page.waitForFunction(() => !globalThis.__themeMap.getView().getAnimating()) }
+    await painted(); const detail = await viewState(), counts = []
+    for (const [name, ids] of [['N-detail-future', ['future-development']], ['N-detail-base-future', ['level0', 'future-development']], ['N-detail-all', Object.keys(names)]]) {
+      await layers(ids); assert.deepEqual(await viewState(), detail); await screenshot(name); counts.push(await hatchPixels())
+    }
+    await layers(['level0', 'future-development'])
+    for (const value of [25, 50, 75]) { await transparency('future-development', value); assert.deepEqual(await viewState(), detail); await screenshot(`N-detail-plan-transparency-${value}`) }
+    await transparency('future-development', 0)
+    await transparency('level0', 0); await screenshot('N-detail-opaque-base'); await transparency('level0', 30)
+    await layers(Object.keys(names)); await page.getByRole('button', { name: 'Vis hele kommunen' }).click(); await painted(); assert.deepEqual(await viewState(), before)
+    return { detail, counts, opacityLevels: [0, 25, 50, 75], sourceMaskUnchanged: true }
+  })
   await gate('L-mobile', async () => {
     await page.setViewportSize({ width: 390, height: 844 })
     const map = page.locator('.explore-themes__canvas'), toggle = page.getByRole('button', { name: /Kartlag ·/ })
@@ -191,7 +241,7 @@ try {
     await painted(); await screenshot('L-mobile-closed')
     assert.equal(await page.getByRole('checkbox').count(), 0)
     assert.equal(await page.getByRole('region', { name: /^Tegnforklaring:/ }).count(), 3)
-    await toggle.click(); assert.equal(await page.getByRole('checkbox').count(), 3); await screenshot('L-mobile-open')
+    await toggle.click(); assert.equal(await page.getByRole('checkbox').count(), 3); await panelLayout(); await screenshot('L-mobile-open')
     for (const [ids, name] of [[['future-development'], 'L-mobile-future'], [Object.keys(names), 'L-mobile-all'], [[], 'L-mobile-none']]) {
       await layers(ids); assert.deepEqual(await viewState(), before)
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
@@ -201,6 +251,14 @@ try {
     await toggle.click(); await map.scrollIntoViewIfNeeded(); await map.focus()
     await page.locator('.explore-themes__canvas .ol-zoom-in').click(); await page.waitForFunction(() => !globalThis.__themeMap.getView().getAnimating()); await painted()
     await screenshot('L-mobile-detail')
+    await toggle.click(); await layers(['level0', 'future-development']); await toggle.click(); await screenshot('L-mobile-detail-base-plan')
+    await toggle.click(); await transparency('future-development', 50); await toggle.click(); await screenshot('L-mobile-detail-plan-50')
+    await toggle.click(); await transparency('future-development', 0); await layers(['future-development']); await toggle.click(); await screenshot('L-mobile-detail-plan-alone')
+    await map.scrollIntoViewIfNeeded(); await map.focus()
+    for (let i = 0; i < 3; i++) { await page.locator('.explore-themes__canvas .ol-zoom-in').click(); await page.waitForFunction(() => !globalThis.__themeMap.getView().getAnimating()) }
+    await painted(); await screenshot('L-mobile-close-plan-alone')
+    await toggle.click(); await layers(['level0', 'future-development']); await toggle.click(); await screenshot('L-mobile-close-base-plan')
+    await toggle.click(); await transparency('future-development', 50); await toggle.click(); await screenshot('L-mobile-close-plan-50')
     return { width: 390, collapsedPicker: true, opacityControl: true, preservesView: true, horizontalScroll: false }
   })
   await gate('H-real-raster-exclusion', async () => {

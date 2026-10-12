@@ -15,7 +15,7 @@ const errors = []
 try {
   await server.listen()
   browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true })
-  const page = await browser.newPage({ viewport: { width: 1000, height: 750 } })
+  const page = await browser.newPage({ viewport: { width: 1000, height: 750 }, deviceScaleFactor: Number(process.env.BROWSER_DPR ?? 1) })
   page.on('pageerror', (e) => errors.push(e.message))
   await page.route('https://**/*', async (route) => {
     const url = new URL(route.request().url())
@@ -64,28 +64,52 @@ try {
       const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height
       const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0); bitmap.close()
       const point = globalThis.__layersMap.getPixelFromCoordinate(coordinate), box = document.querySelector('#map').getBoundingClientRect()
-      return [...ctx.getImageData(Math.round(point[0] + box.x), Math.round(point[1] + box.y), 1, 1).data]
+      return [...ctx.getImageData(Math.round((point[0] + box.x) * devicePixelRatio), Math.round((point[1] + box.y) * devicePixelRatio), 1, 1).data]
     }, { png, coordinate })
   }
+  async function hatchPatch(coordinate) {
+    const png = (await page.screenshot()).toString('base64')
+    return page.evaluate(async ({ png, coordinate }) => {
+      const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob())
+      const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height
+      const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0); bitmap.close()
+      const point = globalThis.__layersMap.getPixelFromCoordinate(coordinate), box = document.querySelector('#map').getBoundingClientRect()
+      const data = ctx.getImageData(Math.round((point[0] + box.x) * devicePixelRatio), Math.round((point[1] + box.y) * devicePixelRatio), 16 * devicePixelRatio, 16 * devicePixelRatio).data
+      return Array.from({ length: data.length / 4 }, (_, i) => [...data.slice(i * 4, i * 4 + 4)])
+    }, { png, coordinate })
+  }
+  const contains = (patch, color) => assert.ok(patch.some((pixel) => color.every((v, i) => Math.abs(v - pixel[i]) <= 2)), `Missing composed color ${color}`)
   const close = (actual, expected) => assert.ok(expected.every((v, i) => Math.abs(actual[i] - v) <= 2), `${actual} != ${expected}`)
   await paint(); const before = await state()
   await set('level0', true, 1); close(await pixel([273000, 7033000]), [232, 100, 116, 255])
   await set('level0', false); await set('future-development', true)
-  close(await pixel([270000, 7033000]), [158, 204, 115, 255])
-  close(await pixel([271000, 7033000]), [255, 209, 110, 255])
+  contains(await hatchPatch([270000, 7033000]), [40, 100, 59, 255])
+  contains(await hatchPatch([270000, 7033000]), [206, 217, 196, 255]) // Transparent green tint over grey base.
+  contains(await hatchPatch([271000, 7033000]), [150, 112, 0, 255])
+  contains(await hatchPatch([271000, 7033000]), [229, 218, 194, 255]) // Transparent yellow tint.
+  await page.screenshot({ path: `${output}/plan-hatch-alone.png` })
+  // Repeated rendering must not compound alpha or erase any stripes.
+  const first = await hatchPatch([270000, 7033000]); await paint()
+  assert.deepEqual(await hatchPatch([270000, 7033000]), first)
+  // Opacity is applied to the complete hatch/tint layer, exposing the base.
+  await set('future-development', true, 0.5)
+  contains(await hatchPatch([270000, 7033000]), [131, 161, 140, 255])
+  await set('future-development', true, 1)
   close(await pixel([273000, 7033000]), [221, 221, 221, 255]) // Built is excluded even inside plan.
-  await set('level0', true, 0.7); await set('valued-nature', true)
+  await set('level0', true, 0.7)
+  const belowNature = await pixel([268000, 7033000])
+  await set('valued-nature', true)
   assert.deepEqual(await page.evaluate(() => window.layersRenderFixture.statuses), { level0: 'ready', 'future-development': 'ready', 'valued-nature': 'ready' })
   close(await pixel([268000, 7033000]), [175, 12, 12, 255]) // Nature above opaque plan/Grunnkart.
-  close(await pixel([270000, 7033000]), [158, 204, 115, 255])
+  contains(await hatchPatch([270000, 7033000]), [40, 100, 59, 255])
   close(await pixel([265000, 7033000]), [247, 249, 248, 255])
   close(await pixel([268500, 7030500]), [247, 249, 248, 255]) // Municipality hole.
   await page.screenshot({ path: `${output}/all-layers.png` })
-  await set('valued-nature', true, 0.5); close(await pixel([268000, 7033000]), [167, 108, 64, 255])
+  await set('valued-nature', true, 0.5); close(await pixel([268000, 7033000]), [...belowNature.slice(0, 3).map((value, i) => Math.round((value + [175, 12, 12][i]) / 2)), 255])
   await page.screenshot({ path: `${output}/opacity-composite.png` })
   await page.evaluate(() => window.layersRenderFixture.set({ filter: { natureType: 'Testtype', value: null } })); await paint()
-  close(await pixel([268000, 7033000]), [167, 108, 64, 255])
-  close(await pixel([270000, 7033000]), [158, 204, 115, 255])
+  close(await pixel([268000, 7033000]), [...belowNature.slice(0, 3).map((value, i) => Math.round((value + [175, 12, 12][i]) / 2)), 255])
+  contains(await hatchPatch([270000, 7033000]), [40, 100, 59, 255])
   await set('valued-nature', true, 1)
   const point = await page.evaluate(() => globalThis.__layersMap.getPixelFromCoordinate([268000, 7033000]))
   const box = await page.locator('#map').boundingBox(); await page.mouse.click(box.x + point[0], box.y + point[1])
@@ -97,12 +121,26 @@ try {
   await page.evaluate(() => globalThis.__layersMap.getLayers().getArray().find((l) => l.getClassName() === 'explore-registered-nature').getSource().refresh())
   await started; await set('valued-nature', false); releaseFailure(); await page.waitForTimeout(150)
   assert.equal(await page.evaluate(() => window.layersRenderFixture.statuses['valued-nature']), 'idle')
-  close(await pixel([268000, 7033000]), [158, 204, 115, 255])
+  close(await pixel([268000, 7033000]), belowNature)
   await set('level0', false); await set('future-development', false)
   close(await pixel([268000, 7033000]), [221, 221, 221, 255])
   assert.deepEqual(await state(), before)
   await page.evaluate(() => window.layersRenderFixture.destroy())
   assert.equal(await page.locator('#map .ol-viewport').count(), 0)
+  // Check the real React picker with its production CSS, not a copy of its markup.
+  await page.evaluate(() => window.layersRenderFixture.mountWorkspace())
+  await page.getByRole('checkbox', { name: 'Framtidig utbygging', exact: true }).check()
+  for (const width of [1440, 1000, 900, 390]) {
+    await page.setViewportSize({ width, height: 750 })
+    const dimensions = await page.evaluate(() => {
+      const list = document.querySelector('.explore-themes__layer-list'), rect = list.getBoundingClientRect()
+      return { client: list.clientWidth, scroll: list.scrollWidth, width: innerWidth, page: document.documentElement.scrollWidth,
+        rangesInside: [...list.querySelectorAll('input[type=range]')].every((e) => e.getBoundingClientRect().right <= rect.right && getComputedStyle(e).margin === '0px') }
+    })
+    assert.equal(dimensions.client, dimensions.scroll, JSON.stringify(dimensions))
+    assert.ok(dimensions.rangesInside && dimensions.page <= dimensions.width, JSON.stringify(dimensions))
+  }
+  await page.evaluate(() => window.layersRenderFixture.unmountWorkspace())
   assert.deepEqual(errors, [])
-  console.log('Layer render regression passed: real composed pixels, independent visibility/opacity, fixed order, filters, masking, selection, late inactive error and cleanup.')
+  console.log('Layer render regression passed: real composed pixels, screen-space hatch/tint, repeat-render and device ratio, real picker width/slider bounds, independent visibility/opacity, fixed order, filters, masking, selection, late inactive error and cleanup.')
 } finally { await browser?.close(); await server.close() }

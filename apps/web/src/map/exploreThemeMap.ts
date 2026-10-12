@@ -27,6 +27,7 @@ import { getIntersection, isEmpty } from 'ol/extent'
 import { ACCOUNT_CRS, ACCOUNT_DETAIL_MAX_RESOLUTION, accountTileGrid, buildRawAccountTileUrl, loadAccountDisplayTileBlob, loadOverviewRaster } from './accountOverviewRaster'
 import { defaultBasemap } from './basemaps'
 import { createFutureDevelopmentDisplaySource } from './futureDevelopmentDisplay'
+import { hatchFutureDevelopment } from './futureDevelopmentSymbology'
 
 proj4.defs(ACCOUNT_CRS, '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs +type=crs')
 register(proj4)
@@ -64,6 +65,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
     projection: ACCOUNT_CRS, ratio: 1, crossOrigin: 'anonymous', attributions: valuedNature.attribution })
   const nature = new ImageLayer({ source: natureSource, visible: false, className: 'explore-registered-nature' })
   const plan = new TileLayer<XYZ>({ visible: false, className: 'explore-future-development' })
+  plan.on('postrender', hatchFutureDevelopment)
   const localitySource = new VectorSource()
   const styles = new Map<string, Style[]>()
   let selectedId: string | null = null

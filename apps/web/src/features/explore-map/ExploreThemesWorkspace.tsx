@@ -107,7 +107,7 @@ export function ExploreThemesWorkspace({ municipality, boundary }: Props) {
         <h2>Tegnforklaring</h2>
         {activeDefinitions.map((definition) => <section className="explore-themes__layer-info" key={definition.id} aria-label={`Tegnforklaring: ${definition.name}`}>
           <h3>{definition.name}</h3><span className="explore-themes__role">{definition.role}</span>
-          <ul className="explore-themes__legend">{definition.legend.map((item) => <li key={item.label}><i style={{ backgroundColor: item.color }} aria-hidden="true" />{item.label}</li>)}</ul>
+          <ul className="explore-themes__legend">{definition.legend.map((item) => <li key={item.label}><i style={{ background: 'background' in item ? item.background : item.color }} aria-hidden="true" />{item.label}</li>)}</ul>
           <details className="explore-themes__source"><summary>Om {definition.name.toLocaleLowerCase('nb')}</summary>
             <p>{definition.description}</p><p>{definition.note}</p><p>{definition.source}</p>
             <p>Kartlaget avgrenses visuelt til valgt kommune. Lagvalg, gjennomsiktighet, filter og lokalitetsvalg beholder kartutsnittet.</p>

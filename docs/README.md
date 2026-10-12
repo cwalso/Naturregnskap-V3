@@ -1,6 +1,6 @@
 # Dokumentasjon – Kommunale naturregnskap V3
 
-**Sist oppdatert: 09.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 Denne siden viser hvilke dokumenter som er levende styringsdokumenter og hvilke
 som er historiske beslutningslogger.
@@ -76,6 +76,8 @@ presiserer at bare Natur/Jordbruk innenfor planformålene vises.
 [Ny Trondheim-kontroll](validation/2026-10-09-future-development-display.md)
 inkluderer råpikselkontroll, referansesammenligning og faktiske skjermbilder.
 Pages-testpublisering gjøres fra PR-branchen uten merge.
+[Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
+dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av

@@ -32,7 +32,7 @@
 .explore-themes__controls legend { font-size: .85rem; font-weight: 700; color: #005e5d; padding-right: .5rem; }
 .explore-themes__controls .explore-themes__layer-choice { display: flex; align-items: center; gap: .6rem; margin: 0; min-height: 44px; font-weight: 600; cursor: pointer; }
 .explore-themes__controls input[type=checkbox] { width: 20px; height: 20px; min-height: 0; flex: 0 0 20px; accent-color: #005e5d; }
-.explore-themes__controls input[type=range] { border: 0; padding: 0; background: transparent; accent-color: #005e5d; }
+.explore-themes__controls input[type=range] { display: block; margin: 0; border: 0; padding: 0; background: transparent; accent-color: #005e5d; }
 .explore-themes__controls .explore-themes__opacity { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 400; margin: .2rem 0 0; }
 .explore-themes__layer-info + .explore-themes__layer-info, .explore-themes__nature-filter { border-top: 1px solid #c7dedd; margin-top: 1rem; padding-top: 1rem; }
 .explore-themes__layer-info h3 { margin: 0 0 .3rem; font-size: 1rem; }

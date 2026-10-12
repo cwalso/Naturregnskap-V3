@@ -37,14 +37,20 @@ reelle DiBK-kall. Visuell godkjenning krever også manuell bildekontroll.
 `test:browser:layers` kontrollerer faktisk sammensatte piksler i den nye
 kartmotoren: uavhengig synlighet/opasitet, fast tegnerekkefølge, naturtypefilter
 uten påvirkning på andre lag, kildegeometrisk valg, kommunemaske med hull,
-alle lag av, sen feil fra deaktivert lag og opprydding. Den bruker kontrollerte
+alle lag av, sen feil fra deaktivert lag og opprydding. Planlagets mørke
+linjer og transparente tint leses fra faktisk sammensatte skjermpiksler.
+Gjentatt tegning og skjermratio 1/2 kontrolleres; `BROWSER_DPR=2` velger 2.
+Kontrollen monterer også den reelle React-lagvelgeren med produksjons-CSS
+og måler panel/slider ved 1440, 1000, 900 og 390 px. Den bruker kontrollerte
 WMS-bilder og kjøres i Quality Gate sammen med beholdte analyserender-tester.
 
 `test:browser:themes` og aliaset `test:browser:workspace` åpner den faktiske
 App-ruten med ekte Trondheim-tjenester. De kontrollerer A–L: alle åtte
 lagkombinasjoner, opasitet 50/100 %, rekkefølge, verdi-/naturtypefilter,
 kart-/listevalg, ingen automatisk zoom, manuell pan/zoom/reset og 390 px
-med åpen/lukket velger. Skjermbilder og results.json lagres. En ytterligere
+med åpen/lukket velger. Flere detaljbilder viser plan alene, med basis,
+alle lag og planets gjennomsiktighet 0/25/50/75 %. Panelmål dokumenteres
+ved fire bredder. Skjermbilder og results.json lagres. En ytterligere
 råpikselkontroll sammenligner 262 144 piksler i en reell innzoomet planflis
 mot identisk DiBK/Grunnkart-bbox. Det skjer ingen kildeendring i live-kjøringen.
 Testserverens Vite-plugin eksponerer kartet bare under kontrollkjøring; ingen

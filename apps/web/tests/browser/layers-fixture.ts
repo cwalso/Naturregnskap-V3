@@ -22,6 +22,7 @@ const controller = createExploreLayerMap(document.querySelector<HTMLDivElement>(
 let context: LayerMapContext = { boundary, layers: initialMapLayers(), data, filter: { natureType: null, value: null }, selectedId: null }
 controller.setSelectionHandler((id) => selections.push(id))
 controller.update(context)
+let unmountWorkspace: (() => void) | undefined
 const fixture = {
   statuses, selections,
   set(changes: Partial<LayerMapContext>) { context = { ...context, ...changes }; controller.update(context) },
@@ -29,6 +30,18 @@ const fixture = {
     context = { ...context, layers: { ...context.layers, [id]: { visible, opacity } } }; controller.update(context)
   },
   destroy: () => controller.destroy(),
+  async mountWorkspace() {
+    const [{ createRoot }, { createElement }, { ExploreThemesWorkspace }] = await Promise.all([
+      import('react-dom/client'), import('react'), import('../../src/features/explore-map/ExploreThemesWorkspace'),
+    ])
+    await import('../../src/styles/global.css')
+    document.querySelector('#map')?.remove()
+    const target = document.createElement('div'); document.body.append(target)
+    const root = createRoot(target)
+    root.render(createElement(ExploreThemesWorkspace, { municipality: { number: '5001', name: 'Testkommune' }, boundary }))
+    unmountWorkspace = () => root.unmount()
+  },
+  unmountWorkspace: () => unmountWorkspace?.(),
 }
 declare global { interface Window { layersRenderFixture: typeof fixture } }
 window.layersRenderFixture = fixture

@@ -1,6 +1,6 @@
 # Utviklingsplan – Naturregnskap V3
 
-**Sist oppdatert: 09.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 Dette er en arbeidsplan for den tekniske V3-prototypen, ikke en formell
 leveranseplan for Kommunale naturregnskap.
@@ -90,6 +90,9 @@ prototypeberegninger. Ingen nye temaer eller analysegrunnlag er innført.
 [Samtidige lag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
 [visuell A–L-kontroll](validation/2026-10-09-concurrent-map-layers.md) dokumenterer neste leveranse.
 Lagregisteret er forberedt for åtte ID-er; bare tre kilder er koblet inn.
+[Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
+fjerner range-marginenes 4 px overbredde og innfører mørk grønn/gul
+skravur i planlaget. Av/på, filter, lagrekkefølge og beregninger er uendret.
 
 Hovedretningen er brukerakseptert. Korrigert planvisning er testet med reelle
 Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se

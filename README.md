@@ -8,7 +8,7 @@ Den offentlige testflaten ligger på:
 
 https://cwalso.github.io/Naturregnskap-V3/
 
-**Status i repoet: 09.10.2026**
+**Status i repoet: 12.10.2026**
 
 ## Faglig skille
 
@@ -61,7 +61,8 @@ Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
 Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
 men bare de tre implementerte lagene vises. Planvisningen bruker uendret
 DiBK-filter og viser dagens
-Natur og Jordbruk innenfor planformålene, med eksisterende grønn/gul symbolikk.
+Natur og Jordbruk innenfor planformålene, med mørk grønn/gul diagonalskravur
+og transparent tint. Grunnkartets vanlige klassefarger er uendret.
 Bebygd, vann og ugyldige piksler skjules. Dette er kartpresentasjon, ikke
 bokført naturtap eller prognose for faktisk framtidig naturtap.
 
@@ -72,6 +73,9 @@ WMS-laget har maksimal målestokk 1:50 000.
 Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
 beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
 Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
+
+[Visuell korreksjon av lagpanel og skravur](docs/validation/2026-10-12-layer-panel-and-plan-hatch.md)
+dokumenterer de siste skjermbildene og kontrollene.
 
 [Flere samtidige kartlag](docs/decisions/2026-10-09-v3-concurrent-map-layers.md) og
 [kontrollrapport med skjermbilder](docs/validation/2026-10-09-concurrent-map-layers.md) dokumenterer gjeldende flyt.
