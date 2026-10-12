@@ -6,10 +6,7 @@ Kjøres fra `apps/web` etter `npm ci`:
 npx playwright install chromium
 npm run test:browser
 npm run test:browser:layers
-npm run test:browser:themes
-npm run test:browser:six:live
-npm run test:browser:live
-npm run test:browser:workspace
+npm run test:browser:design
 ```
 
 Ved behov for Linux-systembiblioteker: `npx playwright install --with-deps chromium`.
@@ -80,3 +77,22 @@ sen feil fra skjult lag, maskering, opasitet, rekkefølge og opprydding.
 Trondheim/Dovre: tre kildeframstillinger, Grå arealer med basis/plan/alle sju,
 opasitet, filter/objektvalg, mobil 390 px, navigasjon og kommunebytte.
 FKB-Grønnstruktur er ikke koblet inn fordi offentlig bruksrett er uavklart.
+
+## V2-design i offentlig rute
+
+`test:browser:design` starter Vite på 5194 og kjører A/B/C mot faktisk App-rute
+og reelle karttjenester. Ingen datakall erstattes med syntetiske data. Trafikken
+følger miljøets HTTPS-proxy. Den må ha nettverkstilgang også i kommandosandkassen.
+Kontrollen inkluderer fire skjermbredder, faktiske geografiske piksler innenfor
+kommunen, sju lag, Dovre/Trondheim, filtre, objekter, gråarealprodukter, hjulzoom
+ved pekeren, tastatur, touch og 200 % reflow. `DESIGN_GATE=A` eller `B` velger
+avgrensede testporter; `C_ONLY` gjentar sluttkontrollen etter bestått B.
+
+Valgfri `AXE_SCRIPT` peker på en lokalt installert `axe-core/axe.min.js` for
+automatiske WCAG 2.2 AA-relaterte kontroller. Axe er testverktøy, ingen ny
+produksjonsavhengighet. Det erstatter ikke manuell skjermleser-/enhetsrevisjon.
+
+Tidligere offentlig-rute-skript for tre/seks/sju lag dokumenterer layouten før
+V2 og er beholdt som historikk. Bruk `test:browser:design` for ny UI-aksept.
+Beholdte analyse-/lagfixtures med `test:browser` og `test:browser:layers`
+kontrollerer fortsatt uendret kart-/analysemetode; de er ikke live akseptbevis.

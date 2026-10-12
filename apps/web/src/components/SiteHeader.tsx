@@ -46,7 +46,7 @@ export function SiteHeader({
           <span className="site-header__brand-label">Kommunale naturregnskap</span>
         </button>
 
-        <span className="site-header__test" aria-label="Testversjon">★ TEST ★</span>
+        <span className="site-header__test" role={activeView === 'utforsk-i-kart' ? 'note' : undefined} aria-label="Testversjon">★ TEST ★</span>
 
         <div className="site-header__utilities">
           {municipalityPicker && (

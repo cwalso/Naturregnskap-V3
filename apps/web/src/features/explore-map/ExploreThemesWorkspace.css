@@ -69,3 +69,6 @@
 .explore-themes .explore-themes__filter-chip{position:absolute;top:20px;left:82px;max-width:calc(100% - 102px);text-align:left;padding:6px 12px;box-shadow:0 2px 8px #153d3b14;font-size:12px}.explore-themes__filter-chip span{overflow-wrap:anywhere}
 .explore-themes .explore-themes__many-layers{position:absolute;bottom:90px;left:20px;font-size:11px}
 @media(max-width:700px){.explore-themes .explore-themes__filter-chip{top:12px;left:66px;max-width:calc(100% - 78px);font-size:10px;padding:5px 8px;gap:5px}.explore-themes .explore-themes__many-layers{top:64px;bottom:auto;left:66px;font-size:10px;min-height:38px}.explore-themes__filter-heading button{min-height:28px}.explore-themes__filter-heading{margin-bottom:4px}.explore-themes__nature-filter>.explore-themes__muted{margin-bottom:8px}}
+/* Short viewports reflow vertically, retaining usable map and panel areas. */
+@media(max-width:700px){.explore-themes__body,.explore-themes__body.has-detail{min-height:587px}}
+.app-shell--explore .site-menu>summary{background:#337e7d;color:white;border:1px solid #81b3af}

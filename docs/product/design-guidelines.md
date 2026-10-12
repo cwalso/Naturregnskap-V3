@@ -124,11 +124,17 @@ og kildefeil forklares forskjellig. Ingen fri flytting av lag eller GIS-katalog.
 Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
 Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 
-På desktop ligger lagvelger og tegnforklaring/filter ved siden av kartet.
-På mobil kan velgeren åpnes/lukkes over kartet; den er lukket ved første
-åpning på mobil. Tegnforklaring/filter ligger under kartet. Kontroller er minst 44 px, og visningen skal ikke
-ha horisontal scrolling ved 390 px.
-
+Godkjent V2-design bruker en kompakt lagliste og ett kontekstpanel.
+Desktop har 274 px lagliste og 338 px detaljer ved behov. Ved 900 px
+bruker detaljer laglistens 252 px sideplass, med «Tilbake til kartlag».
+Mobil åpner ett bunnpanel på 260–300 px; kartet får egen flate over.
+Naturtype og verdi prioriteres, navnesøk kan utvides, objektinformasjon
+bytter inn i samme panel. Aktive filtre vises i lagrad og snarvei ved kartet.
+Gråarealprodukt velges med native radio; gjennomsiktighet ligger per lag.
+Samlet tegnforklaring følger aktive lags tegnerekkefølge fra øverst til nederst.
+Escape og fokusretur, tastatur og intern scrolling bevares. Lave skjermer
+bruker vertikal reflow. Headerens eksisterende kommunevalg og meny bevares.
+[Beslutning](../decisions/2026-10-12-v3-explore-design-v2.md).
 Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
 Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
 viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter

@@ -1,0 +1,386 @@
+{
+  "stage": "AXE_ONLY",
+  "gates": {
+    "C-accessibility-axe": {
+      "status": "passed",
+      "desktop": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "nodes": [
+              {
+                "target": [
+                  ".combobox__clear"
+                ],
+                "html": "<button class=\"combobox__clear\" type=\"button\" aria-label=\"Tøm kommunesøk\">×</button>",
+                "reasons": [
+                  "Element content is too short to determine if it is actual text content"
+                ]
+              },
+              {
+                "target": [
+                  "summary[aria-label=\"Åpne meny\"] > span"
+                ],
+                "html": "<span aria-hidden=\"true\">☰</span>",
+                "reasons": [
+                  "Element content contains only non-text characters"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "mobile": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "nodes": [
+              {
+                "target": [
+                  "summary[aria-label=\"Åpne meny\"] > span"
+                ],
+                "html": "<span aria-hidden=\"true\">☰</span>",
+                "reasons": [
+                  "Element content contains only non-text characters"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "scope": "Automated checks plus separate keyboard/focus/reflow gates; not a full WCAG audit"
+    }
+  },
+  "requests": [
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?lang=no&outputformat=json-stat2&valueCodes%5BRegion%5D=5001&valueCodes%5BArealKlasse%5D=01%2C02%2C03%2C04%2C05%2C06%2C07%2C08-09%2C10-11%2C12-13%2C14%2C15-16%2C17%2C18%2C19%2C20%2C21%2C24%2C22.01%2C22.02&valueCodes%5BContentsCode%5D=Areal&valueCodes%5BTid%5D=top%281%29",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner/5001/omrade",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/services/naturtyper_kuverdi/MapServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=&TRANSPARENT=true&LAYERS=kuverdi_noe_verdi%2Ckuverdi_middels_verdi%2Ckuverdi_stor_verdi%2Ckuverdi_sv%C3%A6rt_stor_verdi&WIDTH=1166&HEIGHT=712&CRS=EPSG%3A25833&BBOX=231769.09316357723%2C7008681.293827159%2C304435.1668364212%2C7053053.71617284",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "accessibilityDesktop": {
+    "violations": [],
+    "passes": 24,
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": [
+          {
+            "target": [
+              ".combobox__clear"
+            ],
+            "html": "<button class=\"combobox__clear\" type=\"button\" aria-label=\"Tøm kommunesøk\">×</button>",
+            "reasons": [
+              "Element content is too short to determine if it is actual text content"
+            ]
+          },
+          {
+            "target": [
+              "summary[aria-label=\"Åpne meny\"] > span"
+            ],
+            "html": "<span aria-hidden=\"true\">☰</span>",
+            "reasons": [
+              "Element content contains only non-text characters"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "accessibilityMobile": {
+    "violations": [],
+    "passes": 24,
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": [
+          {
+            "target": [
+              "summary[aria-label=\"Åpne meny\"] > span"
+            ],
+            "html": "<span aria-hidden=\"true\">☰</span>",
+            "reasons": [
+              "Element content contains only non-text characters"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -167,7 +167,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
             {mapLayers.filter((item) => item.role === role).sort((a, b) => displayOrder.indexOf(a.id) - displayOrder.indexOf(b.id)).map((item) => <div className={`explore-themes__layer ${layers[item.id].visible ? 'is-active' : ''}`} key={item.id}>
               <label className="explore-themes__layer-choice"><input type="checkbox" aria-label={item.name} checked={layers[item.id].visible} onChange={(event) => toggleLayer(item.id, event.target.checked)} /><span>{item.name}{item.id === 'intact-nature' && <small>Januar 2023</small>}{layers[item.id].visible && layers[item.id].opacity === 0 && <small>Helt gjennomsiktig</small>}{item.id === 'valued-nature' && (choice.filter.natureType || choice.filter.value) && <small>Filter aktivt</small>}</span></label>
               <button type="button" className="explore-themes__icon-button" aria-label={`Innstillinger for ${item.name}`} aria-expanded={panel === item.id} aria-controls={`${id}-detail`} onClick={() => openPanel(item.id)}><ExploreMapIcon name="settings" /></button>
-              <div className="explore-themes__layer-status">{mapState.owner === owner && layers[item.id].visible && mapState.layers[item.id] === 'error' && <small>Kartdata kunne ikke vises</small>}</div>
+              <div className="explore-themes__layer-status">{mapState.owner === owner && layers[item.id].visible && !['idle', 'ready', undefined].includes(mapState.layers[item.id]) && <small>{({ loading: 'Laster kartdata…', error: 'Kartdata kunne ikke vises', empty: 'Gyldig, tomt kartbilde', 'out-of-scale': 'Krever nærmere utsnitt' } as Partial<Record<LayerMapStatus, string>>)[mapState.layers[item.id] ?? 'idle']}</small>}</div>
             </div>)}
           </fieldset>)}
           <p className="explore-themes__footnote">Temadata supplerer regnskapsgrunnlaget. Lagvalg starter ingen analyse.</p>
@@ -176,7 +176,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
       </aside>
       <section className="explore-themes__map" aria-label="Kommunekart">
         <header><button type="button" className="explore-themes__tablet-back" onClick={closePanel}><ExploreMapIcon name="back" />Tilbake til kartlag</button><strong className="explore-themes__map-context"><ExploreMapIcon name="pin" />{municipality.name}<span> · Kommuneutsnitt</span></strong><button type="button" disabled={!activeBoundary} onClick={() => controller.current?.fitToMunicipality()}><ExploreMapIcon name="reset" />Vis hele kommunen</button></header>
-        <div className="explore-themes__map-surface"><div ref={element} className="explore-themes__canvas" role="region" aria-label={`Interaktivt kart i ${municipality.name}`} aria-describedby={`${id}-instructions`} tabIndex={0} />
+        <div className="explore-themes__map-surface"><div ref={element} className="explore-themes__canvas" role="region" aria-label={`Interaktivt kart i ${municipality.name}`} aria-describedby={`${id}-instructions`} tabIndex={0} onPointerDownCapture={(event) => { if (!(event.target as HTMLElement).closest('.ol-control')) event.currentTarget.focus({ preventScroll: true }) }} />
           {!activeBoundary && <p className="explore-themes__map-notice" role="status">Venter på kommunegrensen…</p>}
           {creationError && <p className="explore-themes__map-notice" role="alert">{creationError}</p>}
           {activeDefinitions.length === 0 && <p className="explore-themes__map-notice">Alle temalag er slått av. Bakgrunnskartet vises.</p>}

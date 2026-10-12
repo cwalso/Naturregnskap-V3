@@ -44,7 +44,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Villreinområder | ✅ prototype | Supplerende temaside og kart |
 | Inngrepsfri natur | ✅ prototype | Status/tidsserieinformasjon og kart |
 | Bynaturen / grå arealer | 🟡 | Temaside beholdt; offisiell gråareal-WMS i Utforsk, uten analyseintegrasjon |
-| Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Seks lag med avkryssing, egen gjennomsiktighet og mobilvelger; godkjent planvisning beholdt, ingen kryssanalyse |
+| Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Sju lag med avkryssing, egen gjennomsiktighet og V2-panelstruktur; godkjent planvisning beholdt, ingen kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
@@ -106,14 +106,15 @@ Trondheim-data; Pages-testpublisering utføres fra PR-branchen uten merge. Se
 [beslutning](decisions/2026-10-09-v3-independent-map-themes.md) og
 [kontrollrapport](validation/2026-10-09-independent-map-themes.md).
 
-## Åpent UX-forbedringspunkt – naturtypefilter og kart i synsfeltet
+## Naturtypefilter og kart i samme arbeidsflate
 
-**Status: åpent / ikke løst i leveransen med sju lag.** Når brukeren åpner
-naturtypefilteret langt nede på siden, forsvinner kartet fra synsfeltet.
-Vurder plassering eller en passende kart-/filterarbeidsflate i en egen
-UX-oppgave. Denne leveransen beholder layout/arbeidsflyt, med vertikal
-scrolling i laglisten ved mange aktive lag og uten horisontal scrolling.
-Ingen sticky kart, automatisk scroll/zoom eller filterombygging er innført.
+Det tidligere UX-punktet er løst med godkjent designprototype V2. Kompakt
+lagliste og ett kontekstpanel holder kartet synlig ved filtrering og
+objektvalg. Desktop, 900 px og mobil bruker samme paneltilstand med
+Escape/fokusretur; lave skjermer bruker vertikal reflow. Den kommuneavgrensede
+naturtypedatametoden, sju kartlag og OpenLayers-instansen beholdes.
+[Beslutning](decisions/2026-10-12-v3-explore-design-v2.md) og
+[kontrollrapport](validation/2026-10-12-explore-design-v2.md).
 
 ## Funksjonelle gap i Utforsk i kart
 

@@ -116,6 +116,12 @@ resultatcache. Image/lag/kommune-eier kontrolleres mot gjeldende viewport.
 App sender allerede eksisterende kommunevise registreringsstatus til panelet.
 Villrein kan dermed vise bekreftet null registreringer, treff eller ukjent
 registreringsdekning uten nye query-/areal-/overlappsberegninger.
+Godkjent V2-layout legger paneltilstand og fokusretur rundt samme karttarget,
+med kompakt lagliste og ett kontekstpanel. `RegisteredNaturePanel` og
+`RegisteredNatureDetails` er presentasjonskomponenter over eksisterende
+kommunedata/filter. ResizeObserver bevarer senter/oppløsning ved panelendring.
+Kommune-/filterdata, kartkilder, lagregister og analyse-/cachemoduler er uendret.
+[Panelbeslutning](../decisions/2026-10-12-v3-explore-design-v2.md).
 Tidligere kart-/analysekomponenter er beholdt og monteres ikke på ruten.
 
 Nivå 0 gjenbruker `loadOverviewRaster` og `loadAccountDisplayTileBlob`.

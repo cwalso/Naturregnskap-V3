@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { chromium, request } from 'playwright'
 import { createServer } from 'vite'
 const stage = process.env.DESIGN_GATE ?? 'A'
@@ -19,7 +19,7 @@ async function size() { return page.evaluate(() => {
 }) }
 async function shot(name) { await page.screenshot({ path: `${output}/${name}.png`, fullPage: true }) }
 async function settings(name) { await page.getByRole('button', { name: `Innstillinger for ${name}`, exact: true }).click() }
-async function close() { await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('.explore-themes__info')) }
+async function close() { await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('.explore-themes__info')); await page.waitForFunction(() => { const b=document.querySelector('.explore-themes__canvas').getBoundingClientRect(),s=__themeMap.getSize();return Math.abs(s[0]-b.width)<1 && Math.abs(s[1]-b.height)<1 }); await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))) }
 async function gate(name, run) { results.gates[name] = { status: 'passed', ...await run() }; console.log(`PASS ${name}`) }
 async function sourceVisual(id) {
   return page.evaluate((id) => {
@@ -105,6 +105,7 @@ try {
   await page.getByRole('link', { name: 'Utforsk i kart', exact: true }).click()
   await page.locator('summary[aria-label="Åpne meny"]').click()
   await page.waitForFunction(() => __themeContext?.boundary?.properties.number === '5001')
+  if(stage!=='AXE_ONLY') {
   await gate('A-responsive-panels', async () => {
     const measurements = []
     for (const [width,height] of [[1440,960],[900,900],[390,844],[320,720]]) {
@@ -126,7 +127,7 @@ try {
         await page.getByRole('button', { name: /^Kartlag \(/ }).click(); const open = await size(); assert.ok(open.height >=185)
         await page.keyboard.press('Escape'); assert.ok(await page.getByRole('button', { name: /^Kartlag \(/ }).evaluate(e=>document.activeElement===e))
       } else assert.ok(await page.getByRole('button', { name: 'Innstillinger for Grunnkart nivå 0', exact: true }).evaluate(e=>document.activeElement===e))
-      measurements.push({width,height,...dimensions,mapCreations:originalMap})
+      measurements.push({viewportWidth:width,viewportHeight:height,...dimensions,mapCreations:originalMap})
     }
     return { measurements }
   })
@@ -142,7 +143,8 @@ try {
     await page.locator('.ol-zoom-out').click(); await settle(); assert.ok((await state()).resolution>zoom.resolution)
     return {before,after:await state()}
   })
-  if(stage!=='A') {
+  }
+  if(stage==='B' || stage==='C') {
     await page.setViewportSize({width:1440,height:960});await page.getByRole('button',{name:'Vis hele kommunen'}).click();await settle();await painted()
     await gate('B-seven-layers-and-geography',async()=>{
       const evidence={}
@@ -202,6 +204,104 @@ try {
       return {evidence,municipalityReset:true}
     })
   }
+  if(stage==='C' || stage==='C_ONLY') {
+    await gate('C-responsive-filter-and-map-selection',async()=>{
+      await layers(['level0','valued-nature']);const checks=[]
+      for(const [width,height] of [[1440,960],[900,900],[390,844],[320,720]]) {
+        await page.setViewportSize({width,height});await settle()
+        if(width<=700) await page.getByRole('button',{name:'Naturtypefilter',exact:true}).click()
+        else await settings('Verdsatte naturtyper')
+        await page.getByRole('combobox',{name:'Naturtype',exact:true}).selectOption('Frisk lågurtfuruskog')
+        await page.getByRole('combobox',{name:'Verdikategori',exact:true}).selectOption('Stor verdi');await painted()
+        const before=await state();const dimensions=await size();assert.equal(dimensions.overflow,0);assert.ok(dimensions.height>=185)
+        await page.getByRole('combobox',{name:'Naturtype',exact:true}).scrollIntoViewIfNeeded();await shot(`C-${width}-filter`)
+        await close();assert.deepEqual(await state(),before);await painted()
+        const point=await page.evaluate(()=>{
+          const map=__themeMap,layer=map.getLayers().getArray().find(l=>l.getClassName()==='explore-registered-localities'),size=map.getSize()
+          const boundary=map.getLayers().getArray().flatMap(l=>l.getSource()?.getFeatures?.()??[]).find(f=>f.get('number')==='5001').getGeometry()
+          for(const feature of layer.getSource().getFeatures()) {
+            const geometry=feature.getGeometry(),points=geometry.getType()==='MultiPolygon'?geometry.getInteriorPoints().getCoordinates():[geometry.getInteriorPoint().getCoordinates()]
+            for(const point of points){const pixel=map.getPixelFromCoordinate(point);if(pixel[0]>80 && pixel[0]<size[0]-10 && pixel[1]>100 && pixel[1]<size[1]-60 && boundary.intersectsCoordinate(point))return {id:String(feature.getId()),pixel}}
+          }
+          return null
+        })
+        // A municipality-wide view is intentionally preserved across resizes. At
+        // small widths the selected locality may lie outside that cropped view;
+        // normal user navigation can explicitly center it for the click test.
+        if(!point) {
+          await page.evaluate(()=>{
+            const feature=__themeMap.getLayers().getArray().find(l=>l.getClassName()==='explore-registered-localities').getSource().getFeatures()[0]
+            const geometry=feature.getGeometry(),coordinate=geometry.getType()==='MultiPolygon'?geometry.getInteriorPoints().getCoordinates()[0]:geometry.getInteriorPoint().getCoordinates()
+            __themeMap.getView().setCenter(coordinate.slice(0,2))
+          });await painted()
+        }
+        const click=point??await page.evaluate(()=>{
+          const feature=__themeMap.getLayers().getArray().find(l=>l.getClassName()==='explore-registered-localities').getSource().getFeatures()[0]
+          const geometry=feature.getGeometry(),coordinate=geometry.getType()==='MultiPolygon'?geometry.getInteriorPoints().getCoordinates()[0]:geometry.getInteriorPoint().getCoordinates()
+          return {id:String(feature.getId()),pixel:__themeMap.getPixelFromCoordinate(coordinate)}
+        })
+        const clickView=await state(),box=await page.locator('.explore-themes__canvas').boundingBox()
+        await page.locator('.explore-themes__canvas').focus();await page.mouse.click(box.x+click.pixel[0],box.y+click.pixel[1])
+        await page.getByRole('complementary',{name:'Objektinformasjon'}).waitFor();assert.equal(await page.evaluate(()=>__themeContext.selectedId),click.id)
+        assert.deepEqual(await state(),clickView);await shot(`C-${width}-object`)
+        await page.getByRole('button',{name:'Tilbake til naturtypefilter'}).click()
+        assert.equal(await page.getByRole('combobox',{name:'Naturtype',exact:true}).inputValue(),'Frisk lågurtfuruskog')
+        assert.equal(await page.getByRole('combobox',{name:'Verdikategori',exact:true}).inputValue(),'Stor verdi')
+        if(width===900) {await page.getByRole('button',{name:'Tilbake til kartlag',exact:true}).first().click();await page.getByRole('checkbox',{name:'Verneområder',exact:true}).check();await settings('Verdsatte naturtyper')}
+        await close();await shot(`C-${width}-closed`);checks.push({viewportWidth:width,viewportHeight:height,...dimensions,selected:click.id,viewPreserved:true})
+      }
+      return {checks}
+    })
+    await gate('C-wheel-anchor-and-keyboard',async()=>{
+      await page.setViewportSize({width:1440,height:960});await page.getByRole('button',{name:'Vis hele kommunen'}).click();await settle();await painted()
+      const map=page.locator('.explore-themes__canvas');await map.focus();const box=await map.boundingBox();const anchors=[]
+      for(const [x,y,delta] of [[.7,.45,-120],[.35,.7,120]]) {
+        const pixel=[box.width*x,box.height*y],coordinate=await page.evaluate(pixel=>__themeMap.getCoordinateFromPixel(pixel),pixel),before=await state(),scroll=await page.evaluate(()=>scrollY)
+        await page.mouse.move(box.x+pixel[0],box.y+pixel[1]);await page.mouse.wheel(0,delta)
+        await page.waitForFunction(r=>__themeMap.getView().getResolution()!==r,before.resolution);await settle()
+        const position=await page.evaluate(c=>__themeMap.getPixelFromCoordinate(c),coordinate)
+        assert.ok(Math.hypot(position[0]-pixel[0],position[1]-pixel[1])<1,'Zoom skal være forankret ved pekeren');assert.equal(await page.evaluate(()=>scrollY),scroll)
+        anchors.push({pixel,afterPixel:position})
+      }
+      const before=await state();await map.press('ArrowRight');await settle();assert.notDeepEqual((await state()).center,before.center)
+      await map.press('+');await page.waitForFunction(r=>__themeMap.getView().getResolution()<r,before.resolution);await settle()
+      await settings('Grunnkart nivå 0');await page.keyboard.press('Tab');assert.ok(await page.getByRole('slider').evaluate(e=>document.activeElement===e))
+      const focus=await page.evaluate(()=>{const s=getComputedStyle(document.activeElement);return {outline:s.outlineStyle,width:s.outlineWidth}});assert.equal(focus.outline,'solid');assert.equal(focus.width,'3px')
+      await close();return {anchors,focus,keyboardPanZoom:true}
+    })
+    await gate('C-touch-navigation',async()=>{
+      await page.setViewportSize({width:390,height:844});await settle();await page.getByRole('button',{name:'Vis hele kommunen'}).click();await settle();await painted()
+      const box=await page.locator('.explore-themes__canvas').boundingBox(),before=await state(),cdp=await page.context().newCDPSession(page)
+      const point={x:box.x+box.width*.5,y:box.y+box.height*.5,id:1}
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point]})
+      for(let i=1;i<=8;i++)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{...point,x:point.x+6*i,y:point.y+3*i}]})
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await settle();assert.notDeepEqual((await state()).center,before.center)
+      const pan=await state(),x=box.x+box.width*.5,y=box.y+box.height*.5
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:x-25,y,id:1},{x:x+25,y,id:2}]})
+      for(let i=1;i<=8;i++)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x-25-4*i,y,id:1},{x:x+25+4*i,y,id:2}]})
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await settle();assert.ok((await state()).resolution<pan.resolution)
+      await cdp.detach();await shot('C-touch-navigation');return {before,pan,after:await state(),input:'Chromium touch events'}
+    })
+    await gate('C-200-percent-and-short-viewport',async()=>{
+      const checks=[]
+      for(const [width,height] of [[720,480],[390,480],[320,480]]) {
+        await page.setViewportSize({width,height});await settle()
+        if(width<=700)await page.getByRole('button',{name:'Naturtypefilter',exact:true}).click();else await settings('Verdsatte naturtyper')
+        const dimensions=await size();assert.equal(dimensions.overflow,0);assert.ok(dimensions.height>=185)
+        for(const name of ['Naturtype','Verdikategori']){const control=page.getByRole('combobox',{name,exact:true});await control.scrollIntoViewIfNeeded();assert.ok(await control.isVisible());const box=await control.boundingBox();assert.ok(box.width>100 && box.height>=44)}
+        await shot(`C-reflow-${width}-${height}`);checks.push({viewportWidth:width,viewportHeight:height,...dimensions});await close()
+      }
+      return {checks,reflow200Percent:'720x480 CSS pixels for a 1440x960 display'}
+    })
+  }
+  if(process.env.AXE_SCRIPT && ['C','C_ONLY','AXE_ONLY'].includes(stage)) await gate('C-accessibility-axe',async()=>{
+      const script=await readFile(process.env.AXE_SCRIPT,'utf8');if(stage==='AXE_ONLY') { await page.getByRole('checkbox',{name:'Verdsatte naturtyper',exact:true}).check();await page.waitForFunction(()=>__themeContext.data?.localities.length>0,null,{timeout:180000}) };await page.setViewportSize({width:1440,height:960});await settings('Verdsatte naturtyper');await page.addScriptTag({content:script})
+      const desktop=await page.evaluate(async()=>{const result=await axe.run('.app-shell--explore',{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}});return {violations:result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),passes:result.passes.length,incomplete:result.incomplete.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,html:n.html,reasons:[...n.any,...n.all,...n.none].map(r=>r.message)}))}))}})
+      results.accessibilityDesktop=desktop;assert.deepEqual(desktop.violations,[])
+      await close();await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Naturtypefilter',exact:true}).click()
+      const mobile=await page.evaluate(async()=>{const result=await axe.run('.app-shell--explore',{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}});return {violations:result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),passes:result.passes.length,incomplete:result.incomplete.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,html:n.html,reasons:[...n.any,...n.all,...n.none].map(r=>r.message)}))}))}})
+      results.accessibilityMobile=mobile;assert.deepEqual(mobile.violations,[]);await close();return {desktop,mobile,scope:'Automated checks plus separate keyboard/focus/reflow gates; not a full WCAG audit'}
+    })
   assert.deepEqual(results.errors,[])
 } catch(error) { results.failure=error.stack; console.error(error); if(page) await shot('failure').catch(()=>{}); process.exitCode=1 }
 finally { await writeFile(`${output}/checks.json`,JSON.stringify(results,null,2)); await browser?.close(); await network?.dispose(); await server.close() }

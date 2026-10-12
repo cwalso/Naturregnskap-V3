@@ -106,3 +106,9 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).
+
+## Utforsk-design V2
+
+[Godkjent panelstruktur](decisions/2026-10-12-v3-explore-design-v2.md) og
+[implementeringskontroll](validation/2026-10-12-explore-design-v2.md) beskriver
+A/B/C, reelle kartkontroller, faktiske screenshots og visuell sammenligning.

@@ -149,6 +149,21 @@ oppgave. De tre kartvisningene og korrigert planvisning er manuelt godkjent;
 den nye lagstyringen leveres for videre brukertest, uten å reaktivere analyse.
 Ingen metode, analyse-ID, nevner, UTM-korreksjon eller resultatcache endres.
 
+### Godkjent V2-panelstruktur
+
+`ExploreThemesWorkspace` bruker nå godkjent designprototype V2: kompakt
+lagliste, sentralt OpenLayers-kart og ett kontekstavhengig detaljpanel.
+Desktop har 274/338 px paneler; ved 900 px erstatter detaljer laglisten i
+252 px sideplass. Mobil har ett 260–300 px bunnpanel med egen kartflate over,
+intern scrolling, Escape og fokusretur. Lave skjermer bruker vertikal reflow.
+`RegisteredNaturePanel` og `RegisteredNatureDetails` viser eksisterende data;
+ingen ny filter-/kart-/analysemotor innføres. Kartklikk og lokalitetsliste
+åpner samme objektpanel, uten fit eller endring av øvrige lag og filtre.
+Alle sju lag, kildelegender og forbehold beholdes. Headerens kommunevalg/meny
+beholdes, med layoutregler bare på Utforsk-ruten.
+Se [beslutning](docs/decisions/2026-10-12-v3-explore-design-v2.md) og
+[kontrollrapport](docs/validation/2026-10-12-explore-design-v2.md).
+
 ## 8. Tegnet polygon
 
 Eget polygon skal behandles som et analyseområde på samme måte som framtidig utbygging, ikke som en separat analysefamilie.
