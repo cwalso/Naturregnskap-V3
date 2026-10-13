@@ -216,6 +216,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [])
 
   useEffect(() => {
+    // Long overview sections must not carry their scroll position into another page.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [activeView, selectedMunicipality?.number])
+
+  useEffect(() => {
     if (!showsMap || !selectedMunicipality || !mapElement.current) {
       map.current?.destroy()
       map.current = null

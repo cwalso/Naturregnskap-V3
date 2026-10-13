@@ -106,6 +106,11 @@ Enter på accordion, meny/Escape og alle hoved-/temainnganger er prøvd i
 Chromium. Faglige farger er beholdt. Grensesnittets mørke sjøgrønne tekster
 står på lyse flater; fokusmarkeringen er oransje.
 
+Sidenavigasjon og kommunebytte starter øverst. Dette er kontrollert særskilt
+fra en lenke langt nede på den lange Oversikt-siden. Browserkontrollens
+egne målinger setter scrollposisjonen eksplisitt og venter på riktig posisjon,
+slik at eksisterende glatt scrolling ikke gir en måling midt i animasjonen.
+
 ## Tester og kontroll
 
 | Kontroll | Resultat |

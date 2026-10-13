@@ -18,10 +18,14 @@ const image = '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"
 const state = () => page.evaluate(() => ({ center: __overviewMap.getView().getCenter(), resolution: __overviewMap.getView().getResolution(), creations: __overviewMapCreations }))
 async function screenshot(name, locator = page) { await locator.screenshot({ path: `${output}/${name}.png`, ...(locator === page ? { fullPage: true } : {}) }); results.screenshots.push(name) }
 async function overview() { await navigateSite(page, 'Kommuneoversikt'); await page.getByRole('heading', { name: 'Naturregnskap for Trondheim kommune', exact: true }).waitFor() }
+async function topOfPage() {
+  await page.evaluate(() => scrollTo({ top: 0, left: 0, behavior: 'instant' }))
+  await page.waitForFunction(() => scrollY === 0)
+}
 async function loadImages() {
   for (const photo of await page.locator('.overview-photo').all()) await photo.scrollIntoViewIfNeeded()
   await page.waitForFunction(() => [...document.querySelectorAll('.overview-photo img')].every(image => image.complete && (image.naturalWidth > 0 || image.hidden)))
-  await page.evaluate(() => scrollTo(0, 0))
+  await topOfPage()
 }
 try {
   await server.listen()
@@ -72,7 +76,7 @@ try {
   if (!live) assert.ok(results.images.every(image => image.naturalWidth > 0 && !image.fallback), 'Controlled image success path must decode')
   for (const [width, height] of [[1440, 1000], [900, 1000], [390, 844], [320, 720]]) {
     await page.setViewportSize({ width, height })
-    await page.evaluate(() => scrollTo(0, 0))
+    await topOfPage()
     await page.getByRole('region', { name: 'Kart over Trondheim', exact: true }).waitFor()
     await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))))
     const before = await state()
@@ -80,7 +84,7 @@ try {
       const hero = document.querySelector('.overview-home__hero').getBoundingClientRect(), header = document.querySelector('.site-header').getBoundingClientRect(), map = document.querySelector('.overview-home__map-target').getBoundingClientRect()
       return { overflow: document.documentElement.scrollWidth - innerWidth, mapWidth: map.width, mapHeight: map.height, headerClearance: hero.top - header.bottom, h1Count: document.querySelectorAll('h1').length }
     })
-    assert.ok(measurement.overflow <= 1 && measurement.mapWidth > 100 && measurement.mapHeight >= 250 && measurement.headerClearance >= -1)
+    assert.ok(measurement.overflow <= 1 && measurement.mapWidth > 100 && measurement.mapHeight >= 250 && measurement.headerClearance >= -1, JSON.stringify({ width, height, ...measurement }))
     assert.equal(measurement.h1Count, 1)
     assert.equal(before.creations, 1, 'Overview resize must retain its map instance')
     assert.deepEqual(await state(), before, 'Resize must settle without repeated map creation')
@@ -88,14 +92,14 @@ try {
     for (const [name, selector] of [['hero', '.overview-home__hero'], ['naturtap', '.overview-home__loss'], ['fortelling', '.overview-story'], ['drivkrefter', '.overview-story--reverse'], ['temakort', '.overview-home__themes']]) await screenshot(`${name}-${width}`, page.locator(selector).first())
     results.layouts.push({ width, height, ...measurement, categories })
     if (width <= 700) {
-      await page.evaluate(() => scrollTo(0, 0))
+      await topOfPage()
       await page.getByRole('button', { name: 'Åpne meny', exact: true }).click()
       await page.getByRole('navigation', { name: 'Hovednavigasjon', exact: true }).getByRole('link', { name: 'Naturtapet', exact: true }).focus()
       await page.keyboard.press('Escape')
       assert.ok(await page.getByRole('button', { name: 'Åpne meny', exact: true }).evaluate(button => button === document.activeElement))
     }
   }
-  await page.setViewportSize({ width: 1440, height: 1000 }); await page.evaluate(() => scrollTo(0, 0))
+  await page.setViewportSize({ width: 1440, height: 1000 }); await topOfPage()
   const mapTarget = page.getByRole('region', { name: 'Kart over Trondheim', exact: true })
   await mapTarget.focus()
   const beforeKeyboard = await state()
@@ -106,7 +110,9 @@ try {
   assert.ok(await question.evaluate(summary => summary.parentElement.open))
   await page.keyboard.press('Enter')
   await page.getByRole('link', { name: 'Mer om naturtapet', exact: true }).click()
-  await page.getByRole('heading', { name: 'Naturtapet i Trondheim', exact: true }).waitFor(); await overview()
+  await page.getByRole('heading', { name: 'Naturtapet i Trondheim', exact: true }).waitFor()
+  assert.equal(await page.evaluate(() => scrollY), 0, 'Navigation from a long overview must open the destination at the top')
+  await overview()
   await page.getByRole('link', { name: 'Se alle naturtema', exact: true }).click()
   await page.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?', exact: true }).waitFor(); await overview()
   await page.getByRole('link', { name: 'Åpne Utforsk i kart', exact: true }).click()

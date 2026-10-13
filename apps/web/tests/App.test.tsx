@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ExploreAnalysisWorkspace } from '../src/features/explore-map/ExploreAnalysisWorkspace'
 import { App } from '../src/app/App'
@@ -203,6 +203,8 @@ async function chooseTrondheim() {
   fireEvent.focus(input)
   fireEvent.click(screen.getByRole('option', { name: 'Trondheim 5001' }))
 }
+
+beforeEach(() => { vi.spyOn(window, 'scrollTo').mockImplementation(() => {}) })
 
 afterEach(() => {
   cleanup()
@@ -407,6 +409,7 @@ describe('sidestruktur og Oversikt', () => {
 
     expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim')
     expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'instant' })
   })
 
   it('lar brukeren gå fra Oversikt til de andre hovedflatene', async () => {
