@@ -43,7 +43,7 @@ function canvas() {
   return result
 }
 
-async function pixels(blob: Blob) {
+export async function futureDevelopmentPixels(blob: Blob) {
   const bitmap = await createImageBitmap(blob)
   try {
     const target = document.createElement('canvas')
@@ -54,7 +54,7 @@ async function pixels(blob: Blob) {
   } finally { bitmap.close() }
 }
 
-function sampleOverview(raster: LoadedOverviewRaster, data: Uint8ClampedArray, tileCoord: number[]) {
+export function sampleFutureDevelopmentOverview(raster: LoadedOverviewRaster, data: Uint8ClampedArray, tileCoord: number[]) {
   const extent = planTileGrid.getTileCoordExtent(tileCoord)
   const output = new Uint8ClampedArray(SIZE * SIZE * 4)
   const dx = (extent[2] - extent[0]) / SIZE
@@ -78,15 +78,15 @@ export function createFutureDevelopmentDisplaySource(number: string, municipalit
   function getOverview() {
     overview ??= loadOverviewRaster(number).then(async (raster) => {
       if (!raster) throw new Error('Kommuneoversikten for framtidig utbygging er ikke klargjort.')
-      return { raster, data: await pixels(raster.rawBlob) }
+      return { raster, data: await futureDevelopmentPixels(raster.rawBlob) }
     })
     return overview
   }
   async function intersect(tileCoord: number[]) {
-    const planRequest = loadPlanTileBlobByUrl(buildPlanTileUrl(tileCoord), abort.signal).then(pixels)
+    const planRequest = loadPlanTileBlobByUrl(buildPlanTileUrl(tileCoord), abort.signal).then(futureDevelopmentPixels)
     const accountRequest = tileCoord[0] > PLAN_ANALYSIS_ZOOM
-      ? loadSharedImageBlob(buildRawAccountTileUrl(nationalLandCover2025.visualSource.endpoint, tileCoord), abort.signal).then(pixels)
-      : getOverview().then(({ raster, data }) => sampleOverview(raster, data, tileCoord))
+      ? loadSharedImageBlob(buildRawAccountTileUrl(nationalLandCover2025.visualSource.endpoint, tileCoord), abort.signal).then(futureDevelopmentPixels)
+      : getOverview().then(({ raster, data }) => sampleFutureDevelopmentOverview(raster, data, tileCoord))
     const [account, plan] = await Promise.all([accountRequest, planRequest])
     abort.signal.throwIfAborted()
     return intersectFutureDevelopmentPixels(account, plan)
