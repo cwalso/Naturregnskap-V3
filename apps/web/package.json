@@ -13,6 +13,7 @@
     "test:browser:workspace": "node tests/browser/check-explore-workspace-live.mjs",
     "test:browser:themes": "node tests/browser/check-explore-themes-live.mjs",
     "test:browser:layers": "node tests/browser/check-explore-layers-render.mjs",
+    "test:browser:navigation": "node tests/browser/check-navigation-render.mjs",
     "test:browser:six:live": "node tests/browser/check-explore-six-layers-live.mjs",
     "test:browser:grey:live": "node tests/browser/check-explore-grey-layers-live.mjs",
     "test:browser:design": "DESIGN_GATE=C node tests/browser/check-explore-design-live.mjs"

@@ -1,6 +1,6 @@
 # Visuelle føringer for Kommunale naturregnskap
 
-**Sist oppdatert: 12.10.2026**
+**Sist oppdatert: 13.10.2026**
 
 ## Status
 
@@ -23,6 +23,13 @@ Miljødirektoratets logo skal **ikke** brukes i offentlig prototype uten
 eksplisitt godkjenning.
 
 Tidligere logoimplementasjon er historikk og er ikke gjeldende designregel.
+
+Hovedvalgene Kommuneoversikt, Naturtapet, Naturtema og Utforsk i kart står
+permanent i en horisontal rad på desktop (over 52 rem). Aktiv side markeres
+med bakgrunn, understrek og `aria-current`; temasidene markerer Naturtema.
+På mindre skjermer åpnes den samme navigasjonen med en knapp. Valg lukker
+menyen; Escape lukker og returnerer fokus til menyknappen. Kommunevalg og
+nøytral avsender/teststatus beholdes. Ingen nye hovedsider innføres.
 
 ## Designretning
 
@@ -133,7 +140,8 @@ bytter inn i samme panel. Aktive filtre vises i lagrad og snarvei ved kartet.
 Gråarealprodukt velges med native radio; gjennomsiktighet ligger per lag.
 Samlet tegnforklaring følger aktive lags tegnerekkefølge fra øverst til nederst.
 Escape og fokusretur, tastatur og intern scrolling bevares. Lave skjermer
-bruker vertikal reflow. Headerens eksisterende kommunevalg og meny bevares.
+bruker vertikal reflow. Headerens kommunevalg beholdes; hovednavigasjonen
+følger den permanente desktopraden beskrevet ovenfor.
 [Beslutning](../decisions/2026-10-12-v3-explore-design-v2.md).
 Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
 Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
@@ -144,7 +152,13 @@ ved zoom og forskjellig skjermoppløsning; legend viser samme mønster.
 Range-kontroller skal passe innenfor innholdsbredde uten standardmarginer
 som skaper horisontal scrolling. Bebygd og vann skjules; forklaringen
 skiller kartpresentasjon fra bokført eller prognostisert naturtap.
-Kryssanalyse er skjult og krever separat reaktivering etter manuell kontroll.
+Den eldre analysearbeidsflaten er skjult. Den godkjente geometriske
+planoverlappanalysen åpnes eksplisitt med «Analyser planoverlapp», som står
+fast over den rullbare laglisten. Mobil har «Planoverlapp» i kartkontrollene,
+med samme tilgjengelige knappnavn. Den åpner eksisterende kontekstpanel i
+samme kartinstans, uavhengig av synlighet for plan- og naturtypelag.
+Lagvalg starter fortsatt ingen analyse. Se
+[kontrollrapport for hovednavigasjon og analyseinngang](../validation/2026-10-13-navigation-analysis-entry.md).
 
 ## Resultatdesign i beholdt analyseverksted
 

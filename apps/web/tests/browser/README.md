@@ -102,3 +102,13 @@ kontrollerer fortsatt uendret kart-/analysemetode; de er ikke live akseptbevis.
 `BROWSER_OUTPUT=.browser-results/future-nature-live node tests/browser/check-future-nature-live.mjs` bruker system-Chromium (`CHROMIUM_PATH` kan overstyre), reelle tjenester gjennom eksisterende proxy og samme app/moduler. Kontrollerer gammel/ny metode, fire bredder, kategori/type/lokalitet, lagtilstander, korrekt geometri, kortinngang og manglende kommuneraster. Source-audit-instrumentering finnes bare i testens Vite-plugin. Komprimerte referanseuttrekk og beregninger ligger i `docs/validation/2026-10-13-future-nature/`.
 
 Uavhengig GEOS-kontroll: pakk ut `result.json.gz`, installer Shapely i et separat kontrollmiljø og kjør `python tests/browser/verify-future-nature-geos.py /sti/til/result.json`. Shapely er ikke en app- eller backend-runtimeavhengighet.
+## Hovednavigasjon og analyseinngang
+
+Etter `npm run build`: `CHROMIUM_PATH=/usr/bin/chromium npm run test:browser:navigation`.
+Kontrollen bruker det faktiske produksjonsbygget og kontrollerte eksterne svar
+for å teste permanent desktopnavigasjon, mobilmeny/Escape, aktiv side,
+analyseinngang, laglistens scrolling og bredder 1440, 900, 832, 701, 700, 390
+og 320 px. Dette er en UI-kontroll, ikke live datavalidering eller Pages-kontroll.
+Valgfritt `PAGES_ARTIFACT` peker på en utpakket Pages-artefakt og kontrollerer
+at den gamle knappen rendres, men kan rulles helt bort ved 1440 × 720 px.
+`check-future-nature-live.mjs` kontrollerer de reelle beregningene og kartkoblingen.

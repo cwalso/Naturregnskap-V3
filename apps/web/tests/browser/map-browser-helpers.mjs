@@ -1,5 +1,11 @@
 import assert from 'node:assert/strict'
 
+export async function navigateSite(page, label) {
+  const link = page.getByRole('navigation', { name: 'Hovednavigasjon', exact: true }).getByRole('link', { name: label, exact: true })
+  if (!await link.isVisible()) await page.getByRole('button', { name: 'Åpne meny', exact: true }).click()
+  await link.click()
+}
+
 export const exposeTestMap = {
   name: 'expose-test-map',
   transform(code, id) {

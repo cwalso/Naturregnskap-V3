@@ -1,3 +1,4 @@
+import { navigateSite } from './map-browser-helpers.mjs'
 import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { chromium, request } from 'playwright'
@@ -30,7 +31,7 @@ try {
  })
  await writeFile(output+'/method-comparison.json',JSON.stringify(compare,null,2));console.log('COMPARISON',JSON.stringify(compare))
  await page.getByRole('combobox',{name:'Velg kommune'}).fill('Trondheim');await page.getByRole('option',{name:/Trondheim.*5001/}).click()
- await page.locator('summary[aria-label="Åpne meny"]').click();await page.getByRole('link',{name:'Utforsk i kart',exact:true}).click();await page.locator('summary[aria-label="Åpne meny"]').click()
+ await navigateSite(page, 'Utforsk i kart')
  await page.waitForFunction(()=>globalThis.__themeContext?.boundary?.properties.number==='5001')
  for(const name of ['Framtidig utbygging','Verdsatte naturtyper','Verneområder','Inngrepsfri natur (INON)','Villrein','Grå arealer'])await page.getByRole('checkbox',{name,exact:true}).setChecked(true)
  const state=()=>page.evaluate(()=>({center:__themeMap.getView().getCenter(),resolution:__themeMap.getView().getResolution(),layers:__themeContext.layers,instances:__mapCreations}))

@@ -185,8 +185,8 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
       <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
         <div className="explore-themes__panel-heading"><h2><ExploreMapIcon name="layers" />Kartlag</h2><span className="explore-themes__counter">{activeDefinitions.length} aktive</span><button type="button" className="explore-themes__mobile-close explore-themes__icon-button" onClick={closePanel} aria-label="Lukk kartlag"><ExploreMapIcon name="close" /></button></div>
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>
+        <button type="button" className="explore-themes__analysis-entry" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={() => openPanel('analysis')}>Analyser planoverlapp</button>
         <div id={`${id}-layers`} className="explore-themes__layer-list">
-          <button type="button" onClick={() => openPanel('analysis')}>Analyser planoverlapp</button>
           {mapLayerRoles.map((role) => <fieldset key={role}><legend>{role}</legend>
             {mapLayers.filter((item) => item.role === role).sort((a, b) => displayOrder.indexOf(a.id) - displayOrder.indexOf(b.id)).map((item) => <div className={`explore-themes__layer ${layers[item.id].visible ? 'is-active' : ''}`} key={item.id}>
               <label className="explore-themes__layer-choice"><input type="checkbox" aria-label={item.name} checked={layers[item.id].visible} onChange={(event) => toggleLayer(item.id, event.target.checked)} /><span>{item.name}{item.id === 'intact-nature' && <small>Januar 2023</small>}{layers[item.id].visible && layers[item.id].opacity === 0 && <small>Helt gjennomsiktig</small>}{item.id === 'valued-nature' && (choice.filter.natureType || choice.filter.value) && <small>Filter aktivt</small>}</span></label>
@@ -230,7 +230,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         </div>
       </aside>}
       <nav className="explore-themes__mobile-nav" aria-label="Kartkontroller">
-        <button type="button" aria-expanded={panel === 'analysis'} onClick={() => openPanel('analysis')}>Analyse</button>
+        <button type="button" aria-label="Analyser planoverlapp" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={() => openPanel('analysis')}>Planoverlapp</button>
         <button ref={pickerButton} type="button" aria-expanded={pickerOpen} aria-controls={`${id}-layers`} onClick={() => { if (pickerOpen) closePanel(); else { opener.current = pickerButton.current; setPanel(null); setPickerOpen(true) } }}><ExploreMapIcon name="layers" />Kartlag ({activeDefinitions.length})</button>
         <button type="button" aria-expanded={panel === 'valued-nature'} onClick={() => { toggleLayer('valued-nature', true); openPanel('valued-nature') }}><ExploreMapIcon name="settings" />Naturtypefilter</button>
         <button type="button" aria-expanded={panel === 'legend'} onClick={() => openPanel('legend')}><ExploreMapIcon name="legend" />Tegnforklaring</button>

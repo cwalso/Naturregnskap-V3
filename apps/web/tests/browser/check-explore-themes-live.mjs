@@ -1,3 +1,4 @@
+import { navigateSite } from './map-browser-helpers.mjs'
 import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { chromium, request } from 'playwright'
@@ -105,9 +106,7 @@ try {
   await page.goto('http://127.0.0.1:5184')
   await page.getByRole('combobox', { name: 'Velg kommune' }).fill('Trondheim')
   await page.getByRole('option', { name: 'Trondheim 5001' }).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click()
-  await page.getByRole('link', { name: 'Utforsk i kart', exact: true }).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click()
+  await navigateSite(page, 'Utforsk i kart')
   await page.waitForFunction(() => globalThis.__themeContext?.boundary)
   const initialView = await viewState()
   await gate('A-level0', async () => {

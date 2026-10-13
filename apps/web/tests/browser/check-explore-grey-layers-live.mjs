@@ -1,3 +1,4 @@
+import { navigateSite } from './map-browser-helpers.mjs'
 import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { chromium, request } from 'playwright'
@@ -137,7 +138,7 @@ async function legends() {
 async function choose(name, number) {
   await page.getByRole('combobox', { name: 'Velg kommune' }).fill(name)
   await page.getByRole('option', { name: `${name} ${number}` }).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click(); await page.getByRole('link', { name: 'Utforsk i kart', exact: true }).click(); await page.locator('summary[aria-label="Åpne meny"]').click()
+  await navigateSite(page, 'Utforsk i kart')
   await page.waitForFunction((number) => globalThis.__themeContext?.boundary?.properties.number === number, number)
 }
 async function gate(name, run) {

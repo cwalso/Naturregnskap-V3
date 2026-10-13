@@ -1,3 +1,4 @@
+import { navigateSite } from './map-browser-helpers.mjs'
 import assert from 'node:assert/strict'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { chromium, request } from 'playwright'
@@ -84,7 +85,7 @@ async function proof(id) {
 }
 async function chooseMunicipality(name,number) {
   await page.getByRole('combobox',{name:'Velg kommune'}).fill(name);await page.getByRole('option',{name:`${name} ${number}`}).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click();await page.getByRole('link',{name:'Utforsk i kart',exact:true}).click();await page.locator('summary[aria-label="Åpne meny"]').click()
+  await navigateSite(page, 'Utforsk i kart')
   await page.waitForFunction(number=>__themeContext?.boundary?.properties.number===number,number,{timeout:90000});await painted()
 }
 try {
@@ -101,9 +102,7 @@ try {
   await page.goto('http://127.0.0.1:5194')
   await page.getByRole('combobox', { name: 'Velg kommune' }).fill('Trondheim')
   await page.getByRole('option', { name: 'Trondheim 5001' }).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click()
-  await page.getByRole('link', { name: 'Utforsk i kart', exact: true }).click()
-  await page.locator('summary[aria-label="Åpne meny"]').click()
+  await navigateSite(page, 'Utforsk i kart')
   await page.waitForFunction(() => __themeContext?.boundary?.properties.number === '5001')
   if(stage!=='AXE_ONLY') {
   await gate('A-responsive-panels', async () => {

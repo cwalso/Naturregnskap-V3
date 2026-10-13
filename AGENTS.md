@@ -159,8 +159,11 @@ intern scrolling, Escape og fokusretur. Lave skjermer bruker vertikal reflow.
 `RegisteredNaturePanel` og `RegisteredNatureDetails` viser eksisterende data;
 ingen ny filter-/kart-/analysemotor innføres. Kartklikk og lokalitetsliste
 åpner samme objektpanel, uten fit eller endring av øvrige lag og filtre.
-Alle sju lag, kildelegender og forbehold beholdes. Headerens kommunevalg/meny
-beholdes, med layoutregler bare på Utforsk-ruten.
+Alle sju lag, kildelegender og forbehold beholdes. Headerens kommunevalg
+beholdes. Fra 13.10 står hovednavigasjonen permanent horisontalt på desktop
+(over 52 rem), med menyknapp på mindre skjermer. Planoverlappinngangen står
+fast over den rullbare laglisten og heter Planoverlapp i mobilkontrollene.
+Se [kontrollrapport](docs/validation/2026-10-13-navigation-analysis-entry.md).
 Se [beslutning](docs/decisions/2026-10-12-v3-explore-design-v2.md) og
 [kontrollrapport](docs/validation/2026-10-12-explore-design-v2.md).
 
