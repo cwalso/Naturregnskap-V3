@@ -1,3 +1,4 @@
+import { calculateFutureNature, type Result as FutureNatureResult } from '../features/future-analysis/model'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
@@ -58,7 +59,6 @@ import {
 } from '../map/plannedDevelopment'
 import { filterValuedLocalities, type ValuedNaturePresentation } from '../map/valuedNaturePresentation'
 import {
-  calculatePlannedValuedNatureAnalysis,
   type PlannedValuedNatureAnalysis,
   type ValuedNatureMapSelection,
 } from '../map/plannedValuedNature'
@@ -159,6 +159,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     results: [],
   })
   const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
+  const [futureNatureResult, setFutureNatureResult] = useState<FutureNatureResult | null>(null)
+  const [futureNatureState, setFutureNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [futureAnalysisEntry, setFutureAnalysisEntry] = useState(false)
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
@@ -404,36 +407,14 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   ])
 
   useEffect(() => {
-    const needsValuedNature = activeView === 'tema-valued-nature'
-    const analysis = activeView === 'utforsk-i-kart'
-      ? mapAnalysisResult
-      : plannedDevelopment
-
-    if (!needsValuedNature || analysis?.status !== 'available') {
-      setPlannedValuedNature(null)
-      setPlannedValuedNatureState('idle')
-      return
-    }
-
-    const controller = new AbortController()
-    setPlannedValuedNature(null)
-    setPlannedValuedNatureState('loading')
-
-    void calculatePlannedValuedNatureAnalysis(analysis, controller.signal)
-      .then((result) => {
-        if (controller.signal.aborted) return
-        setPlannedValuedNature(result)
-        setPlannedValuedNatureState('idle')
-      })
-      .catch((error: unknown) => {
-        if (controller.signal.aborted) return
-        if (error instanceof DOMException && error.name === 'AbortError') return
-        setPlannedValuedNature(null)
-        setPlannedValuedNatureState('error')
-      })
-
-    return () => controller.abort()
-  }, [activeView, mapAnalysisResult, plannedDevelopment, plannedDevelopmentAnalysisTarget])
+    if (activeView !== 'tema-valued-nature' || !selectedMunicipality) return
+    const abort = new AbortController()
+    setFutureNatureResult(null); setFutureNatureState('loading')
+    void calculateFutureNature(selectedMunicipality.number, abort.signal).then((result) => {
+      if (!abort.signal.aborted) { setFutureNatureResult(result); setFutureNatureState('idle') }
+    }).catch(() => { if (!abort.signal.aborted) setFutureNatureState('error') })
+    return () => abort.abort()
+  }, [activeView, selectedMunicipality])
 
   useEffect(() => {
     if (activeView !== 'tema-forest' || !selectedMunicipality) {
@@ -636,6 +617,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function navigate(view: SiteView) {
+    if (view !== 'utforsk-i-kart') setFutureAnalysisEntry(false)
     setActiveView(view)
     const hash = `#${view}`
     if (window.location.hash !== hash) window.location.hash = hash
@@ -732,6 +714,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function openValuedNatureAnalysis() {
+    setFutureAnalysisEntry(true)
     resetMapSelection()
     setAnalysisAreaMode('planned')
     setPlannedDevelopmentAnalysisTarget('valued-nature')
@@ -1400,7 +1383,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <ExploreThemesWorkspace municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
+          <ExploreThemesWorkspace initialAnalysisOpen={futureAnalysisEntry} municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
         </>
       )}
     </section>
@@ -1469,6 +1452,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           thematicCoverageState={thematicCoverageState}
           valuedNatureStatistics={valuedNatureStatistics}
           valuedNatureStatisticsState={valuedNatureStatisticsState}
+          futureNatureAnalysis={futureNatureResult?.municipalityNumber === selectedMunicipality.number ? futureNatureResult : null}
+          futureNatureState={futureNatureState}
           plannedValuedNature={plannedValuedNature}
           plannedValuedNatureState={plannedValuedNatureState}
           plannedCoverageGap={plannedCoverageGap}

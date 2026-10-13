@@ -488,7 +488,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getAllByText(/Datasettet er ikke heldekkende/).length).toBeGreaterThan(0)
     expect(screen.getByRole('link', { name: 'Naturtema' })).toHaveAttribute('aria-current', 'page')
 
-    fireEvent.click(screen.getByRole('button', { name: /Åpne Utforsk i kart/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Åpne overlappsanalyse/ }))
     expect(screen.getByRole('heading', { name: 'Utforsk i kart' })).toBeInTheDocument()
     expect(screen.getByRole('checkbox', { name: 'Grunnkart nivå 0' })).toBeChecked()
   })

@@ -1,3 +1,4 @@
+import type { Result as FutureNatureResult } from '../features/future-analysis/model'
 import type { ReactNode } from 'react'
 
 import type {
@@ -16,6 +17,8 @@ import {
 import { getThematicPageContent } from './thematicContent'
 
 interface ThematicDataPageProps {
+  readonly futureNatureAnalysis?: FutureNatureResult | null
+  readonly futureNatureState?: 'idle' | 'loading' | 'error'
   readonly datasetId: ThematicDatasetId
   readonly municipalityName?: string
   readonly thematicCoverage?: ThematicCoverageResponse | null
@@ -52,6 +55,7 @@ function evaluationText(
   return `Treffstatus kunne ikke vurderes nå. ${evaluation.note}`
 }
 
+const daa = (area: number) => `${new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 2 }).format(area)} daa`
 const areaFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 const percentFormatter = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 })
 
@@ -82,8 +86,9 @@ function ValuedNaturePage({
   evaluation,
   statistics,
   statisticsState,
-  plannedValuedNature,
-  plannedValuedNatureState,
+  futureNatureAnalysis,
+  futureNatureState = 'idle',
+
   plannedCoverageGap,
   plannedCoverageGapState,
   onBack,
@@ -93,6 +98,8 @@ function ValuedNaturePage({
   readonly municipalityName?: string
   readonly evaluation?: ThematicDatasetEvaluation
   readonly statistics?: ValuedNatureStatistics | null
+  readonly futureNatureAnalysis?: FutureNatureResult | null
+  readonly futureNatureState?: 'idle' | 'loading' | 'error'
   readonly statisticsState: 'idle' | 'loading' | 'error'
   readonly plannedValuedNature?: PlannedValuedNatureAnalysis | null
   readonly plannedValuedNatureState: 'idle' | 'loading' | 'error'
@@ -191,18 +198,18 @@ function ValuedNaturePage({
         <article>
           <strong>Verdsatte naturtyper i områder satt av til framtidig utbygging</strong>
           <span className="thematic-plan-cards__value">
-            {plannedValuedNature
-              ? dekar(plannedValuedNature.uniqueOverlapAreaKm2)
-              : loadingValue(plannedValuedNatureState)}
+            {futureNatureAnalysis?.status === 'available'
+              ? daa(futureNatureAnalysis.uniqueAreaDaa)
+              : loadingValue(futureNatureState)}
           </span>
           <span>
-            {plannedValuedNature
-              ? `${areaFormatter.format(plannedValuedNature.affectedFeatureCount)} registrerte lokaliteter berøres i prototypeanalysen.`
-              : 'Overlapp beregnes mot arealer satt av til framtidig utbygging.'}
+            {futureNatureAnalysis?.status === 'available'
+              ? `${areaFormatter.format(futureNatureAnalysis.localityCount)} unike lokaliteter overlapper Natur og Jordbruk innenfor planavgrensningen.`
+              : futureNatureAnalysis?.status === 'not_available' ? futureNatureAnalysis.reason : 'Geometrisk overlapp mot rasterbasert analyseavgrensning. Beregning utilgjengelig betyr ikke null treff.'}
           </span>
           {onOpenFutureDevelopmentAnalysis && municipalityName && (
             <button type="button" onClick={onOpenFutureDevelopmentAnalysis}>
-              Åpne Utforsk i kart <span aria-hidden="true">→</span>
+              Åpne overlappsanalyse <span aria-hidden="true">→</span>
             </button>
           )}
         </article>
@@ -389,6 +396,8 @@ export function ThematicDataPage({
   thematicCoverageState = 'idle',
   valuedNatureStatistics,
   valuedNatureStatisticsState = 'idle',
+  futureNatureAnalysis,
+  futureNatureState = 'idle',
   plannedValuedNature,
   plannedValuedNatureState = 'idle',
   plannedCoverageGap,
@@ -410,6 +419,8 @@ export function ThematicDataPage({
         evaluation={evaluation}
         statistics={valuedNatureStatistics}
         statisticsState={valuedNatureStatisticsState}
+        futureNatureAnalysis={futureNatureAnalysis}
+        futureNatureState={futureNatureState}
         plannedValuedNature={plannedValuedNature}
         plannedValuedNatureState={plannedValuedNatureState}
         plannedCoverageGap={plannedCoverageGap}
