@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 12.10.2026**
+**Sist oppdatert: 13.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -306,3 +306,17 @@ Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).
 ## 16. Godkjent geometrisk analyse av planoverlapp (13.10.2026)
 
 «Analyser planoverlapp» åpner et eget V2-kontekstpanel i samme OpenLayers-instans. Temasidens kort bruker nå `future-valued-nature-geometry-v3`. Den gamle analysearbeidsflaten er fortsatt skjult; dette er en separat, eksplisitt autorisert videreutvikling. Natur/Jordbruk-masken deles med planpresentasjonen, delceller klippes geometrisk, høyeste KU-verdi vinner og naturtypeareal unioneres innen typen. Under analyse brukes den faste masken i plankartet, mens vanlig detaljvisning gjenopprettes ved lukking. OBJECTID er ikke faglig nøkkel; kildens originale faktaark-ID verifiseres. Hele geometriunionen er lokalitetsnevner. Ugyldig/ufullstendig kilde eller motstridende attributter stopper tall. Manglende kommuneraster er ikke null treff. Se [metodebeslutning](docs/decisions/2026-10-13-v3-geometric-valued-nature-overlap.md) og [kontrollrapport](docs/validation/2026-10-13-future-nature.md). Øvrige analyser, sju kartlag, nivå-0-metode, DiBK-filter og råflis-cache beholdes.
+
+## 17. Oversikt – ny forside (13.10.2026)
+
+Oversikt er formidling og videre inngang: tre oppsummeringskort, eksisterende
+Grunnkart-kart, korte forklaringer, to fortellende seksjoner, naturtypeliste
+og seks bildekort til eksisterende temaer. Tallene gjenbruker eksisterende
+SSB-adapter; kartet viser Grunnkart og forklares som et annet datagrunnlag.
+Manglende andel/endring skal ikke utledes eller bli eksempeltall. Naturtapets
+tidsserie/drivkraftfordeling og nasjonale rangeringer er ikke klargjort;
+ikke fyll skissens eksempler inn som kommunedata. Supplerende tematreff er
+kildeobjekter, ikke automatisk unike lokaliteter. Ved feil i kommunegrensen
+skal ikke et generelt kartutsnitt fremstilles som kommunen. Unsplash-motiver
+har dokumentert gratis kilde, fotograf, illustrasjonsstatus og feiltilstand.
+Se [leveranse-/kontrollrapport](docs/validation/2026-10-13-overview-redesign.md).

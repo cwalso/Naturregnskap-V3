@@ -56,6 +56,9 @@ jobs:
       - name: Main navigation and analysis entry render regression
         run: npm run test:browser:navigation
 
+      - name: Overview layout and navigation regression
+        run: npm run test:browser:overview
+
   backend:
     name: Backend test and Ruff
     runs-on: ubuntu-latest

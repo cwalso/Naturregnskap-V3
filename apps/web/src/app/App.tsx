@@ -36,7 +36,6 @@ import {
   loadMunicipalityBoundary,
   loadMunicipalityThematicCoverage,
 } from '../data/municipalityWorkspace'
-import { AccountOverview } from '../features/account-overview/AccountOverview'
 import { ExploreThemesWorkspace } from '../features/explore-map/ExploreThemesWorkspace'
 import { AccountProvenance } from '../features/account-overview/AccountProvenance'
 import { getAccountProvenanceContent } from '../features/account-overview/content'
@@ -205,7 +204,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   const activeEcosystemId = ecosystemByView[activeView] ?? null
   const activeThematicDatasetId = datasetByThematicView[activeView] ?? null
-  const showsMap = activeView === 'tema-forest'
+  const showsMap = activeView === 'oversikt' || activeView === 'tema-forest'
     || activeEcosystemId !== null
     || activeView === 'tema-urban-nature'
     || activeThematicDatasetId !== null
@@ -242,7 +241,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     map.current?.setAccountLayerVisible(
-      activeView === 'utforsk-i-kart' ? accountLayerVisible : false,
+      activeView === 'oversikt' || (activeView === 'utforsk-i-kart' && accountLayerVisible),
     )
     map.current?.setForestLayerVisible(activeView === 'tema-forest')
     map.current?.setEcosystemLayer(activeEcosystemId)
@@ -1330,13 +1329,25 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         <OverviewPage
           onNavigate={navigate}
           municipalityName={selectedMunicipality.name}
-          accountContent={
-            accountState === 'loading'
-              ? <section className="account-overview"><p role="status">Laster arealbalanse…</p></section>
-              : accountState === 'error'
-                ? <section className="account-overview"><p role="alert">Kunne ikke hente arealbalansen. Prøv igjen senere.</p></section>
-                : <AccountOverview data={accountData ?? createUnavailableAccountOverview(selectedMunicipality.number, selectedMunicipality.name)} />
-          }
+          municipalityNumber={selectedMunicipality.number}
+          accountData={accountData}
+          accountState={accountState}
+          thematicCoverage={thematicCoverage}
+          thematicCoverageState={thematicCoverageState}
+          mapContent={<section className="overview-home__map" aria-labelledby="overview-map-title">
+            <h2 id="overview-map-title" className="visually-hidden">Naturen i {selectedMunicipality.name} i dag</h2>
+            <div className="overview-home__map-target">
+              {mapRuntimeError && <p className="map-runtime-error" role="alert">Kartet kunne ikke initialiseres: {mapRuntimeError}</p>}
+              {boundaryState === 'loading' && <p className="overview-home__map-status" role="status">Laster kommunegrensen…</p>}
+              {boundaryState === 'error' && <p className="overview-home__map-status" role="alert">Kommunegrensen kunne ikke hentes.</p>}
+              <div ref={mapElement} className="map" role="region" tabIndex={0} style={{ visibility: boundaryState === 'idle' && boundaryData ? 'visible' : 'hidden' }} aria-label={`Kart over ${selectedMunicipality.name}`} aria-describedby="overview-map-description" />
+            </div>
+            <footer className="overview-home__map-footer">
+              <div className="overview-home__map-legend" aria-label="Grunnkartets hovedkategorier"><span><i aria-hidden="true" />Natur</span><span><i aria-hidden="true" />Jordbruk</span><span><i aria-hidden="true" />Bebygget</span></div>
+              <a href="#utforsk-i-kart" onClick={event => { event.preventDefault(); navigate('utforsk-i-kart') }}>Utforsk kartet <span aria-hidden="true">→</span></a>
+            </footer>
+            <p id="overview-map-description" className="visually-hidden">Kartet viser dagens Grunnkart og kommunegrensen. Flytt med piltastene og zoom med pluss og minus. Det viser ikke historisk naturtap.</p>
+          </section>}
           provenanceContent={
             accountState === 'idle'
               ? (

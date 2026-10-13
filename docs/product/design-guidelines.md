@@ -70,7 +70,33 @@ Prototypen bruker:
 
 Ikke legg proprietære fontfiler i repoet uten særskilt avklaring.
 
-## Temasider
+## Kommuneoversikt – ny forside (13.10.2026)
+
+Oversikt følger brukerens nye skisse med en luftig todelt toppseksjon:
+Natur, Jordbruk og Bebygget til venstre, eksisterende kommuneavgrenset
+OpenLayers-/Grunnkart-kart til høyre. Nøkterne kildeopplysninger skiller
+SSB-arealtall fra Grunnkart-visningen. Ingen andel utledes når
+`sharePercent` mangler, og historisk endring vises ikke som 0 eller eksempeltall.
+
+To lyseblå fortellende seksjoner med store Unsplash-bilder rammer inn
+en lesbar naturtypeliste. Naturtypene kommer fra eksisterende
+Grunnkart-inndeling; historisk nedbygging er merket utilgjengelig.
+Generelle beskrivelser av inngrep og drivkrefter er ikke kommunespesifikke
+resultater. Ingen sammenlignings-/rangeringsseksjon vises uten eksisterende
+dokumentert datagrunnlag. Skissens illustrerte rangeringer overføres ikke.
+
+Seks temakort gir innganger til Skog, Våtmark, Verneområder, Verdsatte
+naturtyper, Inngrepsfri natur og Villrein. Økosystemer og supplerende
+naturverdier/vern har separate grupper. Treffstatus gjenbrukes fra eksisterende
+kommunevise temadata; kildeobjekter omtales ikke som unike lokaliteter.
+
+Bildene har tematisk/nordisk relevans, alt-tekst og lenket fotografkreditering.
+Illustrasjonsfotoene er ikke dokumentasjon fra valgt kommune. Brede skjermer
+har to kolonner; under 700 px stables innholdet, med kart etter oppsummeringen.
+Alle seksjoner fungerer også ved manglende tall, kommunegrense og bilder.
+[Bilder, datamangler og faktisk nettleserkontroll](../validation/2026-10-13-overview-redesign.md).
+
+## Temasidenes oppbygning
 
 Temasidene skal følge et felles redaksjonelt mønster:
 

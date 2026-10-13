@@ -1,6 +1,6 @@
 # Arkitekturoversikt – Kommunale naturregnskap V3
 
-**Sist oppdatert: 12.10.2026**
+**Sist oppdatert: 13.10.2026**
 
 ## Mål
 
@@ -169,6 +169,18 @@ dokumenterer den siste endringen. Testpublisering skjer fra PR-branchen uten mer
 V3 bruker en hybridmodell.
 
 ### Regnskaps-/oversiktsdata
+
+Oversikt-forsiden fra 13.10.2026 mottar eksisterende `AccountOverviewData`
+og kommunevis `ThematicCoverageResponse` som props. `features/overview`
+inneholder rene presentasjonskomponenter for oppsummering, bilder og temakort;
+datahenting og hash-navigasjon ligger fortsatt i App/eksisterende adaptere.
+Kartet gjenbruker App sin `MunicipalityMap`/OpenLayers-kontroller og
+kommunegrense. Bare den eksisterende Grunnkart-visningen aktiveres; ingen
+historisk endring, nasjonal rangering eller ny analyse beregnes på forsiden.
+Ved manglende kommunegrense skjules kartflaten, slik at et generelt utsnitt
+ikke fremstilles som valgt kommune. Kommuneeier kontrolleres før statistikk
+og tematreff presenteres. Bildelenker og kreditering ligger i et lite
+innholdsregister; bildeutforming og feiltilstand er et eget presentasjonslag.
 
 Kan komme fra:
 

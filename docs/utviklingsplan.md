@@ -1,6 +1,6 @@
 # Utviklingsplan – Naturregnskap V3
 
-**Sist oppdatert: 12.10.2026**
+**Sist oppdatert: 13.10.2026**
 
 Dette er en arbeidsplan for den tekniske V3-prototypen, ikke en formell
 leveranseplan for Kommunale naturregnskap.
@@ -33,7 +33,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Teknisk fundament | ✅ | React/TypeScript/Vite/OpenLayers og FastAPI/Python-struktur etablert |
 | Kommunevalg og kommunegrense | ✅ | Kommune er felles kontekst for sider, kart og analyser |
 | Dataset registry | ✅ | Kilder har eksplisitt faglig rolle og teknisk kilde |
-| Kommuneoversikt / nivå 0 | ✅ prototype | Natur, Jordbruk og Bebygd presenteres; dagens hovedtall har fortsatt prototypeforbehold |
+| Kommuneoversikt / nivå 0 | ✅ prototype / ny forside | Ny Oversikt med tre arealkort, Grunnkart-kart, forklaringer, naturtapets datastatus og seks temainnganger. Eksisterende SSB-tall og kilde-/metodeforbehold beholdes; andeler, historisk endring og nasjonal rangering utledes ikke |
 | Proveniens | ✅ delvis | Kilde/metode kan vises, men må videreføres til alle nye analyser |
 | Naturtapet | 🟡 | Side/design etablert; endelig dokumentert endringsgrunnlag fortsatt under avklaring |
 | Naturtema | ✅ prototype | Prioriterte temasider etablert |
