@@ -304,3 +304,7 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).
+
+## Implementert planoverlapp 13.10.2026
+
+En eksplisitt inngang på temasiden og «Analyser planoverlapp» i kartet åpner ny analyse i eksisterende V2-panel. Brukeren får unik total, kategori-/naturtypefordeling, søkbar og sorterbar lokalitetstabell, full arealnevner og overlappsandel. Klikk velger de samme beregnede geografiene i kartet; bare eksplisitt lokalitetsvalg kan zoome. Hele lokaliteten og faktisk overlapp skilles visuelt. Øvrige lag/filtre/opasitet bevares. Dette er ikke reaktivering av det eldre analyseverkstedet. [Akseptkontroll](../validation/2026-10-13-future-nature.md).

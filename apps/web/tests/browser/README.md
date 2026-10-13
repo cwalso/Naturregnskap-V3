@@ -96,3 +96,9 @@ Tidligere offentlig-rute-skript for tre/seks/sju lag dokumenterer layouten før
 V2 og er beholdt som historikk. Bruk `test:browser:design` for ny UI-aksept.
 Beholdte analyse-/lagfixtures med `test:browser` og `test:browser:layers`
 kontrollerer fortsatt uendret kart-/analysemetode; de er ikke live akseptbevis.
+
+## Geometrisk planoverlapp
+
+`BROWSER_OUTPUT=.browser-results/future-nature-live node tests/browser/check-future-nature-live.mjs` bruker system-Chromium (`CHROMIUM_PATH` kan overstyre), reelle tjenester gjennom eksisterende proxy og samme app/moduler. Kontrollerer gammel/ny metode, fire bredder, kategori/type/lokalitet, lagtilstander, korrekt geometri, kortinngang og manglende kommuneraster. Source-audit-instrumentering finnes bare i testens Vite-plugin. Komprimerte referanseuttrekk og beregninger ligger i `docs/validation/2026-10-13-future-nature/`.
+
+Uavhengig GEOS-kontroll: pakk ut `result.json.gz`, installer Shapely i et separat kontrollmiljø og kjør `python tests/browser/verify-future-nature-geos.py /sti/til/result.json`. Shapely er ikke en app- eller backend-runtimeavhengighet.

@@ -258,3 +258,7 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).
+
+## Oppdatert status 13.10.2026: geometrisk planoverlapp
+
+Temasidens kort og et eget V2-analysepanel bruker nå geometrisk skjæring mot den faste Natur/Jordbruk-planmasken. Trondheim: 119,38 daa, 70 lokaliteter i referanseuttrekket; dette er et prototypeøyeblikksbilde, ikke nasjonale regnskapstall. Høyeste KU-fordeling, union innen naturtype, faglig ID, full arealnevner og faktisk overlappsgeometri er implementert. Klikk fra kategori/type/lokalitet bevarer sju lag og samme kartinstans. Oslo har ikke klargjort raster og gir manglende grunnlag. Den tidligere rastermidtpunktanalysen er beholdt i kode/tester, men driver ikke kortet. [Kontrollrapport](validation/2026-10-13-future-nature.md).

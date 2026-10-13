@@ -258,3 +258,7 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).
+
+## Planoverlapp for verdsatte naturtyper, 13.10.2026
+
+Temasidens kort åpner en geometrisk analyse i Utforsk-kartets V2-panel. Metoden bruker delcelleareal mot Natur/Jordbruk-planmasken, kildeverifiserte lokalitets-ID-er og full lokalitetsgeometri som nevner. Trondheim er klargjort; manglende grunnlag i andre kommuner gir ikke null treff. [Metode](docs/decisions/2026-10-13-v3-geometric-valued-nature-overlap.md) · [kontrollrapport og skjermbilder](docs/validation/2026-10-13-future-nature.md).

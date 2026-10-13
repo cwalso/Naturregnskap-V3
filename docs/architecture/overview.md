@@ -422,3 +422,7 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).
+
+## Geometrisk planoverlapp (13.10.2026)
+
+`features/future-analysis` skiller maskehenting, kildekontrakt, geometri, resultatmodell og presentasjon. Masken gjenbruker `futureDevelopmentDisplay` sin eksakte nivå-9-sampling; geometriunion/interseksjon/differanse utføres én gang per analyse. `ExploreThemesWorkspace` åpner `AnalysisPanel` i V2-panelet; `exploreThemeMap.setFutureNature` viser samme geometrier uten ny kartinstans. Full lokalitet er svak/stiplet, overlapp sterk. Planlaget bruker resultatets faste cellemaskekonturer mens analysen er aktiv, slik at innzooming ikke bytter geografisk avgrensning. De ordinære lagtilstandene bevares og vanlig planvisning gjenopprettes ved lukking. Ny metodecache er isolert fra v2 og avgrenset til 16 fullførte resultater. [Detaljert kontrakt](../decisions/2026-10-13-v3-geometric-valued-nature-overlap.md).

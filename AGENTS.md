@@ -299,3 +299,7 @@ er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
 for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
 tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
 Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).
+
+## 16. Godkjent geometrisk analyse av planoverlapp (13.10.2026)
+
+«Analyser planoverlapp» åpner et eget V2-kontekstpanel i samme OpenLayers-instans. Temasidens kort bruker nå `future-valued-nature-geometry-v3`. Den gamle analysearbeidsflaten er fortsatt skjult; dette er en separat, eksplisitt autorisert videreutvikling. Natur/Jordbruk-masken deles med planpresentasjonen, delceller klippes geometrisk, høyeste KU-verdi vinner og naturtypeareal unioneres innen typen. Under analyse brukes den faste masken i plankartet, mens vanlig detaljvisning gjenopprettes ved lukking. OBJECTID er ikke faglig nøkkel; kildens originale faktaark-ID verifiseres. Hele geometriunionen er lokalitetsnevner. Ugyldig/ufullstendig kilde eller motstridende attributter stopper tall. Manglende kommuneraster er ikke null treff. Se [metodebeslutning](docs/decisions/2026-10-13-v3-geometric-valued-nature-overlap.md) og [kontrollrapport](docs/validation/2026-10-13-future-nature.md). Øvrige analyser, sju kartlag, nivå-0-metode, DiBK-filter og råflis-cache beholdes.

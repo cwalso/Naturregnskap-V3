@@ -116,3 +116,8 @@ A/B/C, reelle kartkontroller, faktiske screenshots og visuell sammenligning.
 [Sluttverifikasjon før ny publisering](validation/2026-10-12-explore-design-v2-final.md)
 viderefører start-HEAD f9a2eba med ny fokusregresjon, 128 frontendtester og
 reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.
+
+## Geometrisk planoverlapp, 13.10.2026
+
+- [Godkjent prototypekonvensjon og teknisk kontrakt](decisions/2026-10-13-v3-geometric-valued-nature-overlap.md)
+- [Reell Trondheim-kontroll, sammenligning med gammel metode og skjermbilder](validation/2026-10-13-future-nature.md)

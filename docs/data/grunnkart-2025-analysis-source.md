@@ -353,3 +353,7 @@ Før produksjonsbruk må blant annet avklares:
 - rekonsiliering mellom kommuner/nasjonalt nivå
 - godkjente nivå-0-bokføringsregler
 - kvalitet og usikkerhet
+
+## Ny avgrenset prototypeanalyse 13.10.2026
+
+Kortet på Verdsatte naturtyper og det nye V2-panelet bruker nå `future-valued-nature-geometry-v3`, ikke midtpunktmetoden ovenfor. Det brukes samme Natur/Jordbruk-støtte som planvisningens nivå 9, med smale komponenter beholdt. Delcelleareal beregnes geometrisk, KU-verdi fordeles med høyeste verdi og naturtypeareal unioneres innen typen. Hele lokaliteten er prosentnevner. Dette endrer ikke øvrige beregninger beskrevet i dette dokumentet. [Metode og kildekontrakt](../decisions/2026-10-13-v3-geometric-valued-nature-overlap.md), [referansekontroll](../validation/2026-10-13-future-nature.md).
