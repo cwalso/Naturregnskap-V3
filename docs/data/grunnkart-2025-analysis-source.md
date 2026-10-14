@@ -383,3 +383,9 @@ Norge digitalt-lisens; faktisk kommuneuttrekk og prototypens bruksrett må
 verifiseres. WMS-capabilities og katalogens lisensmetadata er ikke entydige.
 Anbefalingen er en rettighetsavklart direkte geodatapilot, ikke endret
 produksjonsklassifikasjon. [Tallfesting, kildeprober, kart og anbefaling](../validation/2026-10-14-unclassified-plan-nature.md).
+
+Den påfølgende [direkte geodatapiloten](../validation/2026-10-14-direct-grunnkart-pilot.md)
+har kontrollert tilgang på nytt. Korrekt Trondheim-fil og oppdragsbruksrett er
+fortsatt ikke verifisert, så ingen direkte arealresultater er beregnet.
+Et testet lokalt oppsett er klargjort for mottak av faktisk fil med dokumentert
+år, rettigheter, CRS og fysisk skjema. Ny nivå-0-mapping er ikke innført.

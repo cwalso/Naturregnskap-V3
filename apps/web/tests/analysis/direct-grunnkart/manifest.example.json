@@ -1,0 +1,27 @@
+{
+  "source_kind": "official_2025",
+  "product": "Nasjonalt grunnkart for arealanalyse",
+  "year": 2025,
+  "year_verified": false,
+  "version_evidence": "",
+  "local_analysis_permitted": false,
+  "rights_evidence": "",
+  "classification_evidence": "",
+  "municipality": "5001",
+  "data_sha256": "",
+  "layer": "",
+  "documented_crs": "",
+  "fields": {
+    "level1": "",
+    "level2": "",
+    "level3": "",
+    "ecosystem_code": "",
+    "municipality": "",
+    "object_id": "",
+    "source_reference": ""
+  },
+  "class_values": {},
+  "level0_groups": {},
+  "level0_mapping_approved": false,
+  "level0_mapping_evidence": ""
+}

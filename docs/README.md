@@ -87,6 +87,8 @@ og [A/B/C-kontroller](validation/2026-10-14-plan-area.md).
 [Undersøkelse av ufordelt natur](validation/2026-10-14-unclassified-plan-nature.md)
 skiller bildeavvisning fra nivå-0-/detaljkonflikt og vurderer direkte geodata.
 Den foreslår en valideringspilot; ingen produksjonsmetode er endret.
+[Direkte Grunnkart-pilot: tilgang og kjørbart lokalt oppsett](validation/2026-10-14-direct-grunnkart-pilot.md)
+stopper reell geometriundersøkelse inntil korrekt 2025-fil og bruksrett er bekreftet.
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 
