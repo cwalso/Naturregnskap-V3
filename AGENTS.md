@@ -313,10 +313,16 @@ Oversikt er formidling og videre inngang: tre oppsummeringskort, eksisterende
 Grunnkart-kart, korte forklaringer, to fortellende seksjoner, naturtypeliste
 og seks bildekort til eksisterende temaer. Tallene gjenbruker eksisterende
 SSB-adapter; kartet viser Grunnkart og forklares som et annet datagrunnlag.
-Manglende andel/endring skal ikke utledes eller bli eksempeltall. Naturtapets
-tidsserie/drivkraftfordeling og nasjonale rangeringer er ikke klargjort;
-ikke fyll skissens eksempler inn som kommunedata. Supplerende tematreff er
+Manglende faktiske andeler/endringer skal ikke utledes eller bli eksempeltall.
+Fra 14.10 er separate, tydelig merkede Trondheim-demodata eksplisitt autorisert
+for historisk nedbygging på Naturtapet og i Oversikts forhåndsvisning.
+De bruker egen domenemodell/kilde og illustrativ periode 2016–2025, og skal
+aldri presenteres som offisielle statistikker eller Grunnkart-beholdning.
+Andre kommuner får mangelstatus. SSBs forventede novemberleveranse har uavklart
+klassifikasjon/variabler; ingen API-kontrakt eller historiske kartpolygoner antas.
+Nasjonale rangeringer er ikke klargjort. Supplerende tematreff er
 kildeobjekter, ikke automatisk unike lokaliteter. Ved feil i kommunegrensen
 skal ikke et generelt kartutsnitt fremstilles som kommunen. Unsplash-motiver
 har dokumentert gratis kilde, fotograf, illustrasjonsstatus og feiltilstand.
 Se [leveranse-/kontrollrapport](docs/validation/2026-10-13-overview-redesign.md).
+Se [felles historisk struktur og SSB-avklaringer](docs/product/historical-loss-pages.md).

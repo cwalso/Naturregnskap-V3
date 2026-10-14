@@ -35,7 +35,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Dataset registry | ✅ | Kilder har eksplisitt faglig rolle og teknisk kilde |
 | Kommuneoversikt / nivå 0 | ✅ prototype / ny forside | Ny Oversikt med tre arealkort, Grunnkart-kart, forklaringer, naturtapets datastatus og seks temainnganger. Eksisterende SSB-tall og kilde-/metodeforbehold beholdes; andeler, historisk endring og nasjonal rangering utledes ikke |
 | Proveniens | ✅ delvis | Kilde/metode kan vises, men må videreføres til alle nye analyser |
-| Naturtapet | 🟡 | Side/design etablert; endelig dokumentert endringsgrunnlag fortsatt under avklaring |
+| Naturtapet | ✅ demo / offisielle data avventes | Trondheim-demodata 2016–2025 med periodevalg, brutto nøkkeltall, tidsdiagram/tabell og fordelinger; samme modell i Oversikt. SSB-variabler/klassifikasjon avklares før integrasjon |
 | Naturtema | ✅ prototype | Prioriterte temasider etablert |
 | Kommuneavgrenset temakart | ✅ | Temadata maskeres visuelt utenfor valgt kommune |
 | Skog og Myr/våtmark | ✅ prototype / Trondheimstall | Grunnkart-baserte temasider og kart; tallberegning krever klargjort raster og finnes nå bare for Trondheim |
@@ -207,8 +207,10 @@ Avklar:
 
 ### 4. Naturtapet
 
+Trondheim-demonstrasjonen og felles forhåndsvisning er implementert på PR #76.
 Koble siden til dokumentert endringsgrunnlag når dette finnes og er metodisk
-avklart.
+avklart. Tabellstatistikk forventes 25. november 2026; økosystemtyper og
+etterfølgende arealbruk er ikke bekreftet. Se [avklaringer](product/historical-loss-pages.md).
 
 Ikke konstruer stedfestede tap fra aggregert statistikk.
 

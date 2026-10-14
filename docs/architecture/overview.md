@@ -176,11 +176,18 @@ inneholder rene presentasjonskomponenter for oppsummering, bilder og temakort;
 datahenting og hash-navigasjon ligger fortsatt i App/eksisterende adaptere.
 Kartet gjenbruker App sin `MunicipalityMap`/OpenLayers-kontroller og
 kommunegrense. Bare den eksisterende Grunnkart-visningen aktiveres; ingen
-historisk endring, nasjonal rangering eller ny analyse beregnes på forsiden.
+geografisk historisk endring, nasjonal rangering eller ny analyse beregnes på forsiden.
 Ved manglende kommunegrense skjules kartflaten, slik at et generelt utsnitt
 ikke fremstilles som valgt kommune. Kommuneeier kontrolleres før statistikk
 og tematreff presenteres. Bildelenker og kreditering ligger i et lite
 innholdsregister; bildeutforming og feiltilstand er et eget presentasjonslag.
+
+Fra 14.10 deler Oversikt og Naturtapet kommuneeide historiske demodata gjennom
+`features/historical-loss`. Domenemodell, demokilde, framtidig SSB-mapping og
+presentasjon er adskilt. Statistikk summeres kun innen valgt illustrativ periode;
+ingen geografisk analyse eller kobling til beholdningsberegninger innføres.
+Adapteren har ingen antatt ekstern SSB-kontrakt. Se
+[intern kontrakt og avklaringer](../product/historical-loss-pages.md).
 
 Kan komme fra:
 

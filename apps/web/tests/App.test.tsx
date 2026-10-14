@@ -561,7 +561,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Bebygget' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Se alle naturtema' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Åpne Utforsk i kart' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Hva slags natur ble bygget ned?' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Hva har blitt bygget ned?' })).toBeInTheDocument()
     expect(screen.queryByText('Kartleggingsgrad')).not.toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Kart over Trondheim' })).toHaveAttribute('tabindex', '0')
 

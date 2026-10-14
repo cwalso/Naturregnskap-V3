@@ -2,7 +2,8 @@ import type { MouseEvent, ReactNode } from 'react'
 import type { SiteView } from '../components/SiteHeader'
 import type { AccountOverviewData } from '../features/account-overview/model'
 import type { ThematicCoverageResponse } from '../api/thematicCoverage'
-import { natureTypeDefinitions } from '../map/plannedDevelopment'
+import { LossBreakdown, LossMetrics, LossSourceLabel } from '../features/historical-loss/LossPresentation'
+import { periodLabel, summarizeLoss, type HistoricalLossDataset } from '../features/historical-loss/model'
 import { overviewImages } from '../features/overview/content'
 import { OverviewPhoto } from '../features/overview/OverviewPhoto'
 import { OverviewSummary, type OverviewDataState } from '../features/overview/OverviewSummary'
@@ -12,6 +13,7 @@ import '../features/overview/OverviewPage.css'
 interface OverviewPageProps {
   readonly accountData: AccountOverviewData | null
   readonly accountState: OverviewDataState
+  readonly historicalLoss: HistoricalLossDataset | null
   readonly mapContent: ReactNode
   readonly provenanceContent: ReactNode
   readonly municipalityNumber: string
@@ -24,6 +26,8 @@ interface OverviewPageProps {
 export function OverviewPage(props: OverviewPageProps) {
   const { municipalityName, municipalityNumber, accountState, onNavigate } = props
   const accountData = props.accountData?.municipalityNumber === municipalityNumber ? props.accountData : null
+  const lossData = props.historicalLoss?.municipalityNumber === municipalityNumber ? props.historicalLoss : null
+  const loss = lossData ? summarizeLoss(lossData.periods) : null
   function link(view: SiteView) { return (event: MouseEvent<HTMLAnchorElement>) => { event.preventDefault(); onNavigate(view) } }
 
   return <div className="overview-home">
@@ -50,7 +54,7 @@ export function OverviewPage(props: OverviewPageProps) {
         <div className="overview-story__text"><p className="overview-home__eyebrow">Natur og arealbruk</p>
           <h2 id="overview-loss-story-title">Natur bygges ned<br />bit for bit.</h2>
           <p>Små inngrep kan over tid endre store landskap. Å kjenne naturen vi har, er et viktig utgangspunkt for å følge utviklingen.</p>
-          <p>For {municipalityName} er dokumenterte historiske naturtapstall ennå ikke koblet til denne visningen.</p>
+          <p>Historisk nedbygging forteller hva som har endret seg. Dagens arealoversikt forteller hva vi har. De to spørsmålene trenger ulike datagrunnlag.</p>
           <a className="overview-home__link" href="#naturtapet" onClick={link('naturtapet')}>Les om naturtapet <span aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -58,30 +62,34 @@ export function OverviewPage(props: OverviewPageProps) {
 
     <section className="overview-home__section overview-home__loss" aria-labelledby="overview-loss-title">
       <div className="overview-home__inner">
-        <div className="overview-home__section-heading"><div><p className="overview-home__eyebrow">Historisk endring</p><h2 id="overview-loss-title">Hva slags natur ble bygget ned?</h2></div>
+        <div className="overview-home__section-heading"><div><p className="overview-home__eyebrow">Hva har vi mistet?</p><h2 id="overview-loss-title">Hva har blitt bygget ned?</h2></div>
           <a className="overview-home__link" href="#naturtapet" onClick={link('naturtapet')}>Mer om naturtapet <span aria-hidden="true">→</span></a>
         </div>
-        <p className="overview-home__section-intro">Fordelingen krever dokumenterte endringer over tid. Historisk nedbygging per naturtype er foreløpig ikke tilgjengelig for {municipalityName}. Under finner du naturtypene fra dagens Grunnkart-inndeling.</p>
-        <table className="overview-loss-list" aria-label="Naturtyper og status for historisk nedbygging">
-          <thead><tr><th scope="col">Naturtype</th><th scope="col">Historisk nedbygging</th></tr></thead>
-          <tbody>{natureTypeDefinitions.map(type => <tr key={type.id}>
-            <th scope="row">{type.label}</th><td>Ikke tilgjengelig</td>
-          </tr>)}</tbody>
-        </table>
+        {lossData && loss ? <>
+          <LossSourceLabel data={lossData} />
+          <div className="overview-loss-preview">
+            <div><p className="overview-home__section-intro">Brutto nedbygging, {periodLabel(lossData.periods)}{lossData.source.kind === 'demo' ? ' (illustrativ periode)' : ''}. Natur og jordbruk telles hver for seg.</p>
+              <LossMetrics summary={loss} compact />
+              <p className="overview-home__source-note">Tallene beskriver nedbygging i perioden. De trekkes ikke fra dagens arealbeholdning.</p>
+            </div>
+            <div><h3>Nedbygd natur etter økosystemtype</h3><LossBreakdown field={loss.ecosystems} denominator={loss.nature} name="Historisk forhåndsvisning: økosystemtyper" compact /><p className="overview-home__source-note">{lossData.source.classificationNote}</p></div>
+          </div>
+        </> : <p className="loss-unavailable">Historiske nedbyggingsdata er ikke tilgjengelige for {municipalityName}. Se Naturtapet for status og kildeforklaringer. Demonstrasjonen finnes bare for Trondheim.</p>}
         <div className="overview-home__questions overview-home__questions--wide">
-          <details><summary>Hvor kommer tallene fra?</summary><p>Arealoversikten øverst bruker eksisterende kommunevise arealtall. Historiske naturtapstall er ikke tilgjengelige her. Vi beregner ikke naturtap ved å trekke fra to ulike årsversjoner av et kart.</p></details>
+          <details><summary>Hvor kommer tallene fra?</summary><p>Arealoversikten øverst bruker eksisterende kommunevise arealtall. Historisk nedbygging demonstreres foreløpig med konstruerte Trondheim-data fra en egen kilde. Vi beregner ikke naturtap ved å trekke fra to ulike årsversjoner av et kart.</p></details>
           <details><summary>Hva er forskjellen på arealkategorier og økosystemer?</summary><p>Natur, Jordbruk og Bebygget er hovedkategorier. Skog og våtmark beskriver mer detaljerte økosystemer. Verneområder, verdsatte naturtyper, inngrepsfri natur og villrein er supplerende temadata.</p></details>
         </div>
       </div>
     </section>
 
-    <section className="overview-story overview-story--reverse" aria-labelledby="overview-drivers-title">
+    <section className="overview-story overview-story--reverse overview-home__future" aria-labelledby="overview-future-title">
       <div className="overview-home__inner overview-story__inner">
-        <div className="overview-story__text"><p className="overview-home__eyebrow">Hva endrer landskapet?</p>
-          <h2 id="overview-drivers-title">Nye behov.<br />De samme arealene.</h2>
-          <p><mark>Boliger</mark>, <mark>veier</mark> og <mark>næring</mark> trenger plass. Hvilke arealer som endres, og hva de endres til, må dokumenteres for å forstå utviklingen.</p>
-          <p>Vi har ennå ingen dokumentert fordeling av drivkreftene for naturtap i {municipalityName}. Planavsetninger viser framtidig arealbruk, ikke faktisk nedbygging.</p>
-          <a className="overview-home__link" href="#naturtapet" onClick={link('naturtapet')}>Utforsk bakgrunnen for naturtap <span aria-hidden="true">→</span></a>
+        <div className="overview-story__text"><p className="overview-home__eyebrow">Hva kan bli berørt?</p>
+          <h2 id="overview-future-title">Hvilken natur ligger i områder avsatt til framtidig utbygging?</h2>
+          <p>Planområder viser <mark>mulig utbyggingspress</mark>. I kartet kan du se dagens natur og jordbruk innenfor arealer avsatt til framtidig utbygging. Planavsetninger er ikke forventet naturtap.</p>
+          <p>Grunnkart beskriver heldekkende arealkategorier. Registrerte naturverdier, som verdsatte naturtyper, er supplerende informasjon. Planoverlappanalysen undersøker overlapp med disse lokalitetene, og viser ikke samlet naturareal avsatt til utbygging.</p>
+          <p>Åpne kartet og velg «Analyser planoverlapp» for tilgjengelige beregninger og metodeforbehold.</p>
+          <a className="overview-home__link" href="#utforsk-i-kart" onClick={link('utforsk-i-kart')}>Utforsk planområder og naturverdier <span aria-hidden="true">→</span></a>
         </div>
         <OverviewPhoto image={overviewImages.road} />
       </div>

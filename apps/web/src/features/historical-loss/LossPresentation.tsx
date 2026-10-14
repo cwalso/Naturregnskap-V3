@@ -19,7 +19,7 @@ export function LossBreakdown({ field, denominator, name, compact = false }: { r
     {field.value.coverage === 'partial' && <p>Fordelingen dekker bare deler av nedbyggingsarealet.</p>}
     <table className={`loss-breakdown ${compact ? 'loss-breakdown--compact' : ''}`} aria-label={name}>
       <thead><tr><th scope="col">Kategori</th><th scope="col">Dekar</th>{!compact && <th scope="col">Andel</th>}</tr></thead>
-      <tbody>{categories.map(c => <tr key={c.id}><th scope="row">{c.label}</th><td><span className="loss-breakdown__bar" aria-hidden="true" style={{ width: `${c.areaDaa / largest * 100}%` }} /><span>{formatDaa(c.areaDaa)}</span></td>{!compact && <td>{denominator !== null && denominator > 0 ? `${formatDaa(c.areaDaa / denominator * 100)} %` : '–'}</td>}</tr>)}</tbody>
+      <tbody>{categories.map(c => <tr key={c.id}><th scope="row">{c.label}</th><td><span className="loss-breakdown__track" aria-hidden="true"><i style={{ width: `${c.areaDaa / largest * 100}%` }} /></span><span>{formatDaa(c.areaDaa)}</span></td>{!compact && <td>{denominator !== null && denominator > 0 ? `${formatDaa(c.areaDaa / denominator * 100)} %` : '–'}</td>}</tr>)}</tbody>
     </table>
   </>
 }

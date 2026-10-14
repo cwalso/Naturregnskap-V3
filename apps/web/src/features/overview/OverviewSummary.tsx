@@ -24,6 +24,6 @@ export function OverviewSummary({ data, state }: { readonly data: AccountOvervie
         </article>
       })}
     </div>
-    <p className="overview-home__data-note">Historisk endring i hovedkategoriene er ikke tilgjengelig ennå.</p>
+    <p className="overview-home__data-note">Offisiell statistikk om historisk nedbygging er ikke koblet til ennå.</p>
   </>
 }

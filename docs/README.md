@@ -78,6 +78,9 @@ presiserer at bare Natur/Jordbruk innenfor planformålene vises.
 [Ny Trondheim-kontroll](validation/2026-10-09-future-development-display.md)
 inkluderer råpikselkontroll, referansesammenligning og faktiske skjermbilder.
 Pages-testpublisering gjøres fra PR-branchen uten merge.
+Kommuneoversikt og Naturtapet deler fra 14.10 tydelig merkede historiske demodata;
+se [struktur/SSB-avklaringer](product/historical-loss-pages.md) og
+[tester og skjermbilder](validation/2026-10-14-historical-loss.md).
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 

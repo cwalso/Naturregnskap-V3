@@ -1,0 +1,16 @@
+{
+  "status": "available",
+  "uniqueAreaDaa": 119.38040306544042,
+  "localityCount": 70,
+  "provenance": {
+    "retrievedAt": "2026-10-14T09:35:23.376Z",
+    "source": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+    "sourceHash": "f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+    "maskHash": "c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f",
+    "areaFactor": 0.9994795815751638,
+    "computationMs": 810.1000000014901,
+    "gridMeters": 21.15625,
+    "sourceVersion": "Løpende KU- og DiBK-tjenester; uttrekksdato og innholdshash dokumenterer denne analysen",
+    "grunnkartVersion": "2025, oversiktsraster hentet 05.10.2026"
+  }
+}

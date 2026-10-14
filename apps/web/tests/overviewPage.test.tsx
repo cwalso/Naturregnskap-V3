@@ -3,6 +3,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { OverviewPage } from '../src/pages/OverviewPage'
 import type { AccountOverviewData } from '../src/features/account-overview/model'
 import type { ThematicCoverageResponse } from '../src/api/thematicCoverage'
+import { trondheimLossDemo } from '../src/features/historical-loss/demoSource'
 
 const account: AccountOverviewData = { municipalityNumber: '5001', municipalityName: 'Trondheim', period: '2025', status: 'available', sourceKind: 'ssb-prototype', metrics: [
   { id: 'nature', areaKm2: 12, sharePercent: null }, { id: 'agriculture', areaKm2: 0, sharePercent: 0 }, { id: 'built', areaKm2: 1, sharePercent: 10 },
@@ -12,7 +13,7 @@ const coverage: ThematicCoverageResponse = { municipalityNumber: '5001', municip
   { datasetId: 'wild-reindeer-areas', status: 'no_hit', featureCount: 0, note: '' },
   { datasetId: 'valued-nature', status: 'unavailable', featureCount: null, note: '' },
 ] }
-const defaults = { accountData: account, accountState: 'idle' as const, municipalityNumber: '5001', municipalityName: 'Trondheim', mapContent: <div>Kart</div>, provenanceContent: null, thematicCoverage: coverage, thematicCoverageState: 'idle' as const, onNavigate: vi.fn() }
+const defaults = { accountData: account, accountState: 'idle' as const, historicalLoss: trondheimLossDemo, municipalityNumber: '5001', municipalityName: 'Trondheim', mapContent: <div>Kart</div>, provenanceContent: null, thematicCoverage: coverage, thematicCoverageState: 'idle' as const, onNavigate: vi.fn() }
 afterEach(() => { cleanup(); vi.clearAllMocks() })
 
 it('shows existing areas and supplied percentages, preserving zero without fabricating shares or losses', () => {
@@ -25,7 +26,7 @@ it('shows existing areas and supplied percentages, preserving zero without fabri
   expect(summary).toHaveTextContent('10 % av landarealet')
   expect(within(summary).getAllByText('Andel av landarealet er ikke oppgitt.')).toHaveLength(1)
   expect(screen.queryByText(/XX|Top 3|Bunn 3|Top 20/)).not.toBeInTheDocument()
-  expect(screen.getByText(/Historisk nedbygging per naturtype er foreløpig ikke tilgjengelig/)).toBeInTheDocument()
+  expect(screen.getByText('Demodata – illustrasjon, ikke offisiell statistikk')).toBeInTheDocument()
 })
 
 it('does not reuse another municipality’s areas or registrations and distinguishes source failure from no hits', () => {
@@ -37,6 +38,8 @@ it('does not reuse another municipality’s areas or registrations and distingui
   expect(screen.getAllByText('Areal ikke tilgjengelig')).toHaveLength(3)
   expect(screen.queryByText('3 kildeobjekter med treff')).not.toBeInTheDocument()
   expect(screen.queryByText('Ingen registrerte treff i kilden')).not.toBeInTheDocument()
+  expect(screen.queryByLabelText('Nøkkeltall for brutto nedbygging')).not.toBeInTheDocument()
+  expect(screen.getByText(/Historiske nedbyggingsdata er ikke tilgjengelige for Oslo/)).toBeInTheDocument()
 })
 
 it('keeps navigation usable during loading, account failure and missing individual metrics', () => {
@@ -62,14 +65,25 @@ it('opens all six existing themes and the historical-loss page', () => {
   expect(defaults.onNavigate).toHaveBeenLastCalledWith('naturtapet')
 })
 
-it('keeps all nature types in a static table with missing historical data and no row navigation', () => {
+it('shares historical demo totals and ecosystem categories with Naturtapet, with no row navigation', () => {
   render(<OverviewPage {...defaults} />)
-  const table = screen.getByRole('table', { name: 'Naturtyper og status for historisk nedbygging' })
-  expect(within(table).getAllByRole('rowheader').map(cell => cell.textContent)).toEqual(['Skog', 'Hei og buskmark', 'Lite vegetert mark', 'Våtmark', 'Kyststrender, svaberg og dyner'])
+  const table = screen.getByRole('table', { name: 'Historisk forhåndsvisning: økosystemtyper' })
+  expect(within(table).getAllByRole('rowheader').map(cell => cell.textContent)).toEqual(['Skog', 'Våtmark', 'Hei og buskmark', 'Lite vegetert mark', 'Kyststrender, svaberg og dyner'])
   expect(within(table).getAllByRole('cell')).toHaveLength(5)
-  expect(within(table).getAllByRole('cell').every(cell => cell.textContent === 'Ikke tilgjengelig')).toBe(true)
+  expect(within(table).getAllByRole('cell').map(cell => cell.textContent)).toEqual(['768', '230,4', '153,6', '102,4', '25,6'])
+  expect(screen.getByLabelText('Nøkkeltall for brutto nedbygging')).toHaveTextContent('1 280 dekar')
+  expect(screen.getByLabelText('Nøkkeltall for brutto nedbygging')).toHaveTextContent('320 dekar')
   expect(table.querySelector('details, summary, button, a')).toBeNull()
   expect(screen.queryByRole('link', { name: /^Utforsk .* i dag/ })).not.toBeInTheDocument()
+})
+
+it('links future development to the existing map and distinguishes it from historical loss and total nature area', () => {
+  render(<OverviewPage {...defaults} />)
+  const future = screen.getByRole('region', { name: 'Hvilken natur ligger i områder avsatt til framtidig utbygging?' })
+  expect(future).toHaveTextContent('Planavsetninger er ikke forventet naturtap')
+  expect(future).toHaveTextContent('viser ikke samlet naturareal avsatt til utbygging')
+  fireEvent.click(within(future).getByRole('link', { name: 'Utforsk planområder og naturverdier' }))
+  expect(defaults.onNavigate).toHaveBeenLastCalledWith('utforsk-i-kart')
 })
 
 it('provides a readable image failure state and keeps the source and theme link', () => {

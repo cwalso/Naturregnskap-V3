@@ -1338,6 +1338,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           municipalityNumber={selectedMunicipality.number}
           accountData={accountData}
           accountState={accountState}
+          historicalLoss={getHistoricalLossData(selectedMunicipality.number)}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           mapContent={<section className="overview-home__map" aria-labelledby="overview-map-title">
@@ -1489,7 +1490,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   )
 
   return (
-    <div className={`app-shell ${activeView === 'utforsk-i-kart' ? 'app-shell--explore' : ''}`}>
+    <div className={`app-shell ${activeView === 'utforsk-i-kart' ? 'app-shell--explore' : activeView === 'oversikt' || activeView === 'naturtapet' ? 'app-shell--account' : ''}`}>
       <a className="skip-link" href="#main-content">Hopp til hovedinnhold</a>
       <SiteHeader
         activeView={activeView}
