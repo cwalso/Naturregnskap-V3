@@ -369,8 +369,8 @@ describe('sidestruktur og Oversikt', () => {
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
     expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
-    expect(screen.getByText('XX dekar')).toBeInTheDocument()
-    expect(screen.getByText(/Historisk nedbygging kan bli tilgjengelig som statistikk/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Nøkkeltall for brutto nedbygging')).toHaveTextContent('1 280 dekar')
+    expect(screen.getAllByText('Demodata – illustrasjon, ikke offisiell statistikk')).toHaveLength(4)
 
     fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()

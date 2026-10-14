@@ -81,6 +81,7 @@ import { ForestPage } from '../pages/ForestPage'
 import { ThematicDataPage } from '../pages/ThematicDataPage'
 import { NaturtapetPage } from '../pages/NaturtapetPage'
 import { OverviewPage } from '../pages/OverviewPage'
+import { getHistoricalLossData } from '../features/historical-loss/demoSource'
 import { UrbanNaturePage } from '../pages/UrbanNaturePage'
 
 interface AppProps { createMap?: MunicipalityMapFactory }
@@ -1408,7 +1409,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const activeContent = !selectedMunicipality ? overview : (
     <>
       {activeView === 'oversikt' && overview}
-      {activeView === 'naturtapet' && <NaturtapetPage municipalityName={selectedMunicipality.name} />}
+      {activeView === 'naturtapet' && <NaturtapetPage municipalityNumber={selectedMunicipality.number} municipalityName={selectedMunicipality.name} historicalLoss={getHistoricalLossData(selectedMunicipality.number)} onNavigate={navigate} />}
       {activeView === 'utforsk-naturen' && (
         <ExploreNaturePage
           municipalityName={selectedMunicipality.name}
