@@ -6,6 +6,7 @@ const output = process.env.BROWSER_OUTPUT ?? '.browser-results/plan-area'
 await mkdir(output, { recursive: true })
 const server = await createServer({ cacheDir: 'node_modules/.vite-plan-area', server: { host: '127.0.0.1', port: 5200, strictPort: true }, plugins: [{ name: 'plan-area-audit', enforce: 'pre', transform(code,id) {
   if (id.endsWith('/future-analysis/analysisMask.ts')) return code.replace("  return { kind: 'planned'", "  const result = { kind: 'planned'").replace('analysisMask: mask }', 'analysisMask: mask }; globalThis.__areaParent = result; return result')
+  if (id.endsWith('/src/map/exploreThemeMap.ts')) return code.replace('  let destroyed = false', '  globalThis.__planAreaMap = map; let destroyed = false')
 } }] })
 let browser, network
 const rawTiles = [], errors = []
@@ -54,6 +55,35 @@ try {
   await writeFile(`${output}/result.json`,JSON.stringify(result,null,2))
   const unavailable=await page.evaluate(async()=>await(await import('/src/features/plan-area/source.ts')).calculatePlanArea('0301'))
   assert.equal(unavailable.status,'not_available')
+  await page.evaluate(async()=>{
+    const {createExploreLayerMap}=await import('/src/map/exploreThemeMap.ts')
+    const {getMunicipalityBoundary}=await import('/src/api/municipalities.ts')
+    const {initialMapLayers}=await import('/src/features/explore-map/mapThemes.ts')
+    const target=document.createElement('div');target.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:100;background:white';document.body.append(target)
+    globalThis.__areaController=createExploreLayerMap(target,()=>{})
+    globalThis.__areaContext={boundary:await getMunicipalityBoundary('5001'),layers:initialMapLayers(),data:null,filter:{natureType:null,value:null},selectedId:null}
+    __areaController.update(__areaContext)
+    __areaController.setPlanArea(__areaResult,{kind:'all'})
+  })
+  const view=()=>page.evaluate(()=>({center:__planAreaMap.getView().getCenter(),resolution:__planAreaMap.getView().getResolution()}))
+  await page.waitForFunction(()=>__planAreaMap.getSize()?.[0]>100)
+  const before=await view(),mapChecks=[]
+  for(const selection of [{kind:'all'},{kind:'nature'},{kind:'agriculture'},...result.categories.map(c=>({kind:'category',id:c.id}))]){
+    await page.evaluate(s=>__areaController.setPlanArea(__areaResult,s),selection)
+    const mapped=await page.evaluate(()=>__planAreaMap.getLayers().getArray().find(l=>l.getClassName()==='plan-area-categories').getSource().getFeatures().map(f=>({id:f.getId(),area:f.getGeometry().getArea()})))
+    const expected=result.categories.filter(c=>c.cells>0&&(selection.kind==='all'||(selection.kind==='category'?c.id===selection.id:c.group===selection.kind)))
+    assert.deepEqual(mapped.map(m=>m.id).sort(),expected.map(c=>c.id).sort())
+    for(const metric of expected)assert.ok(Math.abs(mapped.find(m=>m.id===metric.id).area*result.provenance.areaFactor/1000-metric.areaDaa)<1e-5)
+    assert.deepEqual(await view(),before,'Category choice moved the map')
+    mapChecks.push({selection,mapped})
+  }
+  await page.evaluate(()=>__areaController.setPlanArea(__areaResult,{kind:'category',id:'skog'},true))
+  assert.notDeepEqual(await view(),before,'Explicit fit did not adjust the view')
+  await page.screenshot({path:`${output}/forest-map-1440.png`})
+  await page.evaluate(()=>__areaController.setPlanArea(null,{kind:'all'}))
+  assert.equal(await page.evaluate(()=>__planAreaMap.getLayers().getArray().find(l=>l.getClassName()==='plan-area-categories').getVisible()),false)
+  await writeFile(`${output}/map-checks.json`,JSON.stringify(mapChecks,null,2))
+  await page.evaluate(()=>__areaController.destroy())
   assert.deepEqual(errors,[])
   console.log(JSON.stringify({natureDaa:result.natureDaa,agricultureDaa:result.agricultureDaa,totalDaa:result.totalDaa,categories:result.categories,classification:result.classification,analysisId:result.analysisId,tiles:rawTiles.length}))
 } finally { await browser?.close();await network?.dispose();await server.close() }

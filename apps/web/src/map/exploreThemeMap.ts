@@ -1,4 +1,5 @@
 import { selectionGeometry, selectionLocalities, type Analysis, type Selection } from '../features/future-analysis/model'
+import { planAreaGeometry, planAreaSelectedMetrics, type PlanAreaAnalysis, type PlanAreaSelection } from '../features/plan-area/model'
 import Feature from 'ol/Feature'
 import GeoJSON from 'ol/format/GeoJSON'
 import EsriJSON from 'ol/format/EsriJSON'
@@ -44,6 +45,7 @@ export interface LayerMapContext {
 export interface LayerMapController {
   update(context: LayerMapContext): void
   setFutureNature(result: Analysis | null, selection: Selection, fit?: boolean): void
+  setPlanArea(result: PlanAreaAnalysis | null, selection: PlanAreaSelection, fit?: boolean): void
   fitToMunicipality(): void
   setSelectionHandler(handler: ((id: string | null) => void) | null): void
   destroy(): void
@@ -104,12 +106,19 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
   futureWhole.setZIndex(798); futureOverlap.setZIndex(800)
   let futureResult: Analysis | null = null
   let futureSelectionKey = ''
+  const areaSource = new VectorSource()
+  const areaPlanSource = new VectorSource()
+  const areaLayer = new VectorLayer({ source: areaSource, visible: false, className: 'plan-area-categories', style: feature => new Style({ fill: new Fill({ color: feature.get('color') }), stroke: new Stroke({ color: '#fff', width: .6 }) }) })
+  const areaPlan = new VectorLayer({ source: areaPlanSource, visible: false, className: 'plan-area-mask', style: new Style({ fill: new Fill({ color: 'rgba(0,94,93,.06)' }), stroke: new Stroke({ color: '#005e5d', width: 1, lineDash: [4,4] }) }) })
+  areaLayer.setZIndex(780); areaLayer.setOpacity(.85); areaPlan.setZIndex(mapLayers.find(l=>l.id==='future-development')!.zIndex)
+  let areaResult: PlanAreaAnalysis | null = null
+  let areaSelectionKey = ''
   const borderSource = new VectorSource()
   const maskSource = new VectorSource()
   const mask = new VectorLayer({ source: maskSource, className: 'explore-theme-mask', style: new Style({ fill: new Fill({ color: '#F7F9F8' }) }) })
   const border = new VectorLayer({ source: borderSource, style: new Style({ stroke: new Stroke({ color: '#005B42', width: 2 }) }) })
   const view = new View({ projection: ACCOUNT_CRS, center: [270000, 7040000], resolution: 100, enableRotation: false })
-  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, ...supplementalLayers, plan, nature, localities, futurePlan, futureWhole, futureOverlap, mask, border] })
+  const map = new OlMap({ target, view, layers: [new TileLayer({ source: new XYZ({ ...defaultBasemap, url: defaultBasemap.url, attributions: defaultBasemap.attribution, crossOrigin: 'anonymous' }) }), overview, detail, ...supplementalLayers, plan, nature, localities, futurePlan, futureWhole, futureOverlap, areaPlan, areaLayer, mask, border] })
   let destroyed = false
   let boundary: MunicipalityBoundary | null = null
   let activeLayers = initialMapLayers()
@@ -221,7 +230,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
         else if (definition.id === 'level0') {
           const coarse = view.getResolution()! >= detail.getMaxResolution()
           status = coarse ? overviewFailed ? 'error' : overviewReady ? 'ready' : 'loading' : tileStatus(detail)
-        } else if (definition.id === 'future-development') status = futureResult ? 'ready' : tileStatus(plan)
+        } else if (definition.id === 'future-development') status = futureResult || areaResult ? 'ready' : tileStatus(plan)
         else if (definition.id === 'valued-nature') status = filtered ? 'ready' : imageStatus(natureSource)
         else status = 'maxResolution' in definition && view.getResolution()! >= definition.maxResolution ? 'out-of-scale' : imageStatus(supplemental[definition.id].getSource()!, true)
       }
@@ -252,6 +261,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       if (greySource.getParams().LAYERS !== greyPresentation) greySource.updateParams({ LAYERS: greyPresentation })
       if (boundary !== next.boundary) {
         const changed = boundary?.properties.number !== next.boundary?.properties.number
+        if (areaResult?.municipalityNumber !== next.boundary?.properties.number) { areaResult=null;areaSource.clear();areaPlanSource.clear();areaLayer.setVisible(false);areaPlan.setVisible(false) }
         boundary = next.boundary
         borderSource.clear(); maskSource.clear(); localitySource.clear()
         plan.getSource()?.dispose(); plan.setSource(null)
@@ -299,19 +309,22 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       detail.setVisible(boundary !== null && activeLayers.level0.visible)
       nature.setVisible(boundary !== null && activeLayers['valued-nature'].visible && !filtered)
       localities.setVisible(boundary !== null && activeLayers['valued-nature'].visible && data !== null)
-      plan.setVisible(boundary !== null && activeLayers['future-development'].visible && !futureResult)
+      plan.setVisible(boundary !== null && activeLayers['future-development'].visible && !futureResult && !areaResult)
+      areaPlan.setVisible(boundary !== null && activeLayers['future-development'].visible && !!areaResult)
+      areaPlan.setOpacity(activeLayers['future-development'].opacity)
       futurePlan.setVisible(boundary !== null && activeLayers['future-development'].visible && !!futureResult)
       futurePlan.setOpacity(activeLayers['future-development'].opacity)
       for (const definition of supplementalMapLayers) supplemental[definition.id].setVisible(boundary !== null && activeLayers[definition.id].visible)
       for (const definition of mapLayers) {
         for (const layer of physicalLayers[definition.id]) layer.setOpacity(activeLayers[definition.id].opacity)
       }
-      mask.setVisible(boundary !== null && (futureResult !== null || mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0)))
+      mask.setVisible(boundary !== null && (futureResult !== null || areaResult !== null || mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0)))
       resize(); syncStatus()
     },
     setFutureNature(result, selection, fit = false) {
       if (destroyed) return
       const active = result?.municipalityNumber === boundary?.properties.number ? result : null
+      if (active) { areaResult = null; areaSource.clear(); areaPlanSource.clear(); areaLayer.setVisible(false); areaPlan.setVisible(false) }
       const key = JSON.stringify(selection)
       if (futureResult !== active || futureSelectionKey !== key) {
         futureResult = active; futureSelectionKey = key
@@ -328,11 +341,34 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
           if (geometry.length) futureOverlapSource.addFeature(new Feature(new MultiPolygon(geometry)))
         }
       }
-      plan.setVisible(boundary !== null && activeLayers['future-development'].visible && !active)
+      plan.setVisible(boundary !== null && activeLayers['future-development'].visible && !active && !areaResult)
       futurePlan.setVisible(active !== null && activeLayers['future-development'].visible); futurePlan.setOpacity(activeLayers['future-development'].opacity)
       futureWhole.setVisible(active !== null); futureOverlap.setVisible(active !== null)
       if (active && fit && selection.kind === 'locality' && futureWholeSource.getFeatures().length) view.fit(futureWholeSource.getExtent()!, { padding: [36, 36, 36, 36], duration: 0 })
-      mask.setVisible(boundary !== null && (active !== null || mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0)))
+      mask.setVisible(boundary !== null && (active !== null || areaResult !== null || mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0)))
+      syncStatus()
+    },
+    setPlanArea(result, selection, fitSelection = false) {
+      if (destroyed) return
+      const active = result && result.municipalityNumber === boundary?.properties.number && result.methodVersion === 'planned-land-cover-area-v1' ? result : null
+      if (active) { futureResult = null; futureWhole.setVisible(false); futureOverlap.setVisible(false); futurePlan.setVisible(false) }
+      const key = JSON.stringify(selection)
+      if (areaResult !== active || areaSelectionKey !== key) {
+        const changed = areaResult !== active
+        areaResult = active; areaSelectionKey = key; areaSource.clear()
+        if (changed) {
+          areaPlanSource.clear()
+          if (active) { const geometry=planAreaGeometry(active,{kind:'all'}); if(geometry.length)areaPlanSource.addFeature(new Feature(new MultiPolygon(geometry))) }
+        }
+        if (active) for (const category of planAreaSelectedMetrics(active,selection)) {
+          const geometry=planAreaGeometry(active,{kind:'category',id:category.id})
+          if (geometry.length) { const feature=new Feature({geometry:new MultiPolygon(geometry),color:category.color});feature.setId(category.id);areaSource.addFeature(feature) }
+        }
+      }
+      areaLayer.setVisible(active!==null);areaPlan.setVisible(active!==null&&activeLayers['future-development'].visible);areaPlan.setOpacity(activeLayers['future-development'].opacity)
+      plan.setVisible(boundary!==null&&activeLayers['future-development'].visible&&!active&&!futureResult)
+      if(active&&fitSelection&&areaSource.getFeatures().length)view.fit(areaSource.getExtent()!,{padding:[36,36,36,36],duration:0})
+      mask.setVisible(boundary!==null&&(active!==null||futureResult!==null||mapLayers.some(item=>activeLayers[item.id].visible&&activeLayers[item.id].opacity>0)))
       syncStatus()
     },
     fitToMunicipality() { if (!destroyed) fit() },
@@ -343,7 +379,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       for (const listener of [...listeners, ...tileListeners]) listener.target?.removeEventListener(listener.type, listener.listener)
       if (overviewUrl) URL.revokeObjectURL(overviewUrl)
       overview.getSource()?.dispose(); plan.getSource()?.dispose()
-      for (const source of [accountSource, natureSource, localitySource, futurePlanSource, futureWholeSource, futureOverlapSource, maskSource, borderSource, ...supplementalLayers.map((layer) => layer.getSource()!)]) source.dispose()
+      for (const source of [accountSource, natureSource, localitySource, futurePlanSource, futureWholeSource, futureOverlapSource, areaSource, areaPlanSource, maskSource, borderSource, ...supplementalLayers.map((layer) => layer.getSource()!)]) source.dispose()
       selectionHandler = null; map.dispose()
     },
   }
