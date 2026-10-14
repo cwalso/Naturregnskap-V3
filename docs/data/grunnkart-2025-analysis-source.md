@@ -370,3 +370,16 @@ Flisoppløsning er ikke geografisk nøyaktighet. WMS-uttaket er løpende, ikke
 en garantert låst 2025-distribusjon; råflishasher og uttrekksdato lagres.
 [Metode](../decisions/2026-10-14-plan-land-cover-area.md),
 [summer, råbilder og uavhengig kontroll](../validation/2026-10-14-plan-area.md).
+
+## Undersøkelse av ufordelt natur, 14.10.2026
+
+De 706,71 daa ufordelt i plananalysen er ikke dokumentert manglende
+økosystemklassifikasjon i Grunnkart. Råbilder viser eksakt-farge-/alpha-
+avvisning og konflikt mellom grov nivå-0-støtte og detaljgjengivelsen.
+Vanlig PNG løser ikke problemet. Separate klassemasker reduserer avvisning
+i et isolert forsøk, men gir ikke godkjent grensenøyaktighet.
+Offisielle metadata dokumenterer 2025-vektorprodukt (GPKG/FGDB/GML), med
+Norge digitalt-lisens; faktisk kommuneuttrekk og prototypens bruksrett må
+verifiseres. WMS-capabilities og katalogens lisensmetadata er ikke entydige.
+Anbefalingen er en rettighetsavklart direkte geodatapilot, ikke endret
+produksjonsklassifikasjon. [Tallfesting, kildeprober, kart og anbefaling](../validation/2026-10-14-unclassified-plan-nature.md).
