@@ -22,6 +22,22 @@ const legend = () => fireEvent.click(screen.getAllByRole('button', { name: 'Tegn
 const lastContext = () => controller.update.mock.calls.at(-1)![0]
 
 describe('uavhengige kartlag i V2-paneler', () => {
+  it('keeps loading, empty and error statuses outside layer rows, accessible and in settings', () => {
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    const row = checkbox('Grunnkart nivå 0').closest('.explore-themes__layer')!
+    const content = row.innerHTML
+    for (const status of ['loading', 'empty', 'error', 'ready'] as const) {
+      act(() => statusHandler('level0', status, '5001'))
+      expect(row.innerHTML).toBe(content)
+      if (status === 'error') expect(screen.getByRole('alert')).toHaveTextContent('Dette er en datafeil')
+    }
+    settings('Grunnkart nivå 0')
+    act(() => statusHandler('level0', 'error', '5001'))
+    expect(within(screen.getByRole('complementary', { name: 'Innstillinger: Grunnkart nivå 0' })).getByRole('alert')).toHaveTextContent('Kartdata for Grunnkart nivå 0 kunne ikke vises')
+    fireEvent.click(checkbox('Grunnkart nivå 0'))
+    expect(checkbox('Grunnkart nivå 0')).not.toBeChecked()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
   it('returnerer fokus til kartet når lokalitetskortets objektpanel lukkes', async () => {
     request.mockResolvedValue(data)
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)

@@ -62,6 +62,16 @@ it('opens all six existing themes and the historical-loss page', () => {
   expect(defaults.onNavigate).toHaveBeenLastCalledWith('naturtapet')
 })
 
+it('keeps all nature types in a static table with missing historical data and no row navigation', () => {
+  render(<OverviewPage {...defaults} />)
+  const table = screen.getByRole('table', { name: 'Naturtyper og status for historisk nedbygging' })
+  expect(within(table).getAllByRole('rowheader').map(cell => cell.textContent)).toEqual(['Skog', 'Hei og buskmark', 'Lite vegetert mark', 'Våtmark', 'Kyststrender, svaberg og dyner'])
+  expect(within(table).getAllByRole('cell')).toHaveLength(5)
+  expect(within(table).getAllByRole('cell').every(cell => cell.textContent === 'Ikke tilgjengelig')).toBe(true)
+  expect(table.querySelector('details, summary, button, a')).toBeNull()
+  expect(screen.queryByRole('link', { name: /^Utforsk .* i dag/ })).not.toBeInTheDocument()
+})
+
 it('provides a readable image failure state and keeps the source and theme link', () => {
   render(<OverviewPage {...defaults} />)
   const image = screen.getByRole('img', { name: /Høye furutrær/ })

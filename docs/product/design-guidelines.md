@@ -81,6 +81,8 @@ SSB-arealtall fra Grunnkart-visningen. Ingen andel utledes når
 To lyseblå fortellende seksjoner med store Unsplash-bilder rammer inn
 en lesbar naturtypeliste. Naturtypene kommer fra eksisterende
 Grunnkart-inndeling; historisk nedbygging er merket utilgjengelig.
+Listen er en kompakt tabell uten utvidelse eller Utforsk-lenker per rad.
+Eksisterende temainnganger, blant annet Skog og Våtmark, ligger i temakortene.
 Generelle beskrivelser av inngrep og drivkrefter er ikke kommunespesifikke
 resultater. Ingen sammenlignings-/rangeringsseksjon vises uten eksisterende
 dokumentert datagrunnlag. Skissens illustrerte rangeringer overføres ikke.
@@ -158,6 +160,8 @@ Naturtypefilteret har tekstsøk, kommunerelevante valg og fire verdikategorier.
 Kart og liste bruker samme utvalg; kilde-ID-er beholdes i lokalitetsinformasjon.
 
 Godkjent V2-design bruker en kompakt lagliste og ett kontekstpanel.
+Midlertidig laste-/kartstatus vises i detaljpanelet og eksisterende tilgjengelige
+statusmeldinger, ikke i lagradene. Lagradenes høyde er stabil ved statusendringer.
 Desktop har 274 px lagliste og 338 px detaljer ved behov. Ved 900 px
 bruker detaljer laglistens 252 px sideplass, med «Tilbake til kartlag».
 Mobil åpner ett bunnpanel på 260–300 px; kartet får egen flate over.

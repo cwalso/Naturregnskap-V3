@@ -10,6 +10,7 @@ await mkdir(output, { recursive: true })
 const results = { source: live ? 'live services; policy-blocked photos retain fallback' : 'controlled external responses', screenshots: [], layouts: [], images: [], requests: [], errors: [], comparisonSection: 'omitted: no existing national comparison data' }
 const server = await createServer({ cacheDir: 'node_modules/.vite-overview', server: { host: '127.0.0.1', port: 5196, strictPort: true }, plugins: [{ name: 'observe-overview-map', transform(code, id) {
   if (id.endsWith('/src/map/municipalityMap.ts')) return code.replace('  return {\n    showBoundary(boundary) {', '  globalThis.__overviewMap = map; globalThis.__overviewMapCreations = (globalThis.__overviewMapCreations ?? 0) + 1; return {\n    showBoundary(boundary) {')
+  if (id.endsWith('/src/map/exploreThemeMap.ts')) return code.replace('  const accountSource = new XYZ', '  globalThis.__layerStatus = onStatus;\n  const accountSource = new XYZ')
 } }] })
 let browser, network, page, accountError = false, boundaryError = false
 const municipalities = [{ kommunenummer: '5001', kommunenavnNorsk: 'Trondheim' }, { kommunenummer: '0301', kommunenavnNorsk: 'Oslo' }]
@@ -69,6 +70,11 @@ try {
   assert.equal(categories.length, 3)
   assert.ok(categories.every(value => value.includes('dekar')))
   assert.equal(await page.locator('.overview-theme-card').count(), 6)
+  const natureTable = page.getByRole('table', { name: 'Naturtyper og status for historisk nedbygging' })
+  assert.equal(await natureTable.getByRole('rowheader').count(), 5)
+  assert.equal(await natureTable.getByRole('cell', { name: 'Ikke tilgjengelig', exact: true }).count(), 5)
+  assert.equal(await natureTable.locator('details, summary, a, button').count(), 0)
+  assert.equal(await page.getByRole('link', { name: /^Utforsk .* i dag/ }).count(), 0)
   await loadImages()
   results.images = await page.locator('.overview-photo img').evaluateAll(images => images.map(image => ({ source: image.currentSrc, alt: image.alt, naturalWidth: image.naturalWidth, fallback: image.hidden, width: image.getBoundingClientRect().width })))
   assert.equal(results.images.length, 8)
@@ -116,7 +122,35 @@ try {
   await page.getByRole('link', { name: 'Se alle naturtema', exact: true }).click()
   await page.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?', exact: true }).waitFor(); await overview()
   await page.getByRole('link', { name: 'Åpne Utforsk i kart', exact: true }).click()
-  await page.getByRole('heading', { name: 'Utforsk i kart', exact: true }).waitFor(); await overview()
+  await page.getByRole('heading', { name: 'Utforsk i kart', exact: true }).waitFor()
+  await page.waitForFunction(() => !!globalThis.__layerStatus)
+  results.layerRows = []
+  for (const [width, height] of [[1440, 1000], [900, 1000], [390, 844]]) {
+    await page.setViewportSize({ width, height }); await topOfPage()
+    if (width === 390) await page.getByRole('navigation', { name: 'Kartkontroller' }).getByRole('button', { name: /^Kartlag/ }).click()
+    const checkbox = page.getByRole('checkbox', { name: 'Grunnkart nivå 0', exact: true })
+    await checkbox.scrollIntoViewIfNeeded()
+    assert.ok(await checkbox.isChecked())
+    const measure = () => page.locator('.explore-themes__layer').evaluateAll(rows => rows.map(row => {
+      const box = row.getBoundingClientRect(), input = row.querySelector('input').getBoundingClientRect(), settings = row.querySelector('button').getBoundingClientRect()
+      return { height: box.height, checkboxX: input.x - box.x, checkboxY: input.y - box.y, settingsX: settings.x - box.x, settingsY: settings.y - box.y }
+    }))
+    const baseline = await measure()
+    for (const status of ['loading', 'empty', 'error', 'ready']) {
+      await page.evaluate(status => globalThis.__layerStatus('level0', status, '5001'), status)
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)))
+      assert.deepEqual(await measure(), baseline, `Layer rows must retain height and control positions: ${width}px / ${status}`)
+    }
+    await checkbox.uncheck(); assert.equal(await checkbox.isChecked(), false)
+    await checkbox.check(); assert.equal(await checkbox.isChecked(), true)
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth <= 1))
+    results.layerRows.push({ width, heights: baseline.map(row => row.height), stableThroughLoadingEmptyErrorReady: true, toggles: true })
+    await screenshot(`map-layer-rows-${width}`)
+  }
+  await page.getByRole('button', { name: 'Innstillinger for Grunnkart nivå 0', exact: true }).click()
+  await page.evaluate(() => globalThis.__layerStatus('level0', 'error', '5001'))
+  await page.getByRole('complementary', { name: 'Innstillinger: Grunnkart nivå 0' }).getByRole('alert').filter({ hasText: 'Dette er en datafeil' }).waitFor()
+  await page.setViewportSize({ width: 1440, height: 1000 }); await overview()
   for (const [theme, hash] of [['Skog', 'tema-forest'], ['Våtmark', 'tema-vatmark'], ['Verneområder', 'tema-protected-areas'], ['Verdsatte naturtyper', 'tema-valued-nature'], ['Inngrepsfri natur', 'tema-infrastructure-free-nature'], ['Villrein', 'tema-wild-reindeer-areas']]) {
     await page.getByRole('link', { name: new RegExp(`Åpne temasiden ${theme}$`) }).click()
     await page.waitForFunction(hash => location.hash === `#${hash}`, hash)

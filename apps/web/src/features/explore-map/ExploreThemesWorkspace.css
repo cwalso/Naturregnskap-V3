@@ -25,7 +25,6 @@
 .explore-themes__layer-list fieldset{border:0;padding:0;margin:0 0 22px;min-width:0}.explore-themes__layer-list legend{font-size:10px;text-transform:uppercase;letter-spacing:.9px;color:#536661;font-weight:700;padding:0 8px;margin-bottom:9px}
 .explore-themes__layer{display:flex;flex-wrap:wrap;align-items:center;padding-left:9px;min-height:51px;margin:3px 0;border:1px solid transparent;border-radius:4px}.explore-themes__layer.is-active{background:#e4eee9;border-color:#cfddd4}
 .explore-themes__layer-choice{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;flex:1;min-width:0;line-height:1.4;padding:8px 0;cursor:pointer}.explore-themes__layer-choice input{width:18px;height:18px;margin:0;accent-color:#005e5d;flex-shrink:0}
-.explore-themes__layer-status{width:100%;font-size:11px}.explore-themes__layer-status:empty{display:none}.explore-themes__layer-status p{margin:0 8px 8px 28px}
 .explore-themes__footnote{margin:8px;padding:14px 0;border-top:1px solid #deded3;font-size:11px;color:var(--explore-muted)}
 .explore-themes__layer-actions{display:flex;justify-content:space-between;border-top:1px solid #deded3;padding:10px 0}.explore-themes__layer-actions button{background:transparent;border:0;font-size:12px;padding:4px 8px}
 .explore-themes__map{grid-column:2;grid-row:1;display:flex;flex-direction:column}.explore-themes__map>header{display:flex;align-items:center;gap:12px;padding:0 24px;height:62px;flex-shrink:0;border-bottom:1px solid var(--explore-border)}.explore-themes__map>header>button:last-child{margin-left:auto;font-size:12px}

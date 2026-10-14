@@ -62,15 +62,12 @@ export function OverviewPage(props: OverviewPageProps) {
           <a className="overview-home__link" href="#naturtapet" onClick={link('naturtapet')}>Mer om naturtapet <span aria-hidden="true">→</span></a>
         </div>
         <p className="overview-home__section-intro">Fordelingen krever dokumenterte endringer over tid. Historisk nedbygging per naturtype er foreløpig ikke tilgjengelig for {municipalityName}. Under finner du naturtypene fra dagens Grunnkart-inndeling.</p>
-        <div className="overview-loss-list" aria-label="Naturtyper og status for historisk nedbygging">
-          <div className="overview-loss-list__heading" aria-hidden="true"><span>Naturtype</span><span>Historisk nedbygging</span></div>
-          {natureTypeDefinitions.map(type => <details key={type.id}>
-            <summary><span>{type.label}</span><small>Ikke tilgjengelig</small><span className="overview-loss-list__expand" aria-hidden="true">+</span></summary>
-            <div><p>Dagens kartgrunnlag viser {type.label.toLocaleLowerCase('nb')}, men har ingen dokumentert tidsserie for nedbygging i denne visningen.</p>
-              <a className="overview-home__link" href={type.id === 'skog' ? '#tema-forest' : type.id === 'vatmark' ? '#tema-vatmark' : '#utforsk-naturen'} onClick={link(type.id === 'skog' ? 'tema-forest' : type.id === 'vatmark' ? 'tema-vatmark' : 'utforsk-naturen')}>Utforsk {type.label.toLocaleLowerCase('nb')} i dag <span aria-hidden="true">→</span></a>
-            </div>
-          </details>)}
-        </div>
+        <table className="overview-loss-list" aria-label="Naturtyper og status for historisk nedbygging">
+          <thead><tr><th scope="col">Naturtype</th><th scope="col">Historisk nedbygging</th></tr></thead>
+          <tbody>{natureTypeDefinitions.map(type => <tr key={type.id}>
+            <th scope="row">{type.label}</th><td>Ikke tilgjengelig</td>
+          </tr>)}</tbody>
+        </table>
         <div className="overview-home__questions overview-home__questions--wide">
           <details><summary>Hvor kommer tallene fra?</summary><p>Arealoversikten øverst bruker eksisterende kommunevise arealtall. Historiske naturtapstall er ikke tilgjengelige her. Vi beregner ikke naturtap ved å trekke fra to ulike årsversjoner av et kart.</p></details>
           <details><summary>Hva er forskjellen på arealkategorier og økosystemer?</summary><p>Natur, Jordbruk og Bebygget er hovedkategorier. Skog og våtmark beskriver mer detaljerte økosystemer. Verneområder, verdsatte naturtyper, inngrepsfri natur og villrein er supplerende temadata.</p></details>
