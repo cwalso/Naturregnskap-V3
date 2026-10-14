@@ -58,6 +58,11 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 
 ## Gjeldende temasider
 
+Gråarealenes nye firekategori-visning (Issue #78) har gjennomført
+[tilgangs-/metodeundersøkelse A](validation/2026-10-14-grey-areas-trondheim.md).
+Faktiske Trondheim-vektoruttrekk og lokal-/cloud-/publiseringsrett er ikke
+bekreftet; B og C er derfor ikke startet. Eksisterende gråareal-WMS beholdes.
+
 Temasidesettet er låst til:
 
 1. Myr (våtmark)

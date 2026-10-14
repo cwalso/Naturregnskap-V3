@@ -89,6 +89,9 @@ skiller bildeavvisning fra nivå-0-/detaljkonflikt og vurderer direkte geodata.
 Den foreslår en valideringspilot; ingen produksjonsmetode er endret.
 [Direkte Grunnkart-pilot: tilgang og kjørbart lokalt oppsett](validation/2026-10-14-direct-grunnkart-pilot.md)
 stopper reell geometriundersøkelse inntil korrekt 2025-fil og bruksrett er bekreftet.
+[Grå arealer i Trondheim, leveranse A](validation/2026-10-14-grey-areas-trondheim.md)
+kontrollerer Issue #78, vektortilgang, tre separate bruksrettigheter og firekategori-
+modellen. A består ikke; geografisk B og implementering C er ikke gjennomført.
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 

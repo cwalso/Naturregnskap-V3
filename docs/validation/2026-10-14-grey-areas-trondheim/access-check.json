@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-14",
+  "startHead": "642341fdc9ecedc3e4ad17c5f632d234e792cfb0",
+  "runtimeRevision": "24",
+  "configuredDatasetAccess": false,
+  "downloadedGreyVector": false,
+  "downloadedGreenVector": false,
+  "probes": [
+    {
+      "label": "grey-catalogue",
+      "url": "https://kartkatalog.geonorge.no/metadata/uuid/c5f09d79-1546-495c-8b36-91efd4008bd7",
+      "environmentError": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "label": "green-catalogue",
+      "url": "https://kartkatalog.geonorge.no/metadata/uuid/86d6201a-4e0b-4f61-a1dc-c94164cfd160",
+      "environmentError": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "label": "green-atom",
+      "url": "https://nedlasting.geonorge.no/geonorge/ATOM-feeds/FKB_Gronnstruktur_AtomFeedGML.xml",
+      "environmentError": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "label": "download-api",
+      "url": "https://nedlasting.geonorge.no/api/capabilities/",
+      "environmentError": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "label": "grey-wms",
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?service=WMS&request=GetCapabilities&version=1.3.0",
+      "status": 200,
+      "contentType": "text/xml; charset=UTF-8",
+      "bytes": 14834,
+      "sha256": "75123195a7d45b89dbafe7e0f6e151bd62bd4a8c4db60aa0233362e100f3f794",
+      "service": {
+        "Title": "WMS for kart over Gr\u00e5 arealer",
+        "Fees": "no conditions apply",
+        "AccessConstraints": "none"
+      },
+      "layers": [
+        "Gr\u00e5 arealer",
+        "andel_med_bygninger",
+        "andel_med_vegetasjon",
+        "andel_uten_vegetasjon",
+        "graa_arealer"
+      ]
+    },
+    {
+      "label": "green-wms",
+      "url": "https://wms.nibio.no/cgi-bin/gronnstruktur?service=WMS&request=GetCapabilities&version=1.3.0",
+      "status": 200,
+      "contentType": "text/xml; charset=UTF-8",
+      "bytes": 9529,
+      "sha256": "4f0d9357310a03542d4427dc10b788743a4fb393971b3829f10a1fa4f327c0b8",
+      "service": {
+        "Title": "WMS for FKB-Gr\u00f8nnstruktur",
+        "Fees": null,
+        "AccessConstraints": null
+      },
+      "layers": [
+        "GRONNSTRUKTUR",
+        "arealtype",
+        "sjikthoyder"
+      ]
+    },
+    {
+      "label": "grey-wfs",
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur?service=WFS&request=GetCapabilities&version=2.0.0",
+      "status": 400,
+      "exceptionText": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ows:ExceptionReport xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" version=\"2.0.0\" xml:lang=\"en-US\" xsi:schemaLocation=\"http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">\n  <ows:Exception exceptionCode=\"InvalidParameterValue\" locator=\"request\">\n    <ows:ExceptionText>msWFSDispatch(): WFS server error. WFS request not enabled. Check wfs/ows_enable_request settings.</ows:ExceptionText>\n  </ows:Exception>\n</ows:ExceptionReport>\n"
+    },
+    {
+      "label": "green-wfs",
+      "url": "https://wms.nibio.no/cgi-bin/gronnstruktur?service=WFS&request=GetCapabilities&version=2.0.0",
+      "status": 400,
+      "exceptionText": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ows:ExceptionReport xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" version=\"2.0.0\" xml:lang=\"en-US\" xsi:schemaLocation=\"http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">\n  <ows:Exception exceptionCode=\"InvalidParameterValue\" locator=\"request\">\n    <ows:ExceptionText>msWFSDispatch(): WFS server error. WFS request not enabled. Check wfs/ows_enable_request settings.</ows:ExceptionText>\n  </ows:Exception>\n</ows:ExceptionReport>\n"
+    }
+  ]
+}
