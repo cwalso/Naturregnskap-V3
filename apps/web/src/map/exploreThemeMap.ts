@@ -108,7 +108,7 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
   let futureSelectionKey = ''
   const areaSource = new VectorSource()
   const areaPlanSource = new VectorSource()
-  const areaLayer = new VectorLayer({ source: areaSource, visible: false, className: 'plan-area-categories', style: feature => new Style({ fill: new Fill({ color: feature.get('color') }), stroke: new Stroke({ color: '#fff', width: .6 }) }) })
+  const areaLayer = new VectorLayer({ source: areaSource, visible: false, className: 'plan-area-categories', style: feature => new Style({ fill: new Fill({ color: feature.get('color') }), stroke: new Stroke({ color: '#005e5d', width: 1.5 }) }) })
   const areaPlan = new VectorLayer({ source: areaPlanSource, visible: false, className: 'plan-area-mask', style: new Style({ fill: new Fill({ color: 'rgba(0,94,93,.06)' }), stroke: new Stroke({ color: '#005e5d', width: 1, lineDash: [4,4] }) }) })
   areaLayer.setZIndex(780); areaLayer.setOpacity(.85); areaPlan.setZIndex(mapLayers.find(l=>l.id==='future-development')!.zIndex)
   let areaResult: PlanAreaAnalysis | null = null

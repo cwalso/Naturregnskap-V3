@@ -357,3 +357,16 @@ Før produksjonsbruk må blant annet avklares:
 ## Ny avgrenset prototypeanalyse 13.10.2026
 
 Kortet på Verdsatte naturtyper og det nye V2-panelet bruker nå `future-valued-nature-geometry-v3`, ikke midtpunktmetoden ovenfor. Det brukes samme Natur/Jordbruk-støtte som planvisningens nivå 9, med smale komponenter beholdt. Delcelleareal beregnes geometrisk, KU-verdi fordeles med høyeste verdi og naturtypeareal unioneres innen typen. Hele lokaliteten er prosentnevner. Dette endrer ikke øvrige beregninger beskrevet i dette dokumentet. [Metode og kildekontrakt](../decisions/2026-10-13-v3-geometric-valued-nature-overlap.md), [referansekontroll](../validation/2026-10-13-future-nature.md).
+
+## Arealbasert plananalyse 14.10.2026
+
+`planned-land-cover-area-v1` gjenbruker samme nivå-9-Natur/Jordbruk-maske.
+Nivå-0-totalene beholder hele planruter; nivå-1-natur leses fra eksisterende
+1024×1024 SLD-fliser på fire delruter per planrute. Bare eksakt klassefarge og
+alpha ≥100 gir identifisert type. Blandede/ukjente/transparente farger vises
+som ufordelt natur. Dette er en konservativ, delvis fordeling – 0 identifiserte
+celler beviser ikke at typen mangler. Jordbruk har ingen underfordeling.
+Flisoppløsning er ikke geografisk nøyaktighet. WMS-uttaket er løpende, ikke
+en garantert låst 2025-distribusjon; råflishasher og uttrekksdato lagres.
+[Metode](../decisions/2026-10-14-plan-land-cover-area.md),
+[summer, råbilder og uavhengig kontroll](../validation/2026-10-14-plan-area.md).

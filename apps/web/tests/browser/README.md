@@ -6,6 +6,7 @@ Kjøres fra `apps/web` etter `npm ci`:
 npx playwright install chromium
 npm run test:browser
 npm run test:browser:layers
+npm run test:browser:plan-area:live
 npm run test:browser:design
 ```
 
@@ -127,3 +128,19 @@ og 320 px. Dette er en UI-kontroll, ikke live datavalidering eller Pages-kontrol
 Valgfritt `PAGES_ARTIFACT` peker på en utpakket Pages-artefakt og kontrollerer
 at den gamle knappen rendres, men kan rulles helt bort ved 1440 × 720 px.
 `check-future-nature-live.mjs` kontrollerer de reelle beregningene og kartkoblingen.
+
+`test:browser:plan-area:live` bruker port 5200 og eget Vite-cacheområde.
+Den lagrer rå økosystem-PNG-er, plan-/resultatmasker, hasher og JSON-resultat,
+og kontrollerer hver kategoris areal og faktiske geometri i OpenLayers.
+Den åpner deretter den reelle App-ruten: Kommuneoversikt → primær arealanalyse,
+alle kategorier/utvalg, eksplisitt fit, mobil resultat/kart, supplerende
+naturverdi-analyse, kommunebytte og kontrollert HTTP 503. Fire skjermbredder
+kontrolleres. En testinjeksjon prøver én aggregert historisk periode; den inngår
+ikke i produksjonsdata. Live-kjøringen er avhengig av kildetjenestene og ligger
+utenfor den kontrollerte CI-regresjonen.
+
+Uavhengig kontroll kjøres med `python tests/browser/verify-plan-area.py <output>`
+i et miljø med Pillow, NumPy og Shapely. Den bruker råbilder og GEOS-radstriper,
+ikke produksjons-JS-klassifikatoren. Lagret `reference-inputs.zip` i
+`docs/validation/2026-10-14-plan-area/` kan pakkes ut i samme outputmappe som
+referansens `result.json` for å gjenta kontrollen uten nye kildeforespørsler.

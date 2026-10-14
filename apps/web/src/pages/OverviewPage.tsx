@@ -9,6 +9,8 @@ import { OverviewPhoto } from '../features/overview/OverviewPhoto'
 import { OverviewSummary, type OverviewDataState } from '../features/overview/OverviewSummary'
 import { OverviewThemes } from '../features/overview/OverviewThemes'
 import '../features/overview/OverviewPage.css'
+import { PlanAreaPreview } from '../features/plan-area/PlanAreaPreview'
+import type { PlanAreaResult } from '../features/plan-area/model'
 
 interface OverviewPageProps {
   readonly accountData: AccountOverviewData | null
@@ -21,6 +23,9 @@ interface OverviewPageProps {
   readonly thematicCoverage: ThematicCoverageResponse | null
   readonly thematicCoverageState: OverviewDataState
   readonly onNavigate: (view: SiteView) => void
+  readonly planAreaResult?: PlanAreaResult | null
+  readonly planAreaState?: OverviewDataState
+  readonly onOpenPlanAnalysis?: () => void
 }
 
 export function OverviewPage(props: OverviewPageProps) {
@@ -88,8 +93,8 @@ export function OverviewPage(props: OverviewPageProps) {
           <h2 id="overview-future-title">Hvilken natur ligger i områder avsatt til framtidig utbygging?</h2>
           <p>Planområder viser <mark>mulig utbyggingspress</mark>. I kartet kan du se dagens natur og jordbruk innenfor arealer avsatt til framtidig utbygging. Planavsetninger er ikke forventet naturtap.</p>
           <p>Grunnkart beskriver heldekkende arealkategorier. Registrerte naturverdier, som verdsatte naturtyper, er supplerende informasjon. Planoverlappanalysen undersøker overlapp med disse lokalitetene, og viser ikke samlet naturareal avsatt til utbygging.</p>
-          <p>Åpne kartet og velg «Analyser planoverlapp» for tilgjengelige beregninger og metodeforbehold.</p>
-          <a className="overview-home__link" href="#utforsk-i-kart" onClick={link('utforsk-i-kart')}>Utforsk planområder og naturverdier <span aria-hidden="true">→</span></a>
+          <PlanAreaPreview result={props.planAreaResult??null} state={props.planAreaState??'idle'} municipalityNumber={municipalityNumber}/>
+          <a className="overview-home__link" href="#utforsk-i-kart" onClick={event=>{event.preventDefault();if(props.onOpenPlanAnalysis)props.onOpenPlanAnalysis();else onNavigate('utforsk-i-kart')}}>Åpne arealfordelingen i kart <span aria-hidden="true">→</span></a>
         </div>
         <OverviewPhoto image={overviewImages.road} />
       </div>

@@ -189,6 +189,16 @@ ingen geografisk analyse eller kobling til beholdningsberegninger innføres.
 Adapteren har ingen antatt ekstern SSB-kontrakt. Se
 [intern kontrakt og avklaringer](../product/historical-loss-pages.md).
 
+`features/plan-area` gjenbruker fra 14.10 den etablerte planmasken for en egen
+heldekkende arealfordeling. Modell/klassifikator, delt kildehenting, panel og
+forhåndsvisning er adskilt. Oversikt og kartpanel mottar samme metodeversjonerte
+resultat fra en avgrenset cache på 16 kommuner. Samtidige konsumenter deler
+preparation; avbrutte konsumenter kan ikke publisere et sent resultat. Råbilder
+gjenbruker eksisterende request-pools/cache. Ingen ny analyseplattform innføres.
+Kartkontrolleren har separate areal-/naturverdigeometrier og aktiverer bare
+den valgte analysens markering. Samme kartinstans og sju lagtilstander bevares.
+Ingen separat beregningsmodell eller hardkodede planverdier lages på Oversikt.
+
 Kan komme fra:
 
 - forhåndsprosesserte resultater

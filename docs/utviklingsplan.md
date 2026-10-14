@@ -46,6 +46,7 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 | Bynaturen / grå arealer | 🟡 | Temaside beholdt; offisiell gråareal-WMS i Utforsk, uten analyseintegrasjon |
 | Utforsk i kart – samtidige lag | ✅ branch / ny brukertest | Sju lag med avkryssing, egen gjennomsiktighet og V2-panelstruktur; godkjent planvisning beholdt, ingen kryssanalyse |
 | Framtidig utbygging × Natur/Jordbruk | ✅ prototype / Trondheim | Rasterbasert overlay og lesbart resultat; ikke nasjonalt klargjort |
+| Planområder × arealfordeling | ✅ kontrollert prototype / Trondheim | Primært kartpanel og samme oppsummering på Oversikt. 2 788,80 daa natur +832,08 daa jordbruk; delvis nivå-1-fordeling med 706,71 daa ufordelt. Egen identitet, delt eksisterende planmaske og uavhengig GEOS-/råbildekontroll |
 | Framtidig utbygging × Verdsatte naturtyper | ✅ prototype / Trondheim | Overlay, filtrering og stedfesting; avhenger av samme klargjorte basisanalyse |
 | Tegn eget polygon | 🟡 kode beholdt / inngang skjult | Tidligere Draw og analyse er bevart; reaktivering krever ny oppgave og visuell gate |
 | Korrekthetsgate for eksisterende overlay | ✅ avgrenset | UUID, nevner, område-/cacheisolasjon og mobilinteraksjon kontrollert; fire verdikategorier/høyeste verdi verifisert. Felles UTM-korreksjon er innført; autoritativ kildevalidering og entydig naturtypefordeling gjenstår |

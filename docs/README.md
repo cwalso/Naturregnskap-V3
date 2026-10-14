@@ -81,6 +81,9 @@ Pages-testpublisering gjøres fra PR-branchen uten merge.
 Kommuneoversikt og Naturtapet deler fra 14.10 tydelig merkede historiske demodata;
 se [struktur/SSB-avklaringer](product/historical-loss-pages.md) og
 [tester og skjermbilder](validation/2026-10-14-historical-loss.md).
+Planområdenes heldekkende arealfordeling er primæranalyse fra 14.10, adskilt fra
+registrerte naturverdier. Se [metode](decisions/2026-10-14-plan-land-cover-area.md)
+og [A/B/C-kontroller](validation/2026-10-14-plan-area.md).
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 

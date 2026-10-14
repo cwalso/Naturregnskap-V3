@@ -1,12 +1,15 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { planAreaFixture } from './planAreaFixture'
 import { ExploreThemesWorkspace } from '../src/features/explore-map/ExploreThemesWorkspace'
 import type { MunicipalityBoundary } from '../src/api/municipalities'
 import type { MunicipalValuedNature } from '../src/api/municipalValuedNature'
 import type { LayerMapStatus } from '../src/map/exploreThemeMap'
 import type { MapLayerId } from '../src/features/explore-map/mapThemes'
 
-const controller = vi.hoisted(() => ({ update: vi.fn(), fitToMunicipality: vi.fn(), destroy: vi.fn(), setSelectionHandler: vi.fn() }))
+const controller = vi.hoisted(() => ({ update: vi.fn(), setPlanArea:vi.fn(),fitToMunicipality: vi.fn(), destroy: vi.fn(), setSelectionHandler: vi.fn() }))
+const areaRequest=vi.hoisted(()=>vi.fn())
+vi.mock('../src/features/plan-area/source',()=>({calculatePlanArea:areaRequest}))
 const request = vi.hoisted(() => vi.fn())
 let statusHandler: (layer: MapLayerId, status: LayerMapStatus, owner: string | null) => void
 vi.mock('../src/map/exploreThemeMap', () => ({ createExploreLayerMap: (_target: HTMLElement, onStatus: typeof statusHandler) => { statusHandler = onStatus; return controller } }))
@@ -15,6 +18,7 @@ const municipality = { number: '5001', name: 'Trondheim' }
 const boundary: MunicipalityBoundary = { type: 'Feature', properties: municipality, geometry: { type: 'Polygon', coordinates: [[[10, 63], [11, 63], [11, 64], [10, 63]]] } }
 const data: MunicipalValuedNature = { municipalityNumber: '5001', natureTypes: ['Rikmyr'], localities: [{ id: '123', sourceId: 'source-123', name: 'Myra', natureType: 'Rikmyr', value: 'Stor verdi', color: '#FD7032', rings: [] }] }
 afterEach(() => { cleanup(); vi.clearAllMocks() })
+beforeEach(()=>{areaRequest.mockResolvedValue({status:'not_available',municipalityNumber:'5001',reason:'Grunnlag mangler'})})
 const checkbox = (name: string) => screen.getByRole('checkbox', { name })
 
 const settings = (name: string) => fireEvent.click(screen.getByRole('button', { name: `Innstillinger for ${name}` }))
@@ -22,6 +26,31 @@ const legend = () => fireEvent.click(screen.getAllByRole('button', { name: 'Tegn
 const lastContext = () => controller.update.mock.calls.at(-1)![0]
 
 describe('uavhengige kartlag i V2-paneler', () => {
+  it('opens the primary area analysis, forwards exact selections and isolates results after municipality change',async()=>{
+    areaRequest.mockResolvedValueOnce(planAreaFixture)
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary}/>)
+    fireEvent.click(screen.getAllByRole('button',{name:'Analyser planområder'})[0])
+    const table=await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    fireEvent.click(within(table).getByRole('button',{name:'Skog'}))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'category',id:'skog'})
+    fireEvent.click(screen.getByRole('button',{name:'Tilpass kart til utvalget'}))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'category',id:'skog'},true)
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null}/>)
+    expect(screen.queryByRole('table',{name:'Økosystemtyper innenfor planområder'})).not.toBeInTheDocument()
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
+    expect(controller.destroy).not.toHaveBeenCalled()
+  })
+  it('ignores an old municipality’s pending area result',async()=>{
+    let resolve!: (result:typeof planAreaFixture)=>void
+    areaRequest.mockImplementationOnce(()=>new Promise(done=>{resolve=done}))
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="area"/>)
+    const signal=areaRequest.mock.calls[0][1] as AbortSignal
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null}/>)
+    expect(signal.aborted).toBe(true)
+    await act(async()=>resolve(planAreaFixture))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
+    expect(screen.queryByRole('table',{name:'Økosystemtyper innenfor planområder'})).not.toBeInTheDocument()
+  })
   it('keeps loading, empty and error statuses outside layer rows, accessible and in settings', () => {
     render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
     const row = checkbox('Grunnkart nivå 0').closest('.explore-themes__layer')!

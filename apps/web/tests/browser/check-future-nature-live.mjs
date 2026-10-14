@@ -37,7 +37,7 @@ try {
  const state=()=>page.evaluate(()=>({center:__themeMap.getView().getCenter(),resolution:__themeMap.getView().getResolution(),layers:__themeContext.layers,instances:__mapCreations}))
  const original=await state(),screens=[]
  async function painted(){await page.evaluate(()=>new Promise((resolve,reject)=>{const map=__themeMap;const timeout=setTimeout(()=>{map.un('rendercomplete',done);reject(new Error('Kartet ble ikke ferdig rendret'))},90000);function done(){clearTimeout(timeout);resolve()};map.once('rendercomplete',done);map.render()}))}
- await page.getByRole('button',{name:'Analyser planoverlapp',exact:true}).click();await page.getByText('Unikt overlappsareal',{exact:true}).waitFor({timeout:180000})
+ await page.getByRole('button',{name:'Analyser planområder',exact:true}).click();await page.getByRole('group',{name:'Velg plananalyse'}).getByRole('button',{name:'Registrerte naturverdier',exact:true}).click();await page.getByText('Unikt overlappsareal',{exact:true}).waitFor({timeout:180000})
  for(const [width,height] of [[1440,960],[900,900],[390,844],[320,720]]) {
   await page.setViewportSize({width,height});await page.waitForTimeout(350);const before=await state()
   await page.getByRole('button',{name:/^Stor verdi.*daa/}).click();await page.waitForFunction(()=>__analysisMap.selection.kind==='value');assert.deepEqual(await state(),before,'Verdifilter flyttet kartet')

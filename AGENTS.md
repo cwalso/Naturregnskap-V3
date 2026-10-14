@@ -326,3 +326,26 @@ skal ikke et generelt kartutsnitt fremstilles som kommunen. Unsplash-motiver
 har dokumentert gratis kilde, fotograf, illustrasjonsstatus og feiltilstand.
 Se [leveranse-/kontrollrapport](docs/validation/2026-10-13-overview-redesign.md).
 Se [felles historisk struktur og SSB-avklaringer](docs/product/historical-loss-pages.md).
+
+## 18. Planområder × arealfordeling (14.10.2026)
+
+`planned-land-cover-area-v1` er en eksplisitt autorisert primæranalyse i samme
+Utforsk-kontekstpanel. Den gjenbruker uendret `loadFutureNatureMask`/nivå-9-støtte
+og eksisterende NIBIO-nivå-1-fliser. Natur/Jordbruk er disjunkte; Bebygd/vann
+inngår ikke. Fem dokumenterte naturtyper identifiseres konservativt fra eksakte
+SLD-farger på 10,578125 m delruter. Transparente/blandede/ukjente piksler blir
+ufordelt natur, aldri en forholdsmessig fordeling. Jordbruk beholdes samlet.
+Kartvalg bruker de samme delrutene som tallene, i egen metode/identitet/cache.
+Kilde-/grid-/versjonsforbehold er dokumentert. Bare Trondheim er klargjort.
+
+Panelet skiller Arealfordeling fra Registrerte naturverdier. Sistnevnte beholder
+119,38 daa /70 lokaliteter og skal ikke summeres med heldekkende planarealer.
+Utvalg bevarer utsnitt/lag; fit er eksplisitt. Mobil kan vise kartet med bevart
+utvalg og returnere til resultater. Oversikt gjenbruker samme arealresultat og
+lenken åpner riktig analyse direkte. Ingen forventet/historisk naturtap utledes.
+
+SSBs forventede første historiske periode er 2017–2024, mulig som ett aggregert
+periodetall. Modell og visning skal ikke forutsette årlige observasjoner.
+Dagens illustrative 2016–2025-demo beholdes. Se
+[metode](docs/decisions/2026-10-14-plan-land-cover-area.md) og
+[A/B/C-kontroll](docs/validation/2026-10-14-plan-area.md).

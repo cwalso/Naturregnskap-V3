@@ -2,6 +2,7 @@ import { exploreOverlapGeometry } from '../../map/exploreOverlapGeometry'
 import { natureTypeDefinitions, PLAN_PIXEL_METERS, type PlannedDevelopmentOverlayGrid } from '../../map/plannedDevelopment'
 import type { Geometry } from '../future-analysis/geometry'
 export const PLAN_AREA_METHOD = 'planned-land-cover-area-v1' as const
+export const planDaa=(value:number)=>`${new Intl.NumberFormat('nb-NO',{maximumFractionDigits:2}).format(value)} daa`
 export const planAreaCategories = [
   ...natureTypeDefinitions.map((d, i) => ({ id: d.id as string, label: d.label as string, code: i + 1, group: 'nature' as const, color: d.displayColor as string })),
   { id: 'unclassified-nature', label: 'Ufordelt natur', code: 6, group: 'nature' as const, color: '#87948b' },

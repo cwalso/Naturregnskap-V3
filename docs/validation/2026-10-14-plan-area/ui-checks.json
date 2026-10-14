@@ -1,0 +1,58 @@
+{
+  "uiChecks": [
+    {
+      "width": 1440,
+      "height": 960,
+      "mapWidth": 746,
+      "mapHeight": 664,
+      "panelWidth": 420,
+      "panelHeight": 764,
+      "categoriesMapToExactResult": true,
+      "layersPreserved": true,
+      "instancePreserved": true,
+      "overflow": 0
+    },
+    {
+      "width": 900,
+      "height": 900,
+      "mapWidth": 560,
+      "mapHeight": 604,
+      "panelWidth": 340,
+      "panelHeight": 704,
+      "categoriesMapToExactResult": true,
+      "layersPreserved": true,
+      "instancePreserved": true,
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mapWidth": 390,
+      "mapHeight": 210,
+      "panelWidth": 390,
+      "panelHeight": 360,
+      "categoriesMapToExactResult": true,
+      "layersPreserved": true,
+      "instancePreserved": true,
+      "overflow": 0
+    },
+    {
+      "width": 320,
+      "height": 720,
+      "mapWidth": 320,
+      "mapHeight": 122,
+      "panelWidth": 320,
+      "panelHeight": 324,
+      "categoriesMapToExactResult": true,
+      "layersPreserved": true,
+      "instancePreserved": true,
+      "overflow": 0
+    }
+  ],
+  "primaryLinkOpensArea": true,
+  "valuedNatureRetained": true,
+  "aggregatePeriod": true,
+  "municipalityIsolation": true,
+  "planServiceFailure": true,
+  "errors": []
+}

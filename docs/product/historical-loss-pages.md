@@ -40,6 +40,11 @@ Statistikk forventes 25. november 2026, polygoner først i 2027. Dette er forven
 ikke bekreftede leveransekontrakter. `ssbAdapter.ts` definerer kun mapping fra en
 ukjent leveranse til vår interne modell, samt validering. Ingen API/kolonner antas.
 
+Presisering 14.10: forventet første periode er 2017–2024. Årsfordeling er ikke
+bekreftet; én aggregert periode støttes av modell, periodevalg og visualisering.
+En samlet verdi vises som én observasjon, uten konstruerte årstall. Dagens
+illustrative 2016–2025-tidsserie beholdes som konseptdemo.
+
 Før offisiell kilde kobles til må vi avklare tabell-ID/tilgang, variabler, enhet,
 kommunekoder/grenseversjon, brutto/netto-definisjon, perioder og revisjoner,
 natur/jordbruksavgrensning, økosystemklassifikasjon og sammenlignbarhet,

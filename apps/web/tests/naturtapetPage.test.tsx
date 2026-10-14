@@ -2,8 +2,20 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { afterEach, expect, it, vi } from 'vitest'
 import { NaturtapetPage } from '../src/pages/NaturtapetPage'
 import { demoLabel, trondheimLossDemo } from '../src/features/historical-loss/demoSource'
+import { available, summarizeLoss, validateHistoricalLoss } from '../src/features/historical-loss/model'
 const props = { municipalityNumber: '5001', municipalityName: 'Trondheim', historicalLoss: trondheimLossDemo, onNavigate: vi.fn() }
 afterEach(() => { cleanup(); vi.clearAllMocks() })
+it('shows one aggregate 2017–2024 period without inventing annual observations',()=>{
+  const sum=summarizeLoss(trondheimLossDemo.periods.slice(1,9))
+  const data=validateHistoricalLoss({...trondheimLossDemo,source:{...trondheimLossDemo.source,version:'aggregate-test'},periods:[{id:'2017-2024',label:'2017–2024',start:'2017-01-01',end:'2024-12-31',nature:available(sum.nature!),agriculture:available(sum.agriculture!),ecosystems:sum.ecosystems,destinations:{status:'not-in-delivery',reason:'Ikke bekreftet variabel'}}]})
+  render(<NaturtapetPage {...props} historicalLoss={data}/>)
+  expect(screen.getByLabelText('Nøkkeltall for brutto nedbygging')).toHaveTextContent('1 030 dekar')
+  expect(screen.getByRole('combobox',{name:'Fra periode'})).toHaveTextContent('2017–2024')
+  expect(document.querySelectorAll('.loss-timeline__period')).toHaveLength(1)
+  fireEvent.click(screen.getByText('Se tallene i tabell'))
+  expect(within(screen.getByRole('table',{name:'Nedbygging per periode, 2017–2024'})).getAllByRole('row')).toHaveLength(2)
+  expect(screen.queryByRole('option',{name:'2017'})).not.toBeInTheDocument()
+})
 it('shows clearly marked gross development, a consistent period and accessible distributions', () => {
   render(<NaturtapetPage {...props} />)
   expect(screen.getAllByText(demoLabel)).toHaveLength(4)

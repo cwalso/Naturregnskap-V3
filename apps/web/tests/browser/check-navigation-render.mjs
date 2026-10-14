@@ -41,7 +41,7 @@ async function check(root, baseline = false) {
       await page.locator('summary[aria-label="Åpne meny"]').click()
     } else await navigateSite(page, 'Utforsk i kart')
     await page.getByRole('region', { name: 'Interaktivt kart i Trondheim' }).waitFor()
-    const entry = page.getByRole('button', { name: 'Analyser planoverlapp', exact: true }).filter({ visible: true })
+    const entry = page.getByRole('button', { name: 'Analyser planområder', exact: true }).filter({ visible: true })
     assert.equal(await entry.count(), 1)
     const isInViewport = () => entry.evaluate(button => {
       const r = button.getBoundingClientRect(), list = document.querySelector('.explore-themes__layer-list').getBoundingClientRect()
@@ -76,10 +76,10 @@ async function check(root, baseline = false) {
         assert.equal(await navigation.isVisible(), false)
         assert.ok(await menu.evaluate(button => button === document.activeElement))
       }
-      const visibleEntry = page.getByRole('button', { name: 'Analyser planoverlapp', exact: true }).filter({ visible: true })
+      const visibleEntry = page.getByRole('button', { name: 'Analyser planområder', exact: true }).filter({ visible: true })
       assert.equal(await visibleEntry.count(), 1)
       await visibleEntry.click()
-      await page.getByRole('complementary', { name: 'Planoverlapp – naturtyper', exact: true }).waitFor()
+      await page.getByRole('complementary', { name: 'Arealer avsatt til framtidig utbygging', exact: true }).waitFor()
       await page.keyboard.press('Escape')
       const measurements = await page.evaluate(() => {
         const r = document.querySelector('.explore-themes__canvas').getBoundingClientRect()

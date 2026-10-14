@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ExploreAnalysisWorkspace } from '../src/features/explore-map/ExploreAnalysisWorkspace'
 import { App } from '../src/app/App'
+vi.mock('../src/features/plan-area/source',()=>({calculatePlanArea:async(number:string)=>({status:'not_available',municipalityNumber:number,reason:'Klargjort analysegrunnlag mangler, ikke null treff.'})}))
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import {
   datasetRegistry,

@@ -187,6 +187,20 @@ Escape og fokusretur, tastatur og intern scrolling bevares. Lave skjermer
 bruker vertikal reflow. Headerens kommunevalg beholdes; hovednavigasjonen
 følger den permanente desktopraden beskrevet ovenfor.
 [Beslutning](../decisions/2026-10-12-v3-explore-design-v2.md).
+
+Fra 14.10 åpner «Analyser planområder» primært **Arealfordeling**; **Registrerte
+naturverdier** er et eget, supplerende valg i samme panel. Kommuneoversiktens
+analyseinngang åpner arealfordelingen direkte, mens temasidens eksisterende
+overlappsinngang åpner naturverdiene. Arealresultatet viser natur/jordbruk og
+identifiserte nivå-1-typer med synlig ufordelt natur. Tydelig prototypemerking
+skiller reelle kartanalyser fra historiske demodata. Ingen summering mellom
+heldekkende arealer og registrerte lokaliteter.
+
+Kun arealpanelet får 420 px på desktop og 340 px ved 900 px, med fortsatt synlig
+kart. Mobil bruker 300–360 px resultatpanel; «Vis kart»/Plananalyser veksler
+uten å fjerne det beregnede utvalget. Utvalg/fit/nullstilling er separate handlinger.
+Fargelagte resultatområder har mørk kontur for lesbarhet i grove utsnitt;
+konturbredden innebærer ikke større treffareal eller bedre geografisk presisjon.
 Lagvalg, gjennomsiktighet, filtrering, objektvalg og resize bevarer senter/oppløsning.
 Bare kommunevalg og eksplisitt reset tilpasser utsnittet. Framtidig utbygging
 viser bare Natur og Jordbruk innenfor planformålene, med to egne legendeposter

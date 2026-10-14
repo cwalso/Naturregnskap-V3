@@ -1,5 +1,8 @@
 import { AnalysisPanel } from '../future-analysis/AnalysisPanel'
 import { calculateFutureNature, type Result, type Selection } from '../future-analysis/model'
+import { calculatePlanArea } from '../plan-area/source'
+import { PlanAreaPanel } from '../plan-area/PlanAreaPanel'
+import type { PlanAreaResult, PlanAreaSelection } from '../plan-area/model'
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { Municipality, MunicipalityBoundary } from '../../api/municipalities'
 import type { ThematicCoverageResponse } from '../../api/thematicCoverage'
@@ -10,7 +13,7 @@ import { RegisteredNatureDetails, RegisteredNaturePanel } from './RegisteredNatu
 import { ExploreMapIcon } from './ExploreMapIcon'
 import './ExploreThemesWorkspace.css'
 
-interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error'; initialAnalysisOpen?: boolean }
+interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error'; initialAnalysisOpen?: boolean; initialAnalysisMode?: 'area' | 'nature' }
 interface Choice { owner: string; filter: MunicipalNatureFilter; selectedId: string | null; search: string; limit: number }
 const freshChoice = (owner: string): Choice => ({ owner, filter: noMunicipalNatureFilter, selectedId: null, search: '', limit: 60 })
 const displayOrder: MapLayerId[] = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer', 'grey-areas']
@@ -23,7 +26,7 @@ function ServiceLegend({ url, description }: { url: string; description: string 
     : <img src={url} alt={description} onError={() => setFailed(true)} />}</div>
 }
 
-export function ExploreThemesWorkspace({ municipality, boundary, coverage, coverageState = 'idle', initialAnalysisOpen = false }: Props) {
+export function ExploreThemesWorkspace({ municipality, boundary, coverage, coverageState = 'idle', initialAnalysisOpen = false, initialAnalysisMode = 'nature' }: Props) {
   const [greyPresentation, setGreyPresentation] = useState<GreyPresentation>('graa_arealer')
   const grey = greyPresentations.find((item) => item.layer === greyPresentation)!
   const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
@@ -31,16 +34,23 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const [storedPanel, setPanel] = useState<{ owner: string; value: MapLayerId | 'legend' | 'object' | 'analysis' } | null>(() => initialAnalysisOpen ? { owner: municipality.number, value: 'analysis' } : null)
   const panel = storedPanel?.owner === municipality.number ? storedPanel.value : null
   const [analysisState, setAnalysisState] = useState<{ owner: string; result: Result | null; loading: boolean; error: string | null } | null>(null)
+  const [analysisMode,setAnalysisMode]=useState<'area'|'nature'>(()=>initialAnalysisOpen?initialAnalysisMode:'area')
+  const [areaState,setAreaState]=useState<{owner:string;result:PlanAreaResult|null;loading:boolean;error:string|null}|null>(null)
+  const [areaMapOwner,setAreaMapOwner]=useState<string|null>(()=>initialAnalysisOpen&&initialAnalysisMode==='area'?municipality.number:null)
+  const [storedAreaSelection,setAreaSelection]=useState<{owner:string;selection:PlanAreaSelection}>({owner:municipality.number,selection:{kind:'all'}})
+  const areaSelection=useMemo<PlanAreaSelection>(()=>storedAreaSelection.owner===municipality.number?storedAreaSelection.selection:{kind:'all'},[storedAreaSelection,municipality.number])
   const [storedAnalysisSelection, storeAnalysisSelection] = useState<{ owner: string; selection: Selection }>({ owner: municipality.number, selection: { kind: 'all' } })
   const analysisSelection = useMemo<Selection>(() => storedAnalysisSelection.owner === municipality.number ? storedAnalysisSelection.selection : { kind: 'all' }, [storedAnalysisSelection, municipality.number])
   const panelElement = useRef<HTMLElement>(null)
   const opener = useRef<HTMLElement | null>(null)
   const pickerButton = useRef<HTMLButtonElement>(null)
   function openPanel(value: MapLayerId | 'legend' | 'object' | 'analysis') {
+    if(value!=='analysis')setAreaMapOwner(null)
     opener.current = document.activeElement as HTMLElement
     setPickerOpen(false); setPanel({ owner: municipality.number, value })
   }
   const closePanel = useCallback(() => {
+    setAreaMapOwner(null)
     setPanel(null); setPickerOpen(false)
     requestAnimationFrame(() => {
       const target = opener.current
@@ -123,7 +133,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     return () => controller.current?.setSelectionHandler(null)
   }, [owner])
   useEffect(() => {
-    if (panel !== 'analysis' || !activeBoundary) return
+    if (panel !== 'analysis' || analysisMode !== 'nature' || !activeBoundary) return
     const abort = new AbortController()
     setAnalysisState({ owner, result: null, loading: true, error: null })
     void calculateFutureNature(owner, abort.signal).then((result) => {
@@ -132,10 +142,22 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
       if (!abort.signal.aborted) setAnalysisState({ owner, result: null, loading: false, error: error instanceof Error ? error.message : 'Analysen kunne ikke beregnes.' })
     })
     return () => abort.abort()
-  }, [panel, activeBoundary, owner])
-  const activeAnalysis = panel === 'analysis' && analysisState?.owner === owner ? analysisState : null
+  }, [panel, analysisMode, activeBoundary, owner])
+  useEffect(()=>{
+    if(panel!=='analysis'||analysisMode!=='area'||!activeBoundary)return
+    const abort=new AbortController()
+    setAreaState(previous=>({owner,result:previous?.owner===owner?previous.result:null,loading:true,error:null}))
+    void calculatePlanArea(owner,abort.signal).then(result=>{if(!abort.signal.aborted)setAreaState({owner,result,loading:false,error:null})}).catch((error:unknown)=>{if(!abort.signal.aborted)setAreaState({owner,result:null,loading:false,error:error instanceof Error?error.message:'Analysen kunne ikke beregnes.'})})
+    return()=>abort.abort()
+  },[panel,analysisMode,activeBoundary,owner])
+  const activeArea=areaState?.owner===owner?areaState:null
+  const areaResult=areaMapOwner===owner&&activeBoundary&&activeArea?.result?.status==='available'&&(panel==='analysis'&&analysisMode==='area'||panel===null)?activeArea.result:null
+  const activeAnalysis = panel === 'analysis' && analysisMode === 'nature' && analysisState?.owner === owner ? analysisState : null
   const analysisResult = activeAnalysis?.result?.status === 'available' ? activeAnalysis.result : null
-  useEffect(() => { controller.current?.setFutureNature?.(analysisResult, analysisSelection) }, [analysisResult, analysisSelection])
+  useEffect(() => { controller.current?.setFutureNature?.(analysisResult, analysisSelection);controller.current?.setPlanArea?.(areaResult,areaSelection) }, [analysisResult, analysisSelection,areaResult,areaSelection])
+  function chooseArea(selection:PlanAreaSelection){setAreaSelection({owner,selection});controller.current?.setPlanArea?.(areaResult,selection)}
+  function openPrimaryAnalysis(){setAnalysisMode('area');setAreaMapOwner(owner);openPanel('analysis')}
+  function showAreaMap(){setPanel(null);setPickerOpen(false);requestAnimationFrame(()=>element.current?.focus({preventScroll:true}))}
   function chooseAnalysis(selection: Selection) {
     storeAnalysisSelection({ owner, selection })
     controller.current?.setFutureNature?.(analysisResult, selection, selection.kind === 'locality')
@@ -181,11 +203,11 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     </section>
   }
   return <section className="explore-themes" aria-label="Kart med flere lag">
-    <div className={`explore-themes__body ${panel ? 'has-detail' : ''} ${pickerOpen ? 'layers-open' : ''}`}>
+    <div className={`explore-themes__body ${panel ? 'has-detail' : ''} ${panel==='analysis'&&analysisMode==='area'?'has-area-analysis':''} ${pickerOpen ? 'layers-open' : ''}`}>
       <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
         <div className="explore-themes__panel-heading"><h2><ExploreMapIcon name="layers" />Kartlag</h2><span className="explore-themes__counter">{activeDefinitions.length} aktive</span><button type="button" className="explore-themes__mobile-close explore-themes__icon-button" onClick={closePanel} aria-label="Lukk kartlag"><ExploreMapIcon name="close" /></button></div>
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>
-        <button type="button" className="explore-themes__analysis-entry" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={() => openPanel('analysis')}>Analyser planoverlapp</button>
+        <button type="button" className="explore-themes__analysis-entry" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={openPrimaryAnalysis}>Analyser planområder</button>
         <div id={`${id}-layers`} className="explore-themes__layer-list">
           {mapLayerRoles.map((role) => <fieldset key={role}><legend>{role}</legend>
             {mapLayers.filter((item) => item.role === role).sort((a, b) => displayOrder.indexOf(a.id) - displayOrder.indexOf(b.id)).map((item) => <div className={`explore-themes__layer ${layers[item.id].visible ? 'is-active' : ''}`} key={item.id}>
@@ -211,8 +233,8 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         <div className="sr-only">{activeDefinitions.filter((item) => item.id !== panel).map((item) => <div key={item.id}>{layerStatus(item)}</div>)}</div>
         <p id={`${id}-instructions`} className="sr-only">Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.</p>
       </section>
-      {panel && <aside ref={panelElement} id={`${id}-detail`} className="explore-themes__panel explore-themes__info" aria-label={panel === 'analysis' ? 'Planoverlapp – naturtyper' : panel === 'object' ? 'Objektinformasjon' : definition ? `Innstillinger: ${definition.name}` : 'Aktive lag og tegnforklaring'}>
-        <header className="explore-themes__detail-heading"><button type="button" className="explore-themes__detail-back explore-themes__icon-button" aria-label="Tilbake til kartlag" onClick={closePanel}><ExploreMapIcon name="back" /></button><div><small>{panel === 'object' ? 'Verdsatte naturtyper' : definition?.role ?? 'Aktive kartlag'}</small><h2>{panel === 'analysis' ? 'Planoverlapp – naturtyper' : panel === 'object' ? 'Objektinformasjon' : definition?.name ?? 'Tegnforklaring'}</h2></div><button type="button" className="explore-themes__icon-button" aria-label="Lukk detaljpanel" onClick={closePanel}><ExploreMapIcon name="close" /></button></header>
+      {panel && <aside ref={panelElement} id={`${id}-detail`} className="explore-themes__panel explore-themes__info" aria-label={panel === 'analysis' ? analysisMode==='area'?'Arealer avsatt til framtidig utbygging':'Planoverlapp – naturtyper' : panel === 'object' ? 'Objektinformasjon' : definition ? `Innstillinger: ${definition.name}` : 'Aktive lag og tegnforklaring'}>
+        <header className="explore-themes__detail-heading"><button type="button" className="explore-themes__detail-back explore-themes__icon-button" aria-label="Tilbake til kartlag" onClick={closePanel}><ExploreMapIcon name="back" /></button><div><small>{panel === 'analysis' ? 'Plananalyser' : panel === 'object' ? 'Verdsatte naturtyper' : definition?.role ?? 'Aktive kartlag'}</small><h2>{panel === 'analysis' ? analysisMode==='area'?'Arealfordeling':'Registrerte naturverdier' : panel === 'object' ? 'Objektinformasjon' : definition?.name ?? 'Tegnforklaring'}</h2></div><button type="button" className="explore-themes__icon-button" aria-label="Lukk detaljpanel" onClick={closePanel}><ExploreMapIcon name="close" /></button></header>
         <div className="explore-themes__detail-scroll">
           {definition && <>
             {!layers[definition.id].visible && <p className="explore-themes__reference">Dette laget er slått av.<button type="button" onClick={() => toggleLayer(definition.id, true)}>Aktiver {definition.name}</button></p>}
@@ -223,13 +245,16 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
             {layerStatus(definition)}
             {layerInfo(definition)}
           </>}
-          {panel === 'analysis' && <AnalysisPanel result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} />}
+          {panel === 'analysis' && <>
+            <div className="explore-themes__analysis-switch" role="group" aria-label="Velg plananalyse"><button type="button" aria-pressed={analysisMode==='area'} onClick={()=>{setAnalysisMode('area');setAreaMapOwner(owner)}}>Arealfordeling</button><button type="button" aria-pressed={analysisMode==='nature'} onClick={()=>{setAnalysisMode('nature');setAreaMapOwner(null)}}>Registrerte naturverdier</button></div>
+            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={()=>controller.current?.setPlanArea?.(areaResult,areaSelection,true)} onShowMap={showAreaMap}/>:<AnalysisPanel result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} />}
+          </>}
           {panel === 'object' && selected && <RegisteredNatureDetails locality={selected} municipality={municipality} onBack={() => setPanel({ owner, value: 'valued-nature' })} onClear={() => { updateChoice({ selectedId: null }); setPanel({ owner, value: 'valued-nature' }) }} />}
           {panel === 'legend' && (activeDefinitions.length ? [...activeDefinitions].reverse().map(layerInfo) : <p>Ingen aktive kartlag. Bakgrunnskartet vises.</p>)}
         </div>
       </aside>}
       <nav className="explore-themes__mobile-nav" aria-label="Kartkontroller">
-        <button type="button" aria-label="Analyser planoverlapp" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={() => openPanel('analysis')}>Planoverlapp</button>
+        <button type="button" aria-label="Analyser planområder" aria-expanded={panel === 'analysis'} aria-controls={`${id}-detail`} onClick={()=>{if(panel==='analysis'&&analysisMode==='area')showAreaMap();else openPrimaryAnalysis()}}>Plananalyser</button>
         <button ref={pickerButton} type="button" aria-expanded={pickerOpen} aria-controls={`${id}-layers`} onClick={() => { if (pickerOpen) closePanel(); else { opener.current = pickerButton.current; setPanel(null); setPickerOpen(true) } }}><ExploreMapIcon name="layers" />Kartlag ({activeDefinitions.length})</button>
         <button type="button" aria-expanded={panel === 'valued-nature'} onClick={() => { toggleLayer('valued-nature', true); openPanel('valued-nature') }}><ExploreMapIcon name="settings" />Naturtypefilter</button>
         <button type="button" aria-expanded={panel === 'legend'} onClick={() => openPanel('legend')}><ExploreMapIcon name="legend" />Tegnforklaring</button>

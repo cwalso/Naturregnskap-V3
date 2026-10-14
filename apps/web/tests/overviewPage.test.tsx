@@ -82,7 +82,7 @@ it('links future development to the existing map and distinguishes it from histo
   const future = screen.getByRole('region', { name: 'Hvilken natur ligger i områder avsatt til framtidig utbygging?' })
   expect(future).toHaveTextContent('Planavsetninger er ikke forventet naturtap')
   expect(future).toHaveTextContent('viser ikke samlet naturareal avsatt til utbygging')
-  fireEvent.click(within(future).getByRole('link', { name: 'Utforsk planområder og naturverdier' }))
+  fireEvent.click(within(future).getByRole('link', { name: 'Åpne arealfordelingen i kart' }))
   expect(defaults.onNavigate).toHaveBeenLastCalledWith('utforsk-i-kart')
 })
 

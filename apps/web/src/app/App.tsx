@@ -1,4 +1,6 @@
 import { calculateFutureNature, type Result as FutureNatureResult } from '../features/future-analysis/model'
+import { calculatePlanArea } from '../features/plan-area/source'
+import type { PlanAreaResult } from '../features/plan-area/model'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
@@ -161,7 +163,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
   const [futureNatureResult, setFutureNatureResult] = useState<FutureNatureResult | null>(null)
   const [futureNatureState, setFutureNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
-  const [futureAnalysisEntry, setFutureAnalysisEntry] = useState(false)
+  const [futureAnalysisEntry, setFutureAnalysisEntry] = useState<'area'|'nature'|null>(null)
+  const [overviewPlanArea,setOverviewPlanArea]=useState<{owner:string;result:PlanAreaResult|null;state:'idle'|'loading'|'error'}|null>(null)
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
   const [plannedDevelopmentState, setPlannedDevelopmentState] = useState<'idle' | 'loading' | 'error'>('idle')
   const [plannedDevelopmentVisible, setPlannedDevelopmentVisible] = useState(true)
@@ -421,6 +424,17 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     return () => abort.abort()
   }, [activeView, selectedMunicipality])
 
+  useEffect(()=>{
+    if(activeView!=='oversikt'||!selectedMunicipality)return
+    const owner=selectedMunicipality.number
+    if(boundaryState==='error'){setOverviewPlanArea({owner,result:null,state:'error'});return}
+    if(boundaryState!=='idle'||boundaryData?.properties.number!==owner)return
+    const abort=new AbortController()
+    setOverviewPlanArea({owner,result:null,state:'loading'})
+    void calculatePlanArea(owner,abort.signal).then(result=>{if(!abort.signal.aborted)setOverviewPlanArea({owner,result,state:'idle'})}).catch(()=>{if(!abort.signal.aborted)setOverviewPlanArea({owner,result:null,state:'error'})})
+    return()=>abort.abort()
+  },[activeView,selectedMunicipality,boundaryState,boundaryData])
+
   useEffect(() => {
     if (activeView !== 'tema-forest' || !selectedMunicipality) {
       setForestStatistics(null)
@@ -622,7 +636,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function navigate(view: SiteView) {
-    if (view !== 'utforsk-i-kart') setFutureAnalysisEntry(false)
+    if (view !== 'utforsk-i-kart') setFutureAnalysisEntry(null)
     setActiveView(view)
     const hash = `#${view}`
     if (window.location.hash !== hash) window.location.hash = hash
@@ -719,7 +733,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }
 
   function openValuedNatureAnalysis() {
-    setFutureAnalysisEntry(true)
+    setFutureAnalysisEntry('nature')
     resetMapSelection()
     setAnalysisAreaMode('planned')
     setPlannedDevelopmentAnalysisTarget('valued-nature')
@@ -1339,6 +1353,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           accountData={accountData}
           accountState={accountState}
           historicalLoss={getHistoricalLossData(selectedMunicipality.number)}
+          planAreaResult={overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.result:null}
+          planAreaState={overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.state:'idle'}
+          onOpenPlanAnalysis={()=>{setFutureAnalysisEntry('area');navigate('utforsk-i-kart')}}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           mapContent={<section className="overview-home__map" aria-labelledby="overview-map-title">
@@ -1401,7 +1418,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <ExploreThemesWorkspace initialAnalysisOpen={futureAnalysisEntry} municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
+          <ExploreThemesWorkspace initialAnalysisOpen={futureAnalysisEntry!==null} initialAnalysisMode={futureAnalysisEntry??'area'} municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
         </>
       )}
     </section>
