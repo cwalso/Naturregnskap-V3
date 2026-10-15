@@ -82,8 +82,8 @@ export function ExploreNaturePage({
           </p>
         </div>
 
-        <div className="theme-grid theme-grid--account" role="list" aria-label="Temasider i regnskapsgrunnlaget">
-          <button
+        <ul className="theme-grid theme-grid--account" aria-label="Temasider i regnskapsgrunnlaget">
+          <li><button
             type="button"
             className="theme-card theme-card--page theme-card--account"
             onClick={() => onOpenEcosystemPage('vatmark')}
@@ -95,9 +95,9 @@ export function ExploreNaturePage({
               <span className="status-tag">Grunnkart 2025</span>
               <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
             </span>
-          </button>
+          </button></li>
 
-          <button
+          <li><button
             type="button"
             className="theme-card theme-card--page theme-card--account"
             onClick={onOpenForestPage}
@@ -109,9 +109,9 @@ export function ExploreNaturePage({
               <span className="status-tag">Grunnkart 2025</span>
               <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
             </span>
-          </button>
+          </button></li>
 
-          <button
+          <li><button
             type="button"
             className="theme-card theme-card--page theme-card--account"
             onClick={onOpenUrbanNaturePage}
@@ -123,8 +123,8 @@ export function ExploreNaturePage({
               <span className="status-tag">Grunnkart / grå arealer</span>
               <span className="theme-card__open">Åpne temaside <span aria-hidden="true">→</span></span>
             </span>
-          </button>
-        </div>
+          </button></li>
+        </ul>
       </section>
 
       <section className="content-page__section" aria-labelledby="themes-title">
@@ -138,7 +138,7 @@ export function ExploreNaturePage({
           </p>
         </div>
 
-        <div className="theme-grid theme-grid--pages" role="list" aria-label="Naturtema">
+        <ul className="theme-grid theme-grid--pages" aria-label="Naturtema">
           {thematicPageContent.map((theme) => {
             const dataset = thematicDatasets.find((item) => item.id === theme.datasetId)
             if (!dataset) return null
@@ -153,10 +153,9 @@ export function ExploreNaturePage({
                 )
 
             return (
-              <button
+              <li key={theme.id}><button
                 type="button"
                 className="theme-card theme-card--page"
-                key={theme.id}
                 onClick={() => onOpenThemePage(dataset.id)}
               >
                 <div className="theme-card__icon" aria-hidden="true">{theme.icon}</div>
@@ -176,10 +175,10 @@ export function ExploreNaturePage({
                     Åpne temaside <span aria-hidden="true">→</span>
                   </span>
                 </span>
-              </button>
+              </button></li>
             )
           })}
-        </div>
+        </ul>
       </section>
 
       <section className="classification-note" aria-labelledby="classification-title">

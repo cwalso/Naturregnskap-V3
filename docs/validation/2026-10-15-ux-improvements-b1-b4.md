@@ -54,3 +54,32 @@ tilbake og utsnittet endres til Oslo. Reload og nettleser-tilbake består.
 [Kontroller](2026-10-15-ux-improvements-b1-b4/B2/checks.json),
 [Oslo Arealfordeling](2026-10-15-ux-improvements-b1-b4/B2/B2-oslo-Arealfordeling.png),
 [Oslo Registrerte naturverdier](2026-10-15-ux-improvements-b1-b4/B2/B2-oslo-Registrerte-naturverdier.png).
+
+## B3 – Kontrast, fokus og native lister
+
+Produktnavnet arver nå headerens tekstfarge og forblir lesbart på både lys og
+mørk bakgrunn. Valgt analyseknapp beholder mørk grønn bakgrunn med hvit tekst
+også ved hover/fokus. Tydelig fokusmarkering er kontrollert på headerknapp og
+analyseknapper. Naturtema bruker native `ul/li` rundt eksisterende knapper;
+Testversjon har en gyldig note-rolle. Ingen egen interaksjonskomponent innført.
+
+| Kontroll | Før | Etter, normal/hover/fokus |
+| --- | ---: | ---: |
+| Valgt analyseknapp | 1,18:1 ved hover | 7,61:1 |
+| Produktnavn på Naturtema | 1,24:1 | 6,10:1 |
+
+190/190 frontendtester, lint (0 feil/ett eksisterende varsel) og build består.
+Reell Chromium ved 1440×960, 900×900, 390×844 og 320×720: 12 axe-core4.14.0-
+kontroller uten registrerte WCAG-brudd i utvalget. Tastaturfokus har synlig
+3 px ring; Enter bytter valgt analysetype ved alle bredder. Native lister er
+kontrollert med komponenttest. Analyseknappene har ingen deaktivert tilstand;
+kommunesøkets native disabled under lasting er beholdt.
+
+Axe har ufullførte automatiske fargekontroller for enkelte ikoner/gradienter.
+Målingene over gjelder de dokumenterte tekstelementene. Dette er ikke en
+full WCAG-sertifisering eller skjermlesertest. Ingen side-overflow i utvalget.
+[Alle målinger og axe-resultater](2026-10-15-ux-improvements-b1-b4/B3/checks.json),
+[desktop med headerfokus](2026-10-15-ux-improvements-b1-b4/B3/B3-themes-1440.png),
+[900 px](2026-10-15-ux-improvements-b1-b4/B3/B3-Arealfordeling-900.png),
+[390 px](2026-10-15-ux-improvements-b1-b4/B3/B3-Arealfordeling-390.png),
+[320 px](2026-10-15-ux-improvements-b1-b4/B3/B3-Arealfordeling-320.png).

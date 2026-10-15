@@ -390,6 +390,18 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
 
+  it('exposes theme buttons inside native list items', async () => {
+    mockMunicipalityFlow()
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+    fireEvent.click(screen.getByRole('link',{name:'Naturtema'}))
+    for (const name of ['Temasider i regnskapsgrunnlaget','Naturtema']) {
+      const list=screen.getByRole('list',{name})
+      expect(list.tagName).toBe('UL')
+      expect([...list.children].every(item => item.tagName==='LI' && item.querySelector('button'))).toBe(true)
+    }
+  })
+
   it('beholder aktiv side når en kommune velges', async () => {
     mockMunicipalityFlow()
     window.location.hash = '#naturtapet'
