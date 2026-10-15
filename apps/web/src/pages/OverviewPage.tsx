@@ -43,7 +43,7 @@ export function OverviewPage(props: OverviewPageProps) {
         <p className="overview-home__lead">Et overblikk over arealene. En inngang til naturen.</p>
         <OverviewSummary data={accountData} state={accountState} />
         <div className="overview-home__questions">
-          <details><summary>Hva legger vi i natur, jordbruk og bebygget?</summary><p>Natur omfatter skog, myr og andre natur- og utmarksarealer. Jordbruk omfatter dyrket mark og grasmark. Bebygget er bebygde og opparbeidede arealer. Inndelingen beskriver arealbruk, ikke naturens tilstand eller alle naturverdier.</p></details>
+          <details><summary>Hva legger vi i natur, jordbruk og bebygd?</summary><p>Natur omfatter skog, myr og andre natur- og utmarksarealer. Jordbruk omfatter dyrket mark og grasmark. Bebygd er bebygde og opparbeidede arealer. Inndelingen beskriver arealbruk, ikke naturens tilstand eller alle naturverdier.</p></details>
           <details><summary>Hva er et naturregnskap?</summary><p>Et naturregnskap gir oversikt over naturens areal og utbredelse. En dokumentert tidsserie kan vise endringer. Dagens prototype viser en arealoversikt; supplerende naturdata og plananalyser utforskes på egne sider.</p></details>
         </div>
       </div>
@@ -82,7 +82,7 @@ export function OverviewPage(props: OverviewPageProps) {
         </> : <p className="loss-unavailable">Historiske nedbyggingsdata er ikke tilgjengelige for {municipalityName}. Se Naturtapet for status og kildeforklaringer. Demonstrasjonen finnes bare for Trondheim.</p>}
         <div className="overview-home__questions overview-home__questions--wide">
           <details><summary>Hvor kommer tallene fra?</summary><p>Arealoversikten øverst bruker eksisterende kommunevise arealtall. Historisk nedbygging demonstreres foreløpig med konstruerte Trondheim-data fra en egen kilde. Vi beregner ikke naturtap ved å trekke fra to ulike årsversjoner av et kart.</p></details>
-          <details><summary>Hva er forskjellen på arealkategorier og økosystemer?</summary><p>Natur, Jordbruk og Bebygget er hovedkategorier. Skog og våtmark beskriver mer detaljerte økosystemer. Verneområder, verdsatte naturtyper, inngrepsfri natur og villrein er supplerende temadata.</p></details>
+          <details><summary>Hva er forskjellen på arealkategorier og økosystemer?</summary><p>Natur, Jordbruk og Bebygd er hovedkategorier. Skog og våtmark beskriver mer detaljerte økosystemer. Verneområder, verdsatte naturtyper, inngrepsfri natur og villrein er supplerende temadata.</p></details>
         </div>
       </div>
     </section>

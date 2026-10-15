@@ -1,0 +1,142 @@
+{
+  "stage": "regression",
+  "screens": [
+    {
+      "name": "regression-forest-map-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "regression-opacity-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "regression-legend-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "regression-demo-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "regression-forest-map-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "regression-opacity-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "regression-legend-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "regression-demo-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "regression-forest-map-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "regression-opacity-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "regression-legend-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "regression-demo-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "regression-forest-map-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "regression-opacity-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "regression-legend-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "regression-demo-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    {
+      "width": 1440,
+      "sameMapInstance": true,
+      "pannedViewRetained": true,
+      "opacity": "65",
+      "categoryGeometry": "skog",
+      "natureReference": "119,38 daa /70",
+      "demoLabel": true
+    },
+    {
+      "width": 900,
+      "sameMapInstance": true,
+      "pannedViewRetained": true,
+      "opacity": "65",
+      "categoryGeometry": "skog",
+      "natureReference": "119,38 daa /70",
+      "demoLabel": true
+    },
+    {
+      "width": 390,
+      "sameMapInstance": true,
+      "pannedViewRetained": true,
+      "opacity": "65",
+      "categoryGeometry": "skog",
+      "natureReference": "119,38 daa /70",
+      "demoLabel": true
+    },
+    {
+      "width": 320,
+      "sameMapInstance": true,
+      "pannedViewRetained": true,
+      "opacity": "65",
+      "categoryGeometry": "skog",
+      "natureReference": "119,38 daa /70",
+      "demoLabel": true
+    }
+  ],
+  "javascriptErrors": [],
+  "accessibility": [],
+  "completed": true
+}

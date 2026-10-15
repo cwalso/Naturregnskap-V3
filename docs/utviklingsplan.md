@@ -280,3 +280,13 @@ Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).
 ## Oppdatert status 13.10.2026: geometrisk planoverlapp
 
 Temasidens kort og et eget V2-analysepanel bruker nå geometrisk skjæring mot den faste Natur/Jordbruk-planmasken. Trondheim: 119,38 daa, 70 lokaliteter i referanseuttrekket; dette er et prototypeøyeblikksbilde, ikke nasjonale regnskapstall. Høyeste KU-fordeling, union innen naturtype, faglig ID, full arealnevner og faktisk overlappsgeometri er implementert. Klikk fra kategori/type/lokalitet bevarer sju lag og samme kartinstans. Oslo har ikke klargjort raster og gir manglende grunnlag. Den tidligere rastermidtpunktanalysen er beholdt i kode/tester, men driver ikke kortet. [Kontrollrapport](validation/2026-10-13-future-nature.md).
+
+## Oppdatert status 15.10.2026: B1–B4
+
+B1 felles planindikatorer, B2 bevart oppgave ved kommunevalg, B3 kontrast/native
+semantikk og B4 økosysteminngang/faglig plassering av Bynatur er implementert og
+regresjonskontrollert. Metode og data er uendret. Beslutningen om felles kilde
+er konsistens i prototypen, ikke endelig faglig godkjenning. Den eksisterende
+gråareal-WMS-en er kartgrunnlag, ikke analyse av tilgjengelige utbyggingsarealer.
+Se [sluttrapport](validation/2026-10-15-ux-improvements-b1-b4.md).
+B5/mobil kartflate krever separat prioritering og er ikke startet.

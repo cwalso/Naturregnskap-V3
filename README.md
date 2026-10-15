@@ -262,3 +262,12 @@ Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).
 ## Planoverlapp for verdsatte naturtyper, 13.10.2026
 
 Temasidens kort åpner en geometrisk analyse i Utforsk-kartets V2-panel. Metoden bruker delcelleareal mot Natur/Jordbruk-planmasken, kildeverifiserte lokalitets-ID-er og full lokalitetsgeometri som nevner. Trondheim er klargjort; manglende grunnlag i andre kommuner gir ikke null treff. [Metode](docs/decisions/2026-10-13-v3-geometric-valued-nature-overlap.md) · [kontrollrapport og skjermbilder](docs/validation/2026-10-13-future-nature.md).
+
+## Samordnede indikatorer og UX, 15.10.2026
+
+Skog og Myr/våtmark deler eksisterende planarealresultat med kartet, med tydelige
+prototypeforbehold. Kommunevalg beholder side/analysetype; kommune og side kan
+gjenopprettes fra URL. Naturtema viser dagens økosystemfordeling og skiller
+Bynatur fra regnskapsgrunnlaget. Kontrast, fokus og listesemantikk er rettet.
+Se [beslutning](docs/decisions/2026-10-15-common-plan-indicators.md) og
+[tester, begrensninger og skjermbilder](docs/validation/2026-10-15-ux-improvements-b1-b4.md).

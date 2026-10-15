@@ -25,9 +25,10 @@ function themeStatus(theme: OverviewTheme, { municipalityNumber, coverage, cover
 export function OverviewThemes(props: Props) {
   return <section className="overview-home__section overview-home__themes" aria-labelledby="overview-themes-title">
     <div className="overview-home__inner">
-      <div className="overview-home__section-heading"><div><p className="overview-home__eyebrow">Naturen i dag</p><h2 id="overview-themes-title">Utforsk naturen i {props.municipalityName}</h2></div>
+      <div className="overview-home__section-heading"><div><p className="overview-home__eyebrow">Naturen i dag</p><h2 id="overview-themes-title">Naturtema i {props.municipalityName}</h2></div>
         <a className="overview-home__link" href="#utforsk-naturen" onClick={event => { event.preventDefault(); props.onNavigate('utforsk-naturen') }}>Se alle naturtema <span aria-hidden="true">→</span></a>
       </div>
+      <p>Se fordelingen av dagens natur etter økosystemtype på Naturtema.</p>
       {[{ title: 'Økosystemer', themes: overviewEcosystems, explanation: 'Skog og våtmark vises fra det heldekkende Grunnkart-grunnlaget.' }, { title: 'Naturverdier og vern', themes: overviewNatureThemes, explanation: 'Supplerende temadata. Registreringene er ikke heldekkende naturkunnskap.' }].map(group => <div className="overview-theme-group" key={group.title}>
         <h3>{group.title}</h3><p className="overview-theme-group__intro">{group.explanation}</p>
         <div className="overview-theme-grid">{group.themes.map(theme => <article className="overview-theme-card" key={theme.view}>

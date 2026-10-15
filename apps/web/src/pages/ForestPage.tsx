@@ -46,7 +46,7 @@ export function ForestPage({
   return (
     <section className="content-page thematic-page thematic-page--editorial forest-page" aria-labelledby="forest-page-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>Skog</span>
       </nav>

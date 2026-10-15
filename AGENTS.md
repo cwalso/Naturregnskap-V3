@@ -359,3 +359,12 @@ ufordelt og separate mangel-/feiltilstander. Ikke konstruer en andel fra ny
 delvis fordeling og eldre beholdning. Lenken åpner riktig kategori uten fit.
 Dette er konsistens i prototypen, ikke endelig metodegodkjenning.
 Se [beslutning](docs/decisions/2026-10-15-common-plan-indicators.md).
+
+Kommunevalg beholder side og åpen analysetype. URL-parameteren `kommune` valideres
+mot kommunelisten og gjenopprettes ved reload; gamle resultater og geografiske
+utvalg skal aldri lekke mellom kommuner. Ingen lokal lagring.
+Naturtema viser eksisterende økosystemfordeling fra Grunnkart 2025, separat fra
+planoverlapp/historikk. Bynatur ligger under beslutningsstøtte, ikke regnskaps-
+grunnlag. Alle sju temasider beholdes. Bruk native lister, lesbare aktive/hover-
+tilstander og tastaturtilgjengelige rulleområder.
+Se [samlet B1–B4-kontroll](docs/validation/2026-10-15-ux-improvements-b1-b4.md).

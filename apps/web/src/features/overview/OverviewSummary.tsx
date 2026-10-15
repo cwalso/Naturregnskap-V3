@@ -1,7 +1,7 @@
 import { accountCategoryIds, type AccountOverviewData } from '../account-overview/model'
 
 export type OverviewDataState = 'idle' | 'loading' | 'error'
-const labels = { nature: 'Natur', agriculture: 'Jordbruk', built: 'Bebygget' } as const
+const labels = { nature: 'Natur', agriculture: 'Jordbruk', built: 'Bebygd' } as const
 const descriptions = { nature: 'Skog, myr og andre natur- og utmarksarealer.', agriculture: 'Dyrket mark og grasmark i arealgrupperingen.', built: 'Bebygde og opparbeidede arealer.' } as const
 const area = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 const share = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 1 })

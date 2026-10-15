@@ -150,6 +150,87 @@ try {
       report.checks.push({width,keyboardAnalysisSwitch:true})
     }
   }
+  if(stage==='B4'||stage==='all'){
+    for(const[width,height]of [[1440,960],[900,900],[390,844],[320,720]]){
+      await page.setViewportSize({width,height});await navigateSite(page,'Naturtema')
+      const table=page.getByRole('table',{name:'Fordeling av dagens natur etter økosystemtype',exact:true})
+      await table.waitFor({timeout:180000})
+      const text=await table.innerText()
+      assert.deepEqual((await table.locator('tbody tr td:first-of-type').allTextContents()).map(s=>s.replaceAll('\u00a0',' ')),['297 431 dekar','38 495 dekar','15 649 dekar','1 539 dekar','64 dekar'])
+      assert.equal(await page.getByRole('list',{name:'Temasider i regnskapsgrunnlaget'}).getByRole('button').count(),2)
+      assert.equal(await page.getByRole('list',{name:'Supplerende temadata',exact:true}).getByRole('button').count(),4)
+      assert.equal(await page.getByRole('list',{name:'Analyse- og beslutningsstøtte'}).getByRole('button').count(),1)
+      await capture(`B4-themes-${width}`)
+      if(process.env.UX_AXE_PATH){
+        if(!await page.evaluate(()=>!!window.axe))await page.addScriptTag({content:await readFile(process.env.UX_AXE_PATH,'utf8')})
+        const a=await page.evaluate(async()=>await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}))
+        report.accessibility.push({screen:`B4-themes-${width}`,violations:a.violations,incomplete:a.incomplete.map(r=>r.id)})
+        assert.deepEqual(a.violations.map(v=>v.id),[])
+      }
+      await page.getByRole('button',{name:/Myr \(våtmark\)/}).click()
+      await table.waitFor({timeout:180000})
+      assert.equal(await table.innerText(),text)
+      if(width===1440||width===320)await capture(`B4-shared-stock-table-${width}`)
+      await navigateSite(page,'Naturtema');await page.getByRole('button',{name:/Bynaturen/}).click()
+      await page.getByRole('heading',{name:'Bynaturen (grå arealer)',exact:true}).waitFor()
+      await capture(`B4-urban-${width}`)
+      report.checks.push({width,unchangedStockTable:true,roles:[2,4,1]})
+    }
+    await page.setViewportSize({width:1440,height:960})
+    for(const[name,title]of [['Skog','Skog'],['Myr','Myr (våtmark)'],['Verdsatte naturtyper','Verdsatte naturtyper'],['Verneområder','Verneområder'],['Villreinområder','Villreinområder'],['Inngrepsfri natur','Inngrepsfri natur'],['Bynaturen','Bynaturen (grå arealer)']]){
+      await navigateSite(page,'Naturtema');await page.getByRole('button',{name:new RegExp(name)}).click()
+      await page.getByRole('heading',{name:title,exact:true,level:1}).waitFor()
+    }
+    await navigateSite(page,'Naturtema');await commune('Oslo','0301')
+    await page.getByText(/Beregningen krever et klargjort oversiktsraster/).waitFor({timeout:180000})
+    assert.equal(await page.getByRole('table',{name:'Fordeling av dagens natur etter økosystemtype'}).count(),0)
+    await capture('B4-oslo-no-stock')
+    await commune('Trondheim','5001')
+    report.checks.push({allSevenThemeDestinations:true,osloNoTrondheimStock:true})
+  }
+  if(stage==='regression'){
+    const view=()=>page.evaluate(()=>({center:__uxMap.getView().getCenter(),resolution:__uxMap.getView().getResolution()}))
+    async function close(){const direct=page.getByRole('button',{name:'Lukk detaljpanel',exact:true});if(await direct.isVisible())await direct.click();else await page.getByRole('button',{name:'Tilbake til kartlag',exact:true}).filter({visible:true}).first().click()}
+    for(const[width,height]of [[1440,960],[900,900],[390,844],[320,720]]){
+      await page.setViewportSize({width,height});await navigateSite(page,'Utforsk i kart')
+      const opener=page.getByRole('button',{name:'Analyser planområder',exact:true}).filter({visible:true})
+      await opener.click()
+      const group=page.getByRole('group',{name:'Velg plananalyse'})
+      await group.getByRole('button',{name:'Arealfordeling',exact:true}).click()
+      const table=page.getByRole('table',{name:'Økosystemtyper innenfor planområder'})
+      await table.waitFor({timeout:180000})
+      const creations=await page.evaluate(()=>__uxMapCreations)
+      await page.getByRole('region',{name:'Interaktivt kart i Trondheim',exact:true}).focus();await page.keyboard.press('ArrowRight')
+      await page.waitForFunction(()=>!__uxMap.getView().getAnimating())
+      const before=await view()
+      await table.getByRole('button',{name:'Skog',exact:true}).focus();await page.keyboard.press('Enter')
+      assert.deepEqual(await view(),before)
+      assert.deepEqual(await page.evaluate(()=>__uxMap.getLayers().getArray().find(l=>l.getClassName()==='plan-area-categories').getSource().getFeatures().map(f=>f.getId())),['skog'])
+      await capture(`regression-forest-map-${width}`)
+      await group.getByRole('button',{name:'Registrerte naturverdier',exact:true}).click()
+      await page.getByText('Unikt overlappsareal',{exact:true}).waitFor({timeout:180000})
+      const summary=(await page.locator('.future-nature-analysis__summary').innerText()).replaceAll('\u00a0',' ')
+      assert.match(summary,/119,38 daa/);assert.match(summary,/\b70\b/)
+      assert.deepEqual(await view(),before)
+      await close()
+      const grey=page.getByRole('checkbox',{name:'Grå arealer',exact:true})
+      if(!await grey.isVisible())await page.getByRole('navigation',{name:'Kartkontroller'}).getByRole('button',{name:/^Kartlag/}).click()
+      await grey.check();await grey.uncheck()
+      await page.getByRole('button',{name:'Innstillinger for Grunnkart nivå 0',exact:true}).click()
+      const opacity=page.getByRole('slider',{name:'Gjennomsiktighet – Grunnkart nivå 0',exact:true})
+      await opacity.focus();await opacity.press('Home');for(let i=0;i<13;i++)await opacity.press('ArrowRight')
+      assert.equal(await opacity.inputValue(),'65');assert.deepEqual(await view(),before)
+      await capture(`regression-opacity-${width}`)
+      await close()
+      await page.getByRole('button',{name:'Tegnforklaring',exact:true}).filter({visible:true}).first().click()
+      await capture(`regression-legend-${width}`)
+      assert.equal(await page.evaluate(()=>__uxMapCreations),creations)
+      await close();await navigateSite(page,'Naturtapet')
+      assert.ok(await page.getByText('Demodata – illustrasjon, ikke offisiell statistikk',{exact:true}).first().isVisible())
+      await capture(`regression-demo-${width}`)
+      report.checks.push({width,sameMapInstance:true,pannedViewRetained:true,opacity:'65',categoryGeometry:'skog',natureReference:'119,38 daa /70',demoLabel:true})
+    }
+  }
   assert.deepEqual(report.javascriptErrors,[])
   report.completed=true
 }catch(error){report.failure=error.stack;process.exitCode=1;if(page)await capture('interrupted').catch(()=>{})}

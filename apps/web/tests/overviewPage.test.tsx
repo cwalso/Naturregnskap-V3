@@ -56,7 +56,7 @@ it('keeps navigation usable during loading, account failure and missing individu
 
 it('opens all six existing themes and the historical-loss page', () => {
   render(<OverviewPage {...defaults} />)
-  const themes = screen.getByRole('region', { name: 'Utforsk naturen i Trondheim' })
+  const themes = screen.getByRole('region', { name: 'Naturtema i Trondheim' })
   for (const [title, view] of [['Skog', 'tema-forest'], ['Våtmark', 'tema-vatmark'], ['Verneområder', 'tema-protected-areas'], ['Verdsatte naturtyper', 'tema-valued-nature'], ['Inngrepsfri natur', 'tema-infrastructure-free-nature'], ['Villrein', 'tema-wild-reindeer-areas']]) {
     fireEvent.click(within(themes).getByRole('link', { name: new RegExp(`Åpne temasiden ${title}$`) }))
     expect(defaults.onNavigate).toHaveBeenLastCalledWith(view)

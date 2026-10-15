@@ -1,0 +1,87 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+Velg kommune
+×
+☰
+Naturtema
+›
+Myr (våtmark)
+≈
+Myr (våtmark)
+
+Myr og annen våtmark vises her med utgangspunkt i våtmark som hovedøkosystemtype i Grunnkart for arealanalyse. Siden viser areal, utbredelse og hvordan våtmark inngår i kommunens samlede naturareal.
+
+Hva viser denne siden?
+Hvordan kan dataene brukes?
+Datagrunnlaget
+Myr (våtmark) i Trondheim
+38 495 dekar
+Økosystemtype nivå 1 · Grunnkart 2025
+Andel av landbasert natur
+11 %
+5,4 % av kartlagt kommuneareal
+Identifisert våtmark i områder avsatt til framtidig utbygging
+12,64 daa
+
+Delvis fordeling: 706,71 daa natur er ufordelt.
+
+Tallene bygger på en foreløpig kartanalyse. Deler av naturarealet kan være ufordelt på økosystemtype. Arealene er avsatt til framtidig utbygging, men er ikke nødvendigvis bygget ut. Planavsetninger er ikke forventet naturtap.
+
+Vis våtmark i plananalysen
+→
+Identifisert delareal, ikke fullstendig fordeling
+
+Ufordelt natur inngår ikke i tallet for våtmark. Det beregnes ikke en andel av kommunens våtmark fra denne delvise fordelingen.
+
+Hvor er tallene hentet fra?
+✓
+Myr (våtmark) er del av det heldekkende regnskapsgrunnlaget
+
+Dette er ikke et supplerende temalag. Arealet inngår i Grunnkart for arealanalyse og kan følges etter en felles klassifikasjon.
+
+Myr (våtmark) i Trondheim
+
+Viser økosystemtypen fra Grunnkart for arealanalyse.
+
+Våtmark
+Økosystemtype nivå 1
+Våtmark
++
+–
+i
+Tilpass kartet til kommunen
+Fordeling av landbasert natur
+
+Figuren setter myr (våtmark) inn i sammenheng med de øvrige landbaserte økosystemtypene i Grunnkartet.
+
+Kilde: NIBIO, Grunnkart for arealanalyse 2025
+
+Skog
+84,9 %
+Våtmark
+11 %
+Hei og buskmark
+4,5 %
+Lite vegetert mark
+0,4 %
+Kyststrender, svaberg og dyner
+0 %
+Hva betyr andelen?
+Hva sier dette ikke noe om?
+Økosystemtypene i kommunen
+
+Tabellen viser areal og andel av landbasert natur for de samme økosystemtypene som brukes i regnskapsgrunnlaget.
+
+Kilde: NIBIO, Grunnkart for arealanalyse 2025
+
+Økosystemtype	Areal	Andel av natur
+Skog	297 431 dekar	84,9 %
+Våtmark	38 495 dekar	11 %
+Hei og buskmark	15 649 dekar	4,5 %
+Lite vegetert mark	1 539 dekar	0,4 %
+Kyststrender, svaberg og dyner	64 dekar	0 %
+Ofte stilte spørsmål
+Er dette en vurdering av naturverdi?
+Kan dataene brukes i arealplanlegging?
+
+Prototypeberegning med ca. 11 meters klassifikasjonsoppløsning. Resultatet skal kvalitetssikres mot endelig dataleveranse og metode.

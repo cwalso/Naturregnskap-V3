@@ -208,8 +208,8 @@ try {
   assert.equal(new URL(page.url()).hash, '#oversikt')
   assert.equal(await page.getByRole('region', { name: 'Kart over Oslo', exact: true }).count(), 1)
   if (!live) {
-    await page.reload(); accountError = true; boundaryError = true
-    await page.getByRole('combobox', { name: 'Velg kommune' }).fill('Oslo'); await page.getByRole('option', { name: 'Oslo 0301' }).click()
+    // Municipality now restores from the URL; faults must be set before reload.
+    accountError = true; boundaryError = true; await page.reload()
     await page.getByText('Kunne ikke hente arealbalansen. Prøv igjen senere.', { exact: true }).waitFor()
     await page.getByText('Kommunegrensen kunne ikke hentes.', { exact: true }).waitFor()
     assert.equal(await page.locator('.overview-home__map-target .map').isVisible(), false, 'An unavailable boundary must not present another extent as the municipality')

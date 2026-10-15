@@ -529,7 +529,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, selectedMunicipality])
 
   useEffect(() => {
-    if (!activeEcosystemId || !selectedMunicipality) {
+    if ((!activeEcosystemId && activeView !== 'utforsk-naturen') || !selectedMunicipality) {
       setEcosystemStatistics(null)
       setEcosystemStatisticsState('idle')
       return
@@ -542,7 +542,8 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     void getEcosystemStatistics(
       selectedMunicipality.number,
       selectedMunicipality.name,
-      controller.signal,
+      // The existing cached request is shared by Naturtema and Myr/våtmark.
+      // Cancellation retires this consumer; it must not poison the next page.
     )
       .then((result) => {
         if (controller.signal.aborted) return
@@ -557,7 +558,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       })
 
     return () => controller.abort()
-  }, [activeEcosystemId, selectedMunicipality])
+  }, [activeEcosystemId, activeView, selectedMunicipality])
 
   useEffect(() => {
     if (activeView !== 'tema-valued-nature' || !boundaryData) {
@@ -1407,6 +1408,9 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
       {activeView === 'naturtapet' && <NaturtapetPage municipalityNumber={selectedMunicipality.number} municipalityName={selectedMunicipality.name} historicalLoss={getHistoricalLossData(selectedMunicipality.number)} onNavigate={navigate} />}
       {activeView === 'utforsk-naturen' && (
         <ExploreNaturePage
+          municipalityNumber={selectedMunicipality.number}
+          statistics={ecosystemStatistics}
+          statisticsState={ecosystemStatisticsState}
           municipalityName={selectedMunicipality.name}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}

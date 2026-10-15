@@ -144,3 +144,12 @@ i et miljø med Pillow, NumPy og Shapely. Den bruker råbilder og GEOS-radstripe
 ikke produksjons-JS-klassifikatoren. Lagret `reference-inputs.zip` i
 `docs/validation/2026-10-14-plan-area/` kan pakkes ut i samme outputmappe som
 referansens `result.json` for å gjenta kontrollen uten nye kildeforespørsler.
+
+## Indikatorer og UX B1–B4
+
+`UX_STAGE=all UX_AXE_PATH=/sti/axe.min.js node tests/browser/check-ux-improvements.mjs`
+kontrollerer reelle indikatorer, kommunevalg, kontrast/axe og Naturtema ved fire
+bredder. `UX_STAGE=regression` kontrollerer faktisk kartinstans, kategoriutvalg,
+lag/opasitet, naturverdi-referanse og demomerking. Krever system-Chromium,
+port 5220 og tilgang til faktiske kilder; axe er separat testverktøy. Se
+[full reproduksjon og lagrede resultater](../../../../docs/validation/2026-10-15-ux-improvements-b1-b4/README.md).

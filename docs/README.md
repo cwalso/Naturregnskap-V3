@@ -143,3 +143,11 @@ reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.
 
 - [Godkjent prototypekonvensjon og teknisk kontrakt](decisions/2026-10-13-v3-geometric-valued-nature-overlap.md)
 - [Reell Trondheim-kontroll, sammenligning med gammel metode og skjermbilder](validation/2026-10-13-future-nature.md)
+
+## Samordnede indikatorer og UX, 15.10.2026
+
+- [Eksplisitt prototypebeslutning for felles planindikatorer](decisions/2026-10-15-common-plan-indicators.md)
+- [B1–B4: implementering, samlet regresjon, skjermbilder og begrensninger](validation/2026-10-15-ux-improvements-b1-b4.md)
+
+Dette følger opp undersøkelsene over: konsumenter og presentasjon er nå endret,
+mens beregningsmetoder og kildegrunnlag er beholdt. B5 er ikke påbegynt.

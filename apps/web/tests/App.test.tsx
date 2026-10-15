@@ -378,7 +378,7 @@ describe('sidestruktur og Oversikt', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
     expect(screen.getByRole('heading', { name: 'Hva slags natur har vi i Trondheim?' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Heldekkende informasjon om dagens natur' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Naturtema' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Supplerende temadata' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Temasider fra regnskapsgrunnlaget' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Myr \(våtmark\)/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Skog/ })).toBeInTheDocument()
@@ -395,7 +395,7 @@ describe('sidestruktur og Oversikt', () => {
     render(<App createMap={() => mapMock()} />)
     await chooseTrondheim()
     fireEvent.click(screen.getByRole('link',{name:'Naturtema'}))
-    for (const name of ['Temasider i regnskapsgrunnlaget','Naturtema']) {
+    for (const name of ['Temasider i regnskapsgrunnlaget','Supplerende temadata','Analyse- og beslutningsstøtte']) {
       const list=screen.getByRole('list',{name})
       expect(list.tagName).toBe('UL')
       expect([...list.children].every(item => item.tagName==='LI' && item.querySelector('button'))).toBe(true)
@@ -622,7 +622,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim kommune' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Natur' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Jordbruk' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Bebygget' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Bebygd' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Se alle naturtema' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Åpne Utforsk i kart' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Hva har blitt bygget ned?' })).toBeInTheDocument()

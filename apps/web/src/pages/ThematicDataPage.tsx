@@ -117,7 +117,7 @@ function ValuedNaturePage({
   return (
     <section className="content-page thematic-page thematic-page--editorial" aria-labelledby="thematic-page-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>Verdsatte naturtyper</span>
       </nav>
@@ -521,7 +521,7 @@ export function ThematicDataPage({
   return (
     <section className="content-page thematic-page thematic-page--editorial" aria-labelledby="thematic-page-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>{dataset.title}</span>
       </nav>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { EcosystemDistributionTable } from '../features/account-overview/EcosystemDistributionTable'
 
 import type {
   EcosystemPageId,
@@ -65,7 +66,7 @@ export function EcosystemPage({
   return (
     <section className="content-page thematic-page thematic-page--editorial ecosystem-page" aria-labelledby="ecosystem-page-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>{config.title}</span>
       </nav>
@@ -249,32 +250,8 @@ export function EcosystemPage({
           </p>
         </div>
 
-        <div className="thematic-nature-table-wrap">
-          {available && (
-            <table className="thematic-nature-table ecosystem-type-table">
-              <thead>
-                <tr>
-                  <th>Økosystemtype</th>
-                  <th>Areal</th>
-                  <th>Andel av natur</th>
-                </tr>
-              </thead>
-              <tbody>
-                {available.metrics
-                  .filter((item) => item.areaKm2 > 0)
-                  .sort((a, b) => b.areaKm2 - a.areaKm2)
-                  .map((item) => (
-                    <tr key={item.id} className={item.id === ecosystemId ? 'is-active' : undefined}>
-                      <td>{item.label}</td>
-                      <td>{dekar(item.areaKm2)}</td>
-                      <td>{percent(item.shareOfNaturePercent)}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
-          {statisticsState === 'loading' && <p role="status">Laster tabell…</p>}
-          {statisticsState === 'error' && <p role="alert">Tabellen kunne ikke hentes.</p>}
+        <div className="thematic-nature-table-wrap" tabIndex={0} role="region" aria-label="Økosystemfordeling – rullbar tabell">
+          <EcosystemDistributionTable statistics={statistics} state={statisticsState} municipalityNumber={planArea.municipalityNumber} selectedId={ecosystemId} />
         </div>
       </section>
 
