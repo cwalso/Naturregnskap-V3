@@ -58,6 +58,11 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 
 ## Gjeldende temasider
 
+[Brukerreisekontroll for arealplanleggere, Issue #77](validation/2026-10-15-user-journey-review.md),
+15.10: scenario A–F gjennomgått i Chromium mot lokalt produksjonsbygg av
+publisert commit, med fem prioriterte tiltak. Tiltakene er forslag til ny
+avgrenset bestilling; ingen produksjonskode, metode eller publisering endret.
+
 Gråarealenes nye firekategori-visning (Issue #78) har gjennomført
 [tilgangs-/metodeundersøkelse A](validation/2026-10-14-grey-areas-trondheim.md).
 Faktiske Trondheim-vektoruttrekk og lokal-/cloud-/publiseringsrett er ikke

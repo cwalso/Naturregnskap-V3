@@ -92,6 +92,10 @@ stopper reell geometriundersøkelse inntil korrekt 2025-fil og bruksrett er bekr
 [Grå arealer i Trondheim, leveranse A](validation/2026-10-14-grey-areas-trondheim.md)
 kontrollerer Issue #78, vektortilgang, tre separate bruksrettigheter og firekategori-
 modellen. A består ikke; geografisk B og implementering C er ikke gjennomført.
+[Brukerreise- og UX-kontroll 15.10](validation/2026-10-15-user-journey-review.md)
+følger scenario A–F fra Issue #77 i reell Chromium ved fire bredder, med
+faktiske skjermbilder og fem prioriterte tiltak. Kun undersøkelse; ingen
+produksjonsendring eller ny Pages-publisering.
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 
