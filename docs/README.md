@@ -96,6 +96,10 @@ modellen. A består ikke; geografisk B og implementering C er ikke gjennomført.
 følger scenario A–F fra Issue #77 i reell Chromium ved fire bredder, med
 faktiske skjermbilder og fem prioriterte tiltak. Kun undersøkelse; ingen
 produksjonsendring eller ny Pages-publisering.
+[Differanseanalyse av økosystemoverlapp 15.10](validation/2026-10-15-ecosystem-overlap-differences.md)
+reproduserer temaside-/planarealtall og forklarer forskjellene ved sampling,
+smalfeltfilter og fargeregel, med uavhengig offline- og geografisk kontroll.
+Ingen produksjonsrettelse eller metodebeslutning er implementert.
 [Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
 dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
 

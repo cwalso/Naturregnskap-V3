@@ -63,6 +63,11 @@ kommunalt naturregnskap eller en profilgodkjent Miljødirektoratet-tjeneste.
 publisert commit, med fem prioriterte tiltak. Tiltakene er forslag til ny
 avgrenset bestilling; ingen produksjonskode, metode eller publisering endret.
 
+[Differanseanalyse av økosystemindikatorer 15.10](validation/2026-10-15-ecosystem-overlap-differences.md)
+har reprodusert begge tallpar og dekomponert avvikene. Rapporten anbefaler én
+tydelig prototypeindikator med bevart usikkerhet; valg av felles grunnlag og
+eventuell endring av temasideindikatorene venter fortsatt på faglig vurdering.
+
 Gråarealenes nye firekategori-visning (Issue #78) har gjennomført
 [tilgangs-/metodeundersøkelse A](validation/2026-10-14-grey-areas-trondheim.md).
 Faktiske Trondheim-vektoruttrekk og lokal-/cloud-/publiseringsrett er ikke

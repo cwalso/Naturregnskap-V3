@@ -1,0 +1,416 @@
+{
+  "verified": {
+    "rawResponsesSha256": true,
+    "oldRawMask": true,
+    "oldCleanMask": true,
+    "oldBinaryAnalysisMask": true,
+    "newParentMask": true,
+    "newDetailedMask": true,
+    "bothCategoryTotals": true
+  },
+  "cellDaa": 0.11183849539642658,
+  "extent": [
+    257526.78125,
+    280269.75,
+    7023573.4375,
+    7044454.65625
+  ],
+  "rows": [
+    {
+      "method": "canvas/raw/nearest",
+      "natureDaa": 2808.93565037665,
+      "agricultureDaa": 841.4728393627136,
+      "cells": {
+        "skog": 22624,
+        "hei-buskmark": 423,
+        "lite-vegetert-mark": 4,
+        "vatmark": 154,
+        "kyst": 0,
+        "unclassified": 1911
+      },
+      "daa": {
+        "skog": 2530.234119848755,
+        "hei-buskmark": 47.307683552688445,
+        "lite-vegetert-mark": 0.44735398158570633,
+        "vatmark": 17.223128291049694,
+        "kyst": 0.0,
+        "unclassified": 213.7233647025712
+      }
+    },
+    {
+      "method": "canvas/raw/exact",
+      "natureDaa": 2808.93565037665,
+      "agricultureDaa": 841.4728393627136,
+      "cells": {
+        "skog": 18825,
+        "hei-buskmark": 349,
+        "lite-vegetert-mark": 0,
+        "vatmark": 111,
+        "kyst": 0,
+        "unclassified": 5831
+      },
+      "daa": {
+        "skog": 2105.3596758377303,
+        "hei-buskmark": 39.03163489335288,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 12.414072989003351,
+        "kyst": 0.0,
+        "unclassified": 652.1302666565634
+      }
+    },
+    {
+      "method": "canvas/clean/nearest",
+      "natureDaa": 1923.6221208185373,
+      "agricultureDaa": 777.9485739775433,
+      "cells": {
+        "skog": 16234,
+        "hei-buskmark": 390,
+        "lite-vegetert-mark": 0,
+        "vatmark": 150,
+        "kyst": 0,
+        "unclassified": 426
+      },
+      "daa": {
+        "skog": 1815.5861342655892,
+        "hei-buskmark": 43.617013204606366,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 16.775774309463987,
+        "kyst": 0.0,
+        "unclassified": 47.643199038877725
+      }
+    },
+    {
+      "method": "canvas/clean/exact",
+      "natureDaa": 1923.6221208185373,
+      "agricultureDaa": 777.9485739775433,
+      "cells": {
+        "skog": 14500,
+        "hei-buskmark": 320,
+        "lite-vegetert-mark": 0,
+        "vatmark": 109,
+        "kyst": 0,
+        "unclassified": 2271
+      },
+      "daa": {
+        "skog": 1621.6581832481854,
+        "hei-buskmark": 35.78831852685651,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 12.190395998210498,
+        "kyst": 0.0,
+        "unclassified": 253.98522304528476
+      }
+    },
+    {
+      "method": "midpoint/raw/nearest",
+      "natureDaa": 2788.8047212052934,
+      "agricultureDaa": 832.0784057494137,
+      "cells": {
+        "skog": 21843,
+        "hei-buskmark": 403,
+        "lite-vegetert-mark": 0,
+        "vatmark": 151,
+        "kyst": 0,
+        "unclassified": 2539
+      },
+      "daa": {
+        "skog": 2442.888254944146,
+        "hei-buskmark": 45.07091364475991,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 16.887612804860414,
+        "kyst": 0.0,
+        "unclassified": 283.95793981152707
+      }
+    },
+    {
+      "method": "midpoint/raw/exact",
+      "natureDaa": 2788.8047212052934,
+      "agricultureDaa": 832.0784057494137,
+      "cells": {
+        "skog": 18171,
+        "hei-buskmark": 333,
+        "lite-vegetert-mark": 0,
+        "vatmark": 113,
+        "kyst": 0,
+        "unclassified": 6319
+      },
+      "daa": {
+        "skog": 2032.2172998484675,
+        "hei-buskmark": 37.242218967010054,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 12.637749979796205,
+        "kyst": 0.0,
+        "unclassified": 706.7074524100195
+      }
+    },
+    {
+      "method": "midpoint/clean/nearest",
+      "natureDaa": 1865.913457193981,
+      "agricultureDaa": 760.9491226772865,
+      "cells": {
+        "skog": 15762,
+        "hei-buskmark": 374,
+        "lite-vegetert-mark": 0,
+        "vatmark": 144,
+        "kyst": 0,
+        "unclassified": 404
+      },
+      "daa": {
+        "skog": 1762.7983644384758,
+        "hei-buskmark": 41.82759727826354,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 16.104743337085427,
+        "kyst": 0.0,
+        "unclassified": 45.18275214015634
+      }
+    },
+    {
+      "method": "midpoint/clean/exact",
+      "natureDaa": 1865.913457193981,
+      "agricultureDaa": 760.9491226772865,
+      "cells": {
+        "skog": 14155,
+        "hei-buskmark": 307,
+        "lite-vegetert-mark": 0,
+        "vatmark": 109,
+        "kyst": 0,
+        "unclassified": 2113
+      },
+      "daa": {
+        "skog": 1583.0739023364183,
+        "hei-buskmark": 34.33441808670296,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": 12.190395998210498,
+        "kyst": 0.0,
+        "unclassified": 236.31474077264937
+      }
+    }
+  ],
+  "orderedDecomposition": [
+    {
+      "from": "canvas/clean/nearest",
+      "to": "canvas/raw/nearest",
+      "daa": {
+        "skog": 714.647985583166,
+        "hei-buskmark": 3.6906703480820795,
+        "lite-vegetert-mark": 0.44735398158570633,
+        "vatmark": 0.4473539815857066,
+        "kyst": 0.0,
+        "unclassified": 166.08016566369346
+      },
+      "natureDaa": 885.3135295581126
+    },
+    {
+      "from": "canvas/raw/nearest",
+      "to": "midpoint/raw/nearest",
+      "daa": {
+        "skog": -87.34586490460924,
+        "hei-buskmark": -2.236769907928533,
+        "lite-vegetert-mark": -0.44735398158570633,
+        "vatmark": -0.33551548618927995,
+        "kyst": 0.0,
+        "unclassified": 70.23457510895588
+      },
+      "natureDaa": -20.130929171356456
+    },
+    {
+      "from": "midpoint/raw/nearest",
+      "to": "midpoint/raw/exact",
+      "daa": {
+        "skog": -410.67095509567844,
+        "hei-buskmark": -7.8286946777498585,
+        "lite-vegetert-mark": 0.0,
+        "vatmark": -4.249862825064209,
+        "kyst": 0.0,
+        "unclassified": 422.74951259849246
+      },
+      "natureDaa": 0.0
+    }
+  ],
+  "transitionCells": [
+    [
+      4218564,
+      3924,
+      28,
+      0,
+      5,
+      0,
+      4379
+    ],
+    [
+      426,
+      14247,
+      0,
+      0,
+      0,
+      0,
+      1561
+    ],
+    [
+      22,
+      0,
+      305,
+      0,
+      0,
+      0,
+      63
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      7,
+      0,
+      0,
+      0,
+      108,
+      0,
+      35
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      145,
+      0,
+      0,
+      0,
+      0,
+      0,
+      281
+    ]
+  ],
+  "geography": {
+    "differentFineCells": 10595,
+    "differentFineDaa": 1184.9288587251397,
+    "oldOnlyNatureCells": 600,
+    "newOnlyNatureCells": 8336,
+    "changedInsideSharedSupport": 1659,
+    "supportChangedFineCells": 8936,
+    "changedWithinOneFineCellOfPlanRasterEdge": 7898,
+    "removedCoarseNatureCells": 1979,
+    "removedCoarseAgricultureCells": 142,
+    "removedConnectedComponents": 826,
+    "allConnectedComponents": 905,
+    "newUnclassifiedAlpha": {
+      "transparent": 921,
+      "alpha1to99": 1618,
+      "nonExactAlphaAtLeast100": 3780
+    },
+    "boundaryCheck": {
+      "old-clean": {
+        "selectedCells": 6039,
+        "outsideCenterPoints": [
+          {
+            "x": 280132.234375,
+            "y": 7040635.953125,
+            "class": 1,
+            "distanceMeters": 0.17124306627571675
+          },
+          {
+            "x": 280216.859375,
+            "y": 7040466.703125,
+            "class": 1,
+            "distanceMeters": 0.03322892768567265
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040043.578125,
+            "class": 1,
+            "distanceMeters": 0.8161870282617691
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040022.421875,
+            "class": 1,
+            "distanceMeters": 1.9553357453413567
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040001.265625,
+            "class": 1,
+            "distanceMeters": 2.578812713032435
+          },
+          {
+            "x": 280259.171875,
+            "y": 7039980.109375,
+            "class": 1,
+            "distanceMeters": 1.6632146568533666
+          },
+          {
+            "x": 280259.171875,
+            "y": 7039958.953125,
+            "class": 1,
+            "distanceMeters": 0.7476166006742984
+          }
+        ]
+      },
+      "new-parent": {
+        "selectedCells": 8094,
+        "outsideCenterPoints": [
+          {
+            "x": 280132.234375,
+            "y": 7040635.953125,
+            "class": 1,
+            "distanceMeters": 0.17124306627571675
+          },
+          {
+            "x": 280216.859375,
+            "y": 7040466.703125,
+            "class": 1,
+            "distanceMeters": 0.03322892768567265
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040043.578125,
+            "class": 1,
+            "distanceMeters": 0.8161870282617691
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040022.421875,
+            "class": 1,
+            "distanceMeters": 1.9553357453413567
+          },
+          {
+            "x": 280259.171875,
+            "y": 7040001.265625,
+            "class": 1,
+            "distanceMeters": 2.578812713032435
+          },
+          {
+            "x": 280259.171875,
+            "y": 7039980.109375,
+            "class": 1,
+            "distanceMeters": 1.6632146568533666
+          },
+          {
+            "x": 280259.171875,
+            "y": 7039958.953125,
+            "class": 1,
+            "distanceMeters": 0.7476166006742984
+          }
+        ]
+      },
+      "independentAreaFactor": 0.9994795815751638
+    }
+  },
+  "note": "Counterfactual rows only isolate existing rules; not proposed replacement calculations. Contribution depends on ordering. 0 in transition table means outside each method nature support.",
+  "detailExtent": [
+    268020.28125,
+    269289.65625,
+    7036351.8125,
+    7037621.1875
+  ]
+}

@@ -1,5 +1,18 @@
 # Isolert undersøkelse av ufordelt natur
 
+## Differanseanalyse av eksisterende økosystemoverlapp, 15.10
+
+`capture-ecosystem-overlaps.mjs` fanger de to eksisterende funksjonsløpene og
+bevarer kilde-/mellomdata uten endring av kildefiler. `audit-ecosystem-overlaps.py`
+kontrollerer dem offline og isolerer sampling, smalfeltfilter og fargeregel.
+Se [rapport](../../../../docs/validation/2026-10-15-ecosystem-overlap-differences.md)
+og [komplett reproduksjon](../../../../docs/validation/2026-10-15-ecosystem-overlap-differences/README.md).
+Eget `ecosystem-overlap-requirements.txt` inkluderer valgfri pyproj-grensekontroll;
+det endrer ingen runtimeavhengigheter. De åtte kombinasjonene er diagnostikk,
+ikke nye produksjonsmetoder.
+
+## Undersøkelsen av ufordelt natur, 14.10
+
 Verktøyene endrer ingen produksjonsdata, karttilstand, kildekontrakt eller cache.
 Forsøkene er ikke godkjente nye regnskapsberegninger.
 [Rapport](../../../../docs/validation/2026-10-14-unclassified-plan-nature.md).
