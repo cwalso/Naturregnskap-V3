@@ -1,0 +1,94 @@
+{
+  "stage": "B2",
+  "screens": [
+    {
+      "name": "B2-oslo-Kommuneoversikt",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Naturtapet",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Naturtema",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Skog",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Utforsk-i-kart",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Arealfordeling",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Registrerte-naturverdier",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-after-reload",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    {
+      "page": "Kommuneoversikt",
+      "sameRoute": true
+    },
+    {
+      "page": "Naturtapet",
+      "sameRoute": true
+    },
+    {
+      "page": "Naturtema",
+      "sameRoute": true
+    },
+    {
+      "page": "Skog",
+      "sameRoute": true
+    },
+    {
+      "page": "Utforsk i kart",
+      "sameRoute": true
+    },
+    {
+      "mode": "Arealfordeling",
+      "sameMapInstance": true,
+      "oldResultsWithdrawn": true,
+      "fitNewMunicipality": true
+    },
+    {
+      "mode": "Registrerte naturverdier",
+      "sameMapInstance": true,
+      "oldResultsWithdrawn": true,
+      "fitNewMunicipality": true
+    },
+    {
+      "communeAfterReload": "Trondheim",
+      "browserBack": true
+    }
+  ],
+  "javascriptErrors": [],
+  "accessibility": [],
+  "completed": true
+}

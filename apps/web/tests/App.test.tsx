@@ -215,7 +215,7 @@ afterEach(() => {
   newMap.fitToMunicipality.mockClear()
   newMap.setLocalitySelectionHandler.mockClear()
   vi.restoreAllMocks()
-  window.location.hash = ''
+  window.history.replaceState(null, '', window.location.pathname)
   Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView')
 })
 
@@ -390,7 +390,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Grunnkart og temadata har ulike roller' })).toBeInTheDocument()
   })
 
-  it('går alltid til Oversikt når en kommune velges', async () => {
+  it('beholder aktiv side når en kommune velges', async () => {
     mockMunicipalityFlow()
     window.location.hash = '#naturtapet'
     render(<App createMap={() => mapMock()} />)
@@ -398,8 +398,39 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Velg kommune for å se naturregnskapet' })).toBeInTheDocument()
     await chooseTrondheim()
 
-    expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim kommune' })).toBeInTheDocument()
-    expect(window.location.hash).toBe('#oversikt')
+    expect(await screen.findByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
+    expect(window.location.hash).toBe('#naturtapet')
+  })
+
+  it('restores a validated municipality from the existing hash route plus URL query', async () => {
+    mockMunicipalityFlow()
+    window.history.replaceState(null, '', '?kommune=5001#naturtapet')
+    render(<App createMap={() => mapMock()} />)
+    expect(await screen.findByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
+    await vi.waitFor(() => expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim'))
+    expect(window.location.hash).toBe('#naturtapet')
+  })
+
+  it.each(['oversikt','naturtapet','utforsk-naturen','tema-forest','utforsk-i-kart'])('keeps %s through Trondheim–Oslo–Trondheim', async view => {
+    mockMunicipalityFlow()
+    const original = vi.mocked(fetch).getMockImplementation()!
+    vi.mocked(fetch).mockImplementation((input, init) => {
+      const url = String(input)
+      if (url.endsWith('/kommuner')) return Promise.resolve(new Response(JSON.stringify([...municipalityListSource,{kommunenummer:'0301',kommunenavnNorsk:'Oslo'}])))
+      if (url.includes('/0301/omrade')) return Promise.resolve(new Response(JSON.stringify({...boundarySource,kommunenummer:'0301',kommunenavn:'Oslo'})))
+      return original(input, init)
+    })
+    window.location.hash = `#${view}`
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+    for (const [name, number] of [['Oslo','0301'],['Trondheim','5001']]) {
+      fireEvent.change(screen.getByRole('combobox',{name:'Velg kommune'}),{target:{value:name}})
+      fireEvent.click(screen.getByRole('option',{name:`${name} ${number}`}))
+      expect(window.location.hash).toBe(`#${view}`)
+      expect(new URLSearchParams(window.location.search).get('kommune')).toBe(number)
+      if (view==='tema-forest') expect(document.querySelector('.plan-area-indicator')?.textContent).not.toContain('1 816')
+      if (view==='naturtapet' && name==='Oslo') expect(screen.queryByLabelText('Nøkkeltall for brutto nedbygging')).not.toBeInTheDocument()
+    }
   })
 
   it('beholder valgt kommune ved navigasjon', async () => {
@@ -410,7 +441,7 @@ describe('sidestruktur og Oversikt', () => {
     expect(await screen.findByRole('heading', { name: 'Naturregnskap for Trondheim kommune' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('link', { name: 'Naturtapet' }))
 
-    expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim')
+    await vi.waitFor(() => expect(screen.getByRole('combobox', { name: 'Velg kommune' })).toHaveValue('Trondheim'))
     expect(screen.getByRole('heading', { name: 'Naturtapet i Trondheim' })).toBeInTheDocument()
     expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'instant' })
   })

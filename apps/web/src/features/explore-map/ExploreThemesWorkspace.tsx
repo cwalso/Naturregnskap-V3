@@ -32,7 +32,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
   const [pickerOpen, setPickerOpen] = useState(false)
   const [storedPanel, setPanel] = useState<{ owner: string; value: MapLayerId | 'legend' | 'object' | 'analysis' } | null>(() => initialAnalysisOpen ? { owner: municipality.number, value: 'analysis' } : null)
-  const panel = storedPanel?.owner === municipality.number ? storedPanel.value : null
+  const panel = storedPanel?.owner === municipality.number || storedPanel?.value === 'analysis' ? storedPanel?.value ?? null : null
   const [analysisState, setAnalysisState] = useState<{ owner: string; result: Result | null; loading: boolean; error: string | null } | null>(null)
   const [analysisMode,setAnalysisMode]=useState<'area'|'nature'>(()=>initialAnalysisOpen?initialAnalysisMode:'area')
   const [areaState,setAreaState]=useState<{owner:string;result:PlanAreaResult|null;loading:boolean;error:string|null}|null>(null)
@@ -74,6 +74,18 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const [storedChoice, setChoice] = useState<Choice>(() => freshChoice(owner))
   const choice = storedChoice.owner === owner ? storedChoice : freshChoice(owner)
   const [records, setRecords] = useState<{ number: string; status: 'loading' | 'ready' | 'error'; data: MunicipalValuedNature | null; error?: string } | null>(null)
+  const previousOwner = useRef(owner)
+  useEffect(() => {
+    if (previousOwner.current === owner) return
+    previousOwner.current = owner
+    setChoice(freshChoice(owner))
+    setAreaState(null)
+    setAnalysisState(null)
+    setAreaSelection({owner,selection:{kind:'all'}})
+    storeAnalysisSelection({owner,selection:{kind:'all'}})
+    setAreaMapOwner(panel === 'analysis' && analysisMode === 'area' ? owner : null)
+    setPanel(panel === 'analysis' ? {owner,value:'analysis'} : null)
+  }, [owner, panel, analysisMode])
   const [mapState, setMapState] = useState<MapStatus>({ owner: null, layers: {} })
   const [creationError, setCreationError] = useState<string | null>(null)
   const element = useRef<HTMLDivElement>(null)
@@ -150,9 +162,9 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     void calculatePlanArea(owner,abort.signal).then(result=>{if(!abort.signal.aborted)setAreaState({owner,result,loading:false,error:null})}).catch((error:unknown)=>{if(!abort.signal.aborted)setAreaState({owner,result:null,loading:false,error:error instanceof Error?error.message:'Analysen kunne ikke beregnes.'})})
     return()=>abort.abort()
   },[panel,analysisMode,activeBoundary,owner])
-  const activeArea=areaState?.owner===owner?areaState:null
+  const activeArea=previousOwner.current===owner&&areaState?.owner===owner?areaState:null
   const areaResult=areaMapOwner===owner&&activeBoundary&&activeArea?.result?.status==='available'&&(panel==='analysis'&&analysisMode==='area'||panel===null)?activeArea.result:null
-  const activeAnalysis = panel === 'analysis' && analysisMode === 'nature' && analysisState?.owner === owner ? analysisState : null
+  const activeAnalysis = panel === 'analysis' && analysisMode === 'nature' && previousOwner.current === owner && analysisState?.owner === owner ? analysisState : null
   const analysisResult = activeAnalysis?.result?.status === 'available' ? activeAnalysis.result : null
   useEffect(() => { controller.current?.setFutureNature?.(analysisResult, analysisSelection);controller.current?.setPlanArea?.(areaResult,areaSelection) }, [analysisResult, analysisSelection,areaResult,areaSelection])
   function chooseArea(selection:PlanAreaSelection){setAreaSelection({owner,selection});controller.current?.setPlanArea?.(areaResult,selection)}
@@ -247,7 +259,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
           </>}
           {panel === 'analysis' && <>
             <div className="explore-themes__analysis-switch" role="group" aria-label="Velg plananalyse"><button type="button" aria-pressed={analysisMode==='area'} onClick={()=>{setAnalysisMode('area');setAreaMapOwner(owner)}}>Arealfordeling</button><button type="button" aria-pressed={analysisMode==='nature'} onClick={()=>{setAnalysisMode('nature');setAreaMapOwner(null)}}>Registrerte naturverdier</button></div>
-            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={()=>controller.current?.setPlanArea?.(areaResult,areaSelection,true)} onShowMap={showAreaMap}/>:<AnalysisPanel result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} />}
+            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={()=>controller.current?.setPlanArea?.(areaResult,areaSelection,true)} onShowMap={showAreaMap}/>:<AnalysisPanel key={owner} result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} />}
           </>}
           {panel === 'object' && selected && <RegisteredNatureDetails locality={selected} municipality={municipality} onBack={() => setPanel({ owner, value: 'valued-nature' })} onClear={() => { updateChoice({ selectedId: null }); setPanel({ owner, value: 'valued-nature' }) }} />}
           {panel === 'legend' && (activeDefinitions.length ? [...activeDefinitions].reverse().map(layerInfo) : <p>Ingen aktive kartlag. Bakgrunnskartet vises.</p>)}

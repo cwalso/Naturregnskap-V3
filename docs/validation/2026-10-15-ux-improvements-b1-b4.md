@@ -31,3 +31,26 @@ Ingen JavaScript-feil eller side-overflow ved 1440 px.
 
 Kontroller og skjermbilder registreres per leveranse før neste del starter.
 B2–B4 og samlet regresjons-/publiseringsstatus føyes til i sine respektive commits.
+
+## B2 – Kommunevalg beholder oppgaven
+
+Den ubetingede navigasjonen til Oversikt er fjernet. Analysepanelets formål
+og valgt analysetype beholdes ved kommunevalg. Kommuneavhengige resultater
+har eierkontroll, pågående konsumenter avbrytes, og kategori-/lokalitetsvalg
+og søk resettes. Eksisterende kartkontroller håndterer ny kommunegrense/fit;
+selve OpenLayers-instansen gjenbrukes.
+
+Kommune lagres som `?kommune=5001` ved siden av eksisterende hash-rute.
+Bare et kommunenummer fra den faktiske kommunelisten gjenopprettes. URL og
+nettleserens hash-historikk samordnes; ingen lokal lagring eller ny router.
+Kommune og side beholdes ved reload. Åpent panel/filtre serialiseres fortsatt
+ikke til URL; analysetypen beholdes ved ordinært kommunevalg i den åpne siden.
+
+189/189 frontendtester, lint (0 feil/ett eksisterende varsel) og build består.
+Målrettede tester dekker sene svar, ugyldige gamle utvalg og beholdt analysetype.
+Reell Chromium-kontroll: Trondheim–Oslo–Trondheim fra de fire hovedsidene og
+Skog; begge analysetyper beholder panel og kartinstans, gamle resultater trekkes
+tilbake og utsnittet endres til Oslo. Reload og nettleser-tilbake består.
+[Kontroller](2026-10-15-ux-improvements-b1-b4/B2/checks.json),
+[Oslo Arealfordeling](2026-10-15-ux-improvements-b1-b4/B2/B2-oslo-Arealfordeling.png),
+[Oslo Registrerte naturverdier](2026-10-15-ux-improvements-b1-b4/B2/B2-oslo-Registrerte-naturverdier.png).

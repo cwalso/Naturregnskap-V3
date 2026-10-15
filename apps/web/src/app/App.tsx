@@ -2,7 +2,7 @@ import { calculateFutureNature, type Result as FutureNatureResult } from '../fea
 import { calculatePlanArea } from '../features/plan-area/source'
 import type { PlanAreaSelection } from '../features/plan-area/model'
 import type { PlanAreaResult } from '../features/plan-area/model'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   getEcosystemStatistics,
@@ -214,11 +214,106 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     || activeView === 'tema-urban-nature'
     || activeThematicDatasetId !== null
 
+  const selectMunicipality = useCallback(async (municipality: Municipality | null) => {
+    const requestId = ++boundaryRequest.current
+    const accountRequestId = ++accountRequest.current
+    const thematicRequestId = ++thematicRequest.current
+    const url = new URL(window.location.href)
+    if (municipality) url.searchParams.set('kommune', municipality.number)
+    else url.searchParams.delete('kommune')
+    window.history.replaceState(null, '', url)
+    setSelectedMunicipality(municipality)
+    setOverviewPlanArea(null)
+    setFutureAreaSelection({kind:'all'})
+    setAccountData(null)
+    setThematicCoverage(null)
+    setForestStatistics(null)
+    setForestStatisticsState('idle')
+    setEcosystemStatistics(null)
+    setEcosystemStatisticsState('idle')
+    setValuedNatureStatistics(null)
+    setValuedNatureStatisticsState('idle')
+    setPlannedCoverageGap(null)
+    setPlannedCoverageGapState('idle')
+    setBoundaryData(null)
+    setPlannedDevelopment(null)
+    setPlannedDevelopmentState('idle')
+    setPlannedDevelopmentVisible(true)
+    setAnalysisAreaMode('planned')
+    setDrawnAnalysisArea(null)
+    setDrawingAnalysisArea(false)
+    setDrawnAnalysis(null)
+    setDrawnAnalysisState('idle')
+    setValuedNatureResultVisible(true)
+    setPlannedDevelopmentAnalysisTarget('grunnkart')
+    setPlannedNatureBreakdown(null)
+    setPlannedNatureBreakdownState('idle')
+    setPlannedValuedNature(null)
+    setPlannedValuedNatureState('idle')
+    setValuedNatureMapSelection({ kind: 'all' })
+    setGrunnkartMapSelection('all')
+    map.current?.clearBoundary()
+
+    if (!municipality) {
+      setBoundaryState('idle')
+      setAccountState('idle')
+      setThematicCoverageState('idle')
+      return
+    }
+
+    setBoundaryState('loading')
+    setAccountState('loading')
+    setThematicCoverageState('loading')
+
+    void loadMunicipalityAccount(municipality.number, municipality.name)
+      .then((data) => {
+        if (accountRequestId === accountRequest.current) {
+          setAccountData(data)
+          setAccountState('idle')
+        }
+      })
+      .catch(() => {
+        if (accountRequestId === accountRequest.current) {
+          setAccountData(createUnavailableAccountOverview(municipality.number, municipality.name))
+          setAccountState('error')
+        }
+      })
+
+    void loadMunicipalityThematicCoverage(municipality.number)
+      .then((data) => {
+        if (thematicRequestId === thematicRequest.current) {
+          setThematicCoverage(data)
+          setThematicCoverageState('idle')
+        }
+      })
+      .catch(() => {
+        if (thematicRequestId === thematicRequest.current) {
+          setThematicCoverage(null)
+          setThematicCoverageState('error')
+        }
+      })
+
+    try {
+      const boundary = await loadMunicipalityBoundary(municipality.number)
+      if (requestId === boundaryRequest.current) {
+        setBoundaryData(boundary)
+        setBoundaryState('idle')
+      }
+    } catch {
+      if (requestId === boundaryRequest.current) setBoundaryState('error')
+    }
+  }, [])
+
   useEffect(() => {
-    const onHashChange = () => setActiveView(viewFromHash())
+    const onHashChange = () => {
+      setActiveView(viewFromHash())
+      const number = new URLSearchParams(window.location.search).get('kommune')
+      const municipality = municipalities.find(item => item.number === number)
+      if (municipality && municipality.number !== selectedMunicipality?.number) void selectMunicipality(municipality)
+    }
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
-  }, [])
+  }, [municipalities, selectedMunicipality?.number, selectMunicipality])
 
   useEffect(() => {
     // Long overview sections must not carry their scroll position into another page.
@@ -279,12 +374,18 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   useEffect(() => {
     const controller = new AbortController()
     getMunicipalities(controller.signal)
-      .then((items) => { setMunicipalities(items); setListState('ready') })
+      .then((items) => {
+        if (controller.signal.aborted) return
+        setMunicipalities(items); setListState('ready')
+        const number = new URLSearchParams(window.location.search).get('kommune')
+        const initial = items.find(item => item.number === number)
+        if (initial) void selectMunicipality(initial)
+      })
       .catch((error: unknown) => {
         if (!(error instanceof DOMException && error.name === 'AbortError')) setListState('error')
       })
     return () => controller.abort()
-  }, [])
+  }, [selectMunicipality])
 
   useEffect(() => {
     if (
@@ -603,91 +704,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     if (window.location.hash !== hash) window.location.hash = hash
   }
 
-  async function selectMunicipality(municipality: Municipality | null) {
-    const requestId = ++boundaryRequest.current
-    const accountRequestId = ++accountRequest.current
-    const thematicRequestId = ++thematicRequest.current
-    setSelectedMunicipality(municipality)
-    setAccountData(null)
-    setThematicCoverage(null)
-    setForestStatistics(null)
-    setForestStatisticsState('idle')
-    setEcosystemStatistics(null)
-    setEcosystemStatisticsState('idle')
-    setValuedNatureStatistics(null)
-    setValuedNatureStatisticsState('idle')
-    setPlannedCoverageGap(null)
-    setPlannedCoverageGapState('idle')
-    setBoundaryData(null)
-    setPlannedDevelopment(null)
-    setPlannedDevelopmentState('idle')
-    setPlannedDevelopmentVisible(true)
-    setAnalysisAreaMode('planned')
-    setDrawnAnalysisArea(null)
-    setDrawingAnalysisArea(false)
-    setDrawnAnalysis(null)
-    setDrawnAnalysisState('idle')
-    setValuedNatureResultVisible(true)
-    setPlannedDevelopmentAnalysisTarget('grunnkart')
-    setPlannedNatureBreakdown(null)
-    setPlannedNatureBreakdownState('idle')
-    setPlannedValuedNature(null)
-    setPlannedValuedNatureState('idle')
-    setValuedNatureMapSelection({ kind: 'all' })
-    setGrunnkartMapSelection('all')
-    map.current?.clearBoundary()
-
-    if (!municipality) {
-      setBoundaryState('idle')
-      setAccountState('idle')
-      setThematicCoverageState('idle')
-      return
-    }
-
-    navigate('oversikt')
-
-    setBoundaryState('loading')
-    setAccountState('loading')
-    setThematicCoverageState('loading')
-
-    void loadMunicipalityAccount(municipality.number, municipality.name)
-      .then((data) => {
-        if (accountRequestId === accountRequest.current) {
-          setAccountData(data)
-          setAccountState('idle')
-        }
-      })
-      .catch(() => {
-        if (accountRequestId === accountRequest.current) {
-          setAccountData(createUnavailableAccountOverview(municipality.number, municipality.name))
-          setAccountState('error')
-        }
-      })
-
-    void loadMunicipalityThematicCoverage(municipality.number)
-      .then((data) => {
-        if (thematicRequestId === thematicRequest.current) {
-          setThematicCoverage(data)
-          setThematicCoverageState('idle')
-        }
-      })
-      .catch(() => {
-        if (thematicRequestId === thematicRequest.current) {
-          setThematicCoverage(null)
-          setThematicCoverageState('error')
-        }
-      })
-
-    try {
-      const boundary = await loadMunicipalityBoundary(municipality.number)
-      if (requestId === boundaryRequest.current) {
-        setBoundaryData(boundary)
-        setBoundaryState('idle')
-      }
-    } catch {
-      if (requestId === boundaryRequest.current) setBoundaryState('error')
-    }
-  }
 
   function openThematicPage(datasetId: ThematicDatasetId) {
     navigate(thematicViewByDataset[datasetId])

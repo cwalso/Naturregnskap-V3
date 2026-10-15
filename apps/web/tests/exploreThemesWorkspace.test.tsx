@@ -40,6 +40,30 @@ describe('uavhengige kartlag i V2-paneler', () => {
     expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
     expect(controller.destroy).not.toHaveBeenCalled()
   })
+  it('keeps the analysis purpose, resets geographical selection and accepts only new municipality results', async () => {
+    areaRequest.mockResolvedValueOnce(planAreaFixture)
+    const view = render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="area" initialAreaSelection={{kind:'category',id:'skog'}} />)
+    await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    const oslo={number:'0301',name:'Oslo'}
+    areaRequest.mockResolvedValueOnce({status:'not_available',municipalityNumber:'0301',reason:'Oslo mangler grunnlag, ikke null treff'})
+    view.rerender(<ExploreThemesWorkspace municipality={oslo} boundary={{...boundary,properties:oslo}} />)
+    expect(screen.getByRole('group',{name:'Velg plananalyse'})).toBeInTheDocument()
+    expect(screen.getByRole('button',{name:'Arealfordeling'})).toHaveAttribute('aria-pressed','true')
+    expect(await screen.findByText('Oslo mangler grunnlag, ikke null treff')).toBeInTheDocument()
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
+    areaRequest.mockResolvedValueOnce(planAreaFixture)
+    view.rerender(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} />)
+    await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    expect(screen.getByRole('button',{name:'Skog'})).toHaveAttribute('aria-pressed','false')
+    expect(controller.destroy).not.toHaveBeenCalled()
+  })
+  it('keeps registered-nature mode open while the new municipality boundary is loading', () => {
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={null} initialAnalysisOpen initialAnalysisMode="nature" />)
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null}/>)
+    expect(screen.getByRole('button',{name:'Registrerte naturverdier'})).toHaveAttribute('aria-pressed','true')
+    expect(screen.getByRole('heading',{name:'Registrerte naturverdier'})).toBeInTheDocument()
+    expect(controller.destroy).not.toHaveBeenCalled()
+  })
   it('ignores an old municipality’s pending area result',async()=>{
     let resolve!: (result:typeof planAreaFixture)=>void
     areaRequest.mockImplementationOnce(()=>new Promise(done=>{resolve=done}))
