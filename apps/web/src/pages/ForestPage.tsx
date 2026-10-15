@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 
 import type { ForestStatistics } from '../api/forestStatistics'
-import type { PlannedNatureBreakdown } from '../map/plannedDevelopment'
+import { PlanAreaIndicator, type PlanAreaIndicatorProps } from '../features/plan-area/PlanAreaIndicator'
 
 interface ForestPageProps {
   readonly municipalityName: string
   readonly statistics?: ForestStatistics | null
   readonly statisticsState?: 'idle' | 'loading' | 'error'
-  readonly plannedNatureBreakdown?: PlannedNatureBreakdown | null
-  readonly plannedNatureBreakdownState?: 'idle' | 'loading' | 'error'
+  readonly planArea: Omit<PlanAreaIndicatorProps, 'categoryId' | 'label' | 'onOpenMap'>
   readonly onBack: () => void
   readonly onOpenMap: () => void
   readonly mapContent?: ReactNode
@@ -37,14 +36,12 @@ export function ForestPage({
   municipalityName,
   statistics,
   statisticsState = 'idle',
-  plannedNatureBreakdown,
-  plannedNatureBreakdownState = 'idle',
+  planArea,
   onBack,
   onOpenMap,
   mapContent,
 }: ForestPageProps) {
   const available = statistics?.status === 'available' ? statistics : null
-  const plannedForest = plannedNatureBreakdown?.metrics.find((metric) => metric.id === 'skog')
 
   return (
     <section className="content-page thematic-page thematic-page--editorial forest-page" aria-labelledby="forest-page-title">
@@ -123,25 +120,7 @@ export function ForestPage({
       </section>
 
       <section className="thematic-plan-cards" aria-label="Framtidig utbygging og skog">
-        <article>
-          <strong>Skog i områder satt av til framtidig utbygging</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedNatureBreakdownState === 'loading'
-              ? '…'
-              : plannedNatureBreakdownState === 'error'
-                ? 'Ikke tilgjengelig'
-                : plannedForest
-                  ? dekar(plannedForest.areaKm2)
-                  : '–'}
-          </span>
-          <span>
-            Beregnes som overlapp mellom framtidige utbyggingsområder og
-            økosystemtype skog i Grunnkartet.
-          </span>
-          <button type="button" onClick={onOpenMap}>
-            Åpne Utforsk i kart <span aria-hidden="true">→</span>
-          </button>
-        </article>
+        <PlanAreaIndicator {...planArea} categoryId="skog" label="skog" onOpenMap={onOpenMap} />
         <article>
           <strong>Andel av kommunens skog i framtidige utbyggingsområder</strong>
           <span className="thematic-plan-cards__value">–</span>

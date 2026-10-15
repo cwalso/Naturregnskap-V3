@@ -349,3 +349,13 @@ periodetall. Modell og visning skal ikke forutsette årlige observasjoner.
 Dagens illustrative 2016–2025-demo beholdes. Se
 [metode](docs/decisions/2026-10-14-plan-land-cover-area.md) og
 [A/B/C-kontroll](docs/validation/2026-10-14-plan-area.md).
+
+## 19. Felles prototypeindikatorer (15.10.2026)
+
+Skog og Myr/våtmarks planindikatorer bruker nå samme `calculatePlanArea`-resultat
+som Oversikt og Arealfordeling. Eldre indikatorløp kjøres ikke på disse sidene;
+beregningsmodulene beholdes. Beholdningstall er uendret. Vis identifisert delareal,
+ufordelt og separate mangel-/feiltilstander. Ikke konstruer en andel fra ny
+delvis fordeling og eldre beholdning. Lenken åpner riktig kategori uten fit.
+Dette er konsistens i prototypen, ikke endelig metodegodkjenning.
+Se [beslutning](docs/decisions/2026-10-15-common-plan-indicators.md).

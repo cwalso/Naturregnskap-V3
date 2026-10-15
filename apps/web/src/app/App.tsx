@@ -1,5 +1,6 @@
 import { calculateFutureNature, type Result as FutureNatureResult } from '../features/future-analysis/model'
 import { calculatePlanArea } from '../features/plan-area/source'
+import type { PlanAreaSelection } from '../features/plan-area/model'
 import type { PlanAreaResult } from '../features/plan-area/model'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -53,7 +54,6 @@ import {
 } from '../map/drawnAnalysis'
 import {
   calculatePlannedDevelopment,
-  calculatePlannedNatureBreakdown,
   natureTypeDefinitions,
   type PlannedDevelopmentResult,
   type PlannedNatureBreakdown,
@@ -163,6 +163,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   const [mapRuntimeError, setMapRuntimeError] = useState<string | null>(null)
   const [futureNatureResult, setFutureNatureResult] = useState<FutureNatureResult | null>(null)
   const [futureNatureState, setFutureNatureState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [futureAreaSelection, setFutureAreaSelection] = useState<PlanAreaSelection>({kind:'all'})
   const [futureAnalysisEntry, setFutureAnalysisEntry] = useState<'area'|'nature'|null>(null)
   const [overviewPlanArea,setOverviewPlanArea]=useState<{owner:string;result:PlanAreaResult|null;state:'idle'|'loading'|'error'}|null>(null)
   const [plannedDevelopment, setPlannedDevelopment] = useState<PlannedDevelopmentResult | null>(null)
@@ -287,9 +288,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
 
   useEffect(() => {
     if (
-      (activeView !== 'tema-forest'
-        && activeEcosystemId === null
-        && activeView !== 'tema-valued-nature')
+      activeView !== 'tema-valued-nature'
       || !selectedMunicipality
     ) {
       setPlannedDevelopment(null)
@@ -375,44 +374,6 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     selectedMunicipality,
   ])
 
-  useEffect(() => {
-    const needsGrunnkartBreakdown = activeView === 'tema-forest'
-      || activeEcosystemId !== null
-    const analysis = activeView === 'utforsk-i-kart'
-      ? mapAnalysisResult
-      : plannedDevelopment
-
-    if (!needsGrunnkartBreakdown || analysis?.status !== 'available') {
-      setPlannedNatureBreakdown(null)
-      setPlannedNatureBreakdownState('idle')
-      return
-    }
-
-    const controller = new AbortController()
-    setPlannedNatureBreakdown(null)
-    setPlannedNatureBreakdownState('loading')
-
-    void calculatePlannedNatureBreakdown(analysis, controller.signal)
-      .then((result) => {
-        if (controller.signal.aborted) return
-        setPlannedNatureBreakdown(result)
-        setPlannedNatureBreakdownState('idle')
-      })
-      .catch((error: unknown) => {
-        if (controller.signal.aborted) return
-        if (error instanceof DOMException && error.name === 'AbortError') return
-        setPlannedNatureBreakdown(null)
-        setPlannedNatureBreakdownState('error')
-      })
-
-    return () => controller.abort()
-  }, [
-    activeEcosystemId,
-    activeView,
-    mapAnalysisResult,
-    plannedDevelopment,
-    plannedDevelopmentAnalysisTarget,
-  ])
 
   useEffect(() => {
     if (activeView !== 'tema-valued-nature' || !selectedMunicipality) return
@@ -425,7 +386,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
   }, [activeView, selectedMunicipality])
 
   useEffect(()=>{
-    if(activeView!=='oversikt'||!selectedMunicipality)return
+    if((activeView!=='oversikt'&&activeView!=='tema-forest'&&activeEcosystemId===null)||!selectedMunicipality)return
     const owner=selectedMunicipality.number
     if(boundaryState==='error'){setOverviewPlanArea({owner,result:null,state:'error'});return}
     if(boundaryState!=='idle'||boundaryData?.properties.number!==owner)return
@@ -433,7 +394,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
     setOverviewPlanArea({owner,result:null,state:'loading'})
     void calculatePlanArea(owner,abort.signal).then(result=>{if(!abort.signal.aborted)setOverviewPlanArea({owner,result,state:'idle'})}).catch(()=>{if(!abort.signal.aborted)setOverviewPlanArea({owner,result:null,state:'error'})})
     return()=>abort.abort()
-  },[activeView,selectedMunicipality,boundaryState,boundaryData])
+  },[activeView,activeEcosystemId,selectedMunicipality,boundaryState,boundaryData])
 
   useEffect(() => {
     if (activeView !== 'tema-forest' || !selectedMunicipality) {
@@ -1355,7 +1316,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           historicalLoss={getHistoricalLossData(selectedMunicipality.number)}
           planAreaResult={overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.result:null}
           planAreaState={overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.state:'idle'}
-          onOpenPlanAnalysis={()=>{setFutureAnalysisEntry('area');navigate('utforsk-i-kart')}}
+          onOpenPlanAnalysis={()=>{setFutureAreaSelection({kind:'all'});setFutureAnalysisEntry('area');navigate('utforsk-i-kart')}}
           thematicCoverage={thematicCoverage}
           thematicCoverageState={thematicCoverageState}
           mapContent={<section className="overview-home__map" aria-labelledby="overview-map-title">
@@ -1418,7 +1379,7 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
         </div>
       ) : (
         <>
-          <ExploreThemesWorkspace initialAnalysisOpen={futureAnalysisEntry!==null} initialAnalysisMode={futureAnalysisEntry??'area'} municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
+          <ExploreThemesWorkspace initialAreaSelection={futureAreaSelection} initialAnalysisOpen={futureAnalysisEntry!==null} initialAnalysisMode={futureAnalysisEntry??'area'} municipality={selectedMunicipality} boundary={boundaryData} coverage={thematicCoverage} coverageState={thematicCoverageState} />
         </>
       )}
     </section>
@@ -1444,11 +1405,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           municipalityName={selectedMunicipality.name}
           statistics={forestStatistics}
           statisticsState={forestStatisticsState}
-          plannedNatureBreakdown={plannedNatureBreakdown}
-          plannedNatureBreakdownState={plannedNatureBreakdownState}
+          planArea={{municipalityNumber:selectedMunicipality.number,result:overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.result:null,state:overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.state:'loading'}}
           onBack={() => navigate('utforsk-naturen')}
           onOpenMap={() => {
-            setPlannedDevelopmentAnalysisTarget('grunnkart')
+            setFutureAreaSelection({kind:'category',id:'skog'})
+            setFutureAnalysisEntry('area')
             navigate('utforsk-i-kart')
           }}
           mapContent={forestMapWorkspace()}
@@ -1460,11 +1421,11 @@ export function App({ createMap = createMunicipalityMap }: AppProps) {
           municipalityName={selectedMunicipality.name}
           statistics={ecosystemStatistics}
           statisticsState={ecosystemStatisticsState}
-          plannedNatureBreakdown={plannedNatureBreakdown}
-          plannedNatureBreakdownState={plannedNatureBreakdownState}
+          planArea={{municipalityNumber:selectedMunicipality.number,result:overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.result:null,state:overviewPlanArea?.owner===selectedMunicipality.number?overviewPlanArea.state:'loading'}}
           onBack={() => navigate('utforsk-naturen')}
           onOpenMap={() => {
-            setPlannedDevelopmentAnalysisTarget('grunnkart')
+            setFutureAreaSelection({kind:'category',id:activeEcosystemId})
+            setFutureAnalysisEntry('area')
             navigate('utforsk-i-kart')
           }}
           mapContent={ecosystemMapWorkspace(activeEcosystemId)}

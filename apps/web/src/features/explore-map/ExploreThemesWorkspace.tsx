@@ -13,7 +13,7 @@ import { RegisteredNatureDetails, RegisteredNaturePanel } from './RegisteredNatu
 import { ExploreMapIcon } from './ExploreMapIcon'
 import './ExploreThemesWorkspace.css'
 
-interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error'; initialAnalysisOpen?: boolean; initialAnalysisMode?: 'area' | 'nature' }
+interface Props { municipality: Municipality; boundary: MunicipalityBoundary | null; coverage?: ThematicCoverageResponse | null; coverageState?: 'idle' | 'loading' | 'error'; initialAnalysisOpen?: boolean; initialAnalysisMode?: 'area' | 'nature'; initialAreaSelection?: PlanAreaSelection }
 interface Choice { owner: string; filter: MunicipalNatureFilter; selectedId: string | null; search: string; limit: number }
 const freshChoice = (owner: string): Choice => ({ owner, filter: noMunicipalNatureFilter, selectedId: null, search: '', limit: 60 })
 const displayOrder: MapLayerId[] = ['level0', 'future-development', 'valued-nature', 'protected-areas', 'intact-nature', 'wild-reindeer', 'grey-areas']
@@ -26,7 +26,7 @@ function ServiceLegend({ url, description }: { url: string; description: string 
     : <img src={url} alt={description} onError={() => setFailed(true)} />}</div>
 }
 
-export function ExploreThemesWorkspace({ municipality, boundary, coverage, coverageState = 'idle', initialAnalysisOpen = false, initialAnalysisMode = 'nature' }: Props) {
+export function ExploreThemesWorkspace({ municipality, boundary, coverage, coverageState = 'idle', initialAnalysisOpen = false, initialAnalysisMode = 'nature', initialAreaSelection = {kind:'all'} }: Props) {
   const [greyPresentation, setGreyPresentation] = useState<GreyPresentation>('graa_arealer')
   const grey = greyPresentations.find((item) => item.layer === greyPresentation)!
   const [layers, setLayers] = useState<MapLayerState>(initialMapLayers)
@@ -37,7 +37,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const [analysisMode,setAnalysisMode]=useState<'area'|'nature'>(()=>initialAnalysisOpen?initialAnalysisMode:'area')
   const [areaState,setAreaState]=useState<{owner:string;result:PlanAreaResult|null;loading:boolean;error:string|null}|null>(null)
   const [areaMapOwner,setAreaMapOwner]=useState<string|null>(()=>initialAnalysisOpen&&initialAnalysisMode==='area'?municipality.number:null)
-  const [storedAreaSelection,setAreaSelection]=useState<{owner:string;selection:PlanAreaSelection}>({owner:municipality.number,selection:{kind:'all'}})
+  const [storedAreaSelection,setAreaSelection]=useState<{owner:string;selection:PlanAreaSelection}>({owner:municipality.number,selection:initialAreaSelection})
   const areaSelection=useMemo<PlanAreaSelection>(()=>storedAreaSelection.owner===municipality.number?storedAreaSelection.selection:{kind:'all'},[storedAreaSelection,municipality.number])
   const [storedAnalysisSelection, storeAnalysisSelection] = useState<{ owner: string; selection: Selection }>({ owner: municipality.number, selection: { kind: 'all' } })
   const analysisSelection = useMemo<Selection>(() => storedAnalysisSelection.owner === municipality.number ? storedAnalysisSelection.selection : { kind: 'all' }, [storedAnalysisSelection, municipality.number])

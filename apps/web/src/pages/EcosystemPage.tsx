@@ -4,15 +4,14 @@ import type {
   EcosystemPageId,
   EcosystemStatistics,
 } from '../api/ecosystemStatistics'
-import type { PlannedNatureBreakdown } from '../map/plannedDevelopment'
+import { PlanAreaIndicator, type PlanAreaIndicatorProps } from '../features/plan-area/PlanAreaIndicator'
 
 interface EcosystemPageProps {
   readonly ecosystemId: EcosystemPageId
   readonly municipalityName: string
   readonly statistics?: EcosystemStatistics | null
   readonly statisticsState?: 'idle' | 'loading' | 'error'
-  readonly plannedNatureBreakdown?: PlannedNatureBreakdown | null
-  readonly plannedNatureBreakdownState?: 'idle' | 'loading' | 'error'
+  readonly planArea: Omit<PlanAreaIndicatorProps, 'categoryId' | 'label' | 'onOpenMap'>
   readonly onBack: () => void
   readonly onOpenMap: () => void
   readonly mapContent?: ReactNode
@@ -54,8 +53,7 @@ export function EcosystemPage({
   municipalityName,
   statistics,
   statisticsState = 'idle',
-  plannedNatureBreakdown,
-  plannedNatureBreakdownState = 'idle',
+  planArea,
   onBack,
   onOpenMap,
   mapContent,
@@ -63,10 +61,6 @@ export function EcosystemPage({
   const config = ecosystemPageConfig[ecosystemId]
   const available = statistics?.status === 'available' ? statistics : null
   const metric = available?.metrics.find((item) => item.id === ecosystemId)
-  const plannedMetric = plannedNatureBreakdown?.metrics.find((item) => item.id === ecosystemId)
-  const plannedShare = metric && plannedMetric && metric.areaKm2 > 0
-    ? plannedMetric.areaKm2 / metric.areaKm2 * 100
-    : null
 
   return (
     <section className="content-page thematic-page thematic-page--editorial ecosystem-page" aria-labelledby="ecosystem-page-title">
@@ -140,34 +134,10 @@ export function EcosystemPage({
       </section>
 
       <section className="thematic-plan-cards" aria-label={`Framtidig utbygging og ${config.title.toLowerCase()}`}>
+        <PlanAreaIndicator {...planArea} categoryId={ecosystemId} label="våtmark" onOpenMap={onOpenMap} />
         <article>
-          <strong>{config.title} i områder satt av til framtidig utbygging</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedNatureBreakdownState === 'loading'
-              ? '…'
-              : plannedNatureBreakdownState === 'error'
-                ? 'Ikke tilgjengelig'
-                : plannedMetric
-                  ? dekar(plannedMetric.areaKm2)
-                  : '–'}
-          </span>
-          <span>
-            Beregnes som overlapp mellom framtidige utbyggingsområder og
-            økosystemtypen i Grunnkartet.
-          </span>
-          <button type="button" onClick={onOpenMap}>
-            Åpne Utforsk i kart <span aria-hidden="true">→</span>
-          </button>
-        </article>
-        <article>
-          <strong>Andel av kommunens {config.title.toLowerCase()} i framtidige utbyggingsområder</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedShare === null ? '–' : percent(plannedShare)}
-          </span>
-          <span>
-            Sammenligner overlappsarealet med samlet areal for samme
-            økosystemtype i kommunen.
-          </span>
+          <strong>Identifisert delareal, ikke fullstendig fordeling</strong>
+          <p>Ufordelt natur inngår ikke i tallet for våtmark. Det beregnes ikke en andel av kommunens våtmark fra denne delvise fordelingen.</p>
         </article>
       </section>
 

@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ExploreAnalysisWorkspace } from '../src/features/explore-map/ExploreAnalysisWorkspace'
 import { App } from '../src/app/App'
+import * as planAreaSource from '../src/features/plan-area/source'
+import { planAreaFixture } from './planAreaFixture'
 vi.mock('../src/features/plan-area/source',()=>({calculatePlanArea:async(number:string)=>({status:'not_available',municipalityNumber:number,reason:'Klargjort analysegrunnlag mangler, ikke null treff.'})}))
 import { MunicipalityCombobox } from '../src/components/MunicipalityCombobox'
 import {
@@ -530,6 +532,24 @@ describe('sidestruktur og Oversikt', () => {
     expect(screen.getByRole('heading', { name: 'Tidsserie og endring' })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Kartvisning: Inngrepsfri natur i Trondheim' })).toBeInTheDocument()
     await vi.waitFor(() => expect(map.setThematicLayerVisible).toHaveBeenCalledWith('infrastructure-free-nature', true))
+  })
+
+  it('uses the primary plan result on forest and wetland pages and opens the selected map category', async () => {
+    mockMunicipalityFlow()
+    const primary = vi.spyOn(planAreaSource, 'calculatePlanArea').mockResolvedValue(planAreaFixture)
+    const legacy = vi.spyOn(plannedAnalysis, 'calculatePlannedDevelopment')
+    render(<App createMap={() => mapMock()} />)
+    await chooseTrondheim()
+    for (const [theme, category] of [['Skog', 'skog'], ['Myr (våtmark)', 'våtmark']]) {
+      fireEvent.click(screen.getByRole('link', { name: 'Naturtema' }))
+      fireEvent.click(screen.getByRole('button', { name: new RegExp(theme === 'Skog' ? 'Skog' : 'Myr') }))
+      await vi.waitFor(() => expect(document.querySelector('.plan-area-indicator')).toHaveAttribute('data-analysis-id', planAreaFixture.analysisId))
+      fireEvent.click(screen.getByRole('button', { name: `Vis ${category} i plananalysen` }))
+      expect(await screen.findByRole('table', { name: 'Økosystemtyper innenfor planområder' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: theme === 'Skog' ? 'Skog' : 'Våtmark' })).toHaveAttribute('aria-pressed', 'true')
+    }
+    expect(primary).toHaveBeenCalledWith('5001', expect.any(AbortSignal))
+    expect(legacy).not.toHaveBeenCalled()
   })
 
   it('starter med selvstendig nivå 0 uten automatisk plananalyse', async () => {
