@@ -177,6 +177,16 @@ try {
     }
     await taskFlow(page,alternative,size);
     await keyboardFlow(page,alternative,size);
+    if(alternative==='C'){
+      await go(page,'C','forest');const before=view(await snapshot(page));
+      await page.locator('[data-size=results]').click();assert.equal(view(await snapshot(page)),before);
+      assert.equal(await page.locator('.zoom').isVisible(),false);
+      await page.locator('#fit').click();assert.equal((await snapshot(page)).selection,'skog');
+      await capture(page,`C-more-results-${size.width}`);
+      await page.locator('[data-size=map]').click();assert.equal((await snapshot(page)).panel,'none');
+      assert.equal(await page.locator('.zoom').isVisible(),true);
+      report.checks.push({alternative,width:size.width,allSizePresets:true,compactControlsDoNotCompete:true});
+    }
     if(alternative==='A'){
       await go(page,'A','nature-all');await page.locator('#expand-results').click();assert.equal((await snapshot(page)).resultFocus,true);
       assert.equal(await page.locator('.map-pane').isVisible(),false);await capture(page,`A-expanded-results-${size.width}`);

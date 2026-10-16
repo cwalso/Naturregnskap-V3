@@ -74,7 +74,7 @@ lukker den etterpå. Ingen eksterne tjenester trengs under selve kontrollen.
 Med UX_AXE_PATH utelatt kjøres interaksjonskontrollene uten å hevde axe-audit.
 `window.designState()` returnerer en kopi av skissens tilstand for observasjon.
 
-`evidence/checks.json`: 50 individuelle skjermbilder/axe-kontroller, to
+`evidence/checks.json`: 52 individuelle skjermbilder/axe-kontroller, to
 sammenligningsbilder, 36 oppgaveregistreringer og to ekstra A-flyter. Scroll
 måles i CSS-piksler etter scrollIntoView og før klikk/rerender, slik at native
 rulling ikke forsvinner fra målingen når en DOM-node erstattes. Det er et

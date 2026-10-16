@@ -460,6 +460,31 @@
       }
     },
     {
+      "name": "C-more-results-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 130.53125
+      },
+      "results": {
+        "width": 390,
+        "height": 279.671875
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1.6,
+        "kind": "selection",
+        "fitFor": "skog"
+      }
+    },
+    {
       "name": "A-area-all-320",
       "viewport": {
         "width": 320,
@@ -913,6 +938,31 @@
         "y": 0,
         "zoom": 1,
         "kind": "commune"
+      }
+    },
+    {
+      "name": "C-more-results-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 95.8125
+      },
+      "results": {
+        "width": 320,
+        "height": 190.390625
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1.6,
+        "kind": "selection",
+        "fitFor": "skog"
       }
     },
     {
@@ -2880,6 +2930,14 @@
       ]
     },
     {
+      "name": "C-more-results-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
       "name": "A-area-all-320",
       "version": "4.14.0",
       "violations": [],
@@ -3017,6 +3075,14 @@
     },
     {
       "name": "C-missing-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-more-results-320",
       "version": "4.14.0",
       "violations": [],
       "incomplete": [
@@ -3227,6 +3293,12 @@
       "emulatedTouchPan": true
     },
     {
+      "alternative": "C",
+      "width": 390,
+      "allSizePresets": true,
+      "compactControlsDoNotCompete": true
+    },
+    {
       "alternative": "A",
       "width": 320,
       "layersPreserved": true,
@@ -3273,6 +3345,12 @@
       "scrollDoesNotPanMap": true,
       "selectedLocalitySurvivesLayers": true,
       "emulatedTouchPan": true
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "allSizePresets": true,
+      "compactControlsDoNotCompete": true
     }
   ],
   "completed": true

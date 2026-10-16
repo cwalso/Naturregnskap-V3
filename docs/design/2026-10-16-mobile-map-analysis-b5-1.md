@@ -113,6 +113,11 @@ oppsummering og utvalgsvelger. Alle tilstander beholder samme utsnitt.
 kartet bare 157 px høyt i Delt, med mye av flaten bundet av kontroller. Det
 fungerer teknisk, men gir liten gevinst over dagens problem. Ikke anbefalt som
 standard. Denne vurderingen gjelder også at Mer resultat gjør kartet enda mindre.
+I Mer resultat behandles kartet som en liten oversikt: zoomgruppen og den
+flytende bildeteksten skjules, slik at de ikke konkurrerer med Tilpass kart.
+Mer kart gjenoppretter kontrollene. Begge ekstra tilstander er kontrollert:
+[390](2026-10-16-mobile-map-analysis-b5-1/evidence/C-more-results-390.png),
+[320](2026-10-16-mobile-map-analysis-b5-1/evidence/C-more-results-320.png).
 
 Ved 900/1440 px går alle tre til samme kjente sidepanelprinsipp: kart og
 resultater side om side, med separat lagliste ved stor desktop. Mobilens
@@ -202,14 +207,14 @@ C har 196/129 px i Delt. Ved 900×900 gir alle kart 560×639 og resultatpanel
 Målene inkluderer kartkontroller og illustrasjonsmerking, og skissene har en
 44 px designlinje som ikke skal overføres til produktet. Det er ikke en garanti
 for samme pikselgevinst i OpenLayers eller fysisk nettleser med verktøylinjer.
-Ingen sideoverflow i de 50 individuelle opptakene. Desktop→mobil→desktop
+Ingen sideoverflow i de 52 individuelle opptakene. Desktop→mobil→desktop
 beholder utvalg og illustrert utsnitt uten å opprette en ny kartkomponent.
 
 ## 6. Ekspertbasert oppgavekontroll
 
 Chromium **151.0.7922.173**, lokal HTTP, fire faste viewportmål. Ingen eksterne
 kartkall. 36 oppgaveregistreringer (seks oppgaver × tre alternativer × to
-mobilmål), to ekstra A-flyter, 50 individuelle opptak og to sammenligningsbilder.
+mobilmål), to ekstra A-flyter, 52 individuelle opptak og to sammenligningsbilder.
 [Rå målinger](2026-10-16-mobile-map-analysis-b5-1/evidence/checks.json).
 
 Tabellen viser **handlinger / intern rulledistanse 390–320**. En select-endring,
@@ -249,7 +254,7 @@ OpenLayers-touch eller en faktisk telefon.
 
 ## 7. Tilgjengelighet
 
-50 målrettede axe-core 4.14.0-kontroller med WCAG A/AA-tags uten registrerte
+52 målrettede axe-core 4.14.0-kontroller med WCAG A/AA-tags uten registrerte
 regelbrudd. Ikke full WCAG-godkjenning. Verktøyet har ufullførte automatiske
 fargekontroller ved SVG, klippede/rullbare flater og symbolknapper; disse
 framgår i checks.json. Zoomgruppen fikk eksplisitt group-rolle etter manuell
@@ -258,7 +263,8 @@ oppfølging av et aria-label-varsel i første skisse.
 Native lister, knapper, select, søk, range og details; ingen dragavhengighet,
 modal eller fokusfelle. Alle tre alternativer er prøvd med Tab, Enter,
 select-taster, Escape/fokusretur og kartets piltaster ved begge mobilmål.
-Tydelig 3 px fokusmarkering og 44 px kontroller. Normal, hover, valgt og fokus
+Tydelig 3 px fokusmarkering og 44 px kontroller. Fargeoverganger på knappene er fjernet for å unngå kortvarig svak kontrast
+ved valgt tilstand. Normal, hover, valgt og fokus
 er kontrollert på relevante primærkontroller; Oslo-tilpassing og utvalgsvelger
 er deaktivert ved manglende grunnlag.
 
@@ -363,7 +369,7 @@ Kriteriene gjelder først etter valg/godkjenning av designretning:
 
 ## 11. Kjørt kontroll og levering
 
-`check-design.mjs` fullført: 50 individuelle skjermbilder/axe-audits, to
+`check-design.mjs` fullført: 52 individuelle skjermbilder/axe-audits, to
 sammenligningsbilder, seks tastaturforløp, emulert touch, state-/scrollkontroller
 og uendrede referansedata. Ingen registrerte JavaScript-feil eller sideoverflow.
 Visuell ekspertgjennomgang av blant annet 320 px A-skuff/Utvid, B-resultat,

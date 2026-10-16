@@ -157,6 +157,6 @@ mens beregningsmetoder og kildegrunnlag er beholdt. B5 er ikke påbegynt.
 [Designrapport og anbefaling](design/2026-10-16-mobile-map-analysis-b5-1.md) og
 [kjørbar A/B/C-sammenligning](design/2026-10-16-mobile-map-analysis-b5-1/index.html)
 med [lokal kjøring](design/2026-10-16-mobile-map-analysis-b5-1/README.md),
-52 skjermbilder og ekspertbaserte kontrollmålinger. Anbefaler Kart først med
+54 skjermbilder og ekspertbaserte kontrollmålinger. Anbefaler Kart først med
 brukerstyrt utvidet resultatlesing. Kun dokumentasjonsprototyper; produksjon og
 Pages er uendret. Ingen designretning er godkjent og B5.2 er ikke startet.
