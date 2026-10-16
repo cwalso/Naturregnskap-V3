@@ -151,3 +151,12 @@ reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.
 
 Dette følger opp undersøkelsene over: konsumenter og presentasjon er nå endret,
 mens beregningsmetoder og kildegrunnlag er beholdt. B5 er ikke påbegynt.
+
+## B5.1 – mobil kart- og analysedesign, 16.10.2026
+
+[Designrapport og anbefaling](design/2026-10-16-mobile-map-analysis-b5-1.md) og
+[kjørbar A/B/C-sammenligning](design/2026-10-16-mobile-map-analysis-b5-1/index.html)
+med [lokal kjøring](design/2026-10-16-mobile-map-analysis-b5-1/README.md),
+52 skjermbilder og ekspertbaserte kontrollmålinger. Anbefaler Kart først med
+brukerstyrt utvidet resultatlesing. Kun dokumentasjonsprototyper; produksjon og
+Pages er uendret. Ingen designretning er godkjent og B5.2 er ikke startet.

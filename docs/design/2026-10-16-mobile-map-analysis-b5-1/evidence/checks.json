@@ -1,0 +1,3279 @@
+{
+  "date": "2026-10-16",
+  "kind": "expert-design-review-not-user-testing",
+  "chromium": "151.0.7922.173",
+  "screenshots": [
+    {
+      "name": "A-area-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 520.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-forest-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 520.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-nature-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 286.125
+      },
+      "results": {
+        "width": 390,
+        "height": 178.078125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-locality-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 520.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-pan-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 520.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "A-missing-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 289.484375
+      },
+      "results": {
+        "width": 390,
+        "height": 180.828125
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-expanded-results-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 464.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-area-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 464.203125
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-forest-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 464.203125
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-nature-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 464.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-locality-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 464.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-pan-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 520.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "B-missing-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 390,
+        "height": 470.3125
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-area-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 214.453125
+      },
+      "results": {
+        "width": 390,
+        "height": 195.75
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-forest-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 214.453125
+      },
+      "results": {
+        "width": 390,
+        "height": 195.75
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-nature-all-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 214.453125
+      },
+      "results": {
+        "width": 390,
+        "height": 195.75
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-locality-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 214.453125
+      },
+      "results": {
+        "width": 390,
+        "height": 195.75
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-pan-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 466.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "C-missing-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 390,
+        "height": 217.25
+      },
+      "results": {
+        "width": 390,
+        "height": 199.0625
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-area-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 396.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-forest-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 396.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-nature-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 217.921875
+      },
+      "results": {
+        "width": 320,
+        "height": 122.28125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-locality-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 396.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-pan-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 396.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "A-missing-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 221.28125
+      },
+      "results": {
+        "width": 320,
+        "height": 125.03125
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-expanded-results-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 340.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-area-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 340.203125
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-forest-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 340.203125
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-nature-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 340.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-locality-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 340.203125
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-pan-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 396.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "B-missing-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 0,
+        "height": 0
+      },
+      "results": {
+        "width": 320,
+        "height": 346.3125
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-area-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 157.40625
+      },
+      "results": {
+        "width": 320,
+        "height": 128.796875
+      },
+      "selection": "Planområder · natur og jordbruk\n3 620,88 daa\nAlle arealer\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-forest-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 157.40625
+      },
+      "results": {
+        "width": 320,
+        "height": 128.796875
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-nature-all-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 157.40625
+      },
+      "results": {
+        "width": 320,
+        "height": 128.796875
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n119,38 daa\n70 lokaliteter · Samlet resultat\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-locality-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 157.40625
+      },
+      "results": {
+        "width": 320,
+        "height": 128.796875
+      },
+      "selection": "Planoverlapp · registrerte naturverdier\n19,61 daa\nTanemsmyra\nKartutvalg\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nTanemsmyra\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-pan-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 342.203125
+      },
+      "results": {
+        "width": 0,
+        "height": 0
+      },
+      "selection": "Planområder · identifisert delareal\n2 032,22 daa\nSkog\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nResultater",
+      "view": {
+        "x": -170,
+        "y": 100,
+        "zoom": 1.35,
+        "kind": "panned"
+      }
+    },
+    {
+      "name": "C-missing-320",
+      "viewport": {
+        "width": 320,
+        "height": 720
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 320,
+        "height": 160.21875
+      },
+      "results": {
+        "width": 320,
+        "height": 132.09375
+      },
+      "selection": "Oslo: analyse ikke klargjort\nManglende grunnlag, ikke null treff.\n\nKartutvalg\nAlle arealer\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nJordbruk\nMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-forest-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-nature-all-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-forest-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-nature-all-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-forest-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-nature-all-900",
+      "viewport": {
+        "width": 900,
+        "height": 900
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 560,
+        "height": 639
+      },
+      "results": {
+        "width": 339,
+        "height": 584
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-forest-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukResultater",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "A-nature-all-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-forest-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "B-nature-all-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiSe kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-forest-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planområder · identifisert delareal2 032,22 daaSkogKartutvalgAlle arealerSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt naturJordbrukMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    },
+    {
+      "name": "C-nature-all-1440",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "pageOverflowX": 0,
+      "pageOverflowY": 0,
+      "map": {
+        "width": 826,
+        "height": 699
+      },
+      "results": {
+        "width": 339,
+        "height": 644
+      },
+      "selection": "Planoverlapp · registrerte naturverdier119,38 daa70 lokaliteter · Samlet resultatKartutvalgSamlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiMer kart",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1,
+        "kind": "commune"
+      }
+    }
+  ],
+  "gallery": [
+    {
+      "name": "comparison-390",
+      "frameWidth": 390,
+      "frameHeight": 844
+    },
+    {
+      "name": "comparison-320",
+      "frameWidth": 320,
+      "frameHeight": 720
+    }
+  ],
+  "tasks": [
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 4,
+      "scrollPixels": 58,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 292,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "task": "4b Finn lokalitet med Utvid",
+      "actions": 5,
+      "scrollPixels": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": true,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 4,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 271,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 3,
+      "scrollPixels": 41,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 299,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 4,
+      "scrollPixels": 134,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 324,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "task": "4b Finn lokalitet med Utvid",
+      "actions": 5,
+      "scrollPixels": 0,
+      "state": {
+        "alternative": "A",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": true,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "none",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 4,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 308,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "B",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "1 Finn skog",
+      "actions": 2,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1,
+          "kind": "commune"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "2 Se hvor skogarealet ligger",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "skog",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "3 Bytt til våtmark",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "area",
+        "selection": "vatmark",
+        "search": "",
+        "sort": "area",
+        "content": "summary",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "4 Finn registrert lokalitet",
+      "actions": 3,
+      "scrollPixels": 127,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "BN00109936",
+        "search": "BN00109936",
+        "sort": "area",
+        "content": "detail",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "5 Tilbake til samlet resultat",
+      "actions": 1,
+      "scrollPixels": 0,
+      "scrollEvents": 0,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": false
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        }
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "task": "6 Åpne ordinære kartlag og returner",
+      "actions": 3,
+      "scrollPixels": 333,
+      "scrollEvents": 1,
+      "state": {
+        "alternative": "C",
+        "commune": "Trondheim",
+        "active": true,
+        "mode": "nature",
+        "selection": "all",
+        "search": "",
+        "sort": "area",
+        "content": "localities",
+        "panel": "results",
+        "size": "split",
+        "resultFocus": false,
+        "layers": {
+          "level0": true,
+          "plan": false,
+          "nature": false,
+          "protected": false,
+          "inon": false,
+          "reindeer": false,
+          "grey": true
+        },
+        "opacity": 25,
+        "view": {
+          "x": 0,
+          "y": 0,
+          "zoom": 1.6,
+          "kind": "selection",
+          "fitFor": "skog"
+        },
+        "returnPanel": "results"
+      }
+    }
+  ],
+  "keyboard": [
+    {
+      "alternative": "A",
+      "width": 390,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "tabEnterNativeSelect": true,
+      "escapeFocusReturn": true,
+      "arrowPan": true,
+      "focus": {
+        "visible": true,
+        "outline": "solid",
+        "width": "3px"
+      }
+    }
+  ],
+  "accessibility": [
+    {
+      "name": "A-area-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-forest-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-nature-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-locality-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-pan-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-missing-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-expanded-results-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-area-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-forest-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-nature-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-locality-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-pan-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-missing-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "C-area-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-forest-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-nature-all-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-locality-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-pan-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-missing-390",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-area-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-forest-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-nature-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-locality-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-pan-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-missing-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-expanded-results-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-area-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-forest-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-nature-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-locality-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "B-pan-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-missing-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "C-area-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-forest-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-nature-all-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-locality-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-pan-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-missing-320",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-forest-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-nature-all-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-forest-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-nature-all-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-forest-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-nature-all-900",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-forest-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "A-nature-all-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-forest-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "B-nature-all-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-forest-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "C-nature-all-1440",
+      "version": "4.14.0",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "contrasts": [
+    {
+      "selector": "#fit",
+      "state": "normal",
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(0, 94, 93)",
+      "ratio": 7.6110557464072555
+    },
+    {
+      "selector": "#fit",
+      "state": "hover",
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(0, 94, 93)",
+      "ratio": 7.6110557464072555
+    },
+    {
+      "selector": "#fit",
+      "state": "focus",
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(0, 94, 93)",
+      "ratio": 7.6110557464072555
+    },
+    {
+      "selector": ".summary strong",
+      "state": "normal",
+      "foreground": "rgb(25, 62, 61)",
+      "background": "rgb(255, 255, 255)",
+      "ratio": 11.681146262169694
+    },
+    {
+      "selector": "#map-disclaimer",
+      "state": "normal",
+      "foreground": "rgb(87, 71, 30)",
+      "background": "rgb(255, 253, 242)",
+      "ratio": 8.852345995900706
+    },
+    {
+      "selector": "[data-size=split]",
+      "state": "selected",
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(0, 94, 93)",
+      "ratio": 7.6110557464072555
+    },
+    {
+      "selector": "[data-size=split]",
+      "state": "selected-hover",
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(0, 73, 72)",
+      "ratio": 10.260953924752311
+    }
+  ],
+  "errors": [],
+  "checks": [
+    {
+      "existingReferenceSnapshotsMatch": true,
+      "localities": 70,
+      "noGeometriesOrNewAnalysis": true
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "A",
+      "width": 390,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "B",
+      "width": 390,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "C",
+      "width": 390,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "A",
+      "width": 320,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "B",
+      "width": 320,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "layersPreserved": true,
+      "opacityKeyboard": true,
+      "communeResetNoOldResults": true,
+      "closeRemovesOnlyAnalysis": true
+    },
+    {
+      "alternative": "C",
+      "width": 320,
+      "quickAccessToMethodValuesTypes": true,
+      "scrollDoesNotPanMap": true,
+      "selectedLocalitySurvivesLayers": true,
+      "emulatedTouchPan": true
+    }
+  ],
+  "completed": true
+}

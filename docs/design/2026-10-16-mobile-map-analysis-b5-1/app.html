@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="nb">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B5.1 – mobil kart- og analyseopplevelse</title>
+<link rel="stylesheet" href="prototype.css">
+<body>
+<div class="app">
+  <div class="design-bar"><a href="index.html">B5.1 · designskisse</a><nav aria-label="Designalternativ"><a id="alt-a" href="?alternative=A">A</a><a id="alt-b" href="?alternative=B">B</a><a id="alt-c" href="?alternative=C">C</a></nav></div>
+  <header class="site-header"><strong>Kommunale naturregnskap <small>Test · <span id="alternative-name"></span></small></strong><label><span class="sr-only">Velg kommune</span><select id="commune"><option>Trondheim</option><option>Oslo</option></select></label></header>
+  <nav class="desktop-nav" aria-label="Hovednavigasjon"><span>Kommuneoversikt</span><span>Naturtapet</span><span>Naturtema</span><strong aria-current="page">Utforsk i kart</strong></nav>
+  <main>
+    <div class="tool-row"><h1>Utforsk i kart</h1><div><button id="layers-button" data-action="layers" aria-controls="layers" aria-expanded="false">Kartlag <span id="layer-count">1</span></button><button id="close-analysis" data-action="close">Lukk analyse</button></div></div>
+    <div class="mode-bar"><label for="analysis-mode" class="sr-only">Velg analyse</label><select id="analysis-mode"><option value="area">Arealfordeling</option><option value="nature">Registrerte naturverdier</option></select><span class="context-selected" id="desktop-selection"></span></div>
+    <div class="size-presets" role="group" aria-label="Fordeling mellom kart og resultat"><button data-action="preset" data-size="map" aria-pressed="false">Mer kart</button><button data-action="preset" data-size="split" aria-pressed="true">Delt</button><button data-action="preset" data-size="results" aria-pressed="false">Mer resultat</button></div>
+    <div class="workspace">
+      <aside class="desktop-layers" aria-label="Kartlag på desktop" id="desktop-layers"></aside>
+      <div class="stage">
+        <section class="map-pane" aria-label="Illustrert kartflate">
+          <div id="map" tabindex="0" role="region" aria-label="Illustrert kart. Bruk piltastene for å panorere, pluss og minus for å zoome." aria-describedby="map-disclaimer">
+            <svg viewBox="0 0 600 650" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><pattern id="streets" width="80" height="90" patternUnits="userSpaceOnUse"><rect width="80" height="90" fill="#eff0e7"/><path d="M0 38H80M35 0V90" stroke="#fff" stroke-width="8"/><path d="M0 38H80M35 0V90" stroke="#d6d9ce" stroke-width="1"/></pattern><pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M-3 3L3-3M0 10L10 0M7 13L13 7" stroke="#005e5d" stroke-width="2"/></pattern></defs>
+              <g id="map-drawing"><rect x="-600" y="-650" width="1800" height="1950" fill="url(#streets)"/><path d="M-20 60Q190 0 210 100T460 140L660 30V-100H-20Z" fill="#c5dedf"/><path d="M195 80Q300 160 230 260T315 420T310 690" fill="none" stroke="#c5dedf" stroke-width="30"/><path d="M10 460L110 300 180 350 140 630H0Z M385 210L570 250 625 510 435 570 365 380Z" fill="#d4e2cd"/><path d="M-10 240L610 430M90-10L440 680" stroke="#e6ce9d" stroke-width="12"/><path d="M-10 240L610 430M90-10L440 680" stroke="#fff9e8" stroke-width="7"/>
+              <g class="ordinary-shapes"><path d="M420 430h130v130H420Z" fill="#b7b8b5" stroke="#4d5b59" stroke-dasharray="5 4"/><path d="M80 120h95v100H80Z" fill="#d5c6e5" stroke="#775a95"/></g>
+              <g class="analysis-shapes"><path class="forest-shape" d="M365 255L470 272 498 339 409 366 355 319Z M115 445L177 403 216 449 173 512 111 493Z" fill="#9ecc73" stroke="#244e39" stroke-width="3"/><path class="wetland-shape" d="M400 454L465 448 492 514 430 534 398 500Z" fill="#c9b0ec" stroke="#684c82" stroke-width="3"/><path class="other-shape" d="M85 180L152 185 164 240 113 257 79 216Z" fill="#ffd16e" stroke="#805e28" stroke-width="3"/><path class="locality-shape" d="M355 325L430 307 471 371 390 413 346 380Z" fill="#b27ec7" fill-opacity=".4" stroke="#6f358b" stroke-width="4"/><path class="locality-shape" d="M371 340L404 326 426 362 386 386Z" fill="#6f358b" stroke="#fff" stroke-width="3"/></g>
+              </g>
+            </svg>
+          </div>
+          <div class="zoom" role="group" aria-label="Zoom"><button data-action="zoom-in" aria-label="Zoom inn">+</button><button data-action="zoom-out" aria-label="Zoom ut">−</button></div>
+          <div class="map-caption"><strong id="view-label">Kommuneutsnitt</strong><span id="selection-legend">Illustrert analyseutvalg</span></div>
+          <div class="map-bottom"><button id="fit" data-action="fit" aria-label="Tilpass kart til utvalget">⌖ Tilpass kart</button><button id="whole" data-action="whole">Hele kommunen</button></div>
+          <div id="map-disclaimer">Illustrasjon – ikke beregnet geografi</div>
+        </section>
+        <section id="results" class="results" aria-label="Analyseresultater"></section>
+        <section id="layers" class="layer-panel" aria-label="Ordinære kartlag" hidden></section>
+      </div>
+      <section class="summary" aria-label="Aktiv analyse og kartutvalg" id="summary"></section>
+    </div>
+  </main>
+  <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+</div>
+<script src="reference-data.js"></script>
+<script src="prototype.js"></script>
+</body></html>
