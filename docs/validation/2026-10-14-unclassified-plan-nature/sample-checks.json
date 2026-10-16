@@ -1,0 +1,4138 @@
+{
+  "summary": {
+    "exact": {
+      "points": 21,
+      "classes": {
+        "bebygdOpparbeidetAreal": 3,
+        "skog": 17,
+        "dyrketmark": 1
+      },
+      "binaryAssigned": 21,
+      "binaryCompatible": 17,
+      "binaryIncompatible": 4,
+      "ambiguousQueries": 0
+    },
+    "excluded": {
+      "points": 21,
+      "classes": {
+        "skog": 7,
+        "bebygdOpparbeidetAreal": 11,
+        "dyrketmark": 2,
+        "heiBuskmark": 1
+      },
+      "binaryAssigned": 0,
+      "binaryCompatible": 0,
+      "binaryIncompatible": 0,
+      "ambiguousQueries": 0
+    },
+    "low_alpha": {
+      "points": 21,
+      "classes": {
+        "skog": 9,
+        "bebygdOpparbeidetAreal": 9,
+        "dyrketmark": 2,
+        "heiBuskmark": 1
+      },
+      "binaryAssigned": 0,
+      "binaryCompatible": 0,
+      "binaryIncompatible": 0,
+      "ambiguousQueries": 0
+    },
+    "mixed_or_other": {
+      "points": 9,
+      "classes": {
+        "bebygdOpparbeidetAreal": 3,
+        "heiBuskmark": 6
+      },
+      "binaryAssigned": 6,
+      "binaryCompatible": 2,
+      "binaryIncompatible": 4,
+      "ambiguousQueries": 0
+    },
+    "nonexact_single_support": {
+      "points": 21,
+      "classes": {
+        "skog": 13,
+        "bebygdOpparbeidetAreal": 7,
+        "dyrketmark": 1
+      },
+      "binaryAssigned": 12,
+      "binaryCompatible": 10,
+      "binaryIncompatible": 2,
+      "ambiguousQueries": 0
+    },
+    "rescued": {
+      "points": 21,
+      "classes": {
+        "skog": 17,
+        "bebygdOpparbeidetAreal": 2,
+        "elverBekkerKanaler": 1,
+        "dyrketmark": 1
+      },
+      "binaryAssigned": 21,
+      "binaryCompatible": 17,
+      "binaryIncompatible": 4,
+      "ambiguousQueries": 0
+    },
+    "transparent": {
+      "points": 21,
+      "classes": {
+        "bebygdOpparbeidetAreal": 17,
+        "skog": 1,
+        "dyrketmark": 3
+      },
+      "binaryAssigned": 0,
+      "binaryCompatible": 0,
+      "binaryIncompatible": 0,
+      "ambiguousQueries": 0
+    }
+  },
+  "records": [
+    {
+      "tile": 0,
+      "stratum": "exact",
+      "i": 14,
+      "j": 798,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273145.3828125,
+      "y": 7044449.3671875,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-0.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=14&j=798",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1681,
+        "sha256": "10b8c693bda61d24da16482c968d7e8c84a287543f1d20fe27d4814f3666c5e4",
+        "seconds": 0.9925309440004639
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 0,
+      "stratum": "exact",
+      "i": 63,
+      "j": 897,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273663.7109375,
+      "y": 7043402.1328125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-1.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=63&j=897",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "f8225302d978513c8465b0f10c5aa4216f49e1ce4be0bf6dcb689970a81bc04a",
+        "seconds": 0.9313751480003702
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "exact",
+      "i": 191,
+      "j": 1013,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 275017.7109375,
+      "y": 7042175.0703125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-2.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=191&j=1013",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "2aab1f01a1c06c223eb94fc966d6ef1e5db5c62e8775afdd0896780fa1c5b146",
+        "seconds": 0.8768472000010661
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "transparent",
+      "i": 17,
+      "j": 799,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273177.1171875,
+      "y": 7044438.7890625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-3.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=17&j=799",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1697,
+        "sha256": "52effbf49df6bc073da855fc8cb77a7e5c5edb240ecd1c3a11cc026883356f33",
+        "seconds": 1.076727301999199
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "transparent",
+      "i": 76,
+      "j": 893,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273801.2265625,
+      "y": 7043444.4453125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-4.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=76&j=893",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1694,
+        "sha256": "c7f55bf20ab6db4baf31b918476a07d0533ffdb1d218d8f572a0f430985dad73",
+        "seconds": 0.5320838549996552
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "transparent",
+      "i": 220,
+      "j": 1006,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 275324.4765625,
+      "y": 7042249.1171875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-5.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=220&j=1006",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1703,
+        "sha256": "e562a5dd512d4ae6b01087dbd86b549592b53daf2ba87292f741e3810694bd22",
+        "seconds": 0.5176514150007279
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "low_alpha",
+      "i": 17,
+      "j": 798,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273177.1171875,
+      "y": 7044449.3671875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-6.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=17&j=798",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "12b4c534e76c2842a4ce3282c352f5be5f534dc8c05add484f2ea8c7da6361ea",
+        "seconds": 1.002071060000162
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "low_alpha",
+      "i": 64,
+      "j": 896,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273674.2890625,
+      "y": 7043412.7109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-7.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=64&j=896",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1703,
+        "sha256": "3c96fe99b4a527fd91def3c5bce6ad5fb0d766a2a3a478cb2bcda3da481ad15c",
+        "seconds": 0.4930484920005256
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "low_alpha",
+      "i": 190,
+      "j": 1012,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 275007.1328125,
+      "y": 7042185.6484375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-8.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=190&j=1012",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1690,
+        "sha256": "f3782baeb55b9ecb08a79c00ed04bb7ab0d1edaa2022019d6ae24736c2f38090",
+        "seconds": 0.6229625470004976
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "nonexact_single_support",
+      "i": 9,
+      "j": 800,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273092.4921875,
+      "y": 7044428.2109375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-9.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=9&j=800",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1640,
+        "sha256": "17a044d611fea06349733ec90aa3f5ac54a9b135c241efd26db0fdb62eb74911",
+        "seconds": 0.587490854999487
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "nonexact_single_support",
+      "i": 77,
+      "j": 892,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273811.8046875,
+      "y": 7043455.0234375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-10.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=77&j=892",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1651,
+        "sha256": "c40c18a5439ca54df61df9fb369b1b5dc8eb5e2492f196535105ce1b5adc84b7",
+        "seconds": 0.26244482599940966
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "nonexact_single_support",
+      "i": 190,
+      "j": 1013,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 275007.1328125,
+      "y": 7042175.0703125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-11.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=190&j=1013",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1690,
+        "sha256": "f3782baeb55b9ecb08a79c00ed04bb7ab0d1edaa2022019d6ae24736c2f38090",
+        "seconds": 0.5778731270002027
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 0,
+      "stratum": "rescued",
+      "i": 16,
+      "j": 842,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273166.5390625,
+      "y": 7043983.9296875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-12.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=16&j=842",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "be616806db300ebc1a1a90175c6ba3a65674978f8e923cb19f882dae1f0d6fc5",
+        "seconds": 0.27195812500212924
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "rescued",
+      "i": 191,
+      "j": 1012,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 275017.7109375,
+      "y": 7042185.6484375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-13.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=191&j=1012",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1636,
+        "sha256": "8225ab11f0908c5ccf1f73a9dca65c100572109cd878308d2ec33799c611d208",
+        "seconds": 0.45216761300252983
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 0,
+      "stratum": "excluded",
+      "i": 62,
+      "j": 896,
+      "bbox": [
+        272992,
+        7042064,
+        283824,
+        7052896
+      ],
+      "x": 273653.1328125,
+      "y": 7043412.7109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-14.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7042064.00%2C283824.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=62&j=896",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1697,
+        "sha256": "cb0f201cbad4c7d4b624bcc68c788c4ed151f1b9ffafbbc12b7544376abeb865",
+        "seconds": 0.3391143489971
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "exact",
+      "i": 1022,
+      "j": 808,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272976.1328125,
+      "y": 7044343.5859375,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-15.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=1022&j=808",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "e7be7aa5845d4f60bcad159789301be624545670ae642bc09960a3a031fd8de9",
+        "seconds": 0.4451213350002945
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 1,
+      "stratum": "exact",
+      "i": 963,
+      "j": 881,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272352.0234375,
+      "y": 7043571.3828125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-16.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=963&j=881",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1640,
+        "sha256": "b238172fda598f5534473f84c01644cc70c1513b3dd3e43c322ef98ff53749dd",
+        "seconds": 0.35606865899899276
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 1,
+      "stratum": "exact",
+      "i": 960,
+      "j": 1023,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272320.2890625,
+      "y": 7042069.2890625,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-17.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=960&j=1023",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1702,
+        "sha256": "66a86d529085a36f33f3fa4b3dcf4eba9986dc2ca036e49323b5de52405b751a",
+        "seconds": 0.27916859399920213
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 1,
+      "stratum": "transparent",
+      "i": 1022,
+      "j": 837,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272976.1328125,
+      "y": 7044036.8203125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-18.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=1022&j=837",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1696,
+        "sha256": "bc10dfb20b865b2e6a54d8f570b70e1af04ddfed302bcb1de11a1942aa9c393c",
+        "seconds": 0.31744518999767024
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "transparent",
+      "i": 945,
+      "j": 911,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272161.6171875,
+      "y": 7043254.0390625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-19.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=945&j=911",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "5343af091ce621da0d91aa8b4aec0321bae809cc10db768b5616d7f0947a8194",
+        "seconds": 0.6384965180004656
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "transparent",
+      "i": 921,
+      "j": 1012,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 271907.7421875,
+      "y": 7042185.6484375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-20.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=921&j=1012",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "799cb9fe49969062aefba5e43f4fa7ebb790f2236788bd7870f553d723774856",
+        "seconds": 0.4936676359975536
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "low_alpha",
+      "i": 1022,
+      "j": 836,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272976.1328125,
+      "y": 7044047.3984375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-21.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=1022&j=836",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1640,
+        "sha256": "6c89a41a27c0531edfe3caaef46a9fee69c7ae3822214f0c1ad88365aa208672",
+        "seconds": 0.35851454000294325
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "low_alpha",
+      "i": 935,
+      "j": 888,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272055.8359375,
+      "y": 7043497.3359375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-22.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=935&j=888",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1641,
+        "sha256": "d5fb4b7f6beb786c38bf20690550cd4bbbf08a1a381c2deeed6f97ec5d8e63ab",
+        "seconds": 0.2608775240005343
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "low_alpha",
+      "i": 961,
+      "j": 1021,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272330.8671875,
+      "y": 7042090.4453125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-23.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=961&j=1021",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.38137918100255774
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "nonexact_single_support",
+      "i": 1020,
+      "j": 810,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272954.9765625,
+      "y": 7044322.4296875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-24.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=1020&j=810",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1682,
+        "sha256": "89b3adcff5ef8101f902ac13860066dbe86944e53287bef95dc48f90c964e934",
+        "seconds": 0.5943493129998387
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "nonexact_single_support",
+      "i": 988,
+      "j": 1005,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272616.4765625,
+      "y": 7042259.6953125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-25.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=988&j=1005",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "a808c3610ebbb65d80788d0dfd7d0ad161e7d176d1adcd2a9dd660bb0132df6c",
+        "seconds": 0.28131216399924597
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 1,
+      "stratum": "nonexact_single_support",
+      "i": 961,
+      "j": 1023,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272330.8671875,
+      "y": 7042069.2890625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-26.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=961&j=1023",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.2766686849972757
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 1,
+      "stratum": "rescued",
+      "i": 1020,
+      "j": 813,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272954.9765625,
+      "y": 7044290.6953125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-27.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=1020&j=813",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1638,
+        "sha256": "2d6d0372504d9b38b0d91a9e6624a3f314cc8edc75dc13f5320a2053f4c9356a",
+        "seconds": 0.43064174999744864
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 1,
+      "stratum": "rescued",
+      "i": 960,
+      "j": 1021,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272320.2890625,
+      "y": 7042090.4453125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-28.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=960&j=1021",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.29281856099987635
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 1,
+      "stratum": "excluded",
+      "i": 944,
+      "j": 911,
+      "bbox": [
+        262160,
+        7042064,
+        272992,
+        7052896
+      ],
+      "x": 272151.0390625,
+      "y": 7043254.0390625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-29.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7042064.00%2C272992.00%2C7052896.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=944&j=911",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "5343af091ce621da0d91aa8b4aec0321bae809cc10db768b5616d7f0947a8194",
+        "seconds": 0.4008217650007282
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "exact",
+      "i": 586,
+      "j": 16,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257532.0703125,
+      "y": 7041889.4609375,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-30.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=586&j=16",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "612b3dd380a7eb3877e9deda5f65427019d2686a3e10b743e9780bc3313ff7a8",
+        "seconds": 0.264767409000342
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "exact",
+      "i": 636,
+      "j": 690,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258060.9765625,
+      "y": 7034759.8046875,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-31.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=636&j=690",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "eeec0da2f901b25dcebc57bdaef7f75bba1ea66cd5c94a34c68b19fd01aa9dcb",
+        "seconds": 0.2836026859986305
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "exact",
+      "i": 673,
+      "j": 715,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258452.3671875,
+      "y": 7034495.3515625,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-32.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=673&j=715",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1641,
+        "sha256": "a97aded0943685d6db65cf6cc14f372ed422b21ac78dda1c2e0f3cec7b7e9820",
+        "seconds": 0.2998861579981167
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "transparent",
+      "i": 595,
+      "j": 16,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257627.2734375,
+      "y": 7041889.4609375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-33.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=595&j=16",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1703,
+        "sha256": "d187dcde8887e77d6be8dc28bb36e8310227272ab3f2cc07f86921970355126c",
+        "seconds": 0.32346949099883204
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "transparent",
+      "i": 614,
+      "j": 47,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257828.2578125,
+      "y": 7041561.5390625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-34.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=614&j=47",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "41d10ee559182a6d1858850d562a4ef9f44ece70bb2e2d79f97dba2f2a058810",
+        "seconds": 0.28768181600025855
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "transparent",
+      "i": 641,
+      "j": 691,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258113.8671875,
+      "y": 7034749.2265625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-35.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=641&j=691",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1694,
+        "sha256": "a9ffb86627bf3e4cf0497631f54f668ffa99e82ab2c7e413cc58c03a9c9919e6",
+        "seconds": 0.34476788900065003
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "low_alpha",
+      "i": 592,
+      "j": 16,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257595.5390625,
+      "y": 7041889.4609375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-36.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=592&j=16",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1696,
+        "sha256": "fa65d8321d729d369a4a3493800a04e9a0676f38707505b32e3d9ac9d296008a",
+        "seconds": 0.2672855040000286
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "low_alpha",
+      "i": 614,
+      "j": 43,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257828.2578125,
+      "y": 7041603.8515625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-37.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=614&j=43",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "41d10ee559182a6d1858850d562a4ef9f44ece70bb2e2d79f97dba2f2a058810",
+        "seconds": 0.3154680379993806
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "low_alpha",
+      "i": 670,
+      "j": 715,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258420.6328125,
+      "y": 7034495.3515625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-38.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=670&j=715",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1701,
+        "sha256": "d7f4c3b26d9bc6b44fe2d34523d9154e03e369a58f8bd5e02a62d36679245c2c",
+        "seconds": 0.3150170349981636
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "nonexact_single_support",
+      "i": 595,
+      "j": 17,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257627.2734375,
+      "y": 7041878.8828125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-39.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=595&j=17",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1703,
+        "sha256": "33b2a515339585922d85455ce3351a1cd7186975e0554d6f8f3c428f2d09d836",
+        "seconds": 0.2984704390000843
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 2,
+      "stratum": "nonexact_single_support",
+      "i": 640,
+      "j": 685,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258103.2890625,
+      "y": 7034812.6953125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-40.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=640&j=685",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "eeec0da2f901b25dcebc57bdaef7f75bba1ea66cd5c94a34c68b19fd01aa9dcb",
+        "seconds": 0.28628833100083284
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "nonexact_single_support",
+      "i": 671,
+      "j": 715,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258431.2109375,
+      "y": 7034495.3515625,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-41.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=671&j=715",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1641,
+        "sha256": "a97aded0943685d6db65cf6cc14f372ed422b21ac78dda1c2e0f3cec7b7e9820",
+        "seconds": 0.28332338000109303
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "rescued",
+      "i": 621,
+      "j": 20,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257902.3046875,
+      "y": 7041847.1484375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-42.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=621&j=20",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1646,
+        "sha256": "521821598aa92297f6abe4faa8a00a1c4c8eb4ff89e15c6348ff3094fc95ce88",
+        "seconds": 0.2738520509992668
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "rescued",
+      "i": 640,
+      "j": 690,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 258103.2890625,
+      "y": 7034759.8046875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-43.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=640&j=690",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "eeec0da2f901b25dcebc57bdaef7f75bba1ea66cd5c94a34c68b19fd01aa9dcb",
+        "seconds": 0.3061774380003044
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 2,
+      "stratum": "excluded",
+      "i": 614,
+      "j": 46,
+      "bbox": [
+        251328,
+        7031232,
+        262160,
+        7042064
+      ],
+      "x": 257828.2578125,
+      "y": 7041572.1171875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-44.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=251328.00%2C7031232.00%2C262160.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=614&j=46",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "41d10ee559182a6d1858850d562a4ef9f44ece70bb2e2d79f97dba2f2a058810",
+        "seconds": 0.3054392720005126
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "exact",
+      "i": 960,
+      "j": 0,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 272320.2890625,
+      "y": 7042058.7109375,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-45.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=960&j=0",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.3195676289979019
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 3,
+      "stratum": "exact",
+      "i": 959,
+      "j": 784,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 272309.7109375,
+      "y": 7033765.4609375,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-46.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=959&j=784",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "be864a3966057332e7cbad9c59b7dec1f57ef6d564019e1bf3ceb4e0fbf8aafd",
+        "seconds": 0.41498287200010964
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 3,
+      "stratum": "exact",
+      "i": 953,
+      "j": 1023,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 272246.2421875,
+      "y": 7031237.2890625,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-47.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=953&j=1023",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1647,
+        "sha256": "7091a023d717c4b453330347043cabb20bed92a08e73393d86932d0835934a45",
+        "seconds": 0.2729310600007011
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 3,
+      "stratum": "transparent",
+      "i": 545,
+      "j": 3,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 267930.3671875,
+      "y": 7042026.9765625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-48.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=545&j=3",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1693,
+        "sha256": "bce89de4b654f242157909860ada2bcfb06c2dc84faf3d8f8689b10676ac9666",
+        "seconds": 0.3832778860014514
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "transparent",
+      "i": 580,
+      "j": 448,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268300.6015625,
+      "y": 7037319.7109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-49.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=580&j=448",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1695,
+        "sha256": "b2956ec4c63eb0e85d64c47eeef045c3b3820450d773dbb1af824661a8fd14dd",
+        "seconds": 0.32496819800144294
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "transparent",
+      "i": 608,
+      "j": 963,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268596.7890625,
+      "y": 7031871.9765625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-50.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=608&j=963",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1690,
+        "sha256": "cbc19162b400504a951997447e2bb36a4702e3df3ea706855b70d903aa97dc52",
+        "seconds": 0.29322818700165953
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "low_alpha",
+      "i": 960,
+      "j": 1,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 272320.2890625,
+      "y": 7042048.1328125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-51.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=960&j=1",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.29668359000061173
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "low_alpha",
+      "i": 487,
+      "j": 446,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 267316.8359375,
+      "y": 7037340.8671875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-52.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=487&j=446",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1638,
+        "sha256": "385a44749c111cf5228a027665da1b014e565360fa2785fee58644cca3e95fad",
+        "seconds": 0.3098823430009361
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "low_alpha",
+      "i": 558,
+      "j": 1000,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268067.8828125,
+      "y": 7031480.5859375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-53.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=558&j=1000",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1700,
+        "sha256": "05914a24d9c4bf0932c3dee8846cd0f215e0124c9832569f3a4e6f3d76d0e356",
+        "seconds": 0.2775745229992026
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "nonexact_single_support",
+      "i": 961,
+      "j": 0,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 272330.8671875,
+      "y": 7042058.7109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-54.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=961&j=0",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "414698e42011c8038c6ed35622a589d3ffe3fc3bdf05c0f01ca9b259803a562c",
+        "seconds": 0.2715031710031326
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "nonexact_single_support",
+      "i": 865,
+      "j": 480,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 271315.3671875,
+      "y": 7036981.2109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-55.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=865&j=480",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1701,
+        "sha256": "8274f68af194207ebe1a4a726e833a589abc14e70850fd8b1f6b6d7fc79830c7",
+        "seconds": 0.39217991099940264
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "nonexact_single_support",
+      "i": 558,
+      "j": 1003,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268067.8828125,
+      "y": 7031448.8515625,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-56.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=558&j=1003",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "12716b368d0e2c28b5061fff6398d9402e775f1e2659af53fb27d5571385d592",
+        "seconds": 0.29605235800045193
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 3,
+      "stratum": "rescued",
+      "i": 546,
+      "j": 2,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 267940.9453125,
+      "y": 7042037.5546875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-57.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=546&j=2",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "adc38f2b287ea1dfcf2a62ab6481ca2dd01667fddb0c939ef3877ea0469a4bd7",
+        "seconds": 0.33334549899882404
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 3,
+      "stratum": "rescued",
+      "i": 611,
+      "j": 539,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268628.5234375,
+      "y": 7036357.1015625,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-58.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=611&j=539",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "44f25129eceb60dddcd8bbcae1d7ffac0d109a0e70109590a867f430211ad74e",
+        "seconds": 0.30621592399984365
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 3,
+      "stratum": "excluded",
+      "i": 852,
+      "j": 448,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 271177.8515625,
+      "y": 7037319.7109375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-59.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=852&j=448",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1701,
+        "sha256": "bfc544f9401ad5b482b62e0f62758626f168543fe85fb92a1c9755f4601bc209",
+        "seconds": 0.3217754710021836
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 3,
+      "stratum": "excluded",
+      "i": 558,
+      "j": 1001,
+      "bbox": [
+        262160,
+        7031232,
+        272992,
+        7042064
+      ],
+      "x": 268067.8828125,
+      "y": 7031470.0078125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-60.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7031232.00%2C272992.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=558&j=1001",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1700,
+        "sha256": "05914a24d9c4bf0932c3dee8846cd0f215e0124c9832569f3a4e6f3d76d0e356",
+        "seconds": 0.3539466559996072
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "exact",
+      "i": 641,
+      "j": 30,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 279777.8671875,
+      "y": 7041741.3671875,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-61.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=641&j=30",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1638,
+        "sha256": "c0917879f6bfca5cf0f6ccfcf04e2b159cbce74615dcb663441bb49adddb2340",
+        "seconds": 0.24332603099901462
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 4,
+      "stratum": "exact",
+      "i": 687,
+      "j": 183,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 280264.4609375,
+      "y": 7040122.9140625,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-62.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=687&j=183",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "b41d9e1a63e7c8577c86dfd4d66bda4ba419d1ddd64484bd97d35535251ef425",
+        "seconds": 0.3347473899993929
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 4,
+      "stratum": "exact",
+      "i": 113,
+      "j": 925,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274192.6171875,
+      "y": 7032273.9453125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-63.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=113&j=925",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1664,
+        "sha256": "558a33e3f9d4facfb70f12a9e020fb520d53e79641cb9ee4b901069d7787900f",
+        "seconds": 0.3076862460002303
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 4,
+      "stratum": "transparent",
+      "i": 666,
+      "j": 55,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 280042.3203125,
+      "y": 7041476.9140625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-64.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=666&j=55",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1682,
+        "sha256": "5920f8f5efdedbbb9dafde67f64498dd2f3154429ac72dbf7f11453730cbb972",
+        "seconds": 0.255641130002914
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "transparent",
+      "i": 130,
+      "j": 201,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274372.4453125,
+      "y": 7039932.5078125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-65.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=130&j=201",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1697,
+        "sha256": "dcaacf5da45639925f14b010a4c80110e62e6d7ac7925096aa7a36eed2dc4009",
+        "seconds": 0.3613939950009808
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "transparent",
+      "i": 112,
+      "j": 924,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274182.0390625,
+      "y": 7032284.5234375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-66.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=112&j=924",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1664,
+        "sha256": "558a33e3f9d4facfb70f12a9e020fb520d53e79641cb9ee4b901069d7787900f",
+        "seconds": 0.2743096330013941
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "low_alpha",
+      "i": 642,
+      "j": 33,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 279788.4453125,
+      "y": 7041709.6328125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-67.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=642&j=33",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1673,
+        "sha256": "e7f6587e1ee3988ae67c9ee757f43fd3e3b87fce78d7faf42f8db2dde1c35d74",
+        "seconds": 0.2352466939992155
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "low_alpha",
+      "i": 0,
+      "j": 207,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 272997.2890625,
+      "y": 7039869.0390625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-68.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=0&j=207",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1696,
+        "sha256": "1c9c7e8dc12672079a64cb73c44e5cda19242ee213198f9ec7e52e1230baf425",
+        "seconds": 0.3091781439979968
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "low_alpha",
+      "i": 112,
+      "j": 925,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274182.0390625,
+      "y": 7032273.9453125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-69.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=112&j=925",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1664,
+        "sha256": "558a33e3f9d4facfb70f12a9e020fb520d53e79641cb9ee4b901069d7787900f",
+        "seconds": 0.3093442289973609
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "nonexact_single_support",
+      "i": 640,
+      "j": 30,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 279767.2890625,
+      "y": 7041741.3671875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-70.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=640&j=30",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1683,
+        "sha256": "0ed87b91521d8c8a0c3a034e3294c3d09c41392855971c5ae2e9b4173e0b6740",
+        "seconds": 0.2377474370005075
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 4,
+      "stratum": "nonexact_single_support",
+      "i": 686,
+      "j": 185,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 280253.8828125,
+      "y": 7040101.7578125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-71.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=686&j=185",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "82f14017f5317efed23b3fac862207a5db38a86230cbf02757912a7a0186b266",
+        "seconds": 0.26941025700216414
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 4,
+      "stratum": "nonexact_single_support",
+      "i": 110,
+      "j": 912,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274160.8828125,
+      "y": 7032411.4609375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-72.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=110&j=912",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1683,
+        "sha256": "4a82555271825bbc48f94b972826cfef6c7863f65d9983f2b34478610e7fecc4",
+        "seconds": 0.3240539619982883
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "mixed_or_other",
+      "i": 436,
+      "j": 194,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 277609.3515625,
+      "y": 7040006.5546875,
+      "baseline": 6,
+      "binary": 2,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-73.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=436&j=194",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1682,
+        "sha256": "3fa3bc9449d17041c7cf2fa974909f0336a5520a87f1d6504a1a8873c4ef10fa",
+        "seconds": 0.3779177869982959
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "heiBuskmark",
+      "compatible": false
+    },
+    {
+      "tile": 4,
+      "stratum": "mixed_or_other",
+      "i": 98,
+      "j": 303,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274033.9453125,
+      "y": 7038853.5390625,
+      "baseline": 6,
+      "binary": 2,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-74.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=98&j=303",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1667,
+        "sha256": "1c02d90cdab410d9ac4a74779590305348501bf6788dad60c12e9e454538e053",
+        "seconds": 0.27422100699914154
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "heiBuskmark",
+      "compatible": true
+    },
+    {
+      "tile": 4,
+      "stratum": "mixed_or_other",
+      "i": 260,
+      "j": 369,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 275747.6015625,
+      "y": 7038155.3828125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-75.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=260&j=369",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1659,
+        "sha256": "2e0f256ca45ffc77256a46bb96975dff901a1afe535a91123b08e5f0874f41a0",
+        "seconds": 0.3329866429994581
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "rescued",
+      "i": 670,
+      "j": 187,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 280084.6328125,
+      "y": 7040080.6015625,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-76.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=670&j=187",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1640,
+        "sha256": "508b589f396fa88d5947542d118e8837ae1e9ffb9a4056d729c59aea64f612c0",
+        "seconds": 0.2540517360030208
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 4,
+      "stratum": "rescued",
+      "i": 115,
+      "j": 911,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274213.7734375,
+      "y": 7032422.0390625,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-77.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=115&j=911",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1679,
+        "sha256": "f24ea42ccad30105a5e738d9c6fdd26a58af74967327ee9677f87c3c383fd54d",
+        "seconds": 0.2750735330009775
+      },
+      "sourceClasses": [
+        "elverBekkerKanaler"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 4,
+      "stratum": "excluded",
+      "i": 640,
+      "j": 31,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 279767.2890625,
+      "y": 7041730.7890625,
+      "baseline": 1,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-78.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=640&j=31",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1640,
+        "sha256": "04930d3a4094d75319897344cd6050f5c4b4282f2c32c81726a25c7ccd4f0921",
+        "seconds": 0.27865186700000777
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 4,
+      "stratum": "excluded",
+      "i": 130,
+      "j": 200,
+      "bbox": [
+        272992,
+        7031232,
+        283824,
+        7042064
+      ],
+      "x": 274372.4453125,
+      "y": 7039943.0859375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-79.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7031232.00%2C283824.00%2C7042064.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=130&j=200",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1697,
+        "sha256": "dcaacf5da45639925f14b010a4c80110e62e6d7ac7925096aa7a36eed2dc4009",
+        "seconds": 0.2775063460030651
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "exact",
+      "i": 950,
+      "j": 0,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272214.5078125,
+      "y": 7031226.7109375,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-80.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=950&j=0",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1647,
+        "sha256": "7091a023d717c4b453330347043cabb20bed92a08e73393d86932d0835934a45",
+        "seconds": 0.29461998799888534
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "exact",
+      "i": 754,
+      "j": 562,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 270141.1953125,
+      "y": 7025281.8046875,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-81.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=754&j=562",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "a5be8633523e98a8fd1147355ca2324f533f0bb913d0a4901cbae28ba561c726",
+        "seconds": 0.26052180400074576
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "exact",
+      "i": 995,
+      "j": 723,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272690.5234375,
+      "y": 7023578.7265625,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-82.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=995&j=723",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1635,
+        "sha256": "eced813a845461abccb430d6c50f1086731d5d52bf8295a56550bc54b52ab1d9",
+        "seconds": 0.32141679900087183
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "transparent",
+      "i": 614,
+      "j": 21,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 268660.2578125,
+      "y": 7031004.5703125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-83.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=614&j=21",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1665,
+        "sha256": "de40be9301cf0f43e9a34465afd7030d3afe70e923f7e917261f621e64b8fd3b",
+        "seconds": 0.34079781000036746
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "transparent",
+      "i": 859,
+      "j": 330,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 271251.8984375,
+      "y": 7027735.9296875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-84.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=859&j=330",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1675,
+        "sha256": "67513031d6b3525b4b68dd87a96bb5079c941ff86ccb40ff8a0984150fa44cf4",
+        "seconds": 0.26770938099798514
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "transparent",
+      "i": 994,
+      "j": 703,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272679.9453125,
+      "y": 7023790.2890625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-85.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=994&j=703",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1665,
+        "sha256": "e76266f64094257370bc7a7004e7382641a2f7ec889aeccecf68813dcf9759c9",
+        "seconds": 0.2550822280027205
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "low_alpha",
+      "i": 238,
+      "j": 8,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 264682.8828125,
+      "y": 7031142.0859375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-86.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=238&j=8",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1687,
+        "sha256": "a0965623002f403388bb2f5972137ca189fe8735f70646d3a45e0c3794f5161e",
+        "seconds": 0.3234149320014694
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "low_alpha",
+      "i": 966,
+      "j": 354,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272383.7578125,
+      "y": 7027482.0546875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-87.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=966&j=354",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1635,
+        "sha256": "41130a70dd4905fc1ff2092335991fce577b45cf11fa07b4b144568b3486c7e1",
+        "seconds": 0.2606733909997274
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "low_alpha",
+      "i": 994,
+      "j": 708,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272679.9453125,
+      "y": 7023737.3984375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-88.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=994&j=708",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1665,
+        "sha256": "e76266f64094257370bc7a7004e7382641a2f7ec889aeccecf68813dcf9759c9",
+        "seconds": 0.41560983800081885
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "nonexact_single_support",
+      "i": 950,
+      "j": 2,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272214.5078125,
+      "y": 7031205.5546875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-89.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=950&j=2",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1647,
+        "sha256": "7091a023d717c4b453330347043cabb20bed92a08e73393d86932d0835934a45",
+        "seconds": 0.2724028949996864
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "nonexact_single_support",
+      "i": 835,
+      "j": 386,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 270998.0234375,
+      "y": 7027143.5546875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-90.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=835&j=386",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1682,
+        "sha256": "2393934422297539d3cdb03c899c331aa768fb386c2ae46e5163996997816f0e",
+        "seconds": 0.25052157800018904
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "nonexact_single_support",
+      "i": 994,
+      "j": 709,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272679.9453125,
+      "y": 7023726.8203125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-91.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=994&j=709",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1665,
+        "sha256": "e76266f64094257370bc7a7004e7382641a2f7ec889aeccecf68813dcf9759c9",
+        "seconds": 0.3432508180012519
+      },
+      "sourceClasses": [
+        "dyrketmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 5,
+      "stratum": "mixed_or_other",
+      "i": 607,
+      "j": 14,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 268586.2109375,
+      "y": 7031078.6171875,
+      "baseline": 6,
+      "binary": 2,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-92.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=607&j=14",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1660,
+        "sha256": "7709026c2793dfde3e2fd9af2e2bf1b48f6cff3b083a8f82d570c710e396b99c",
+        "seconds": 0.2660473389987601
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "heiBuskmark",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "mixed_or_other",
+      "i": 831,
+      "j": 278,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 270955.7109375,
+      "y": 7028285.9921875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-93.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=831&j=278",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1659,
+        "sha256": "ccc9cf795be73439570f4ba70613f5b87b016f9c1bea5cdfd5c5b6fab3393d3f",
+        "seconds": 0.30832198000280187
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 5,
+      "stratum": "mixed_or_other",
+      "i": 982,
+      "j": 696,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 272553.0078125,
+      "y": 7023864.3359375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-94.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=982&j=696",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1668,
+        "sha256": "7a97e8e6dd8115aed136e74c55039d73cf2a80351585dbd2929bb0750a38474c",
+        "seconds": 0.25141204499959713
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 5,
+      "stratum": "rescued",
+      "i": 844,
+      "j": 397,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 271093.2265625,
+      "y": 7027027.1953125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-95.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=844&j=397",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1634,
+        "sha256": "ea25423a52e9aa2f6a2528783abd66295198b7961e45c56b7fc2ecc3ca798957",
+        "seconds": 0.27074372499919264
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 5,
+      "stratum": "excluded",
+      "i": 854,
+      "j": 339,
+      "bbox": [
+        262160,
+        7020400,
+        272992,
+        7031232
+      ],
+      "x": 271199.0078125,
+      "y": 7027640.7265625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-96.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=262160.00%2C7020400.00%2C272992.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=854&j=339",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "4606b8ad61b6c9de8b783ccdad5fc87bf7c02eeb949580096afd509204395d89",
+        "seconds": 0.34099132499977713
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "exact",
+      "i": 143,
+      "j": 262,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274509.9609375,
+      "y": 7028455.2421875,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-97.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=143&j=262",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "ce46d47bbbce0d26f9588126c50656ddb37bbdaf72ac100b3da497e34f8a081a",
+        "seconds": 0.2720264000017778
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "exact",
+      "i": 121,
+      "j": 373,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274277.2421875,
+      "y": 7027281.0703125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-98.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=121&j=373",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1635,
+        "sha256": "d66ec5c01c42acb62013ce3c88b073dfa954cf29f59ed355d4721ff0f515da9f",
+        "seconds": 0.33585471699916525
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "exact",
+      "i": 157,
+      "j": 545,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274658.0546875,
+      "y": 7025461.6328125,
+      "baseline": 1,
+      "binary": 1,
+      "strata": [
+        "exact"
+      ],
+      "request": {
+        "name": "sample-99.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=157&j=545",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1643,
+        "sha256": "4d35dde8ff773a753fcbb12c0d7224a277666c7e86b41a340cc9345ba6d1a4ad",
+        "seconds": 0.35841334700307925
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "transparent",
+      "i": 129,
+      "j": 267,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274361.8671875,
+      "y": 7028402.3515625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-100.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=129&j=267",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1681,
+        "sha256": "2cab186b4c435ac9cb24334c6831553f6de2d996eb20a4664811d3cef4f77094",
+        "seconds": 0.264261289001297
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "transparent",
+      "i": 127,
+      "j": 295,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274340.7109375,
+      "y": 7028106.1640625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-101.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=127&j=295",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1689,
+        "sha256": "91f9d8164e0225d6244c802e100b4d72d00ca8e2e7f644de184279cf5a8aae09",
+        "seconds": 0.33287122800174984
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "transparent",
+      "i": 13,
+      "j": 391,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 273134.8046875,
+      "y": 7027090.6640625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "transparent"
+      ],
+      "request": {
+        "name": "sample-102.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=13&j=391",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1680,
+        "sha256": "26cba275c0162cf410bc5b8fbaecbf5304fdffe7f6e6d2ebd6cceb098011038d",
+        "seconds": 0.36496644399812794
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "low_alpha",
+      "i": 128,
+      "j": 267,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274351.2890625,
+      "y": 7028402.3515625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-103.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=128&j=267",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "eb430a859b414bf13677f639225a2ca6fb067772a2bbc6a252dcd6f402f32873",
+        "seconds": 0.3396438119998493
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "low_alpha",
+      "i": 120,
+      "j": 302,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274266.6640625,
+      "y": 7028032.1171875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha"
+      ],
+      "request": {
+        "name": "sample-104.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=120&j=302",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1642,
+        "sha256": "0d97948784ee1184eb84c104efbab79659662d1dbba89d4a3bca8325cb103c50",
+        "seconds": 0.2697218770008476
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "low_alpha",
+      "i": 65,
+      "j": 473,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 273684.8671875,
+      "y": 7026223.2578125,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "low_alpha",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-105.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=65&j=473",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1666,
+        "sha256": "6e01a71207e2b85cf4700cbfd121fd18bbb25e29c65b9eb8b082ef83556a6695",
+        "seconds": 0.24887892799961264
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "nonexact_single_support",
+      "i": 128,
+      "j": 262,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274351.2890625,
+      "y": 7028455.2421875,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "nonexact_single_support",
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-106.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=128&j=262",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1652,
+        "sha256": "fcd00d8dc50e645f6d730042def25e525d2d828af8849dfece52b0a04663cd84",
+        "seconds": 0.27330997299941373
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "nonexact_single_support",
+      "i": 132,
+      "j": 328,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274393.6015625,
+      "y": 7027757.0859375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support"
+      ],
+      "request": {
+        "name": "sample-107.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=132&j=328",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1638,
+        "sha256": "7cdd62f199a905bc90635690ed94af863939fbb081fa4d1ca54d8ea1b9f4143d",
+        "seconds": 0.25403441399976145
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "nonexact_single_support",
+      "i": 146,
+      "j": 534,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274541.6953125,
+      "y": 7025577.9921875,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "nonexact_single_support",
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-108.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=146&j=534",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "1ddaffbb12c3e0975fa4273c46c481b5d098e45b7e3006e55e706815fb29cc9e",
+        "seconds": 0.28870850400198833
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "mixed_or_other",
+      "i": 134,
+      "j": 283,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274414.7578125,
+      "y": 7028233.1015625,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-109.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=134&j=283",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1693,
+        "sha256": "e8e1858d1dfaf1715898c009735ff472a804c0dc3fdf93b1662e8a9d3080f55d",
+        "seconds": 0.2742520949977916
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    },
+    {
+      "tile": 6,
+      "stratum": "mixed_or_other",
+      "i": 68,
+      "j": 464,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 273716.6015625,
+      "y": 7026318.4609375,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-110.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=68&j=464",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1664,
+        "sha256": "7970a73807bae08533c6d81a272deaaa985af6a954ad3ddc202b1d078678629c",
+        "seconds": 0.26275513200016576
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 6,
+      "stratum": "mixed_or_other",
+      "i": 66,
+      "j": 481,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 273695.4453125,
+      "y": 7026138.6328125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "mixed_or_other"
+      ],
+      "request": {
+        "name": "sample-111.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=66&j=481",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1666,
+        "sha256": "6e01a71207e2b85cf4700cbfd121fd18bbb25e29c65b9eb8b082ef83556a6695",
+        "seconds": 0.2403050329994585
+      },
+      "sourceClasses": [
+        "heiBuskmark"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": false
+    },
+    {
+      "tile": 6,
+      "stratum": "rescued",
+      "i": 129,
+      "j": 265,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274361.8671875,
+      "y": 7028423.5078125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-112.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=129&j=265",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1637,
+        "sha256": "eb430a859b414bf13677f639225a2ca6fb067772a2bbc6a252dcd6f402f32873",
+        "seconds": 0.31285741200190387
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "rescued",
+      "i": 128,
+      "j": 341,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274351.2890625,
+      "y": 7027619.5703125,
+      "baseline": 6,
+      "binary": 1,
+      "strata": [
+        "rescued"
+      ],
+      "request": {
+        "name": "sample-113.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=128&j=341",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1636,
+        "sha256": "d71e8778990bafe44a391a51769cc0f12850d049f707b5d3c6af09f6c328bb86",
+        "seconds": 0.27693147500031046
+      },
+      "sourceClasses": [
+        "skog"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": "skog",
+      "compatible": true
+    },
+    {
+      "tile": 6,
+      "stratum": "excluded",
+      "i": 117,
+      "j": 308,
+      "bbox": [
+        272992,
+        7020400,
+        283824,
+        7031232
+      ],
+      "x": 274234.9296875,
+      "y": 7027968.6484375,
+      "baseline": 6,
+      "binary": 6,
+      "strata": [
+        "excluded"
+      ],
+      "request": {
+        "name": "sample-114.gml",
+        "url": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=okosystemtype&styles=&crs=EPSG%3A25833&bbox=272992.00%2C7020400.00%2C283824.00%2C7031232.00&width=1024&height=1024&format=image%2Fpng%3B+mode%3D8bit&transparent=true&query_layers=okosystemtype&info_format=application%2Fvnd.ogc.gml&feature_count=20&i=117&j=308",
+        "status": 200,
+        "contentType": "application/vnd.ogc.gml; charset=UTF-8",
+        "bytes": 1679,
+        "sha256": "107c87107b0803ab67d5754198ff721945837ac45cbf46387e2135811b54c2c7",
+        "seconds": 0.25536206199831213
+      },
+      "sourceClasses": [
+        "bebygdOpparbeidetAreal"
+      ],
+      "featureCount": 1,
+      "hasPolygonGeometry": false,
+      "binaryClass": null,
+      "compatible": null
+    }
+  ],
+  "warning": "Stratified convenience sample; server query tolerance unverified; no polygon geometry or population error estimate"
+}

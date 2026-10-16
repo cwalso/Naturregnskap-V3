@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+<WMS_Capabilities version="1.3.0"  xmlns="http://www.opengis.net/wms"   xmlns:sld="http://www.opengis.net/sld"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xmlns:ms="http://mapserver.gis.umn.edu/mapserver"   xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0"   xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0"   xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd  http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/sld_capabilities.xsd  http://inspire.ec.europa.eu/schemas/inspire_vs/1.0  http://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd http://mapserver.gis.umn.edu/mapserver https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;service=WMS&amp;version=1.3.0&amp;request=GetSchemaExtension">
+
+<!-- MapServer version 7.6.2 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=POINT_Z_M SUPPORTS=PBF INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>WMS</Name>
+  <Title>WMS for kart over Grå arealer</Title>
+  <Abstract>WMS for kart over Grå arealer</Abstract>
+  <KeywordList>
+      <Keyword>Arealregnskap</Keyword>
+      <Keyword> arealbruk</Keyword>
+      <Keyword> arealdekke</Keyword>
+      <Keyword> nedbygd</Keyword>
+      <Keyword> bebygd</Keyword>
+      <Keyword vocabulary="ISO">infoMapAccessService</Keyword>
+  </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Ingvild Nystuen</ContactPerson>
+      <ContactOrganization>Norsk institutt for bioøkonomi</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>owner</ContactPosition>
+    <ContactAddress>
+        <AddressType></AddressType>
+        <Address>Oluf Thesens vei 43</Address>
+        <City>Ås</City>
+        <StateOrProvince>Akershus</StateOrProvince>
+        <PostCode>1433</PostCode>
+        <Country>Norway</Country>
+    </ContactAddress>
+  <ContactElectronicMailAddress>gisdrift@nibio.no</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>no conditions apply</Fees>
+  <AccessConstraints>none</AccessConstraints>
+  <MaxWidth>5120</MaxWidth>
+  <MaxHeight>5120</MaxHeight>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/vnd.jpeg-png</Format>
+      <Format>image/vnd.jpeg-png8</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/svg+xml</Format>
+      <Format>image/tiff</Format>
+      <Format>application/vnd.google-earth.kml+xml</Format>
+      <Format>application/vnd.google-earth.kmz</Format>
+      <Format>application/x-protobuf</Format>
+      <Format>application/json</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <Format>text/plain</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <sld:DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:DescribeLayer>
+    <sld:GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/vnd.jpeg-png</Format>
+      <Format>image/vnd.jpeg-png8</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:GetLegendGraphic>
+    <ms:GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;"/></Post>
+        </HTTP>
+      </DCPType>
+    </ms:GetStyles>
+  </Request>
+  <Exception>
+    <Format>XML</Format>
+    <Format>INIMAGE</Format>
+    <Format>BLANK</Format>
+  </Exception>
+  <sld:UserDefinedSymbolization SupportSLD="1" UserLayer="0" UserStyle="1" RemoteWFS="0" InlineFeature="0" RemoteWCS="0"/>
+  <inspire_vs:ExtendedCapabilities>
+    <inspire_common:MetadataUrl xsi:type="inspire_common:resourceLocatorType">
+      <inspire_common:URL>http://INSPIRE.service/metadata</inspire_common:URL>
+      <inspire_common:MediaType>application/vnd.ogc.csw.capabilities.response_xml</inspire_common:MediaType>
+    </inspire_common:MetadataUrl>
+    <inspire_common:SupportedLanguages>
+      <inspire_common:DefaultLanguage><inspire_common:Language>nor</inspire_common:Language></inspire_common:DefaultLanguage>
+    </inspire_common:SupportedLanguages>
+    <inspire_common:ResponseLanguage><inspire_common:Language>nor</inspire_common:Language></inspire_common:ResponseLanguage>
+  </inspire_vs:ExtendedCapabilities>
+  <Layer queryable="1">
+<!-- WARNING: The layer name 'Grå arealer' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+    <Name>Grå arealer</Name>
+    <Title>WMS for kart over Grå arealer</Title>
+    <Abstract>WMS for kart over Grå arealer</Abstract>
+    <KeywordList>
+        <Keyword>Arealregnskap</Keyword>
+        <Keyword> arealbruk</Keyword>
+        <Keyword> arealdekke</Keyword>
+        <Keyword> nedbygd</Keyword>
+        <Keyword> bebygd</Keyword>
+        <Keyword vocabulary="ISO">infoMapAccessService</Keyword>
+    </KeywordList>
+    <CRS>EPSG:4258</CRS>
+    <CRS>EPSG:4326</CRS>
+    <CRS>EPSG:3035</CRS>
+    <CRS>EPSG:25832</CRS>
+    <CRS>EPSG:25833</CRS>
+    <CRS>EPSG:25834</CRS>
+    <CRS>EPSG:25835</CRS>
+    <CRS>EPSG:25836</CRS>
+    <CRS>EPSG:32632</CRS>
+    <CRS>EPSG:32633</CRS>
+    <CRS>EPSG:32634</CRS>
+    <CRS>EPSG:32635</CRS>
+    <CRS>EPSG:32636</CRS>
+    <CRS>EPSG:3857</CRS>
+    <CRS>EPSG:900913</CRS>
+    <EX_GeographicBoundingBox>
+        <westBoundLongitude>4.06886</westBoundLongitude>
+        <eastBoundLongitude>31.3</eastBoundLongitude>
+        <southBoundLatitude>57.8686</southBoundLatitude>
+        <northBoundLatitude>72.1962</northBoundLatitude>
+    </EX_GeographicBoundingBox>
+    <Style>
+       <Name>default</Name>
+       <Title>default</Title>
+       <LegendURL width="112" height="277">
+          <Format>image/png</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=Grå arealer&amp;format=image/png&amp;STYLE=default"/>
+       </LegendURL>
+    </Style>
+    <MinScaleDenominator>10</MinScaleDenominator>
+    <MaxScaleDenominator>5e+07</MaxScaleDenominator>
+    <Layer queryable="1" opaque="0" cascaded="0">
+        <Name>andel_med_bygninger</Name>
+        <Title>Andel med bygninger</Title>
+        <CRS>EPSG:4258</CRS>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>3.5</westBoundLongitude>
+            <eastBoundLongitude>32</eastBoundLongitude>
+            <southBoundLatitude>57</southBoundLatitude>
+            <northBoundLatitude>72</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4258"
+                    minx="57" miny="3.5" maxx="72" maxy="32" />
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;request=GetMetadata&amp;layer=andel_med_bygninger"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="108" height="90">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=andel_med_bygninger&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>250000</MaxScaleDenominator>
+    </Layer>
+    <Layer queryable="1" opaque="0" cascaded="0">
+        <Name>andel_med_vegetasjon</Name>
+        <Title>Andel med vegetasjon</Title>
+        <CRS>EPSG:4258</CRS>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>3.5</westBoundLongitude>
+            <eastBoundLongitude>32</eastBoundLongitude>
+            <southBoundLatitude>57</southBoundLatitude>
+            <northBoundLatitude>72</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4258"
+                    minx="57" miny="3.5" maxx="72" maxy="32" />
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;request=GetMetadata&amp;layer=andel_med_vegetasjon"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="108" height="90">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=andel_med_vegetasjon&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>250000</MaxScaleDenominator>
+    </Layer>
+    <Layer queryable="1" opaque="0" cascaded="0">
+        <Name>andel_uten_vegetasjon</Name>
+        <Title>Andel uten vegetasjon</Title>
+        <CRS>EPSG:4258</CRS>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>3.5</westBoundLongitude>
+            <eastBoundLongitude>32</eastBoundLongitude>
+            <southBoundLatitude>57</southBoundLatitude>
+            <northBoundLatitude>72</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4258"
+                    minx="57" miny="3.5" maxx="72" maxy="32" />
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;request=GetMetadata&amp;layer=andel_uten_vegetasjon"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="108" height="90">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=andel_uten_vegetasjon&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>250000</MaxScaleDenominator>
+    </Layer>
+    <Layer queryable="1" opaque="0" cascaded="0">
+        <Name>graa_arealer</Name>
+        <Title>Grå arealer</Title>
+        <CRS>EPSG:4258</CRS>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>3.5</westBoundLongitude>
+            <eastBoundLongitude>32</eastBoundLongitude>
+            <southBoundLatitude>57</southBoundLatitude>
+            <northBoundLatitude>72</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4258"
+                    minx="57" miny="3.5" maxx="72" maxy="32" />
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;request=GetMetadata&amp;layer=graa_arealer"/>
+        </MetadataURL>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="112" height="22">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://wms.nibio.no/cgi-bin/graastruktur?language=nor&amp;version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=graa_arealer&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>250000</MaxScaleDenominator>
+    </Layer>
+  </Layer>
+</Capability>
+</WMS_Capabilities>

@@ -1,0 +1,478 @@
+{
+  "stage": "A",
+  "gates": {
+    "A-responsive-panels": {
+      "status": "passed",
+      "measurements": [
+        {
+          "viewportWidth": 1440,
+          "viewportHeight": 960,
+          "width": 828,
+          "height": 712,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "viewportWidth": 900,
+          "viewportHeight": 900,
+          "width": 648,
+          "height": 652,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "viewportWidth": 390,
+          "viewportHeight": 844,
+          "width": 390,
+          "height": 270,
+          "overflow": 0,
+          "mapCreations": 2
+        },
+        {
+          "viewportWidth": 320,
+          "viewportHeight": 720,
+          "width": 320,
+          "height": 186,
+          "overflow": 0,
+          "mapCreations": 2
+        }
+      ]
+    },
+    "A-existing-navigation": {
+      "status": "passed",
+      "before": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 62.320817901238364
+      },
+      "after": {
+        "center": [
+          270196.8118091791,
+          7033053.836893075
+        ],
+        "resolution": 82.23281222652106
+      }
+    }
+  },
+  "requests": [
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner",
+      "status": 200
+    },
+    {
+      "url": "https://api.kartverket.no/kommuneinfo/v1/kommuner/5001/omrade",
+      "status": 200
+    },
+    {
+      "url": "https://data.ssb.no/api/pxwebapi/v2/tables/09594/data?lang=no&outputformat=json-stat2&valueCodes%5BRegion%5D=5001&valueCodes%5BArealKlasse%5D=01%2C02%2C03%2C04%2C05%2C06%2C07%2C08-09%2C10-11%2C12-13%2C14%2C15-16%2C17%2C18%2C19%2C20%2C21%2C24%2C22.01%2C22.02&valueCodes%5BContentsCode%5D=Areal&valueCodes%5BTid%5D=top%281%29",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/vern/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/542.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/539.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/543.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/540.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/541.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/277/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/274/544.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/276/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/279/545.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/278/538.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/10/275/537.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1082.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/557/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1084.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1083.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/553/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1081.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/555/1087.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/554/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/552/1080.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1085.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/556/1086.png",
+      "status": 200
+    },
+    {
+      "url": "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/11/551/1086.png",
+      "status": 200
+    }
+  ],
+  "errors": []
+}

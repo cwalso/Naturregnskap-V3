@@ -44,6 +44,21 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install Chromium for render regression
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser render regression
+        run: npm run test:browser
+
+      - name: Independent layers render regression
+        run: npm run test:browser:layers
+
+      - name: Main navigation and analysis entry render regression
+        run: npm run test:browser:navigation
+
+      - name: Overview layout and navigation regression
+        run: npm run test:browser:overview
+
   backend:
     name: Backend test and Ruff
     runs-on: ubuntu-latest

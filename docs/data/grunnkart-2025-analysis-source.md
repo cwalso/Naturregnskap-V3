@@ -1,6 +1,6 @@
 # Grunnkart 2025 i V3-prototypen – datakilder og rasteranalyse
 
-**Sist oppdatert: 08.10.2026**  
+**Sist oppdatert: 09.10.2026**
 **Datasett:** Nasjonalt grunnkart for arealanalyse – årsversjon 2025  
 **Metadata UUID:** `28c28e3a-d88f-4a34-8c60-5efe6d56a44d`
 
@@ -157,7 +157,9 @@ en autoritativ analysekilde eller nøyaktig vektoravgrensning.
 
 ## Tegnet polygon
 
-Brukeren kan tegne eget polygon i kartet.
+Tegning av eget polygon er implementert i beholdt kode. Inngangen er
+midlertidig skjult i den nye `Utforsk i kart`-arbeidsflaten. Metoden nedenfor
+er uendret og gjelder den beholdte polygonanalysen.
 
 Polygonet:
 
@@ -351,3 +353,39 @@ Før produksjonsbruk må blant annet avklares:
 - rekonsiliering mellom kommuner/nasjonalt nivå
 - godkjente nivå-0-bokføringsregler
 - kvalitet og usikkerhet
+
+## Ny avgrenset prototypeanalyse 13.10.2026
+
+Kortet på Verdsatte naturtyper og det nye V2-panelet bruker nå `future-valued-nature-geometry-v3`, ikke midtpunktmetoden ovenfor. Det brukes samme Natur/Jordbruk-støtte som planvisningens nivå 9, med smale komponenter beholdt. Delcelleareal beregnes geometrisk, KU-verdi fordeles med høyeste verdi og naturtypeareal unioneres innen typen. Hele lokaliteten er prosentnevner. Dette endrer ikke øvrige beregninger beskrevet i dette dokumentet. [Metode og kildekontrakt](../decisions/2026-10-13-v3-geometric-valued-nature-overlap.md), [referansekontroll](../validation/2026-10-13-future-nature.md).
+
+## Arealbasert plananalyse 14.10.2026
+
+`planned-land-cover-area-v1` gjenbruker samme nivå-9-Natur/Jordbruk-maske.
+Nivå-0-totalene beholder hele planruter; nivå-1-natur leses fra eksisterende
+1024×1024 SLD-fliser på fire delruter per planrute. Bare eksakt klassefarge og
+alpha ≥100 gir identifisert type. Blandede/ukjente/transparente farger vises
+som ufordelt natur. Dette er en konservativ, delvis fordeling – 0 identifiserte
+celler beviser ikke at typen mangler. Jordbruk har ingen underfordeling.
+Flisoppløsning er ikke geografisk nøyaktighet. WMS-uttaket er løpende, ikke
+en garantert låst 2025-distribusjon; råflishasher og uttrekksdato lagres.
+[Metode](../decisions/2026-10-14-plan-land-cover-area.md),
+[summer, råbilder og uavhengig kontroll](../validation/2026-10-14-plan-area.md).
+
+## Undersøkelse av ufordelt natur, 14.10.2026
+
+De 706,71 daa ufordelt i plananalysen er ikke dokumentert manglende
+økosystemklassifikasjon i Grunnkart. Råbilder viser eksakt-farge-/alpha-
+avvisning og konflikt mellom grov nivå-0-støtte og detaljgjengivelsen.
+Vanlig PNG løser ikke problemet. Separate klassemasker reduserer avvisning
+i et isolert forsøk, men gir ikke godkjent grensenøyaktighet.
+Offisielle metadata dokumenterer 2025-vektorprodukt (GPKG/FGDB/GML), med
+Norge digitalt-lisens; faktisk kommuneuttrekk og prototypens bruksrett må
+verifiseres. WMS-capabilities og katalogens lisensmetadata er ikke entydige.
+Anbefalingen er en rettighetsavklart direkte geodatapilot, ikke endret
+produksjonsklassifikasjon. [Tallfesting, kildeprober, kart og anbefaling](../validation/2026-10-14-unclassified-plan-nature.md).
+
+Den påfølgende [direkte geodatapiloten](../validation/2026-10-14-direct-grunnkart-pilot.md)
+har kontrollert tilgang på nytt. Korrekt Trondheim-fil og oppdragsbruksrett er
+fortsatt ikke verifisert, så ingen direkte arealresultater er beregnet.
+Et testet lokalt oppsett er klargjort for mottak av faktisk fil med dokumentert
+år, rettigheter, CRS og fysisk skjema. Ny nivå-0-mapping er ikke innført.

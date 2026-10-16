@@ -1,0 +1,430 @@
+{
+ "currentVersion": 10.91,
+ "id": 0,
+ "name": "kuverdi_naturtype_alle",
+ "type": "Feature Layer",
+ "description": "",
+ "geometryType": "esriGeometryPolygon",
+ "sourceSpatialReference": {
+  "wkid": 25833,
+  "latestWkid": 25833
+ },
+ "copyrightText": "",
+ "parentLayer": null,
+ "subLayers": [],
+ "minScale": 1500000,
+ "maxScale": 0,
+ "drawingInfo": {
+  "symbolLayerDrawing": {
+   "type": "CIMSymbolLayerDrawing",
+   "symbolLayers": [
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_32",
+     "symbolLayerName": "Level_6"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_33",
+     "symbolLayerName": "Level_5"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_34",
+     "symbolLayerName": "Level_4"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_35",
+     "symbolLayerName": "Level_3"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_36",
+     "symbolLayerName": "Level_2"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_37",
+     "symbolLayerName": "Level_1"
+    },
+    {
+     "type": "CIMSymbolLayerIdentifier",
+     "symbolReferenceName": "Symbol_38",
+     "symbolLayerName": "Level_0"
+    }
+   ],
+   "useSymbolLayerDrawing": true
+  },
+  "renderer": {
+   "type": "uniqueValue",
+   "field1": "Verdikategori",
+   "field2": null,
+   "field3": null,
+   "defaultSymbol": null,
+   "defaultLabel": null,
+   "uniqueValueInfos": [
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       175,
+       12,
+       12,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        115,
+        0,
+        0,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Svært stor verdi",
+     "label": "Svært stor verdi",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       253,
+       112,
+       50,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        230,
+        76,
+        0,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Stor verdi",
+     "label": "Stor verdi",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       254,
+       192,
+       45,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        230,
+        152,
+        0,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Middels verdi",
+     "label": "Middels verdi",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       255,
+       254,
+       55,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        230,
+        230,
+        0,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Noe verdi",
+     "label": "Noe verdi",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       0,
+       132,
+       168,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        0,
+        76,
+        115,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Vurderes per lokalitet",
+     "label": "Vurderes per lokalitet",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       190,
+       210,
+       255,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        115,
+        178,
+        255,
+        255
+       ],
+       "width": 0.4
+      }
+     },
+     "value": "Vurderes per naturtype",
+     "label": "Vurderes per naturtype",
+     "description": ""
+    },
+    {
+     "symbol": {
+      "type": "esriSFS",
+      "style": "esriSFSSolid",
+      "color": [
+       196,
+       201,
+       173,
+       255
+      ],
+      "outline": {
+       "type": "esriSLS",
+       "style": "esriSLSSolid",
+       "color": [
+        78,
+        78,
+        78,
+        255
+       ],
+       "width": 1
+      }
+     },
+     "value": "Ikke gitt verdi",
+     "label": "Ikke gitt verdi",
+     "description": ""
+    }
+   ],
+   "fieldDelimiter": ","
+  },
+  "transparency": 0,
+  "labelingInfo": null
+ },
+ "defaultVisibility": true,
+ "extent": {
+  "xmin": -76110.97670000046,
+  "ymin": 6448524.772399999,
+  "xmax": 1108323.7035999997,
+  "ymax": 8686471.530000001,
+  "spatialReference": {
+   "wkid": 25833,
+   "latestWkid": 25833
+  }
+ },
+ "hasAttachments": false,
+ "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+ "displayField": "KuverdiNaturtypeId",
+ "typeIdField": null,
+ "subtypeFieldName": null,
+ "subtypeField": null,
+ "defaultSubtypeCode": null,
+ "fields": [
+  {
+   "name": "KuverdiNaturtypeId",
+   "type": "esriFieldTypeString",
+   "alias": "KuverdiNaturtypeId",
+   "length": 30,
+   "domain": null
+  },
+  {
+   "name": "Opphav",
+   "type": "esriFieldTypeString",
+   "alias": "Opphav",
+   "length": 40,
+   "domain": null
+  },
+  {
+   "name": "Verdikategori",
+   "type": "esriFieldTypeString",
+   "alias": "Verdikategori",
+   "length": 30,
+   "domain": null
+  },
+  {
+   "name": "Verdikriterier",
+   "type": "esriFieldTypeString",
+   "alias": "Verdikriterier (Excel-fil)",
+   "length": 254,
+   "domain": null
+  },
+  {
+   "name": "Naturtype",
+   "type": "esriFieldTypeString",
+   "alias": "Naturtype",
+   "length": 70,
+   "domain": null
+  },
+  {
+   "name": "Områdenavn",
+   "type": "esriFieldTypeString",
+   "alias": "Områdenavn",
+   "length": 100,
+   "domain": null
+  },
+  {
+   "name": "Registreringsdato",
+   "type": "esriFieldTypeDate",
+   "alias": "Registreringsdato",
+   "length": 8,
+   "domain": null
+  },
+  {
+   "name": "Nøyaktighetsklasse",
+   "type": "esriFieldTypeString",
+   "alias": "Nøyaktighetsklasse",
+   "length": 30,
+   "domain": null
+  },
+  {
+   "name": "Faktaark",
+   "type": "esriFieldTypeString",
+   "alias": "Faktaark",
+   "length": 70,
+   "domain": null
+  },
+  {
+   "name": "FaktaarkLokalitet",
+   "type": "esriFieldTypeString",
+   "alias": "FaktaarkLokalitet",
+   "length": 200,
+   "domain": null
+  },
+  {
+   "name": "Kommune",
+   "type": "esriFieldTypeString",
+   "alias": "Kommune",
+   "length": 200,
+   "domain": null
+  },
+  {
+   "name": "SHAPE",
+   "type": "esriFieldTypeGeometry",
+   "alias": "SHAPE",
+   "domain": null
+  },
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  }
+ ],
+ "geometryField": {
+  "name": "SHAPE",
+  "type": "esriFieldTypeGeometry",
+  "alias": "SHAPE"
+ },
+ "indexes": [
+  {
+   "name": "G2869KuverdiNatu",
+   "fields": "KuverdiNaturtypeId,Verdikategori",
+   "isAscending": true,
+   "isUnique": false,
+   "description": ""
+  },
+  {
+   "name": "S18_idx",
+   "fields": "SHAPE",
+   "isAscending": true,
+   "isUnique": true,
+   "description": ""
+  }
+ ],
+ "subtypes": [],
+ "relationships": [
+  {
+   "id": 0,
+   "name": "KuverdiNaturtype_Kommune",
+   "relatedTableId": 11,
+   "role": "esriRelRoleOrigin",
+   "keyField": "KuverdiNaturtypeId",
+   "cardinality": "esriRelCardinalityOneToMany",
+   "composite": false
+  }
+ ],
+ "canModifyLayer": true,
+ "canScaleSymbols": false,
+ "hasLabels": false,
+ "capabilities": "Map,Query,Data",
+ "maxRecordCount": 5000,
+ "supportsStatistics": true,
+ "supportsAdvancedQueries": true,
+ "supportedQueryFormats": "JSON, geoJSON",
+ "isDataVersioned": false,
+ "ownershipBasedAccessControlForFeatures": {"allowOthersToQuery": true},
+ "useStandardizedQueries": true,
+ "advancedQueryCapabilities": {
+  "useStandardizedQueries": true,
+  "supportsStatistics": true,
+  "supportsHavingClause": true,
+  "supportsCountDistinct": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsPagination": true,
+  "supportsTrueCurve": true,
+  "supportsReturningQueryExtent": true,
+  "supportsQueryWithDistance": true,
+  "supportsSqlExpression": true
+ },
+ "supportsDatumTransformation": true,
+ "hasGeometryProperties": true,
+ "geometryProperties": {
+  "shapeAreaFieldName": "SHAPE.STArea()",
+  "shapeLengthFieldName": "SHAPE.STLength()",
+  "units": "esriMeters"
+ },
+ "dateFieldsTimeReference": null,
+ "supportsCoordinatesQuantization": true
+}

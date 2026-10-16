@@ -1,0 +1,28 @@
+{
+  "retrievedDate": "2026-10-14",
+  "baselineHead": "b13670daf12b6b9ac276e1eb2200846912827c97",
+  "archiveSha256": "fc2c47b006161e135ef1b6faa35c23cbf659e39a39769a59865ab137cbcdaa70",
+  "scope": "Research only, existing production reference preserved",
+  "rawPng8AllSevenByteIdentical": true,
+  "uniqueGetFeatureInfoPoints": 115,
+  "directVectorTrondheimExtract": "not acquired; catalogue/download proxy 403, prototype usage rights unverified",
+  "dependencies": {
+    "python": "3.12",
+    "numpy": "2.5.4",
+    "Pillow": "12.3.0",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2",
+    "shapely": "2.2.0"
+  },
+  "tests": {
+    "frontend": "178 tests /32 files passed",
+    "eslint": "passed, existing Fast Refresh warning",
+    "typescriptViteBuild": "passed, existing bundle size warning",
+    "ruffAnalysis": "passed",
+    "rawPngNumpyGeosReference": "passed, exact category positions and areas",
+    "chromiumCanvas": "passed, 0 classification changes",
+    "valuedNatureGeos": "passed,119.38040306544056 daa /70 localities",
+    "archivedExperimentReproduction": "passed: all cause/method/geographic metrics identical",
+    "backend": "30 tests passed; Ruff passed; existing AnyIO deprecation"
+  }
+}

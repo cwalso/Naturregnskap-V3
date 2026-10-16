@@ -1,0 +1,90 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune:
+Velg kommune
+×
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+Kommuneoversikt
+›
+Skog
+Skog
+
+Her vises skog i Grunnkart for arealanalyse. Hovedtallet og fordelingen på skogtyper bygger på arealdekke, mens analysen mot framtidig utbygging fortsatt bruker økosystemtype skog.
+
+Hva regnes som skog?
+Hvordan er skogen delt inn?
+Datagrunnlaget bak skog
+Skogareal i Trondheim
+280 586 dekar
+Arealdekke · Grunnkart 2025
+Andel av kartlagt kommuneareal
+39,2 %
+80,1 % av landbasert natur i prototypegrunnlaget
+Skog i områder satt av til framtidig utbygging
+1 816 dekar
+Beregnes som overlapp mellom framtidige utbyggingsområder og økosystemtype skog i Grunnkartet.
+Åpne Utforsk i kart
+→
+Andel av kommunens skog i framtidige utbyggingsområder
+–
+Ikke beregnet her, fordi overlappsanalysen bruker økosystemtype skog, mens hovedtallet på siden bruker arealdekke. Disse skal ikke blandes uten en metodisk avklaring.
+Hvor er tallene hentet fra?
+✓
+Skog er del av det heldekkende regnskapsgrunnlaget
+
+Dette skiller siden fra temasiden for Verdsatte naturtyper. Skogarealet er hentet fra Grunnkart for arealanalyse og inngår i det felles arealbaserte naturregnskapet.
+
+Skog i Trondheim
+
+Kartet og hovedtallet bruker samme rutevise Grunnkart-kilde for skogtypene i arealdekke nivå 2.
+
+Skogtyper
+Arealdekke nivå 2
+Granskog
+Furuskog
+Barblandingsskog
+Blandingsskog
+Lauvskog
++
+–
+i
+Tilpass kartet til kommunen
+Fordeling på skogtype
+
+Arealdekke nivå 2 gir en finere beskrivelse av skogarealet etter dominerende treslag og blanding. Dette er en egenskap ved Grunnkartet, men er ikke en egen økosystemklassifikasjon.
+
+Kilde: NIBIO, Grunnkart for arealanalyse 2025
+
+Granskog
+190 967 dekar
+Furuskog
+42 548 dekar
+Lauvskog
+36 804 dekar
+Blandingsskog
+5 255 dekar
+Barblandingsskog
+5 011 dekar
+Hva betyr skogtypene?
+Hvorfor kan summen av skogtypene avvike fra hovedtallet?
+Skogtyper etter størrelse
+
+Tabellen rangerer skogtypene etter beregnet areal i kommunen. Tallene er prototypeanslag fra samme rasterberegning som diagrammet.
+
+Kilde: NIBIO, Grunnkart for arealanalyse 2025
+
+Skogtype	Areal	Andel
+Granskog	190 967 dekar	68,1 %
+Furuskog	42 548 dekar	15,2 %
+Lauvskog	36 804 dekar	13,1 %
+Blandingsskog	5 255 dekar	1,9 %
+Barblandingsskog	5 011 dekar	1,8 %
+Ofte stilte spørsmål
+Er dette en kartlegging av naturverdi eller naturskog?
+Kan skogdataene brukes i arealplanlegging?
+
+Beregningen er et prototypeanslag på ca. 11 meters rasteroppløsning. Resultatet skal kvalitetssikres mot endelig dataleveranse og metode.

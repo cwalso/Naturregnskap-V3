@@ -1,0 +1,41 @@
+{
+  "checked": "2026-10-12",
+  "greyDatasetUuid": "c5f09d79-1546-495c-8b36-91efd4008bd7",
+  "greyServiceUuid": "bf6d3270-0930-4a23-8809-a883f6442472",
+  "greyEndpoint": "https://wms.nibio.no/cgi-bin/graastruktur",
+  "greyLayers": [
+    "graa_arealer",
+    "andel_uten_vegetasjon",
+    "andel_med_vegetasjon"
+  ],
+  "greyServiceConditions": {
+    "capFees": "no conditions apply",
+    "capAccessConstraints": "none",
+    "catalogServiceLicense": "http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/noConditionsApply",
+    "datasetDownloadLicense": "Norge digitalt – not used"
+  },
+  "greyVersion": "Product version 1, WMS testversion 1. Mixed source dates; not 2026 status. Product report 2025-12-15 cites testversion 2 of Grunnkart April/June 2025. GetMetadata 2011 is template inconsistency, not reference year.",
+  "fkbEndpoint": "https://wms.nibio.no/cgi-bin/gronnstruktur",
+  "fkbLayers": [
+    "arealtype",
+    "sjikthoyder"
+  ],
+  "fkbServiceUuid": "48ec2648-3cef-4817-a28f-aeaf00cfdc8f",
+  "fkbDatasetUuid": "86d6201a-4e0b-4f61-a1dc-c94164cfd160",
+  "fkbLicense": "Norge digitalt license explicitly also on WMS catalog. Public prototype party/contract rights not documented. No public runtime source/control/image archive.",
+  "fkbTechnical": {
+    "capabilities": 200,
+    "cors": "*",
+    "DovreArealtype1024Visible": 20200,
+    "DovreSjikt1024Visible": 12967,
+    "TrondheimArealtype1024": "40 s timeout; later detail worked",
+    "TrondheimArealtypeDetail512Visible": 206149,
+    "TrondheimSjiktDetail512Visible": 57599
+  },
+  "URLs": [
+    "https://data.norge.no/nb/data-services/f241d863-8e66-3b23-b740-bfe6f1a5af80/kart-over-gra-arealer-wms-testversjon-1",
+    "https://data.norge.no/nb/data-services/ad203709-8199-38ab-a238-d554254b469e/fkb-gronnstruktur-wms",
+    "https://data.norge.no/nb/datasets/d72c5c41-dc6a-318f-a2b5-2395700caa6e/fkb-gronnstruktur",
+    "https://www.kartverket.no/geodataarbeid/norge-digitalt/partsinformasjon/avtaler-og-vilkar/norge-digitalt-lisens"
+  ]
+}

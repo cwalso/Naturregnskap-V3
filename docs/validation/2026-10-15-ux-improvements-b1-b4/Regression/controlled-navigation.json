@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "height": 960,
+      "overflow": 0,
+      "mapWidth": 1166,
+      "mapHeight": 664,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 900,
+      "height": 900,
+      "overflow": 0,
+      "mapWidth": 648,
+      "mapHeight": 604,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 832,
+      "height": 900,
+      "overflow": 0,
+      "mapWidth": 580,
+      "mapHeight": 652,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 701,
+      "height": 900,
+      "overflow": 0,
+      "mapWidth": 449,
+      "mapHeight": 652,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 700,
+      "height": 844,
+      "overflow": 0,
+      "mapWidth": 700,
+      "mapHeight": 570,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": 0,
+      "mapWidth": 390,
+      "mapHeight": 570,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    },
+    {
+      "width": 320,
+      "height": 720,
+      "overflow": 0,
+      "mapWidth": 320,
+      "mapHeight": 446,
+      "analysisEntryOpens": true,
+      "navigationCorrect": true
+    }
+  ],
+  "errors": [],
+  "externalInputs": "controlled",
+  "livePagesChecked": false
+}

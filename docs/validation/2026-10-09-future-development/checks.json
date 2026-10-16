@@ -1,0 +1,138 @@
+{
+  "gates": {
+    "A-level0": {
+      "status": "passed",
+      "pixels": {
+        "nature": 92422,
+        "agriculture": 16738,
+        "built": 18699,
+        "valued": 0,
+        "plan": 0
+      }
+    },
+    "B-valued": {
+      "status": "passed",
+      "pixels": {
+        "nature": 0,
+        "agriculture": 0,
+        "built": 0,
+        "valued": 245,
+        "plan": 0
+      },
+      "localities": 1529,
+      "types": 90
+    },
+    "C-future": {
+      "status": "passed",
+      "pixels": {
+        "nature": 755,
+        "agriculture": 242,
+        "built": 0,
+        "valued": 0,
+        "plan": 0
+      },
+      "visible": [
+        "ol-layer",
+        "explore-future-development",
+        "explore-theme-mask",
+        "ol-layer"
+      ]
+    },
+    "H-real-raster-exclusion": {
+      "status": "passed",
+      "tileCoord": [
+        11,
+        1021,
+        743
+      ],
+      "extent": [
+        264868,
+        7031232,
+        267576,
+        7033940
+      ],
+      "counts": {
+        "nature": 4103,
+        "agriculture": 4784,
+        "builtWithinPlan": 57254,
+        "waterWithinPlan": 24,
+        "invalid": 126,
+        "outsidePlan": 195853,
+        "mismatches": 0
+      }
+    },
+    "D-roundtrip": {
+      "status": "passed",
+      "preservesView": true,
+      "clearsSelection": true
+    },
+    "E-filter": {
+      "status": "passed",
+      "name": "Frisk lågurtfuruskog",
+      "filterCount": 1,
+      "selectionCleared": true,
+      "actualMapClick": true
+    },
+    "F-navigation": {
+      "status": "passed",
+      "before": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 59.04077485380476
+      },
+      "zoomed": {
+        "center": [
+          268102.1299999992,
+          7030872.527097527
+        ],
+        "resolution": 9.58154970469708
+      },
+      "moved": {
+        "center": [
+          267134.3976867404,
+          7031287.269517494
+        ],
+        "resolution": 9.58154970469708
+      },
+      "detailPixels": {
+        "nature": 222079,
+        "agriculture": 163472,
+        "built": 137470,
+        "valued": 0,
+        "plan": 0
+      }
+    },
+    "G-mobile": {
+      "status": "passed",
+      "width": 390,
+      "preservesView": true,
+      "horizontalScroll": false
+    }
+  },
+  "errors": [],
+  "sourceResponses": {
+    "api.kartverket.no": {
+      "200": 3
+    },
+    "data.ssb.no": {
+      "200": 1
+    },
+    "cache.kartverket.no": {
+      "200": 236
+    },
+    "kart.miljodirektoratet.no": {
+      "200": 12
+    },
+    "kart3.miljodirektoratet.no": {
+      "200": 1
+    },
+    "nap.ft.dibk.no": {
+      "200": 37
+    },
+    "wms.nibio.no": {
+      "200": 67
+    }
+  }
+}

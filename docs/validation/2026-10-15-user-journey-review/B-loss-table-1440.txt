@@ -1,0 +1,163 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune:
+Velg kommune
+×
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+Kommuneoversikt
+›
+Naturtapet
+
+HISTORISK NEDBYGGING
+
+Naturtapet i Trondheim
+
+Natur som blir til bebyggelse, veier eller andre opparbeidede arealer, endrer landskapet. Her utforsker vi nedbygging over tid – én av flere former for naturtap.
+
+Demodata – illustrasjon, ikke offisiell statistikk
+
+Referanseperiode: 2016–2025 (illustrativ). Arealenhet: dekar.
+
+Bilde er ikke tilgjengelig akkurat nå.
+En vei gjennom skogen ved Hamar, sett ovenfra.
+Illustrasjonsfoto · Hamar, Norge
+Ingrid Martinussen / Unsplash
+
+HVA HAR VI MISTET?
+
+Utvikling over tid
+
+Velg en periode og se hvor mye natur og jordbruk som er bygget ned. Tallene viser brutto nedbygging, uten fratrekk for arealer som eventuelt er tilbakeført.
+
+Demodata – illustrasjon, ikke offisiell statistikk
+
+Fra periode
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+2023
+2024
+2025
+Til periode
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+2023
+2024
+2025
+Vis hele perioden
+
+Valgt periode: 2016–2025 (illustrativ)
+
+Nedbygd natur
+1 280
+dekar
+Nedbygd jordbruk
+320
+dekar
+Samlet nedbygging
+1 600
+dekar
+Natur
+Jordbruk
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+2023
+2024
+2025
+Demodata – illustrasjon, ikke offisiell statistikk. Brutto nedbygging per periode, i dekar. Lengste søyle: 155 dekar. Manglende verdi er merket med –.
+Se tallene i tabell
+Periode	Natur (daa)	Jordbruk (daa)	Samlet (daa)
+2016	95	25	120
+2017	110	30	140
+2018	125	35	160
+2019	100	20	120
+2020	130	30	160
+2021	155	40	195
+2022	140	35	175
+2023	120	25	145
+2024	150	40	190
+2025	155	40	195
+
+NATURAREALENE
+
+Hvilke økosystemtyper er bygget ned?
+
+Fordeling innen nedbygd natur, 2016–2025. Andelene gjelder nedbygd natur i valgt periode. Jordbruksareal inngår ikke i denne fordelingen.
+
+Demodata – illustrasjon, ikke offisiell statistikk
+
+Kategori	Dekar	Andel
+Skog
+768	60 %
+Våtmark
+230,4	18 %
+Hei og buskmark
+153,6	12 %
+Lite vegetert mark
+102,4	8 %
+Kyststrender, svaberg og dyner
+25,6	2 %
+
+Økosystemtyper og etterfølgende arealbruk er illustrative kategorier. SSBs endelige klassifikasjon er ikke avklart.
+
+ETTERFØLGENDE AREALBRUK
+
+Hva har arealene blitt bygget ned til?
+
+Fordeling av samlet nedbygd natur og jordbruk, 2016–2025. Det er ikke avklart om SSB leverer denne variabelen.
+
+Demodata – illustrasjon, ikke offisiell statistikk
+
+Kategori	Dekar	Andel
+Boliger
+720	45 %
+Veier og transport
+400	25 %
+Næring
+320	20 %
+Andre utbyggingsformål
+160	10 %
+
+HVOR HAR NEDBYGGINGEN SKJEDD?
+
+Statistikk først.
+Stedfesting senere.
+
+Stedfestede historiske nedbyggingsdata er ikke tilgjengelige i denne versjonen. Utbyggingspolygoner forventes først i 2027. Kommunetall alene kan ikke vise hvor inngrepene har skjedd.
+
+Et annet spørsmål: Hva kan bli berørt?
+
+Kartet viser dagens natur og arealer avsatt til framtidig utbygging. Planavsetninger beskriver mulig utbyggingspress, ikke faktisk nedbygging.
+
+Se planområder i kart
+→
+
+METODE OG KILDER
+
+Hva forteller tallene?
+
+Nedbygging beskriver en arealovergang. Tallene dekker ikke all forringelse av natur, og er ikke en netto endring i kommunens naturareal.
+
+Tilbake til Kommuneoversikt
+→
+Demodata og illustrativ periode
+Brutto nedbygging og dagens arealbeholdning
+Hva må avklares før SSB-tall publiseres?

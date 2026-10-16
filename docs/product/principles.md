@@ -1,6 +1,6 @@
 # Produktprinsipper – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 09.10.2026**
 
 ## Formål
 
@@ -100,20 +100,24 @@ Naturregnskapets bebygde/opparbeidede areal og det separate Kart over grå
 arealer er beslektede, men ikke identiske størrelser. De skal ikke blandes uten
 metodisk avklaring.
 
-## 7. Fremtidig arealbruk er analyse
+## 7. Fremtidig arealbruk og analyse
 
-Områder satt av til framtidig utbygging brukes som analyseområde. Analysen kan
-vise hvilken natur eller hvilke registrerte naturverdier som ligger innenfor
-området.
+Framtidige utbyggingsformål kan utforskes som selvstendige plandata.
+Selve planformålene kan inkludere eksisterende bebyggelse. Den selvstendige
+kartvisningen viser derfor bare Natur og Jordbruk fra dagens Grunnkart innenfor
+disse formålene. Bebygd, vann og ugyldige piksler skjules. Planstatus/formål
+dokumenterer planavsetning, ikke sikkert framtidig naturtap eller regnskapsendring.
 
-Dette er beslutningsstøtte, ikke selve naturregnskapet.
-
-Prototypen skal ikke beskrive dette som en naturfaglig konsekvensutredning eller
-som et sikkert framtidig naturtap.
+Planområdene kan senere brukes som analyseområder i den beholdte
+kryssanalyseflyten. Kryssanalysen startes ikke fra dagens lagvelger. Samtidig visning av lag
+er visuell utforsking; den beregner ikke overlapp eller endrer regnskapet.
+Supplerende naturtyper og heldekkende nivå 0 holdes metodisk adskilt.
 
 ## 8. Eget tegnet område
 
-Brukeren kan tegne et polygon og bruke dette som analyseområde.
+Tegnet polygon er implementert som analyseområde i den beholdte
+metode-/kartkoden. Inngangen er midlertidig skjult i den nye offentlige
+arbeidsflaten; primærmodellen nå er sju uavhengige kartlag.
 
 Det tegnede området skal bruke samme grunnprinsipp som andre overlayanalyser:
 
@@ -132,9 +136,12 @@ lesbart som tekst/tall uten at brukeren må tolke kartet.
 
 Kart, tabeller og nøkkeltall for samme analyse skal bygge på samme resultat,
 kommune og analyseidentitet. Beregningsrepresentasjon og kartrepresentasjon
-er forskjellige: tall kan beregnes på rastergrid mens kartet viser faktiske
-kildepolygoner innenfor samme gyldige analysemask. Når analysen finnes, er
-kartet hovedarbeidsflaten med et kompakt resultat-/objektpanel.
+er forskjellige: tall beregnes på eksisterende rastergrid. Kartet viser
+ordinære naturtypelokaliteter som WMS-kontekst og beregnet overlapp som
+grense/fyll fra samme gyldige treffmaske. Valgt lokalitet får kildegeometrisk
+omriss. Treffgrensen er ikke eksakt naturtypegeometri eller en ny
+vektorinterseksjon. Kartet er hovedarbeidsflaten med et kompakt
+resultat-/objektpanel. Filter- og objektvalg flytter ikke kartet.
 
 ## 10. Prototypeberegninger
 
@@ -156,3 +163,15 @@ automatisert beslutningsstøtte skal omtales som mulig videreutvikling.
 
 Første versjon bør først og fremst etablere et felles og etterprøvbart
 regnskapsgrunnlag og en forståelig måte å bruke det på.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).

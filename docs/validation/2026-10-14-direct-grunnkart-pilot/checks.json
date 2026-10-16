@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-14",
+  "startHead": "81dd4154f438248130f426526340632fdc7f7e80",
+  "scope": "Access investigation and synthetic-tested local setup only",
+  "actual2025FileDownloaded": false,
+  "actualPilotUsageRightsVerified": false,
+  "actualTrondheimGeodataPilotRun": false,
+  "reason": "Explicit task stop rule: file/rights unverified; Geonorge catalogue/download/API blocked by proxy policy",
+  "officialGeodataAreaResults": null,
+  "privateSourceFilesCommitted": false,
+  "derivedGeographicDatasetsCommitted": false,
+  "productionCodeChanged": false,
+  "pagesDispatch": false,
+  "maskSha256": "c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f",
+  "tests": {
+    "pilotSynthetic": "23 passed; analytic boundaries, GPKG read/run, provenance gates, private output, reference mask and CRS transform",
+    "frontend": "178 passed /32 files",
+    "backend": "30 passed",
+    "eslint": "passed with existing Fast Refresh warning",
+    "typeScriptViteBuild": "passed with existing bundle-size warning",
+    "ruffApi": "passed",
+    "ruffAnalysis": "passed"
+  },
+  "dependencies": {
+    "python": "3.12",
+    "fiona": "1.10.1",
+    "GDAL": "3.9.2",
+    "pyproj": "3.8.0",
+    "shapely": "2.2.0",
+    "numpy": "2.5.4",
+    "pytest": "8.4.1"
+  }
+}

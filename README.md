@@ -8,7 +8,7 @@ Den offentlige testflaten ligger på:
 
 https://cwalso.github.io/Naturregnskap-V3/
 
-**Status i repoet: 08.10.2026**
+**Status i repoet: 12.10.2026**
 
 ## Faglig skille
 
@@ -46,39 +46,57 @@ Temadata på temasidene avgrenses visuelt til valgt kommune.
 
 ## Utforsk i kart
 
-`#utforsk-i-kart` er et analyseverksted, ikke en generell GIS-klient.
+Oppgavebranchen viser sju uavhengige kartlag:
 
-Arbeidsflyten er:
+1. Grunnkart nivå 0 – heldekkende regnskapsgrunnlag; standard ved åpning.
+2. Verdsatte naturtyper – supplerende registrerte lokaliteter.
+3. Framtidig utbygging – planavsetninger fra kommuneplanens arealdel.
+4. Verneområder – vedtatt vern, fem verneformklasser.
+5. Inngrepsfri natur (INON) – januar 2023, tre avstandssoner.
+6. Villrein – registrerte biologiske leveområder fra Villreinbasen.
+7. Grå arealer – offisielt kartprodukt testversjon 1, med kildebaserte vegetasjonsandeler.
 
-```text
-velg analyseområde
-        ↓
-velg datagrunnlag
-        ↓
-les resultat
-        ↓
-finn resultatet i kartet
-```
+`ExploreThemesWorkspace` og `exploreThemeMap` lar brukeren kombinere 0–7 lag
+med avkryssing og egen gjennomsiktighet. Nivå 0 ligger nederst (30 %
+gjennomsiktighet), så Grå arealer (25 %), INON (35 %) og Villrein, deretter plan/naturtyper og
+verneområder. Øvrige lag starter med 0 % ekstra gjennomsiktighet.
+Kommunemaske/grense ligger over alle; bakgrunnskartet vises også med alle av.
+Lagvalg, gjennomsiktighet, søk, filter og lokalitetsvalg beholder utsnittet.
+Naturtypefilteret påvirker bare naturtypelaget og bevares ved andre lagvalg.
+Velgeren kan lukkes på mobil. Registeret er forberedt for åtte identiteter,
+men bare de sju implementerte lagene vises. Nye WMS-lag bruker kildens
+symboler/legender og kommuneavgrensning, uten areal- eller overlappsberegning.
+Villrein er automatisk kontrollert i Dovre (registreringer) og Trondheim (ingen). Planvisningen bruker uendret
+DiBK-filter og viser dagens
+Natur og Jordbruk innenfor planformålene, med mørk grønn/gul diagonalskravur
+og transparent tint. Grunnkartets vanlige klassefarger er uendret.
+Bebygd, vann og ugyldige piksler skjules. Dette er kartpresentasjon, ikke
+bokført naturtap eller prognose for faktisk framtidig naturtap.
 
-Analyseområder som er implementert:
+Kommuneoversikten for Grunnkart gjenbruker det klargjorte Trondheim-rasteret.
+Ved innzooming brukes samme eksisterende klassifisering og WMS-fliser.
+WMS-laget har maksimal målestokk 1:50 000.
 
-- områder satt av til framtidig utbygging i kommuneplan
-- eget polygon tegnet i kartet
+Kryssanalyse, tegning, grid, UTM-korreksjon, verdi-/overlappsmetode og cache
+beholdes i kode og tester. De startes ikke fra denne nye kartflyten.
+Tallanalysene er fortsatt bare Trondheim-klargjorte prototypeberegninger.
 
-Analysegrunnlag som er implementert:
+[Seks lag, kildekontroll og nye skjermbilder](docs/validation/2026-10-12-six-explore-layers.md)
+dokumenterer gjeldende leveranse.
 
-- Natur og jordbruk fra Grunnkart for arealanalyse
-- Verdsatte naturtyper
+[Visuell korreksjon av lagpanel og skravur](docs/validation/2026-10-12-layer-panel-and-plan-hatch.md)
+dokumenterer de siste skjermbildene og kontrollene.
 
-Resultatene er prototypebasert beslutningsstøtte. De skal ikke omtales som
-autoritative regnskapstall uten egen metodisk beslutning og validering.
+[Flere samtidige kartlag](docs/decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[kontrollrapport med skjermbilder](docs/validation/2026-10-09-concurrent-map-layers.md) dokumenterer gjeldende flyt.
 
-De rasterbaserte tallanalysene krever et klargjort kommunevis
-oversiktsraster. Repoet inneholder per 08.10.2026 bare et slikt raster for
-Trondheim (5001). Analyseverkstedet og temasidene kan åpnes for andre kommuner,
-men Natur/Jordbruk-overlay, Verdsatte naturtyper-overlay, skogstatistikk og
-våtmarksstatistikk returnerer da at beregningen ikke er klargjort. Dynamiske
-kartlag og kommunevise tematreff har en annen og bredere dekning.
+[Beslutning om selvstendige karttemaer](docs/decisions/2026-10-09-v3-independent-map-themes.md)
+beskriver den tidligere presentasjonen og avgrensningen.
+[Kontrollrapport og skjermbilder](docs/validation/2026-10-09-independent-map-themes.md)
+viser den opprinnelige branch-kontrollen.
+[Korrigert planvisning og nye skjermbilder](docs/validation/2026-10-09-future-development-display.md)
+dokumenterer Natur/Jordbruk-visningen. Testpublisering skjer fra PR-branchen
+via eksisterende Pages-workflow; ingen merge til main inngår.
 
 ## Offentlig demoarkitektur
 
@@ -228,3 +246,28 @@ Start her:
 Gamle ADR-er er historiske beslutningslogger og skal normalt ikke omskrives.
 Nyere ADR-er og dagens eksplisitte levende dokumentasjon gjelder når retningen
 er endret.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](docs/validation/2026-10-12-grey-areas.md).
+
+## Planoverlapp for verdsatte naturtyper, 13.10.2026
+
+Temasidens kort åpner en geometrisk analyse i Utforsk-kartets V2-panel. Metoden bruker delcelleareal mot Natur/Jordbruk-planmasken, kildeverifiserte lokalitets-ID-er og full lokalitetsgeometri som nevner. Trondheim er klargjort; manglende grunnlag i andre kommuner gir ikke null treff. [Metode](docs/decisions/2026-10-13-v3-geometric-valued-nature-overlap.md) · [kontrollrapport og skjermbilder](docs/validation/2026-10-13-future-nature.md).
+
+## Samordnede indikatorer og UX, 15.10.2026
+
+Skog og Myr/våtmark deler eksisterende planarealresultat med kartet, med tydelige
+prototypeforbehold. Kommunevalg beholder side/analysetype; kommune og side kan
+gjenopprettes fra URL. Naturtema viser dagens økosystemfordeling og skiller
+Bynatur fra regnskapsgrunnlaget. Kontrast, fokus og listesemantikk er rettet.
+Se [beslutning](docs/decisions/2026-10-15-common-plan-indicators.md) og
+[tester, begrensninger og skjermbilder](docs/validation/2026-10-15-ux-improvements-b1-b4.md).

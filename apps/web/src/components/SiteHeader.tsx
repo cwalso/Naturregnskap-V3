@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useId, useRef, useState, type ReactNode } from 'react'
 
 
 export type SiteView =
@@ -33,20 +33,28 @@ export function SiteHeader({
   onNavigate,
 }: SiteHeaderProps) {
   const natureSectionActive = activeView === 'utforsk-naturen' || activeView?.startsWith('tema-')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const navigationId = useId()
+  const menuButton = useRef<HTMLButtonElement>(null)
 
   return (
-    <header className="site-header">
+    <header className="site-header" onKeyDown={(event) => {
+      if (event.key === 'Escape' && menuOpen) {
+        setMenuOpen(false)
+        menuButton.current?.focus()
+      }
+    }}>
       <div className="site-header__bar">
         <button
           type="button"
           className="site-header__brand"
-          onClick={() => onNavigate?.('oversikt')}
+          onClick={() => { setMenuOpen(false); onNavigate?.('oversikt') }}
           aria-label="Gå til kommuneoversikten"
         >
           <span className="site-header__brand-label">Kommunale naturregnskap</span>
         </button>
 
-        <span className="site-header__test" aria-label="Testversjon">★ TEST ★</span>
+        <span className="site-header__test" role="note" aria-label="Testversjon">★ TEST ★</span>
 
         <div className="site-header__utilities">
           {municipalityPicker && (
@@ -57,34 +65,38 @@ export function SiteHeader({
           )}
 
           {onNavigate && (
-            <details className="site-menu">
-              <summary aria-label="Åpne meny">
-                <span aria-hidden="true">☰</span>
-              </summary>
-              <nav className="site-menu__panel" aria-label="Hovednavigasjon">
-                {items.map((item) => (
-                  <a
-                    key={item.view}
-                    href={`#${item.view}`}
-                    aria-current={
-                      activeView === item.view
-                        || (item.view === 'utforsk-naturen' && natureSectionActive)
-                        ? 'page'
-                        : undefined
-                    }
-                    onClick={(event) => {
-                      event.preventDefault()
-                      onNavigate(item.view)
-                    }}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
-            </details>
+            <button ref={menuButton} type="button" className="site-menu-toggle"
+              aria-label={menuOpen ? 'Lukk meny' : 'Åpne meny'}
+              aria-expanded={menuOpen} aria-controls={navigationId}
+              onClick={() => setMenuOpen((open) => !open)}>
+              <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
+            </button>
           )}
         </div>
       </div>
+      {onNavigate && (
+        <nav id={navigationId} className={`site-navigation ${menuOpen ? 'is-open' : ''}`} aria-label="Hovednavigasjon">
+          {items.map((item) => (
+            <a
+              key={item.view}
+              href={`#${item.view}`}
+              aria-current={
+                activeView === item.view
+                  || (item.view === 'utforsk-naturen' && natureSectionActive)
+                  ? 'page'
+                  : undefined
+              }
+              onClick={(event) => {
+                event.preventDefault()
+                setMenuOpen(false)
+                onNavigate(item.view)
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )}
     </header>
   )
 }

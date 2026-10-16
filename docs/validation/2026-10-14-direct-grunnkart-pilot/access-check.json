@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-14",
+  "baselineHead": "81dd4154f438248130f426526340632fdc7f7e80",
+  "networkPolicy": "restricted,enforced,spec22",
+  "configuredDatasetAuthentication": false,
+  "downloadedGrunnkart2025File": false,
+  "probes": [
+    {
+      "url": "https://kartkatalog.geonorge.no/metadata/uuid/28c28e3a-d88f-4a34-8c60-5efe6d56a44d",
+      "error": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://nedlasting.geonorge.no/geonorge/ATOM-feeds/GrunnkartArealanalyse_AtomFeedGML.xml",
+      "error": "Tunnel connection failed: 403 Forbidden"
+    },
+    {
+      "url": "https://nedlasting.geonorge.no/api/capabilities/",
+      "error": "Tunnel connection failed: 403 Forbidden"
+    }
+  ]
+}

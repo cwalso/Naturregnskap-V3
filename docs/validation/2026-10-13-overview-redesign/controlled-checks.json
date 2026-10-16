@@ -1,0 +1,158 @@
+{
+  "source": "controlled external responses",
+  "screenshots": [
+    "overview-1440",
+    "hero-1440",
+    "naturtap-1440",
+    "fortelling-1440",
+    "drivkrefter-1440",
+    "temakort-1440",
+    "overview-900",
+    "hero-900",
+    "naturtap-900",
+    "fortelling-900",
+    "drivkrefter-900",
+    "temakort-900",
+    "overview-390",
+    "hero-390",
+    "naturtap-390",
+    "fortelling-390",
+    "drivkrefter-390",
+    "temakort-390",
+    "overview-320",
+    "hero-320",
+    "naturtap-320",
+    "fortelling-320",
+    "drivkrefter-320",
+    "temakort-320",
+    "controlled-image-fallback",
+    "controlled-data-failure"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "overflow": 0,
+      "mapWidth": 660.046875,
+      "mapHeight": 480,
+      "headerClearance": 0,
+      "h1Count": 1,
+      "categories": [
+        "12 000 dekar",
+        "2 000 dekar",
+        "1 000 dekar"
+      ]
+    },
+    {
+      "width": 900,
+      "height": 1000,
+      "overflow": 0,
+      "mapWidth": 438.71875,
+      "mapHeight": 460,
+      "headerClearance": 0,
+      "h1Count": 1,
+      "categories": [
+        "12 000 dekar",
+        "2 000 dekar",
+        "1 000 dekar"
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": 0,
+      "mapWidth": 348,
+      "mapHeight": 340,
+      "headerClearance": 0,
+      "h1Count": 1,
+      "categories": [
+        "12 000 dekar",
+        "2 000 dekar",
+        "1 000 dekar"
+      ]
+    },
+    {
+      "width": 320,
+      "height": 720,
+      "overflow": 0,
+      "mapWidth": 286,
+      "mapHeight": 300,
+      "headerClearance": 0,
+      "h1Count": 1,
+      "categories": [
+        "12 000 dekar",
+        "2 000 dekar",
+        "1 000 dekar"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "source": "https://images.unsplash.com/photo-1602836948312-9815af8d4a79?auto=format&fit=crop&w=800&q=80",
+      "alt": "Flyfoto av en norsk kystbygd med veier, bebyggelse og grønt landskap.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 449.140625
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1643240337036-fa77dbc87c13?auto=format&fit=crop&w=800&q=80",
+      "alt": "En vei gjennom skogen ved Hamar, sett ovenfra.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 449.15625
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1749063590560-2439a8db7a18?auto=format&fit=crop&w=800&q=80",
+      "alt": "Høye furutrær i en norsk skog med tåke mellom stammene.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1771232274335-fb94d93d1e2f?auto=format&fit=crop&w=800&q=80",
+      "alt": "Åpent myrlandskap med små vannspeil og spredte furutrær i Nord-Finland.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1666270661899-4a3d380c2fc5?auto=format&fit=crop&w=800&q=80",
+      "alt": "Fjell og vann ved Urdalstinden i Jotunheimen.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1761605733193-aabc9c729f99?auto=format&fit=crop&w=800&q=80",
+      "alt": "Blomsterik eng ved kysten i Lofoten, med fjell og sjø i bakgrunnen.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1778694782496-1aa9d4a756c2?auto=format&fit=crop&w=800&q=80",
+      "alt": "Sammenhengende naturlandskap med myr, furutrær og fjell i Ånderdalen.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    },
+    {
+      "source": "https://images.unsplash.com/photo-1659339975480-2933955465e6?auto=format&fit=crop&w=800&q=80",
+      "alt": "Rein i åpent fjellandskap ved Høgevarde på Norefjell.",
+      "naturalWidth": 840,
+      "fallback": false,
+      "width": 546
+    }
+  ],
+  "requests": [],
+  "errors": [],
+  "comparisonSection": "omitted: no existing national comparison data",
+  "navigation": {
+    "naturtapet": true,
+    "naturtema": true,
+    "map": true,
+    "allSixThemes": true,
+    "municipalitySwitch": true,
+    "accordionKeyboard": true
+  }
+}

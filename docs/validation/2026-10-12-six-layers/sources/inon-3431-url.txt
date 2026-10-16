@@ -1,0 +1,1 @@
+https://kart.miljodirektoratet.no/geoserver/inngrepsfrinatur/wms?service=WMS&version=1.3.0&request=GetMap&layers=status&styles=&crs=EPSG%3A25833&bbox=187022.96999999927%2C6874202.289999999%2C234965.75999999914%2C6925815.9799999995&width=1024&height=1024&format=image%2Fpng&transparent=true

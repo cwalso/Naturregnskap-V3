@@ -1,0 +1,9 @@
+{
+  "errors": [],
+  "failures": [
+    {
+      "url": "https://images.unsplash.com/photo-1755268359635-22606be29d0b?auto=format&fit=crop&q=82&w=1400",
+      "status": 403
+    }
+  ]
+}

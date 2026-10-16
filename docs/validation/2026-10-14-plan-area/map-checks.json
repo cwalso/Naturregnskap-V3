@@ -1,0 +1,137 @@
+[
+  {
+    "selection": {
+      "kind": "all"
+    },
+    "mapped": [
+      {
+        "id": "skog",
+        "area": 2033275.4538574219
+      },
+      {
+        "id": "hei-buskmark",
+        "area": 37261.610595703125
+      },
+      {
+        "id": "vatmark",
+        "area": 12644.330322265625
+      },
+      {
+        "id": "unclassified-nature",
+        "area": 707075.4274902344
+      },
+      {
+        "id": "agriculture",
+        "area": 832511.66015625
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "nature"
+    },
+    "mapped": [
+      {
+        "id": "skog",
+        "area": 2033275.4538574219
+      },
+      {
+        "id": "hei-buskmark",
+        "area": 37261.610595703125
+      },
+      {
+        "id": "vatmark",
+        "area": 12644.330322265625
+      },
+      {
+        "id": "unclassified-nature",
+        "area": 707075.4274902344
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "agriculture"
+    },
+    "mapped": [
+      {
+        "id": "agriculture",
+        "area": 832511.66015625
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "skog"
+    },
+    "mapped": [
+      {
+        "id": "skog",
+        "area": 2033275.4538574219
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "hei-buskmark"
+    },
+    "mapped": [
+      {
+        "id": "hei-buskmark",
+        "area": 37261.610595703125
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "lite-vegetert-mark"
+    },
+    "mapped": []
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "vatmark"
+    },
+    "mapped": [
+      {
+        "id": "vatmark",
+        "area": 12644.330322265625
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "kyst"
+    },
+    "mapped": []
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "unclassified-nature"
+    },
+    "mapped": [
+      {
+        "id": "unclassified-nature",
+        "area": 707075.4274902344
+      }
+    ]
+  },
+  {
+    "selection": {
+      "kind": "category",
+      "id": "agriculture"
+    },
+    "mapped": [
+      {
+        "id": "agriculture",
+        "area": 832511.66015625
+      }
+    ]
+  }
+]

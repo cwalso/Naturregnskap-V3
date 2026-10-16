@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-14",
+  "startHead": "642341fdc9ecedc3e4ad17c5f632d234e792cfb0",
+  "issue": 78,
+  "deliveries": {
+    "A": "investigation documented; gate failed: actual vectors and local usage rights unverified",
+    "B": "not started; A gate failed",
+    "C": "not started; no production change or Pages publication"
+  },
+  "actualDataUsed": [
+    "public product pages and specifications",
+    "public catalogue metadata",
+    "WMS/WFS capabilities and exception metadata only",
+    "GitHub issue78 and earlier repository source verification"
+  ],
+  "actualGreyVectorUsed": false,
+  "actualGreenVectorUsed": false,
+  "actualBuildingRoadVectorUsed": false,
+  "aerialPhotosUsed": false,
+  "publicDerivedGeometryRightsVerified": false,
+  "localAnalysisRightsVerified": false,
+  "externalProcessingRightsVerified": false,
+  "geographicQualityTests": {
+    "residential": "not executed",
+    "industrial": "not executed",
+    "cityCentre": "not executed"
+  },
+  "newAreaResultsDaa": null,
+  "newScreenshots": [],
+  "wmsColourInferenceUsed": false,
+  "productionCodeChanged": false,
+  "pagesDispatched": false,
+  "checks": {
+    "frontend": "178 tests/32 files passed",
+    "backend": "30 tests passed",
+    "eslint": "passed; existing Fast Refresh warning",
+    "typescriptViteBuild": "passed; existing bundle-size warning",
+    "ruffBackend": "passed"
+  },
+  "nextActivity": "Obtain rights-cleared Trondheim grey-area and FKB-Greenstructure vector extracts; confirm local/cloud/publication rights and resolve natural bare-ground and canopy semantics before B"
+}

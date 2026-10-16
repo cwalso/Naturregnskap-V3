@@ -1,0 +1,19 @@
+HTTP/1.1 200 OK
+date: Mon, 12 Oct 2026 07:28:54 GMT
+server: envoy
+
+HTTP/2 200
+date: Mon, 12 Oct 2026 07:28:55 GMT
+server: envoy
+cache-control: private
+content-type: image/png
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-aspnet-version: 4.0.30319
+x-powered-by: ASP.NET
+content-length: 80515
+via: 1.1 kart.miljodirektoratet.no
+access-control-allow-origin: *
+access-control-allow-headers: Accept, Accept-Language, Content-Type,X-Requested-With, X-Requested-By,Origin
+access-control-allow-methods: GET, POST, OPTIONS
+x-envoy-upstream-service-time: 326

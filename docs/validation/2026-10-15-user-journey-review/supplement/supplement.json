@@ -1,0 +1,68 @@
+{
+  "mode": "isolated source controls; in-memory map hook and synthetic aggregate period; not published UI state",
+  "checks": [
+    {
+      "aggregatePeriod": "one 2017–2024 period, one period option, demo source retained; destination unavailable, no annual interpolation"
+    },
+    {
+      "forestLinkOpensMap": "#utforsk-i-kart",
+      "opensAnalysisPanel": false
+    },
+    {
+      "panned": {
+        "center": [
+          276717.3598666664,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "original": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "preservedDuring": [
+        "category selection",
+        "analysis switch",
+        "closing panel",
+        "six independent supplementary/plan layer toggles"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "B-synthetic-aggregate-1440",
+      "width": 1440,
+      "pageOverflow": 0
+    },
+    {
+      "name": "B-synthetic-aggregate-390",
+      "width": 390,
+      "pageOverflow": 0
+    },
+    {
+      "name": "B-synthetic-aggregate-320",
+      "width": 320,
+      "pageOverflow": 0
+    },
+    {
+      "name": "A-wetland-entry-1440",
+      "width": 1440,
+      "pageOverflow": 0
+    },
+    {
+      "name": "A-forest-map-link-1440",
+      "width": 1440,
+      "pageOverflow": 0
+    },
+    {
+      "name": "F-preserved-map-after-toggles-1440",
+      "width": 1440,
+      "pageOverflow": 0
+    }
+  ],
+  "javascriptErrors": [],
+  "completed": true
+}

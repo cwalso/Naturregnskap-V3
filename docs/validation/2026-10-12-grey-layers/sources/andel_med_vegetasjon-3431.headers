@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+date: Mon, 12 Oct 2026 08:37:54 GMT
+server: envoy
+
+HTTP/2 200
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+strict-transport-security: max-age=31536000;includeSubDomains; preload
+date: Mon, 12 Oct 2026 08:37:55 GMT
+server: envoy
+access-control-allow-origin: *
+content-type: image/png
+x-envoy-upstream-service-time: 985

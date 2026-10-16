@@ -1,0 +1,809 @@
+{
+  "stage": "all",
+  "screens": [
+    {
+      "name": "B1-skog-theme-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-skog-map-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-vatmark-theme-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-vatmark-map-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Kommuneoversikt",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Naturtapet",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Naturtema",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Skog",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Utforsk-i-kart",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Arealfordeling",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-oslo-Registrerte-naturverdier",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B2-after-reload",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B3-themes-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Arealfordeling-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Registrerte-naturverdier-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B3-themes-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Arealfordeling-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Registrerte-naturverdier-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "B3-themes-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Arealfordeling-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Registrerte-naturverdier-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "B3-themes-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Arealfordeling-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B3-Registrerte-naturverdier-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B4-themes-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B4-shared-stock-table-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B4-urban-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B4-themes-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "B4-urban-900",
+      "width": 900,
+      "height": 900,
+      "overflow": 0
+    },
+    {
+      "name": "B4-themes-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "B4-urban-390",
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    {
+      "name": "B4-themes-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B4-shared-stock-table-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B4-urban-320",
+      "width": 320,
+      "height": 720,
+      "overflow": 0
+    },
+    {
+      "name": "B4-oslo-no-stock",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    {
+      "theme": "skog",
+      "area": "2 032,22 daa",
+      "analysisId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "stockPreserved": "280 586"
+    },
+    {
+      "theme": "våtmark",
+      "area": "12,64 daa",
+      "analysisId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "stockPreserved": "38 495"
+    },
+    {
+      "page": "Kommuneoversikt",
+      "sameRoute": true
+    },
+    {
+      "page": "Naturtapet",
+      "sameRoute": true
+    },
+    {
+      "page": "Naturtema",
+      "sameRoute": true
+    },
+    {
+      "page": "Skog",
+      "sameRoute": true
+    },
+    {
+      "page": "Utforsk i kart",
+      "sameRoute": true
+    },
+    {
+      "mode": "Arealfordeling",
+      "sameMapInstance": true,
+      "oldResultsWithdrawn": true,
+      "fitNewMunicipality": true
+    },
+    {
+      "mode": "Registrerte naturverdier",
+      "sameMapInstance": true,
+      "oldResultsWithdrawn": true,
+      "fitNewMunicipality": true
+    },
+    {
+      "communeAfterReload": "Trondheim",
+      "browserBack": true
+    },
+    {
+      "label": "brand-normal-1440",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-hover-1440",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-focused-1440",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Arealfordeling-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-hover-Arealfordeling-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-focus-Arealfordeling-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Registrerte naturverdier-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-hover-Registrerte naturverdier-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-focus-Registrerte naturverdier-1440",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "width": 1440,
+      "keyboardAnalysisSwitch": true
+    },
+    {
+      "label": "brand-normal-900",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-hover-900",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-focused-900",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Arealfordeling-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-hover-Arealfordeling-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-focus-Arealfordeling-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Registrerte naturverdier-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-hover-Registrerte naturverdier-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-focus-Registrerte naturverdier-900",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "width": 900,
+      "keyboardAnalysisSwitch": true
+    },
+    {
+      "label": "brand-normal-390",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-hover-390",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-focused-390",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Arealfordeling-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-hover-Arealfordeling-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-focus-Arealfordeling-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Registrerte naturverdier-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-hover-Registrerte naturverdier-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-focus-Registrerte naturverdier-390",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "width": 390,
+      "keyboardAnalysisSwitch": true
+    },
+    {
+      "label": "brand-normal-320",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-hover-320",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "brand-focused-320",
+      "contrast": 6.104870448920505,
+      "fg": "rgb(0, 94, 93)",
+      "bg": "rgb(219, 233, 233)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Arealfordeling-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-hover-Arealfordeling-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "none",
+      "outlineWidth": "3px",
+      "focusVisible": false
+    },
+    {
+      "label": "selected-focus-Arealfordeling-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-normal-Registrerte naturverdier-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-hover-Registrerte naturverdier-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "label": "selected-focus-Registrerte naturverdier-320",
+      "contrast": 7.6110557464072555,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(0, 94, 93)",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "focusVisible": true
+    },
+    {
+      "width": 320,
+      "keyboardAnalysisSwitch": true
+    },
+    {
+      "width": 1440,
+      "unchangedStockTable": true,
+      "roles": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "width": 900,
+      "unchangedStockTable": true,
+      "roles": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "width": 390,
+      "unchangedStockTable": true,
+      "roles": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "width": 320,
+      "unchangedStockTable": true,
+      "roles": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "allSevenThemeDestinations": true,
+      "osloNoTrondheimStock": true
+    }
+  ],
+  "javascriptErrors": [],
+  "accessibility": [
+    {
+      "screen": "themes-1440",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Arealfordeling-1440",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Registrerte naturverdier-1440",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "themes-900",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Arealfordeling-900",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Registrerte naturverdier-900",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "themes-390",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Arealfordeling-390",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Registrerte naturverdier-390",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "themes-320",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Arealfordeling-320",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "Registrerte naturverdier-320",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "B4-themes-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "B4-themes-900",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "B4-themes-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "screen": "B4-themes-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "completed": true
+}

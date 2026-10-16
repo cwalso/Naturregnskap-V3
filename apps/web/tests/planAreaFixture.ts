@@ -1,0 +1,5 @@
+import { createPlanAreaGrid, summarizePlanArea, type PlanAreaAnalysis } from '../src/features/plan-area/model'
+import { PLAN_PIXEL_METERS } from '../src/map/plannedDevelopment'
+const grid=createPlanAreaGrid({kind:'planned',zoom:9,cx0:0,cy0:0,width:2,height:1,extent:[0,0,PLAN_PIXEL_METERS*2,PLAN_PIXEL_METERS],cleaned:Uint8Array.from([1,2]),analysisMask:Uint8Array.from([1,2])})
+grid.mask[0]=1;grid.mask[1]=4
+export const planAreaFixture:PlanAreaAnalysis={...summarizePlanArea(grid,1),status:'available',municipalityNumber:'5001',methodVersion:'planned-land-cover-area-v1',analysisId:'test-area',grid,classification:{status:'partial',unclassifiedDaa:summarizePlanArea(grid,1).categories[5].areaDaa,reason:null},provenance:{retrievedAt:'2026-10-14',planSource:'plan',classificationSource:'classification',classificationLevel:'nivå 1',grunnkartVersion:'2025',overviewRetrieved:'2026-10-05',maskHash:'mask',classificationHash:'classification',tileHashes:[],areaFactor:1,planCellMeters:21.15625,classificationCellMeters:10.578125,crs:'EPSG:25833',computationMs:1}}
