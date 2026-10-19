@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { natureFixture } from './natureFixture'
 import { planAreaFixture } from './planAreaFixture'
 import { ExploreThemesWorkspace } from '../src/features/explore-map/ExploreThemesWorkspace'
 import type { MunicipalityBoundary } from '../src/api/municipalities'
@@ -7,9 +8,11 @@ import type { MunicipalValuedNature } from '../src/api/municipalValuedNature'
 import type { LayerMapStatus } from '../src/map/exploreThemeMap'
 import type { MapLayerId } from '../src/features/explore-map/mapThemes'
 
-const controller = vi.hoisted(() => ({ update: vi.fn(), setPlanArea:vi.fn(),fitToMunicipality: vi.fn(), destroy: vi.fn(), setSelectionHandler: vi.fn() }))
+const controller = vi.hoisted(() => ({ update: vi.fn(), setPlanArea:vi.fn(),setFutureNature:vi.fn(),fitToMunicipality: vi.fn(), destroy: vi.fn(), setSelectionHandler: vi.fn() }))
 const areaRequest=vi.hoisted(()=>vi.fn())
 vi.mock('../src/features/plan-area/source',()=>({calculatePlanArea:areaRequest}))
+const natureRequest=vi.hoisted(()=>vi.fn())
+vi.mock('../src/features/future-analysis/model',async original=>({...await original<object>(),calculateFutureNature:natureRequest}))
 const request = vi.hoisted(() => vi.fn())
 let statusHandler: (layer: MapLayerId, status: LayerMapStatus, owner: string | null) => void
 vi.mock('../src/map/exploreThemeMap', () => ({ createExploreLayerMap: (_target: HTMLElement, onStatus: typeof statusHandler) => { statusHandler = onStatus; return controller } }))
@@ -18,7 +21,7 @@ const municipality = { number: '5001', name: 'Trondheim' }
 const boundary: MunicipalityBoundary = { type: 'Feature', properties: municipality, geometry: { type: 'Polygon', coordinates: [[[10, 63], [11, 63], [11, 64], [10, 63]]] } }
 const data: MunicipalValuedNature = { municipalityNumber: '5001', natureTypes: ['Rikmyr'], localities: [{ id: '123', sourceId: 'source-123', name: 'Myra', natureType: 'Rikmyr', value: 'Stor verdi', color: '#FD7032', rings: [] }] }
 afterEach(() => { cleanup(); vi.clearAllMocks() })
-beforeEach(()=>{areaRequest.mockResolvedValue({status:'not_available',municipalityNumber:'5001',reason:'Grunnlag mangler'})})
+beforeEach(()=>{natureRequest.mockResolvedValue({status:'not_available',municipalityNumber:'5001',reason:'Naturverdigrunnlag mangler'});areaRequest.mockResolvedValue({status:'not_available',municipalityNumber:'5001',reason:'Grunnlag mangler'})})
 const checkbox = (name: string) => screen.getByRole('checkbox', { name })
 
 const settings = (name: string) => fireEvent.click(screen.getByRole('button', { name: `Innstillinger for ${name}` }))
@@ -251,5 +254,83 @@ describe('objekt og filter i samme kontekstpanel',()=>{
     expect(screen.getByRole('combobox',{name:'Naturtype'})).toHaveValue('Rikmyr')
     fireEvent.click(screen.getByRole('button',{name:'Vis alle registrerte lokaliteter'}))
     expect(lastContext()).toMatchObject({filter:{natureType:null,value:null},layers:{'future-development':{visible:true,opacity:1}}})
+  })
+})
+
+
+describe('B5.2a aktiv analyse uavhengig av panel', () => {
+  it.each(['area','nature'] as const)('retains %s result, selection and consumer through temporary panels and map-only mode', async mode => {
+    areaRequest.mockResolvedValue(planAreaFixture); natureRequest.mockResolvedValue(natureFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode={mode}/>)
+    const request = mode==='area' ? areaRequest : natureRequest
+    const setter = mode==='area' ? controller.setPlanArea : controller.setFutureNature
+    if(mode==='area') fireEvent.click(within(await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})).getByRole('button',{name:'Skog'}))
+    else {
+      fireEvent.change(await screen.findByRole('searchbox'),{target:{value:'Testmyra'}})
+      fireEvent.click(screen.getByRole('button',{name:/Testmyra/}))
+    }
+    const expected=mode==='area' ? {kind:'category',id:'skog'} : {kind:'locality',label:'BN1'}
+    const result=mode==='area' ? planAreaFixture : natureFixture
+    const signal=request.mock.calls[0][1] as AbortSignal
+    settings('Grunnkart nivå 0')
+    fireEvent.change(screen.getByRole('slider'),{target:{value:'50'}})
+    expect(setter.mock.calls.at(-1)?.slice(0,2)).toEqual([result,expected])
+    expect(signal.aborted).toBe(false)
+    fireEvent.keyDown(window,{key:'Escape'})
+    expect(screen.getByRole('group',{name:'Velg plananalyse'})).toBeInTheDocument()
+    if(mode==='nature') expect(screen.getByRole('searchbox')).toHaveValue('Testmyra')
+    legend(); fireEvent.keyDown(window,{key:'Escape'})
+    fireEvent.click(screen.getByRole('button',{name:'Skjul analyseresultater'}))
+    expect(setter.mock.calls.at(-1)?.slice(0,2)).toEqual([result,expected])
+    fireEvent.click(screen.getAllByRole('button',{name:'Analyser planområder'})[0])
+    expect(request).toHaveBeenCalledTimes(1)
+    expect(controller.destroy).not.toHaveBeenCalled()
+    expect(controller.fitToMunicipality).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button',{name:'Avslutt analyse'}))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(null,{kind:'all'})
+    expect(lastContext().layers.level0.opacity).toBe(.5)
+  })
+  it('continues a pending area calculation while results are hidden and ignores it after finishing',async()=>{
+    let resolve!: (v:typeof planAreaFixture)=>void
+    areaRequest.mockImplementationOnce(()=>new Promise(done=>{resolve=done}))
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="area"/>)
+    const signal=areaRequest.mock.calls[0][1] as AbortSignal
+    settings('Grunnkart nivå 0')
+    expect(signal.aborted).toBe(false)
+    await act(async()=>resolve(planAreaFixture))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'all'})
+    fireEvent.keyDown(window,{key:'Escape'})
+    expect(screen.getByRole('table',{name:'Økosystemtyper innenfor planområder'})).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button',{name:'Avslutt analyse'}))
+    expect(signal.aborted).toBe(true)
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(null,{kind:'all'})
+  })
+  it('resets type-specific selection and search on analysis changes while keeping ordinary layers',async()=>{
+    areaRequest.mockResolvedValue(planAreaFixture);natureRequest.mockResolvedValue(natureFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="nature"/>)
+    fireEvent.change(await screen.findByRole('searchbox'),{target:{value:'Testmyra'}})
+    fireEvent.click(screen.getByRole('button',{name:/Testmyra/}))
+    fireEvent.click(checkbox('Framtidig utbygging'))
+    fireEvent.click(screen.getByRole('button',{name:'Arealfordeling'}))
+    await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'all'})
+    fireEvent.click(screen.getByRole('button',{name:'Registrerte naturverdier'}))
+    expect(await screen.findByRole('searchbox')).toHaveValue('')
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(natureFixture,{kind:'all'})
+    expect(lastContext().layers['future-development'].visible).toBe(true)
+  })
+  it('rejects a late nature response from a previous municipality even while a temporary panel is open',async()=>{
+    let resolve!: (v:typeof natureFixture)=>void
+    natureRequest.mockImplementationOnce(()=>new Promise(done=>{resolve=done}))
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="nature"/>)
+    const signal=natureRequest.mock.calls[0][1] as AbortSignal
+    settings('Grunnkart nivå 0')
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null}/>)
+    expect(signal.aborted).toBe(true)
+    await act(async()=>resolve(natureFixture))
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(null,{kind:'all'})
+    expect(screen.getByRole('button',{name:'Registrerte naturverdier'})).toHaveAttribute('aria-pressed','true')
+    expect(screen.queryByText(/Unikt overlappsareal/)).not.toBeInTheDocument()
   })
 })

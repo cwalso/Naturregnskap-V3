@@ -368,3 +368,12 @@ planoverlapp/historikk. Bynatur ligger under beslutningsstøtte, ikke regnskaps-
 grunnlag. Alle sju temasider beholdes. Bruk native lister, lesbare aktive/hover-
 tilstander og tastaturtilgjengelige rulleområder.
 Se [samlet B1–B4-kontroll](docs/validation/2026-10-15-ux-improvements-b1-b4.md).
+
+## 20. Aktiv analyse og mobil delt flate (19.10.2026)
+
+Oppdragsgiver har valgt C, ikke B5.1-rapportens anbefalte A. Aktiv analyse er
+uavhengig av synlig panel. Å vise lag/innstillinger/legend eller skjule resultater
+skal ikke trekke tilbake resultat, utvalg eller markering eller starte ny analyse.
+Kommuneeier og sene svar kontrolleres fortsatt. Bytte av type/kommune resetter
+ugyldige valg; Avslutt analyse fjerner analysemarkering, men beholder lag/utsnitt.
+Se [beslutning](docs/decisions/2026-10-19-mobile-split-view.md).
