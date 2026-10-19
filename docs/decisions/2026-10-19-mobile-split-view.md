@@ -39,3 +39,8 @@ kommuneisolasjon og samme kartinstans kontrolleres i Chromium. Faktiske
 kartmål, skjermbilder og avvik dokumenteres i
 [kontrollrapporten](../validation/2026-10-19-mobile-split-view-b5-2ab.md).
 Ingen Pages-publisering, merge, main-endring eller B5.2c/d inngår.
+
+Implementert og målt: Delt gir 208,55 px kart ved 320×720 og 270,55 px ved
+390×844. Faste kontrollrader er 48 px; kompakt oppsummering står mellom kart og
+resultater. Mer resultat har 100 px oversiktskart uten zoom/reset-knapper.
+Full analysevisning beholdes; egen innholdsvelger utsettes til B5.2c.

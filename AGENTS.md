@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 13.10.2026**
+**Sist oppdatert: 19.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -377,3 +377,11 @@ skal ikke trekke tilbake resultat, utvalg eller markering eller starte ny analys
 Kommuneeier og sene svar kontrolleres fortsatt. Bytte av type/kommune resetter
 ugyldige valg; Avslutt analyse fjerner analysemarkering, men beholder lag/utsnitt.
 Se [beslutning](docs/decisions/2026-10-19-mobile-split-view.md).
+
+Mobil aktiv analyse (≤700 px) bruker samme karttarget og tre lokale visningsmoduser:
+Mer kart, Delt (standard) og Mer resultat. Midlertidige lag/detaljer returnerer til
+forrige modus med fokus på synlig åpner. Oppsummering/hurtigvalg/fit er tilgjengelig
+også i Mer kart. Mer resultat skjuler zoom/reset fra 100 px kartflate. Kommunevalg
+beholder modus, men fjerner gamle data. Desktop har eksisterende sidepaneler.
+Lokalitetsvalgets eksisterende auto-fit er foreløpig tillatt og skal vurderes i B5.2c;
+ikke start c/d automatisk. Se [kontrollrapport](docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).

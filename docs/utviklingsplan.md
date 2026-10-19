@@ -289,7 +289,7 @@ regresjonskontrollert. Metode og data er uendret. Beslutningen om felles kilde
 er konsistens i prototypen, ikke endelig faglig godkjenning. Den eksisterende
 gråareal-WMS-en er kartgrunnlag, ikke analyse av tilgjengelige utbyggingsarealer.
 Se [sluttrapport](validation/2026-10-15-ux-improvements-b1-b4.md).
-B5/mobil kartflate krever separat prioritering og er ikke startet.
+B5/mobil kartflate ble prioritert separat; se senere status under.
 
 ## Oppdatert status 16.10.2026: B5.1 designleveranse
 
@@ -298,4 +298,15 @@ Tre isolerte, kjørbare mobilkonsepter er utarbeidet og ekspertkontrollert ved
 akseptansekriterier](design/2026-10-16-mobile-map-analysis-b5-1.md).
 Kart først med eksplisitt utvidet resultatlesing anbefales, men er ikke en
 besluttet implementering. Produksjonsappen, metoder og publisering er uendret.
-B5.2 avventer vurdering og godkjenning av designretning.
+Dette var status ved B5.1-leveransen. Oppdragsgivers senere valg er C, se under.
+
+## Oppdatert status 19.10.2026: B5.2a–b
+
+C – Delt arbeidsflate er implementert etter eksplisitt valg. Første separate
+commit skiller aktiv analyse fra panel, med bevarte resultater, søk, utvalg og
+markering. Neste commit gir Mer kart/Delt/Mer resultat på mobil, kompakt
+oppsummering, hurtigvalg og eksplisitt fit. Delt kartflate er 209 px ved
+320×720 og 271 px ved 390×844. Desktop beholder sidepaneler.
+Metoder, geometri og datakilder er uendret. Lokalitetens eksisterende auto-fit
+beholdes som tillatt unntak, og vurderes i B5.2c. Ingen Pages-publisering eller
+arbeid på c/d inngår. [Kontrollrapport](validation/2026-10-19-mobile-split-view-b5-2ab.md).

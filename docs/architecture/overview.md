@@ -455,3 +455,14 @@ Se [kilde-/kartkontroll](../validation/2026-10-12-grey-areas.md).
 ## Geometrisk planoverlapp (13.10.2026)
 
 `features/future-analysis` skiller maskehenting, kildekontrakt, geometri, resultatmodell og presentasjon. Masken gjenbruker `futureDevelopmentDisplay` sin eksakte nivå-9-sampling; geometriunion/interseksjon/differanse utføres én gang per analyse. `ExploreThemesWorkspace` åpner `AnalysisPanel` i V2-panelet; `exploreThemeMap.setFutureNature` viser samme geometrier uten ny kartinstans. Full lokalitet er svak/stiplet, overlapp sterk. Planlaget bruker resultatets faste cellemaskekonturer mens analysen er aktiv, slik at innzooming ikke bytter geografisk avgrensning. De ordinære lagtilstandene bevares og vanlig planvisning gjenopprettes ved lukking. Ny metodecache er isolert fra v2 og avgrenset til 16 fullførte resultater. [Detaljert kontrakt](../decisions/2026-10-13-v3-geometric-valued-nature-overlap.md).
+
+## Aktiv analyse og mobil presentasjon (19.10.2026)
+
+`ExploreThemesWorkspace` eier aktiv type separat fra synlig panel og lokal
+visningsmodus. Eksisterende kommuneeier/abort/cache beskytter resultatene.
+Analysepanelet skjules ved midlertidige lag/detaljer, slik at søk og sortering
+beholdes. `MobileAnalysisControls` presenterer samme resultatobjekt og utvalg;
+`MobileSplitView.css` størrelsesfordeler samme karttarget og resultatpanel ved
+≤700 px. Ingen ny kart-/analyse-/global tilstandsmotor. Eksisterende resize
+observer oppdaterer OpenLayers-størrelsen uten fit. Analysemarkering opphører ved
+avsluttet analyse, ikke ved skjult panel. Se [beslutning](../decisions/2026-10-19-mobile-split-view.md).

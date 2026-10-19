@@ -1,0 +1,1515 @@
+{
+  "stage": "b",
+  "screens": [
+    {
+      "name": "a-area-settings-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "a-area-return-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 746,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "a-nature-settings-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "a-locality-return-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-split-area-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 208.546875
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Alle arealerNaturJordbrukSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt natur",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-map-forest-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 417.109375
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Alle arealerNaturJordbrukSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt natur",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-more-results-nature-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmark",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-locality-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmarkTanemsmyra",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-active-layers-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 208.546875
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmarkTanemsmyra",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-oslo-320",
+      "width": 320,
+      "height": 720,
+      "map": {
+        "width": 320,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 178.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 99.34375,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 99.328125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultat",
+          "width": 196.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-desktop-900-from-320",
+      "width": 900,
+      "height": 900,
+      "map": {
+        "width": 648,
+        "height": 604
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-desktop-1440-from-320",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-split-area-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 270.546875
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Alle arealerNaturJordbrukSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt natur",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-map-forest-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 541.109375
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Alle arealerNaturJordbrukSkogHei og buskmarkLite vegetert markVåtmarkKyststrender, svaberg og dynerUfordelt natur",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-more-results-nature-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmark",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-locality-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmarkTanemsmyra",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-active-layers-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 270.546875
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultatSvært stor verdiStor verdiMiddels verdiNoe verdiViktig bekkedragGråor-heggeskogIntakt lavlandsmyr i innlandetGammel granskog med gamle trærSemi-naturlig engRavinedalSørlig nedbørsmyrGammel høgstaudegråorskogNaturbeitemarkGammel granskog med liggende død vedSørvendte berg og rasmarkerHøgstaudegranskogFlomskogsmarkParklandskapGammel barskogRik edellauvskogGammel lågurtgranskogRik åpen sørlig jordvannsmyrRikmyrÅpen grunnlendt kalkrik mark i sørboreal soneFrisk lågurtedellauvskogHule eikerÅpen flomfastmarkTanemsmyra",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Vis hele kommunen fra kartet",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-oslo-390",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "width": 390,
+        "height": 100
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "width": 248.53125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Kartlag",
+          "width": 77.46875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Avslutt aktiv analyse",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer kart",
+          "width": 122.65625,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Delt",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Mer resultat",
+          "width": 122.671875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Samlet resultat",
+          "width": 266.578125,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "Tilpass aktivt kartutvalg",
+          "width": 105.421875,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-desktop-900-from-390",
+      "width": 900,
+      "height": 900,
+      "map": {
+        "width": 648,
+        "height": 604
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "b-desktop-1440-from-390",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    },
+    {
+      "name": "a-oslo-no-old-results-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0,
+      "controls": [
+        {
+          "label": "+",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "–",
+          "width": 44,
+          "height": 44,
+          "uncovered": true
+        },
+        {
+          "label": "i",
+          "width": 19.25,
+          "height": 44,
+          "uncovered": true
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "areaPanelsRetain": true,
+      "view": {
+        "center": [
+          276717.3598666664,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "creations": 2,
+      "calls": {
+        "calculatePlanArea": 2
+      },
+      "areaId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "natureId": null,
+      "selection": {
+        "kind": "category",
+        "id": "skog"
+      },
+      "geometryHash": "601b9f3be2869db9cbb184e76b11647cbff6ef2757a7dcaf27a7525dc635a894",
+      "features": [
+        {
+          "name": "future-nature-overlap",
+          "visible": false,
+          "ids": []
+        },
+        {
+          "name": "plan-area-categories",
+          "visible": true,
+          "ids": [
+            "skog"
+          ]
+        }
+      ]
+    },
+    {
+      "naturePanelsRetainSearch": true,
+      "localityFitRetainedException": true,
+      "view": {
+        "center": [
+          271292.7337837835,
+          7028566.754899999
+        ],
+        "resolution": 0.3951858108095523
+      },
+      "creations": 2,
+      "calls": {
+        "calculatePlanArea": 2,
+        "calculateFutureNature": 1
+      },
+      "areaId": null,
+      "natureId": "future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+      "selection": {
+        "kind": "locality",
+        "label": "BN00109936"
+      },
+      "geometryHash": "5aa53c60f0a998656285ac92bb455a6a17b58cd9a711cd9ffe079a6ed496fcea",
+      "features": [
+        {
+          "name": "future-nature-overlap",
+          "visible": true,
+          "ids": [
+            null
+          ]
+        },
+        {
+          "name": "plan-area-categories",
+          "visible": false,
+          "ids": []
+        }
+      ]
+    },
+    {
+      "mobileWidth": 320,
+      "modes": [
+        {
+          "key": "split",
+          "x": 0,
+          "y": 209,
+          "width": 320,
+          "height": 208.546875
+        },
+        {
+          "key": "map",
+          "x": 0,
+          "y": 209,
+          "width": 320,
+          "height": 417.109375
+        },
+        {
+          "key": "results",
+          "x": 0,
+          "y": 209,
+          "width": 320,
+          "height": 100
+        }
+      ],
+      "sameInstanceAndGeometry": true,
+      "scrollPreservesMap": true,
+      "explicitFitAndPan": true,
+      "keyboardModesAndVisibleFocus": true,
+      "sourceCallsRetained": true,
+      "localityFitIsException": true,
+      "layerReturnFocus": {
+        "text": "Kartlag",
+        "visible": true
+      }
+    },
+    {
+      "mobileWidth": 390,
+      "modes": [
+        {
+          "key": "split",
+          "x": 0,
+          "y": 209,
+          "width": 390,
+          "height": 270.546875
+        },
+        {
+          "key": "map",
+          "x": 0,
+          "y": 209,
+          "width": 390,
+          "height": 541.109375
+        },
+        {
+          "key": "results",
+          "x": 0,
+          "y": 209,
+          "width": 390,
+          "height": 100
+        }
+      ],
+      "sameInstanceAndGeometry": true,
+      "scrollPreservesMap": true,
+      "explicitFitAndPan": true,
+      "keyboardModesAndVisibleFocus": true,
+      "sourceCallsRetained": true,
+      "localityFitIsException": true,
+      "layerReturnFocus": {
+        "text": "Kartlag",
+        "visible": true
+      }
+    },
+    {
+      "endClearsAnalysis": true,
+      "closed": {
+        "view": {
+          "center": [
+            268102.1299999992,
+            7030867.505
+          ],
+          "resolution": 67.30648333333743
+        },
+        "creations": 2,
+        "calls": {
+          "calculatePlanArea": 4,
+          "calculateFutureNature": 9
+        },
+        "areaId": null,
+        "natureId": null,
+        "selection": null,
+        "geometryHash": "67ea31d6aba54fe236df41376b3246bb48a71bc642cdc1400b5ba341fdb9aa8b",
+        "features": [
+          {
+            "name": "future-nature-overlap",
+            "visible": false,
+            "ids": []
+          },
+          {
+            "name": "plan-area-categories",
+            "visible": false,
+            "ids": []
+          }
+        ]
+      }
+    }
+  ],
+  "accessibility": [
+    {
+      "name": "a-area-settings-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "a-area-return-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "a-nature-settings-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "a-locality-return-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-split-area-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-map-forest-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-more-results-nature-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-locality-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-active-layers-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-oslo-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-desktop-900-from-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-desktop-1440-from-320",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-split-area-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-map-forest-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-more-results-nature-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-locality-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-active-layers-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-oslo-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-desktop-900-from-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "b-desktop-1440-from-390",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "a-oslo-no-old-results-1440",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "javascriptErrors": [],
+  "networkFailures": [
+    {
+      "status": 403,
+      "url": "https://images.unsplash.com/photo-1602836948312-9815af8d4a79?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "status": 500,
+      "url": "https://kart3.miljodirektoratet.no/arcgis/rest/services/villrein/MapServer/1/query"
+    }
+  ],
+  "completed": true
+}

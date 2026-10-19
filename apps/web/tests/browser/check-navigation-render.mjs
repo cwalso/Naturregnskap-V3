@@ -80,7 +80,10 @@ async function check(root, baseline = false) {
       assert.equal(await visibleEntry.count(), 1)
       await visibleEntry.click()
       await page.getByRole('complementary', { name: 'Arealer avsatt til framtidig utbygging', exact: true }).waitFor()
-      await page.keyboard.press('Escape')
+      // Escape now hides results while retaining the analysis (B5.2a). End it explicitly
+      // so the next viewport checks the initial analysis entry rather than a resumed mode.
+      await page.getByRole('button', { name: /^Avslutt (aktiv )?analyse$/ }).filter({ visible: true }).click()
+      assert.equal(await page.locator('.explore-themes__body').getAttribute('data-analysis-mode'), 'none')
       const measurements = await page.evaluate(() => {
         const r = document.querySelector('.explore-themes__canvas').getBoundingClientRect()
         return { overflow: document.documentElement.scrollWidth - innerWidth, mapWidth: r.width, mapHeight: r.height }

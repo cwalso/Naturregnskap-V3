@@ -153,3 +153,23 @@ bredder. `UX_STAGE=regression` kontrollerer faktisk kartinstans, kategoriutvalg,
 lag/opasitet, naturverdi-referanse og demomerking. Krever system-Chromium,
 port 5220 og tilgang til faktiske kilder; axe er separat testverktøy. Se
 [full reproduksjon og lagrede resultater](../../../../docs/validation/2026-10-15-ux-improvements-b1-b4/README.md).
+
+## Aktiv analyse og delt mobilflate – B5.2a–b
+
+Fra `apps/web`:
+
+```sh
+SPLIT_STAGE=b CHROMIUM_PATH=/usr/bin/chromium UX_AXE_PATH=/sti/axe.min.js \
+BROWSER_OUTPUT=/sti/til/resultater node tests/browser/check-mobile-split-view.mjs
+```
+
+Stage `a` kontrollerer reell analyse/panelisolasjon ved 1440 px. Stage `b` legger
+til 320×720, 390×844, 900×900 og 1440×960, mål av canvas i alle moduser,
+keyboard/fokus, senter/oppløsning, faktisk analyse-ID, geometrihash, konsumentkall
+og antall kartopprettelser gjennom resize/paneler. Alle skjermtilstander kan
+axe-kontrolleres via separat testverktøy. Vite-observasjon endrer ikke produksjon.
+Port 5240; HTTPS-proxy brukes ved behov. Valgfri `SPLIT_HTTP_CACHE` gjenbruker
+kun HTTP 200-svar fra faktiske kilder, med URL-/body-hash og hentetid. Ingen
+fiksturer eller prototypetall brukes i denne kontrollen; cache beholdes utenfor
+repoet. Kjør uten variabelen for nye tjenestesvar.
+Se [rapport og lagret evidens](../../../../docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).

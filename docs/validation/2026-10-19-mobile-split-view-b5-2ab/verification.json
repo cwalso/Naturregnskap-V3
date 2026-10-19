@@ -1,0 +1,56 @@
+{
+  "before": "11ab224e5a6f67983eaa4b21081f98c496a982b6",
+  "start": "0e2aaba5528f16cd5a179b4375d3791b4d479a24",
+  "comparisons": [
+    {
+      "scenario": "areaPanelsRetain",
+      "equalFields": [
+        "areaId",
+        "natureId",
+        "geometryHash",
+        "selection",
+        "calls",
+        "creations"
+      ],
+      "values": {
+        "areaId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+        "natureId": null,
+        "geometryHash": "601b9f3be2869db9cbb184e76b11647cbff6ef2757a7dcaf27a7525dc635a894",
+        "selection": {
+          "kind": "category",
+          "id": "skog"
+        },
+        "calls": {
+          "calculatePlanArea": 2
+        },
+        "creations": 2
+      }
+    },
+    {
+      "scenario": "naturePanelsRetainSearch",
+      "equalFields": [
+        "areaId",
+        "natureId",
+        "geometryHash",
+        "selection",
+        "calls",
+        "creations"
+      ],
+      "values": {
+        "areaId": null,
+        "natureId": "future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+        "geometryHash": "5aa53c60f0a998656285ac92bb455a6a17b58cd9a711cd9ffe079a6ed496fcea",
+        "selection": {
+          "kind": "locality",
+          "label": "BN00109936"
+        },
+        "calls": {
+          "calculatePlanArea": 2,
+          "calculateFutureNature": 1
+        },
+        "creations": 2
+      }
+    }
+  ],
+  "completed": true
+}

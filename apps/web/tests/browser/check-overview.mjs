@@ -153,7 +153,7 @@ try {
   await page.getByRole('link', { name: 'Åpne arealfordelingen i kart', exact: true }).click()
   await page.getByRole('heading', { name: 'Utforsk i kart', exact: true }).waitFor()
   await page.getByRole('complementary', { name: 'Arealer avsatt til framtidig utbygging', exact: true }).waitFor()
-  await page.getByRole('button', { name: 'Lukk detaljpanel', exact: true }).click()
+  await page.getByRole('button', { name: 'Avslutt analyse', exact: true }).click()
   await page.waitForFunction(() => !!globalThis.__layerStatus)
   results.layerRows = []
   for (const [width, height] of [[1440, 1000], [900, 1000], [390, 844]]) {

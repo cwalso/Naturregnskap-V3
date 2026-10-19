@@ -1,0 +1,11 @@
+
+> naturregnskap-v3-web@3.0.0 test:browser:layers
+> node tests/browser/check-explore-layers-render.mjs
+
+7:59:05 AM [vite] (client) Re-optimizing dependencies because vite config has changed
+Layer render regression passed: real composed pixels, screen-space hatch/tint, repeat-render and device ratio, new layer composition, 128 combinations, empty WMS and late inactive error, real picker width/slider bounds, independent visibility/opacity, fixed order, filters, masking, selection, late inactive error and cleanup.
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

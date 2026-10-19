@@ -150,7 +150,7 @@ reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.
 - [B1–B4: implementering, samlet regresjon, skjermbilder og begrensninger](validation/2026-10-15-ux-improvements-b1-b4.md)
 
 Dette følger opp undersøkelsene over: konsumenter og presentasjon er nå endret,
-mens beregningsmetoder og kildegrunnlag er beholdt. B5 er ikke påbegynt.
+mens beregningsmetoder og kildegrunnlag er beholdt. B5.1 er gjennomført; se videre status under.
 
 ## B5.1 – mobil kart- og analysedesign, 16.10.2026
 
@@ -159,4 +159,12 @@ mens beregningsmetoder og kildegrunnlag er beholdt. B5 er ikke påbegynt.
 med [lokal kjøring](design/2026-10-16-mobile-map-analysis-b5-1/README.md),
 54 skjermbilder og ekspertbaserte kontrollmålinger. Anbefaler Kart først med
 brukerstyrt utvidet resultatlesing. Kun dokumentasjonsprototyper; produksjon og
-Pages er uendret. Ingen designretning er godkjent og B5.2 er ikke startet.
+Pages er uendret av designleveransen. Oppdragsgiver valgte senere C; se B5.2a–b under.
+
+## B5.2a–b – aktiv analyse og delt mobilflate, 19.10.2026
+
+[Beslutning om C](decisions/2026-10-19-mobile-split-view.md) og
+[implementering, faktiske kartmål, tester og skjermbilder](validation/2026-10-19-mobile-split-view-b5-2ab.md).
+Aktiv analyse lever uavhengig av panel. Mobil har Mer kart/Delt/Mer resultat
+i samme OpenLayers-instans; desktop beholder sidepanelene. Ingen metode-/kildeendring
+eller Pages-publisering. B5.2c/d er ikke startet.

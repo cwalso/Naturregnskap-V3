@@ -271,3 +271,12 @@ gjenopprettes fra URL. Naturtema viser dagens økosystemfordeling og skiller
 Bynatur fra regnskapsgrunnlaget. Kontrast, fokus og listesemantikk er rettet.
 Se [beslutning](docs/decisions/2026-10-15-common-plan-indicators.md) og
 [tester, begrensninger og skjermbilder](docs/validation/2026-10-15-ux-improvements-b1-b4.md).
+
+## Delt mobilflate – B5.2a–b, 19.10.2026
+
+Aktiv plananalyse beholdes gjennom lag-/panelbytter. Mobil viser Delt som standard
+med Mer kart og Mer resultat, hurtigvalg og eksplisitt karttilpassing i samme
+OpenLayers-instans. Desktop beholder sidepanelene. Beregningsmetoder og data er
+uendret. Se [beslutning](docs/decisions/2026-10-19-mobile-split-view.md) og
+[kontrollrapport med kartmål og skjermbilder](docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).
+Leveransen er på PR-branchen; den publiserer ikke GitHub Pages.

@@ -334,3 +334,44 @@ describe('B5.2a aktiv analyse uavhengig av panel', () => {
     expect(screen.queryByText(/Unikt overlappsareal/)).not.toBeInTheDocument()
   })
 })
+
+
+describe('B5.2b mobile presentation state',()=>{
+  it('keeps the exact analysis and selection across the three modes, layer return and type changes',async()=>{
+    areaRequest.mockResolvedValue(planAreaFixture);natureRequest.mockResolvedValue(natureFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="area"/>)
+    await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    const body=document.querySelector('.explore-themes__body')!
+    expect(body).toHaveAttribute('data-view-mode','split')
+    fireEvent.change(screen.getByRole('combobox',{name:'Kartutvalg i analysen'}),{target:{value:'category:skog'}})
+    const modes=screen.getByRole('group',{name:'Visning av kart og resultater'})
+    for(const [label,mode]of [['Mer kart','map'],['Mer resultat','results'],['Delt','split']]){
+      fireEvent.click(within(modes).getByRole('button',{name:label}))
+      expect(body).toHaveAttribute('data-view-mode',mode)
+      expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'category',id:'skog'})
+      expect(areaRequest).toHaveBeenCalledTimes(1)
+    }
+    fireEvent.click(within(modes).getByRole('button',{name:'Mer resultat'}))
+    fireEvent.click(document.querySelector('.mobile-analysis-toolbar button')!)
+    expect(body).toHaveClass('layers-open')
+    fireEvent.click(screen.getByRole('button',{name:'Lukk kartlag'}))
+    expect(body).toHaveAttribute('data-view-mode','results')
+    fireEvent.change(screen.getByRole('combobox',{name:'Velg aktiv plananalyse'}),{target:{value:'nature'}})
+    await screen.findByRole('searchbox')
+    expect(body).toHaveAttribute('data-view-mode','results')
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(natureFixture,{kind:'all'})
+    expect(controller.destroy).not.toHaveBeenCalled()
+  })
+  it('uses exact existing values for quick selections and forwards explicit fit',async()=>{
+    areaRequest.mockResolvedValue(planAreaFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="area"/>)
+    await screen.findByRole('table',{name:'Økosystemtyper innenfor planområder'})
+    fireEvent.change(screen.getByRole('combobox',{name:'Kartutvalg i analysen'}),{target:{value:'category:vatmark'}})
+    expect(screen.getByRole('region',{name:'Aktiv analyse og kartutvalg'})).toHaveTextContent(/0,11 daa/)
+    fireEvent.click(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'}))
+    expect(controller.setPlanArea).toHaveBeenLastCalledWith(planAreaFixture,{kind:'category',id:'vatmark'},true)
+    fireEvent.click(screen.getByRole('button',{name:'Avslutt aktiv analyse'}))
+    expect(bodyMode()).toBe('none')
+    function bodyMode(){return document.querySelector('.explore-themes__body')!.getAttribute('data-analysis-mode')}
+  })
+})
