@@ -1,0 +1,54 @@
+
+> naturregnskap-v3-web@3.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/Naturregnskap-V3/apps/web
+
+ ✓ tests/App.test.tsx (41 tests) 2607ms
+   ✓ sidestruktur og Oversikt > uses the primary plan result on forest and wetland pages and opens the selected map category  355ms
+ ✓ tests/exploreThemesWorkspace.test.tsx (23 tests) 3233ms
+   ✓ uavhengige kartlag i V2-paneler > støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge  726ms
+ ✓ tests/overlayCorrectness.test.ts (11 tests) 1678ms
+ ✓ tests/overviewPage.test.tsx (7 tests) 411ms
+ ✓ tests/planAreaIndicator.test.tsx (2 tests) 117ms
+ ✓ tests/naturtapetPage.test.tsx (4 tests) 309ms
+ ✓ tests/ecosystemDistribution.test.tsx (2 tests) 114ms
+ ✓ tests/siteHeader.test.tsx (2 tests) 101ms
+ ✓ tests/futureNaturePanel.test.tsx (2 tests) 148ms
+ ✓ tests/planAreaSource.test.ts (2 tests) 141ms
+ ✓ tests/planAreaPanel.test.tsx (3 tests) 159ms
+ ✓ tests/municipalityMap.test.ts (12 tests) 56ms
+ ✓ tests/sharedImageRequests.test.ts (2 tests) 63ms
+ ✓ tests/futureNatureAnalysis.test.ts (17 tests) 34ms
+ ✓ tests/futureDevelopmentDisplay.test.ts (3 tests) 31ms
+ ✓ tests/analysisRasterOverlay.test.ts (3 tests) 9ms
+ ✓ tests/thematicCoverage.test.ts (2 tests) 9ms
+ ✓ tests/municipalValuedNature.test.ts (4 tests) 18ms
+ ✓ tests/plannedDevelopment.test.ts (7 tests) 18ms
+ ✓ tests/municipalities.test.ts (2 tests) 13ms
+ ✓ tests/accountOverview.test.ts (3 tests) 13ms
+ ✓ tests/accountOverviewRaster.test.ts (2 tests) 13ms
+ ✓ tests/analysisCoverage.test.ts (3 tests) 11ms
+ ✓ tests/valuedNaturePresentation.test.ts (4 tests) 12ms
+ ✓ tests/utmArea.test.ts (2 tests) 10ms
+ ✓ tests/municipalityWorkspace.test.ts (4 tests) 10ms
+ ✓ tests/plannedValuedNature.test.ts (8 tests) 9ms
+ ✓ tests/futureNatureSource.test.ts (3 tests) 11ms
+ ✓ tests/exploreOverlapGeometry.test.ts (4 tests) 6ms
+ ✓ tests/historicalLoss.test.ts (4 tests) 7ms
+ ✓ tests/futureDevelopmentSymbology.test.ts (3 tests) 5ms
+ ✓ tests/planArea.test.ts (3 tests) 4ms
+ ✓ tests/analysisPresentation.test.ts (3 tests) 4ms
+ ✓ tests/apiUrl.test.ts (2 tests) 2ms
+
+ Test Files  34 passed (34)
+      Tests  199 passed (199)
+   Start at  08:06:24
+   Duration  28.37s (transform 1.01s, setup 1.22s, collect 3.22s, tests 9.39s, environment 9.23s, prepare 1.61s)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

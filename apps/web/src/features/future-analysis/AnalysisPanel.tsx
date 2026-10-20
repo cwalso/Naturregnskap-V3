@@ -4,8 +4,8 @@ const format = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 2 })
 const daa = (area: number) => `${format.format(area)} daa`
 const colors = ['#AF0C0C', '#FD7032', '#FEC02D', '#FFFE37']
 type Sort = 'name' | 'area' | 'count' | 'share' | 'value' | 'type'
-interface Props { result: Result | null; loading: boolean; error: string | null; selection: Selection; onSelect: (selection: Selection) => void }
-export function AnalysisPanel({ result, loading, error, selection, onSelect }: Props) {
+interface Props { result: Result | null; loading: boolean; error: string | null; selection: Selection; onSelect: (selection: Selection) => void; onFit?:()=>void; canFit?:boolean }
+export function AnalysisPanel({ result, loading, error, selection, onSelect, onFit, canFit=true }: Props) {
   const [search, setSearch] = useState(''), [typeSort, setTypeSort] = useState<Sort>('area'), [localitySort, setLocalitySort] = useState<Sort>('area')
   const analysis = result?.status === 'available' ? result : null
   const types = useMemo(() => [...(analysis?.types ?? [])].sort((a, b) => typeSort === 'area' ? b.areaDaa - a.areaDaa : typeSort === 'count' ? b.count - a.count : typeSort === 'value' ? a.values.join().localeCompare(b.values.join(), 'nb') : a.label.localeCompare(b.label, 'nb')), [analysis, typeSort])
@@ -26,6 +26,7 @@ export function AnalysisPanel({ result, loading, error, selection, onSelect }: P
     </div>
     <p role="status">{selection.kind === 'all' ? 'Kartet viser hele analysen.' : `Kartutvalg: ${selection.label}`}</p>
     <button type="button" onClick={() => onSelect({ kind: 'all' })}>Vis hele analysen</button>
+    {onFit&&<button type="button" onClick={onFit} disabled={!canFit} title={!canFit?'Utvalget mangler gyldig analysegeometri.':undefined}>Tilpass kart til utvalget</button>}
     <p className="future-nature-analysis__legend"><span>▧</span> Hele lokaliteten · <b>■</b> faktisk overlapp mot rasteravgrensningen</p>
     <h3>Fordeling etter KU-verdi</h3>
     <div className="future-nature-analysis__values">{analysis.values.map((m, i) => <button type="button" key={m.label} aria-pressed={selection.kind === 'value' && selection.label === m.label} onClick={() => onSelect({ kind: 'value', label: m.label })}>

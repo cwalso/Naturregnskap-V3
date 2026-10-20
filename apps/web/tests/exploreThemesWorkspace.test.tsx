@@ -375,3 +375,27 @@ describe('B5.2b mobile presentation state',()=>{
     function bodyMode(){return document.querySelector('.explore-themes__body')!.getAttribute('data-analysis-mode')}
   })
 })
+
+describe('B5.2c explicit analysis fit',()=>{
+  it('selects a locality without fit and only fits it on explicit request',async()=>{
+    natureRequest.mockResolvedValue(natureFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="nature"/>)
+    fireEvent.click(await screen.findByRole('button',{name:/Testmyra/}))
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(natureFixture,{kind:'locality',label:'BN1'})
+    expect(controller.setFutureNature.mock.calls.some(c=>c[2]===true)).toBe(false)
+    fireEvent.click(screen.getByRole('button',{name:'Tilpass kart til utvalget'}))
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(natureFixture,{kind:'locality',label:'BN1'},true)
+    expect(natureRequest).toHaveBeenCalledTimes(1)
+  })
+  it('disables both fit entry points for missing overlap geometry and after municipality change',async()=>{
+    natureRequest.mockResolvedValue({...natureFixture,localities:natureFixture.localities.map(l=>({...l,overlapGeometry:[]}))})
+    const view=render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="nature"/>)
+    fireEvent.click(await screen.findByRole('button',{name:/Testmyra/}))
+    expect(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'})).toBeDisabled()
+    expect(screen.getByRole('button',{name:'Tilpass kart til utvalget'})).toBeDisabled()
+    fireEvent.click(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'}))
+    expect(controller.setFutureNature.mock.calls.some(c=>c[2]===true)).toBe(false)
+    view.rerender(<ExploreThemesWorkspace municipality={{number:'0301',name:'Oslo'}} boundary={null}/>)
+    expect(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'})).toBeDisabled()
+  })
+})

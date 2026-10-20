@@ -1,0 +1,65 @@
+import assert from 'node:assert/strict'
+
+export async function runAnalysisInteractions({page,report,snapshot,retained,capture,commune,settings,stage}){
+  const canvas=page.getByRole('region',{name:/Interaktivt kart i/})
+  async function stableView(before){const after=await snapshot();assert.deepEqual(after.view,before.view);assert.equal(after.creations,before.creations);assert.deepEqual(after.calls,before.calls);assert.equal(after.areaId,before.areaId);assert.equal(after.natureId,before.natureId);return after}
+  async function fitToOverlap(){
+    await canvas.focus();await page.keyboard.press('ArrowLeft');const panned=await snapshot()
+    await page.getByRole('button',{name:mobile?'Tilpass aktivt kartutvalg':'Tilpass kart til utvalget',exact:true}).click()
+    const fitted=await snapshot();assert.notDeepEqual(fitted.view,panned.view)
+    const dimensions=await page.evaluate(()=>{
+      const map=globalThis.__b5Map,area=globalThis.__b5Area?.result
+      const layer=map.getLayers().getArray().find(l=>l.getClassName()===(area?'plan-area-categories':'future-nature-overlap'))
+      return {extent:layer.getSource().getExtent(),size:map.getSize()}
+    })
+    const [x1,y1,x2,y2]=dimensions.extent,[w,h]=dimensions.size
+    const expected=Math.max((x2-x1)/(w-72),(y2-y1)/(h-72))
+    assert.ok(Math.abs(fitted.view.resolution-expected)<expected*1e-8,JSON.stringify({fitted,expected}))
+    return fitted
+  }
+  let mobile=false
+  for(const size of [{width:320,height:720},{width:390,height:844},{width:900,height:900},{width:1440,height:960}]){
+    mobile=size.width<701;await page.setViewportSize(size)
+    async function mode(type){if(mobile)await page.getByRole('combobox',{name:'Velg aktiv plananalyse',exact:true}).selectOption(type);else await page.getByRole('button',{name:type==='area'?'Arealfordeling':'Registrerte naturverdier',exact:true}).click();await page.locator(type==='area'?'.plan-area-totals':'.future-nature-analysis__summary').waitFor({state:'attached',timeout:180000})}
+    async function chooseArea(id){if(mobile)await page.getByRole('combobox',{name:'Kartutvalg i analysen',exact:true}).selectOption(`category:${id}`);else await page.getByRole('table',{name:'Økosystemtyper innenfor planområder'}).getByRole('button',{name:id==='skog'?'Skog':'Våtmark',exact:true}).click()}
+    async function chooseNature(kind,label){if(mobile)await page.getByRole('combobox',{name:'Kartutvalg i analysen',exact:true}).selectOption(`${kind}:${label}`);else if(kind==='value')await page.getByRole('button',{name:new RegExp(`^${label}`)}).click();else if(kind==='type')await page.getByRole('table',{name:'Naturtyper med overlapp'}).getByRole('button',{name:label,exact:true}).click();else{await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill(label);await page.getByRole('button',{name:new RegExp(label)}).click()}}
+    const modes=mobile?[['Delt','split'],['Mer kart','map'],['Mer resultat','results']]:[['Desktop','desktop']]
+    const measurements=[]
+    await mode('area')
+    for(const [label,key]of modes){
+      if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
+      const before=await snapshot();await chooseArea('skog');await stableView(before);await fitToOverlap()
+      const selection=await snapshot();await chooseArea('vatmark');await stableView(selection)
+      if(mobile){const summary=(await page.getByRole('region',{name:'Aktiv analyse og kartutvalg'}).innerText()).replaceAll('\u00a0',' ');assert.match(summary,/12,64/)}
+      await chooseArea('skog');await fitToOverlap();await capture(`${stage}-area-${key}-${size.width}`)
+      const box=await page.locator('.explore-themes__canvas').boundingBox();measurements.push({mode:key,map:box})
+      if(key==='split')assert.ok(box.height>=(size.width===320?200:260))
+    }
+    await mode('nature')
+    for(const [label,key]of modes){
+      if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
+      let before=await snapshot();await chooseNature('value','Stor verdi');await stableView(before);await fitToOverlap()
+      const type=await page.evaluate(()=>globalThis.__b5Nature.result.types[0].label)
+      before=await snapshot();await chooseNature('type',type);await stableView(before)
+      // The quick selector deliberately lists only the selected locality. Use the existing list once.
+      if(mobile&&key==='map')await page.getByRole('button',{name:'Delt',exact:true}).tap()
+      await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('BN00109936')
+      before=await snapshot();await page.getByRole('button',{name:/Tanemsmyra.*BN00109936/}).click();await stableView(before)
+      if(mobile&&key==='map')await page.getByRole('button',{name:'Mer kart',exact:true}).tap()
+      await fitToOverlap();await capture(`${stage}-locality-${key}-${size.width}`)
+      const selected=await snapshot()
+      if(mobile)await page.locator('.mobile-analysis-toolbar').getByRole('button',{name:'Kartlag',exact:true}).tap();else{if(size.width===900)await page.getByRole('button',{name:'Skjul analyseresultater',exact:true}).click();await settings('Grunnkart nivå 0')}
+      retained(selected,await snapshot());await page.keyboard.press('Escape')
+      if(size.width===900)await page.getByRole('button',{name:'Analyser planområder',exact:true}).first().click()
+      retained(selected,await snapshot())
+    }
+    report.checks.push({stage,width:size.width,measurements,allSelectionsPreserveView:true,fitMatchesRenderedOverlap:true,sameMapAndConsumers:true})
+    // Leave a visible panel for desktop and the next iteration; view changes preserve the same result.
+    if(mobile)await page.getByRole('button',{name:'Delt',exact:true}).tap()
+  }
+  await page.setViewportSize({width:1440,height:960})
+  await commune('Oslo','0301');await page.waitForFunction(()=>!globalThis.__b5Area?.result&&!globalThis.__b5Nature?.result)
+  assert.equal(await page.getByRole('button',{name:'Tilpass kart til utvalget'}).count(),0)
+  await capture(`${stage}-oslo-1440`)
+  await commune('Trondheim','5001');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000})
+}

@@ -1,8 +1,8 @@
 import { planDaa, type PlanAreaResult, type PlanAreaSelection } from './model'
 import './PlanArea.css'
 const number = new Intl.NumberFormat('nb-NO',{maximumFractionDigits:2})
-interface Props { result:PlanAreaResult|null;loading:boolean;error:string|null;selection:PlanAreaSelection;onSelect:(selection:PlanAreaSelection)=>void;onFit:()=>void;onShowMap:()=>void }
-export function PlanAreaPanel({result,loading,error,selection,onSelect,onFit,onShowMap}:Props){
+interface Props { result:PlanAreaResult|null;loading:boolean;error:string|null;selection:PlanAreaSelection;onSelect:(selection:PlanAreaSelection)=>void;onFit:()=>void;onShowMap:()=>void;canFit?:boolean }
+export function PlanAreaPanel({result,loading,error,selection,onSelect,onFit,onShowMap,canFit=true}:Props){
   if(loading)return <p role="status">Beregner natur og jordbruk innenfor planområdene…</p>
   if(error)return <p role="alert">{error} Planarealer er ikke beregnet; dette er ikke null treff.</p>
   if(result?.status==='not_available')return <p role="status">{result.reason}</p>
@@ -20,7 +20,7 @@ export function PlanAreaPanel({result,loading,error,selection,onSelect,onFit,onS
     <p className="plan-area-note">Klikk en rad for å vise akkurat disse beregnede arealene i kartet.</p>
     {result.classification.status==='error'?<p role="alert">Økosystemkilden kunne ikke leses. Natur og jordbruk er beregnet, men naturfordelingen er utilgjengelig. Naturarealet vises ufordelt. {result.classification.reason}</p>:result.classification.status==='partial'&&<p className="plan-area-warning">Delvis fordeling: {planDaa(result.classification.unclassifiedDaa)} natur kan ikke sikkert klassifiseres. Kjente typer viser identifiserte delarealer. 0 daa er ikke dokumentert fravær av typen.</p>}
     <table className="plan-area-table" aria-label="Økosystemtyper innenfor planområder"><thead><tr><th scope="col">Kategori</th><th scope="col">Dekar</th></tr></thead><tbody>{result.categories.filter(c=>c.group==='nature'&&(result.classification.status!=='error'||c.id==='unclassified-nature')).map(c=><tr key={c.id}><th scope="row"><button type="button" aria-pressed={selection.kind==='category'&&selection.id===c.id} onClick={()=>onSelect({kind:'category',id:c.id})}><i style={{background:c.color}} aria-hidden="true"/>{c.label}</button></th><td>{number.format(c.areaDaa)}</td></tr>)}</tbody></table>
-    <div className="plan-area-actions"><button type="button" onClick={()=>onSelect({kind:'all'})}>Nullstill utvalg</button><button type="button" onClick={onFit}>Tilpass kart til utvalget</button><button type="button" className="plan-area-show-map" onClick={onShowMap}>Vis kart</button></div>
+    <div className="plan-area-actions"><button type="button" onClick={()=>onSelect({kind:'all'})}>Nullstill utvalg</button><button type="button" disabled={!canFit} title={!canFit?'Utvalget mangler gyldig analysegeometri.':undefined} onClick={onFit}>Tilpass kart til utvalget</button><button type="button" className="plan-area-show-map" onClick={onShowMap}>Vis kart</button></div>
     <details><summary>Metode, kilder og usikkerhet</summary>
       <p>DiBKs kommuneplandata med eksisterende filter for arealbruksstatus 2 og formål i 1000-/2000-serien. Dette er en prototypeforutsetning, ikke en ny juridisk vurdering av planstatus.</p>
       <p>Grunnkart {result.provenance.grunnkartVersion}. Raster fra {result.provenance.overviewRetrieved}. {result.provenance.classificationLevel} Jordbruk vises samlet; underkategorier er ikke beregnet.</p>

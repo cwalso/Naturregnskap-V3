@@ -1,3 +1,4 @@
+import { runAnalysisInteractions } from './mobile-analysis-interactions.mjs'
 import assert from 'node:assert/strict'
 import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
@@ -36,7 +37,7 @@ async function capture(name){
   const controls=await page.evaluate(()=>Array.from(document.querySelectorAll('.mobile-analysis-toolbar button,.mobile-analysis-toolbar select,.mobile-analysis-modes button,.mobile-analysis-summary button,.mobile-analysis-summary select,.explore-themes__mobile-whole,.has-analysis .ol-zoom button,.has-analysis .ol-attribution button')).filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {label:el.getAttribute('aria-label')??el.textContent,width:r.width,height:r.height,uncovered:hit===el||el.contains(hit)}}))
   for(const c of controls){assert.ok(c.uncovered,`${name}: covered control ${c.label}`);assert.ok(c.height>=44,`${name}: small control ${c.label}`)}
   report.screens.push({name,...metrics,controls})
-  if(stage==='b'&&axePath){
+  if((stage==='b'||stage.startsWith('c'))&&axePath){
     await page.addScriptTag({path:axePath})
     const audit=await page.evaluate(async()=>{const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)})),incomplete:r.incomplete.map(v=>v.id)}})
     report.accessibility.push({name,...audit});assert.equal(audit.violations.length,0,JSON.stringify(audit.violations))
@@ -106,7 +107,7 @@ async function mobileChecks(){
     await commune('Oslo','0301');await page.waitForFunction(()=>!globalThis.__b5Area?.result&&!globalThis.__b5Nature?.result)
     await capture(`b-oslo-${size.width}`)
     assert.equal(await selectMode.inputValue(),'nature');await commune('Trondheim','5001');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000})
-    report.checks.push({mobileWidth:size.width,modes,sameInstanceAndGeometry:true,scrollPreservesMap:true,explicitFitAndPan:true,keyboardModesAndVisibleFocus:true,sourceCallsRetained:true,localityFitIsException:true,layerReturnFocus:focus})
+    report.checks.push({mobileWidth:size.width,modes,sameInstanceAndGeometry:true,scrollPreservesMap:true,explicitFitAndPan:true,keyboardModesAndVisibleFocus:true,sourceCallsRetained:true,localitySelectionPreservesView:true,layerReturnFocus:focus})
     await page.getByRole('button',{name:'Delt',exact:true}).click()
     const responsiveBefore=await snapshot()
     for(const width of [900,1440,size.width]){await page.setViewportSize({width,height:width===1440?960:width===900?900:size.height});await page.waitForTimeout(100);retained(responsiveBefore,await snapshot());if(width>=900){assert.equal(await page.locator('.explore-themes__mobile-whole').isVisible(),false);assert.equal(await page.getByRole('button',{name:'Delt',exact:true}).isVisible(),false);await capture(`b-desktop-${width}-from-${size.width}`)}}
@@ -115,7 +116,7 @@ async function mobileChecks(){
 }
 try{
   await server.listen();browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',headless:true});network=await request.newContext({proxy:{server:process.env.HTTPS_PROXY}})
-  page=await browser.newPage({viewport:{width:1440,height:960}});page.setDefaultTimeout(30000)
+  page=await browser.newPage({hasTouch:stage.startsWith('c'),viewport:{width:1440,height:960}});page.setDefaultTimeout(30000)
   page.on('pageerror',e=>report.javascriptErrors.push(e.message))
   await page.route('https://**/*',async route=>{const req=route.request(),key=req.method()+req.url()+(req.postData()??'');try{let response=cache.get(key);const diskKey=httpCache?`${httpCache}/${createHash('sha256').update(key).digest('hex')}`:null;if(!response&&diskKey){try{response={...JSON.parse(await readFile(diskKey+'.json','utf8')),body:await readFile(diskKey+'.bin')}}catch{}}if(!response){const r=await network.fetch(req.url(),{method:req.method(),data:req.postData()??undefined,headers:req.headers(),timeout:60000});response={status:r.status(),headers:r.headers(),body:await r.body()};if(r.status()>=400)report.networkFailures.push({status:r.status(),url:req.url()});if(r.status()===200){if(cache.size<650)cache.set(key,response);if(diskKey){await writeFile(diskKey+'.bin',response.body);await writeFile(diskKey+'.json',JSON.stringify({status:response.status,headers:response.headers,retrievedAt:new Date().toISOString()}))}}}await route.fulfill(response)}catch{await route.abort()}})
   await page.goto('http://127.0.0.1:5240');await commune('Trondheim','5001');await page.getByLabel('Oppsummering av arealer i planområder').waitFor({timeout:180000});await navigateSite(page,'Utforsk i kart');await openAnalysis()
@@ -134,8 +135,9 @@ try{
   await page.getByRole('region',{name:'Interaktivt kart i Trondheim'}).focus();await page.keyboard.press('ArrowRight')
   const nature=await snapshot();await settings('Grunnkart nivå 0');retained(nature,await snapshot());await capture('a-nature-settings-1440');await page.keyboard.press('Escape');retained(nature,await snapshot())
   assert.equal(await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).inputValue(),'BN00109936');await capture('a-locality-return-1440')
-  report.checks.push({naturePanelsRetainSearch:true,localityFitRetainedException:true,...nature})
+  report.checks.push({naturePanelsRetainSearch:true,localitySelectionPreservesView:true,...nature})
   if(stage==='b')await mobileChecks()
+  if(stage.startsWith('c'))await runAnalysisInteractions({page,report,snapshot,retained,capture,commune,settings,stage})
   await commune('Oslo','0301');await page.waitForFunction(()=>!globalThis.__b5Area?.result&&!globalThis.__b5Nature?.result)
   assert.equal(await page.getByRole('button',{name:'Registrerte naturverdier',exact:true}).getAttribute('aria-pressed'),'true');await capture('a-oslo-no-old-results-1440')
   await commune('Trondheim','5001');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000});await page.getByRole('button',{name:'Avslutt analyse',exact:true}).click()

@@ -2,7 +2,7 @@
 
 Dette dokumentet gir varige instrukser til Codex og andre kodeassistenter som arbeider i repoet.
 
-**Sist oppdatert: 19.10.2026**
+**Sist oppdatert: 20.10.2026**
 
 ## 1. Formål og faglig ramme
 
@@ -385,3 +385,12 @@ også i Mer kart. Mer resultat skjuler zoom/reset fra 100 px kartflate. Kommunev
 beholder modus, men fjerner gamle data. Desktop har eksisterende sidepaneler.
 Lokalitetsvalgets eksisterende auto-fit er foreløpig tillatt og skal vurderes i B5.2c;
 ikke start c/d automatisk. Se [kontrollrapport](docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).
+
+## 21. B5.2c – eksplisitte analysehandlinger (20.10.2026)
+
+Lokalitetsvalgets midlertidige auto-fit fra B5.2b er fjernet. Alle analysevalg
+beholder utsnitt; eksplisitt Tilpass kart bruker eksisterende analysegeometri,
+også overlappsflaten ved lokalitetsvalg. Hele lokalitetsgrensen er kontekst,
+ikke fit-grunnlag. Ugyldig/manglende geometri deaktiverer fit. Kommunevalg og
+Vis hele kommunen følger eksisterende prinsipp. Se
+[beslutning](docs/decisions/2026-10-20-analysis-interaction.md).

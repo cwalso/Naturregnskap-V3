@@ -16,6 +16,7 @@ interface Props {
   onView: (mode: AnalysisViewMode) => void
   onArea: (selection: PlanAreaSelection) => void
   onNature: (selection: Selection) => void
+  canFit: boolean
   onFit: () => void
   onLayers: () => void
   onEnd: () => void
@@ -70,7 +71,7 @@ export function MobileAnalysisControls(props: Props) {
             {natureSelection.kind==='locality'&&<option value={selected}>{label}</option>}
           </>}
         </select>
-        <button type="button" disabled={!available} onClick={props.onFit} aria-label="Tilpass aktivt kartutvalg"><ExploreMapIcon name="pin" />Tilpass kart</button>
+        <button type="button" disabled={!available||!props.canFit} title={!props.canFit?'Utvalget mangler gyldig analysegeometri.':undefined} onClick={props.onFit} aria-label="Tilpass aktivt kartutvalg"><ExploreMapIcon name="pin" />Tilpass kart</button>
       </div>
     </section>
   </>

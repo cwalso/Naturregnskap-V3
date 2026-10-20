@@ -344,7 +344,8 @@ export function createExploreLayerMap(target: HTMLElement, onStatus: (layer: Map
       plan.setVisible(boundary !== null && activeLayers['future-development'].visible && !active && !areaResult)
       futurePlan.setVisible(active !== null && activeLayers['future-development'].visible); futurePlan.setOpacity(activeLayers['future-development'].opacity)
       futureWhole.setVisible(active !== null); futureOverlap.setVisible(active !== null)
-      if (active && fit && selection.kind === 'locality' && futureWholeSource.getFeatures().length) view.fit(futureWholeSource.getExtent()!, { padding: [36, 36, 36, 36], duration: 0 })
+      // Explicit analysis fit uses the already rendered overlap, never the whole locality.
+      if (active && fit && futureOverlapSource.getFeatures().length) view.fit(futureOverlapSource.getExtent()!, { padding: [36, 36, 36, 36], duration: 0 })
       mask.setVisible(boundary !== null && (active !== null || areaResult !== null || mapLayers.some((item) => activeLayers[item.id].visible && activeLayers[item.id].opacity > 0)))
       syncStatus()
     },

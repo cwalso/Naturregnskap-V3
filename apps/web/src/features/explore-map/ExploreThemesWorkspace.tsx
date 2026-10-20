@@ -1,9 +1,10 @@
+import { hasAnalysisGeometry } from './analysisGeometry'
 import { MobileAnalysisControls, type AnalysisViewMode } from './MobileAnalysisControls'
 import { AnalysisPanel } from '../future-analysis/AnalysisPanel'
-import { calculateFutureNature, type Result, type Selection } from '../future-analysis/model'
+import { calculateFutureNature, selectionGeometry, type Result, type Selection } from '../future-analysis/model'
 import { calculatePlanArea } from '../plan-area/source'
 import { PlanAreaPanel } from '../plan-area/PlanAreaPanel'
-import type { PlanAreaResult, PlanAreaSelection } from '../plan-area/model'
+import { planAreaGeometry, type PlanAreaResult, type PlanAreaSelection } from '../plan-area/model'
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { Municipality, MunicipalityBoundary } from '../../api/municipalities'
 import type { ThematicCoverageResponse } from '../../api/thematicCoverage'
@@ -170,9 +171,10 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     return()=>abort.abort()
   },[activeMode,activeBoundary,owner])
   const activeArea=previousOwner.current===owner&&areaState?.owner===owner?areaState:null
-  const areaResult=activeMode==='area'&&activeBoundary&&activeArea?.result?.status==='available'?activeArea.result:null
+  const areaResult=activeMode==='area'&&activeBoundary&&activeArea?.result?.status==='available'&&activeArea.result.municipalityNumber===owner&&activeArea.result.methodVersion==='planned-land-cover-area-v1'&&activeArea.result.analysisId?activeArea.result:null
   const activeAnalysis = activeMode === 'nature' && activeBoundary && previousOwner.current === owner && analysisState?.owner === owner ? analysisState : null
-  const analysisResult = activeAnalysis?.result?.status === 'available' ? activeAnalysis.result : null
+  const analysisResult = activeAnalysis?.result?.status === 'available' && activeAnalysis.result.municipalityNumber===owner && activeAnalysis.result.methodVersion==='future-valued-nature-geometry-v3' && activeAnalysis.result.analysisId ? activeAnalysis.result : null
+  const canFitAnalysis=useMemo(()=>activeMode==='area'?Boolean(areaResult&&!activeArea?.loading&&!activeArea?.error&&hasAnalysisGeometry(planAreaGeometry(areaResult,areaSelection))):Boolean(analysisResult&&!activeAnalysis?.loading&&!activeAnalysis?.error&&hasAnalysisGeometry(selectionGeometry(analysisResult,analysisSelection))),[activeMode,areaResult,activeArea?.loading,activeArea?.error,areaSelection,analysisResult,activeAnalysis?.loading,activeAnalysis?.error,analysisSelection])
   useEffect(() => { controller.current?.setFutureNature?.(analysisResult, analysisSelection);controller.current?.setPlanArea?.(areaResult,areaSelection) }, [analysisResult, analysisSelection,areaResult,areaSelection])
   function chooseArea(selection:PlanAreaSelection){setAreaSelection({owner,selection});controller.current?.setPlanArea?.(areaResult,selection)}
   function changeAnalysisMode(mode: 'area' | 'nature') {
@@ -196,10 +198,10 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   function showAreaMap(){setViewMode('map');setPanel(null);setPickerOpen(false);requestAnimationFrame(()=>element.current?.focus({preventScroll:true}))}
   function chooseAnalysis(selection: Selection) {
     storeAnalysisSelection({ owner, selection })
-    controller.current?.setFutureNature?.(analysisResult, selection, selection.kind === 'locality')
+    controller.current?.setFutureNature?.(analysisResult, selection)
   }
   function changeViewMode(mode: AnalysisViewMode) {setViewMode(mode);setPickerOpen(false);setPanel(mode === 'map' ? null : {owner,value:'analysis'})}
-  function fitAnalysis(){if(activeMode === 'area')controller.current?.setPlanArea?.(areaResult,areaSelection,true);else controller.current?.setFutureNature?.(analysisResult,analysisSelection,true)}
+  function fitAnalysis(){if(!canFitAnalysis)return;if(activeMode === 'area')controller.current?.setPlanArea?.(areaResult,areaSelection,true);else controller.current?.setFutureNature?.(analysisResult,analysisSelection,true)}
   const filteredTypes = data?.natureTypes.filter((name) => name.toLocaleLowerCase('nb').includes(choice.search.trim().toLocaleLowerCase('nb')) || name === choice.filter.natureType) ?? []
 
   const natureFilter = natureVisible ? <>
@@ -242,7 +244,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   }
   return <section className="explore-themes" aria-label="Kart med flere lag">
     <div className={`explore-themes__body ${panel ? 'has-detail' : ''} ${panel==='analysis'&&analysisMode==='area'?'has-area-analysis':''} ${pickerOpen ? 'layers-open' : ''} ${activeMode ? `has-analysis mode-${viewMode}` : ''} ${pickerOpen || panel && panel !== 'analysis' ? 'has-aux' : ''}`} data-analysis-mode={activeMode??'none'} data-view-mode={viewMode} data-analysis-id={areaResult?.analysisId??analysisResult?.analysisId}>
-      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} onLayers={openLayers} onEnd={endAnalysis} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
+      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} onLayers={openLayers} onEnd={endAnalysis} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
       <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
         <div className="explore-themes__panel-heading"><h2><ExploreMapIcon name="layers" />Kartlag</h2><span className="explore-themes__counter">{activeDefinitions.length} aktive</span><button type="button" className="explore-themes__mobile-close explore-themes__icon-button" onClick={closePanel} aria-label="Lukk kartlag"><ExploreMapIcon name="close" /></button></div>
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>
@@ -294,7 +296,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         <div className="explore-themes__detail-scroll" tabIndex={0} role="region" aria-label="Rullbart detaljinnhold">
           <>
             <div className="explore-themes__analysis-switch" role="group" aria-label="Velg plananalyse"><button type="button" aria-pressed={analysisMode==='area'} onClick={()=>{changeAnalysisMode('area')}}>Arealfordeling</button><button type="button" aria-pressed={analysisMode==='nature'} onClick={()=>{changeAnalysisMode('nature')}}>Registrerte naturverdier</button></div>
-            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={()=>controller.current?.setPlanArea?.(areaResult,areaSelection,true)} onShowMap={showAreaMap}/>:<AnalysisPanel key={`${owner}-${activeMode}`}  result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} />}
+            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={fitAnalysis} canFit={canFitAnalysis} onShowMap={showAreaMap}/>:<AnalysisPanel key={`${owner}-${activeMode}`}  result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} />}
           </>
         </div>
       </aside>}
