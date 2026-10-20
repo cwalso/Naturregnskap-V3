@@ -1,3 +1,4 @@
+import { localityDaa } from './localityPresentation'
 import { AnalysisContents } from '../analysis-ui/AnalysisContents'
 import { useMemo, useState } from 'react'
 import type { Analysis, Result, Selection } from './model'
@@ -17,7 +18,7 @@ export function AnalysisPanel({ result, loading, error, selection, onSelect, onF
   if (!analysis) return <p role="status">Venter på analysegrunnlaget…</p>
   const selected = selection.kind === 'locality' ? analysis.localities.find((l) => l.id === selection.label) : null
   return <div className="future-nature-analysis" data-analysis-content>
-    <AnalysisContents sections={[['summary','Samlet resultat'],['values','KU-verdi'],['types','Naturtyper'],['localities','Lokaliteter og søk'],['method','Metode og datagrunnlag']]}/>
+    <AnalysisContents sections={[['summary','Samlet resultat'],['values','KU-verdi'],['types','Naturtyper'],['localities','Lokaliteter og søk'],['method','Metode og datagrunnlag'],...(selected?[['selected-locality','Valgt lokalitet']] as const:[])]}/>
     <div className="analysis-section-scroll" tabIndex={0} role="region" aria-label="Rullbare analyseresultater">
     <p className="future-nature-analysis__intro" data-analysis-section="summary" tabIndex={-1}>Analysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.</p>
     <div className="future-nature-analysis__summary">
@@ -44,7 +45,7 @@ export function AnalysisPanel({ result, loading, error, selection, onSelect, onF
     <label>Søk etter lokalitet <input type="search" data-analysis-section="localities" value={search} onChange={(e) => setSearch(e.target.value)} /></label>
     <label>Sorter lokaliteter <select value={localitySort} onChange={(e) => setLocalitySort(e.target.value as Sort)}><option value="area">Overlappsareal, størst først</option><option value="share">Overlappsandel, størst først</option><option value="name">Lokalitet, alfabetisk</option><option value="type">Naturtype, alfabetisk</option><option value="value">KU-verdi</option></select></label>
     <div className="future-nature-analysis__table" tabIndex={0} role="region" aria-label="Rullbar lokalitetsoversikt"><table><caption>{localities.length} av {analysis.localityCount} lokaliteter</caption><thead><tr><th>Lokalitet / naturtype</th><th>KU-verdi</th><th>Overlapp</th><th>Andel</th></tr></thead><tbody>{localities.map((l) => <tr key={l.id}><td><button type="button" aria-pressed={selection.kind === 'locality' && selection.label === l.id} onClick={() => onSelect({ kind: 'locality', label: l.id })}>{l.name}<small>{l.natureType} · {l.id}</small></button></td><td>{l.value}</td><td>{daa(l.overlapAreaDaa)}</td><td>{format.format(l.overlapSharePercent)} %</td></tr>)}</tbody></table></div>
-    {selected && <section aria-label="Valgt lokalitet"><h3>{selected.name}</h3><p>{selected.natureType} · {selected.value}</p><p>Hele lokaliteten: {daa(selected.totalAreaDaa)}. Overlapp: {daa(selected.overlapAreaDaa)} ({format.format(selected.overlapSharePercent)} %).</p><small>Faglig ID: {selected.id}. KU-ID: {selected.kuIds.join(', ')}. Kildeobjekter: {selected.objectIds.join(', ')}.</small></section>}
+    {selected && <section aria-label="Valgt lokalitet" data-analysis-section="selected-locality" tabIndex={-1}><h3>{selected.name.trim()||selected.id}</h3><p>Faglig lokalitets-ID: <strong>{selected.id}</strong></p><p>{selected.natureType||'Naturtype ikke oppgitt'} · KU-verdi: {selected.value||'Ikke oppgitt'}</p><p>Overlapp med framtidig planavsetning: <strong>{localityDaa(selected.overlapAreaDaa)}</strong>.</p><p>Hele lokaliteten: {daa(selected.totalAreaDaa)}. Overlappsandel av hele lokaliteten: {format.format(selected.overlapSharePercent)} %.</p><small>KU-ID: {selected.kuIds.join(', ')||'Ikke oppgitt'}. Kildeobjekter: {selected.objectIds.join(', ')||'Ikke oppgitt'}.</small></section>}
     <Method analysis={analysis} />
     </div>
   </div>

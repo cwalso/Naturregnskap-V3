@@ -1,3 +1,4 @@
+import { focusAnalysisSection } from '../analysis-ui/analysisContentNavigation'
 import { hasAnalysisGeometry } from './analysisGeometry'
 import { MobileAnalysisControls, type AnalysisViewMode } from './MobileAnalysisControls'
 import { AnalysisPanel } from '../future-analysis/AnalysisPanel'
@@ -201,6 +202,12 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     controller.current?.setFutureNature?.(analysisResult, selection)
   }
   function changeViewMode(mode: AnalysisViewMode) {setViewMode(mode);setPickerOpen(false);setPanel(mode === 'map' ? null : {owner,value:'analysis'})}
+  function showLocalityDetails(){
+    if(analysisSelection.kind!=='locality'||!analysisResult?.localities.some(l=>l.id===analysisSelection.label))return
+    setPickerOpen(false);setPanel({owner,value:'analysis'})
+    if(viewMode==='map')setViewMode('results')
+    requestAnimationFrame(()=>{const root=analysisPanelElement.current?.querySelector<HTMLElement>('[data-analysis-content]');if(root)focusAnalysisSection(root,'selected-locality')})
+  }
   function fitAnalysis(){if(!canFitAnalysis)return;if(activeMode === 'area')controller.current?.setPlanArea?.(areaResult,areaSelection,true);else controller.current?.setFutureNature?.(analysisResult,analysisSelection,true)}
   const filteredTypes = data?.natureTypes.filter((name) => name.toLocaleLowerCase('nb').includes(choice.search.trim().toLocaleLowerCase('nb')) || name === choice.filter.natureType) ?? []
 
@@ -244,7 +251,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   }
   return <section className="explore-themes" aria-label="Kart med flere lag">
     <div className={`explore-themes__body ${panel ? 'has-detail' : ''} ${panel==='analysis'&&analysisMode==='area'?'has-area-analysis':''} ${pickerOpen ? 'layers-open' : ''} ${activeMode ? `has-analysis mode-${viewMode}` : ''} ${pickerOpen || panel && panel !== 'analysis' ? 'has-aux' : ''}`} data-analysis-mode={activeMode??'none'} data-view-mode={viewMode} data-analysis-id={areaResult?.analysisId??analysisResult?.analysisId}>
-      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} onLayers={openLayers} onEnd={endAnalysis} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
+      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} onLayers={openLayers} onEnd={endAnalysis} onDetails={showLocalityDetails} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
       <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
         <div className="explore-themes__panel-heading"><h2><ExploreMapIcon name="layers" />Kartlag</h2><span className="explore-themes__counter">{activeDefinitions.length} aktive</span><button type="button" className="explore-themes__mobile-close explore-themes__icon-button" onClick={closePanel} aria-label="Lukk kartlag"><ExploreMapIcon name="close" /></button></div>
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>

@@ -57,9 +57,20 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
       // The quick selector deliberately lists only the selected locality. Use the existing list once.
       if(mobile&&key==='map')await page.getByRole('button',{name:'Delt',exact:true}).tap()
       await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('BN00109936')
-      before=await snapshot();await page.getByRole('button',{name:/Tanemsmyra.*BN00109936/}).click();await stableView(before)
+      before=await snapshot();await page.locator('.future-nature-analysis__table').getByRole('button',{name:/Tanemsmyra.*BN00109936/}).click();await stableView(before)
       if(mobile&&key==='map')await page.getByRole('button',{name:'Mer kart',exact:true}).tap()
       await fitToOverlap();await capture(`${stage}-locality-${key}-${size.width}`)
+      if(['c3','c4'].includes(stage)){
+        const beforeDetails=await snapshot()
+        if(mobile)await page.getByRole('button',{name:/Åpne lokalitetsdetaljer for.*BN00109936/}).tap();else await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('selected-locality')
+        retained(beforeDetails,await snapshot())
+        const details=page.getByRole('region',{name:'Valgt lokalitet',exact:true})
+        assert.equal(await details.evaluate(el=>el===document.activeElement),true)
+        const text=(await details.innerText()).replaceAll('\u00a0',' ');assert.match(text,/BN00109936/);assert.match(text,/Overlapp med framtidig planavsetning: 19,61 daa/);assert.match(text,/Hele lokaliteten: 38,33 daa/)
+        if(mobile)assert.equal(await page.locator('.explore-themes__body').getAttribute('data-view-mode'),key==='map'?'results':key)
+        await capture(`${stage}-details-${key}-${size.width}`)
+        if(mobile&&key==='map')await page.getByRole('button',{name:'Mer kart',exact:true}).tap()
+      }
       const selected=await snapshot()
       if(mobile)await page.locator('.mobile-analysis-toolbar').getByRole('button',{name:'Kartlag',exact:true}).tap();else{if(size.width===900)await page.getByRole('button',{name:'Skjul analyseresultater',exact:true}).click();await settings('Grunnkart nivå 0')}
       retained(selected,await snapshot());await page.keyboard.press('Escape')

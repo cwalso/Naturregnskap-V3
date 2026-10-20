@@ -1,3 +1,4 @@
+import { localityDaa } from '../future-analysis/localityPresentation'
 import type { Result, Selection } from '../future-analysis/model'
 import { planDaa, type PlanAreaResult, type PlanAreaSelection } from '../plan-area/model'
 import { ExploreMapIcon } from './ExploreMapIcon'
@@ -19,6 +20,7 @@ interface Props {
   canFit: boolean
   onFit: () => void
   onLayers: () => void
+  onDetails: () => void
   onEnd: () => void
   layersOpen: boolean
   panelId: string
@@ -30,6 +32,7 @@ export function MobileAnalysisControls(props: Props) {
   const areaResult=area?.status==='available'?area:null
   const natureResult=nature?.status==='available'?nature:null
   const result=mode==='area'?area:nature
+  const locality=!props.loading&&!props.error&&mode==='nature'&&natureSelection.kind==='locality'?natureResult?.localities.find(l=>l.id===natureSelection.label):null
   let label='Alle arealer', value: number | undefined
   if(mode==='area'&&areaResult){
     const category=areaSelection.kind==='category'?areaResult.categories.find(c=>c.id===areaSelection.id):null
@@ -37,8 +40,7 @@ export function MobileAnalysisControls(props: Props) {
     value=category?.areaDaa??(areaSelection.kind==='nature'?areaResult.natureDaa:areaSelection.kind==='agriculture'?areaResult.agricultureDaa:areaResult.totalDaa)
   }else if(mode==='nature'&&natureResult){
     const metric=natureSelection.kind==='value'?natureResult.values.find(m=>m.label===natureSelection.label):natureSelection.kind==='type'?natureResult.types.find(m=>m.label===natureSelection.label):null
-    const locality=natureSelection.kind==='locality'?natureResult.localities.find(l=>l.id===natureSelection.label):null
-    label=locality?.name??metric?.label??'Samlet resultat'
+    label=(locality?(locality.name.trim()||locality.id):metric?.label)??'Samlet resultat'
     value=locality?.overlapAreaDaa??metric?.areaDaa??natureResult.uniqueAreaDaa
   }
   const available=Boolean(mode==='area'?areaResult:natureResult)&&!props.loading&&!props.error
@@ -48,7 +50,8 @@ export function MobileAnalysisControls(props: Props) {
     if(mode==='area')props.onArea(kind==='category'?{kind:'category',id}:{kind:kind as 'all'|'nature'|'agriculture'})
     else props.onNature(kind==='all'?{kind:'all'}:{kind:kind as 'value'|'type'|'locality',label:id})
   }
-  const status=props.error?'Analysen kunne ikke hentes – ikke null treff.':props.loading?'Laster analyse…':result?.status==='not_available'?'Analysegrunnlag mangler – ikke null treff.':!available?'Venter på analysegrunnlag…':null
+  const invalidLocality=mode==='nature'&&natureSelection.kind==='locality'&&natureResult&&!props.loading&&!props.error&&!locality
+  const status=invalidLocality?'Lokalitetsutvalget finnes ikke i denne analysen.':props.error?'Analysen kunne ikke hentes – ikke null treff.':props.loading?'Laster analyse…':result?.status==='not_available'?'Analysegrunnlag mangler – ikke null treff.':!available?'Venter på analysegrunnlag…':null
   return <>
     <div className="mobile-analysis-toolbar">
       <label className="sr-only" htmlFor={`${props.panelId}-mode`}>Velg aktiv plananalyse</label>
@@ -60,7 +63,7 @@ export function MobileAnalysisControls(props: Props) {
       {([['map','Mer kart'],['split','Delt'],['results','Mer resultat']] as const).map(([value,label])=><button type="button" key={value} aria-pressed={viewMode===value} aria-controls={props.panelId} onClick={()=>props.onView(value)}>{label}</button>)}
     </div>
     <section className="mobile-analysis-summary" aria-label="Aktiv analyse og kartutvalg">
-      <div className="mobile-analysis-summary__value" role="status">{status?<span>{status}</span>:<><strong>{planDaa(value!)}</strong><span title={label}>{label}{mode==='nature'&&natureSelection.kind==='all'?` · ${natureResult?.localityCount} lokaliteter`:''}</span></>}</div>
+      <div className="mobile-analysis-summary__value" role="status">{status?<span>{status}</span>:<><strong>{locality?localityDaa(value!):planDaa(value!)}{locality&&<small> overlapp</small>}</strong><span title={locality?`${locality.id} · ${locality.value||'KU-verdi ikke oppgitt'}`:label}>{locality?`${locality.id}${locality.value?` · ${locality.value}`:''}`:label}{mode==='nature'&&natureSelection.kind==='all'?` · ${natureResult?.localityCount} lokaliteter`:''}</span></>}</div>
       <div className="mobile-analysis-summary__actions">
         <label className="sr-only" htmlFor={`${props.panelId}-selection`}>Kartutvalg i analysen</label>
         <select id={`${props.panelId}-selection`} value={selected} disabled={!available} onChange={e=>select(e.target.value)}>
@@ -71,6 +74,7 @@ export function MobileAnalysisControls(props: Props) {
             {natureSelection.kind==='locality'&&<option value={selected}>{label}</option>}
           </>}
         </select>
+        {locality&&<button type="button" className="mobile-analysis-details" onClick={props.onDetails} aria-label={`Åpne lokalitetsdetaljer for ${label} (${locality.id})`}>Detaljer</button>}
         <button type="button" disabled={!available||!props.canFit} title={!props.canFit?'Utvalget mangler gyldig analysegeometri.':undefined} onClick={props.onFit} aria-label="Tilpass aktivt kartutvalg"><ExploreMapIcon name="pin" />Tilpass kart</button>
       </div>
     </section>

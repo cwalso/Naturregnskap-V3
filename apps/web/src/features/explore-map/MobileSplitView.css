@@ -48,3 +48,5 @@
 }
 
 @media(max-width:700px){.has-analysis .ol-attribution{max-width:calc(100% - 8px);font-size:10px}.has-analysis .ol-attribution button{width:44px;height:44px;min-height:44px;margin:0;justify-content:center;padding:0}}
+
+@media(max-width:700px){.mobile-analysis-summary__value strong small{font-size:10px;font-weight:400}.mobile-analysis-summary__value>span{font-size:11px}.mobile-analysis-summary .mobile-analysis-details{min-width:44px}.future-nature-analysis [data-analysis-section="selected-locality"]{overflow-wrap:anywhere}.future-nature-analysis [data-analysis-section="selected-locality"] h3{white-space:normal}}

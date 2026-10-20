@@ -53,3 +53,28 @@ Chromium fullført: 30 skjermtilstander, 30 axe-kontroller uten rapporterte brud
 Direkte hopp til søk, KU og åpnet metode bevarer utvalg, søketekst, kartgeometri,
 utsnitt, ID og konsumentkall. Delt-kart er fortsatt 208,55/270,55 px.
 [Kontrollfil](2026-10-20-mobile-map-b5-2c/c2-checks.json).
+
+## C3 – lokalitetsnavn, identitet og overlapp
+
+Valgt lokalitet viser nå faglig ID og registrert KU-verdi i den eksisterende
+kompakte oppsummeringslinjen. Arealet merkes «overlapp». Detaljer-knappen ligger
+i eksisterende handlingsrad, ved siden av utvalgsvelgeren og Tilpass kart.
+Den åpner den samme lokalitetsseksjonen med fullt navn og ID. Fra Mer kart er
+«Detaljer» et eksplisitt valg av Mer resultat; fra Delt/Mer resultat beholdes
+modusen. Lokalitetens valg i seg selv endrer fortsatt verken modus eller utsnitt.
+Desktop har også direkte «Valgt lokalitet» i innholdsvelgeren, uten ny panelstruktur.
+
+Detaljene merker overlapp med framtidig planavsetning separat fra hele lokaliteten
+og oppgir hva overlappsandelen har som nevner. Manglende valgfrie metadata merkes
+Ikke oppgitt; like navn skilles på ID. Lange navn vises fullt i detaljene og har
+fullt tilgjengelig navn på detaljknappen. Positive lokalitetsoverlapp under 0,01 daa
+vises som <0,01 daa i stedet for å avrundes til null. Tallverdien endres ikke.
+Oppsummeringen fjerner lokalitetsinformasjonen ved lasting, feil og kommune-/typebytte.
+
+C3 kontrollert før C4: 206/206 frontendtester, 27/27 målrettede etter statusvern,
+lint uten feil og build består. Lange/like navn med forskjellige ID-er, manglende
+metadata, lite positivt areal og manglende geometri er dekket. Reell Chromium:
+38 skjermtilstander/axe-kontroller uten rapporterte brudd, eksplisitt detaljåpning
+med fokus og samme resultat/geometri/utsnitt. Tanemsmyra BN00109936 viser fortsatt
+19,61 daa overlapp og 38,33 daa hele lokaliteten, lest fra faktiske data.
+[Kontrollfil](2026-10-20-mobile-map-b5-2c/c3-checks.json).
