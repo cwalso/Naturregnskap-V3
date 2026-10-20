@@ -466,3 +466,14 @@ beholdes. `MobileAnalysisControls` presenterer samme resultatobjekt og utvalg;
 ≤700 px. Ingen ny kart-/analyse-/global tilstandsmotor. Eksisterende resize
 observer oppdaterer OpenLayers-størrelsen uten fit. Analysemarkering opphører ved
 avsluttet analyse, ikke ved skjult panel. Se [beslutning](../decisions/2026-10-19-mobile-split-view.md).
+
+## Analysehandlinger og innhold (20.10.2026)
+
+B5.2c fjerner auto-fit ved lokalitetsvalg. `setFutureNature`-adapterens eksplisitte
+fit bruker den allerede monterte overlap-source, også for KU/type/samlet utvalg.
+Generell kommunetilpassing og OpenLayers-motoren er uendret.
+`AnalysisContents` navigerer i samme resultatkomponent med fokus og intern scroll.
+Søskenforhold mellom velger og rulleinnhold unngår tildekkede kontroller.
+`analysisResetKey` er lokal presentasjonsstate som tømmer lokalitetssøk ved felles
+nullstilling; resultat/identitet og beregningskonsument remountes ikke.
+[Beslutning](../decisions/2026-10-20-analysis-interaction.md).

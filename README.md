@@ -280,3 +280,11 @@ OpenLayers-instans. Desktop beholder sidepanelene. Beregningsmetoder og data er
 uendret. Se [beslutning](docs/decisions/2026-10-19-mobile-split-view.md) og
 [kontrollrapport med kartmål og skjermbilder](docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).
 Leveransen er på PR-branchen; den publiserer ikke GitHub Pages.
+
+## Analyseinteraksjon – B5.2c, 20.10.2026
+
+Analysevalg beholder kartutsnittet. Tilpass kart bruker aktiv analysegeometri;
+innholdsvelgeren går direkte til eksisterende tabeller/søk/metode. Lokalitetens
+faglige ID og overlappsareal er tydeligere, og Nullstill utvalg tømmer også søket.
+Se [C1–C4-rapport med tester og skjermbilder](docs/validation/2026-10-20-mobile-map-b5-2c.md).
+B5.2d og eventuell publisering gjenstår som separate oppgaver.

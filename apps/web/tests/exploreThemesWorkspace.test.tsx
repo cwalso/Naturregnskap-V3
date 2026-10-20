@@ -399,3 +399,32 @@ describe('B5.2c explicit analysis fit',()=>{
     expect(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'})).toBeDisabled()
   })
 })
+
+describe('B5.2c reset and result ownership',()=>{
+  it('resets selection and search from either mobile quick reset or the visible panel, including an already unselected analysis',async()=>{
+    natureRequest.mockResolvedValue(natureFixture)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode="nature"/>)
+    const search=await screen.findByRole('searchbox')
+    fireEvent.change(search,{target:{value:'Testmyra'}})
+    fireEvent.click(screen.getByRole('button',{name:/^Testmyra/}))
+    fireEvent.change(screen.getByRole('combobox',{name:'Kartutvalg i analysen'}),{target:{value:'reset'}})
+    expect(search).toHaveValue('')
+    expect(controller.setFutureNature).toHaveBeenLastCalledWith(natureFixture,{kind:'all'})
+    fireEvent.change(search,{target:{value:'finnes_ikke'}})
+    fireEvent.click(screen.getByRole('button',{name:'Nullstill utvalg'}))
+    expect(search).toHaveValue('')
+    expect(screen.getByRole('button',{name:/^Testmyra/})).toBeInTheDocument()
+    expect(natureRequest).toHaveBeenCalledOnce()
+    expect(controller.setFutureNature.mock.calls.some(c=>c[2]===true)).toBe(false)
+    expect(controller.destroy).not.toHaveBeenCalled()
+  })
+  it.each(['area','nature'] as const)('rejects a mismatched municipality result in %s before showing numbers or enabling fit',async mode=>{
+    const result={...(mode==='area'?planAreaFixture:natureFixture),municipalityNumber:'0301'}
+    ;(mode==='area'?areaRequest:natureRequest).mockResolvedValue(result)
+    render(<ExploreThemesWorkspace municipality={municipality} boundary={boundary} initialAnalysisOpen initialAnalysisMode={mode}/>)
+    expect(await screen.findByRole('alert')).toHaveTextContent(/ikke aktiv kommune/)
+    expect(screen.getByRole('button',{name:'Tilpass aktivt kartutvalg'})).toBeDisabled()
+    expect(document.querySelector('.explore-themes__body')).not.toHaveAttribute('data-analysis-id')
+    expect(screen.queryByRole('region',{name:'Valgt lokalitet'})).not.toBeInTheDocument()
+  })
+})

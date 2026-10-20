@@ -5,7 +5,7 @@ import {AnalysisPanel} from '../src/features/future-analysis/AnalysisPanel'
 import {natureFixture} from './natureFixture'
 const longName='Svært langt lokalitetsnavn med flere deler og presiseringer som skal kunne leses i sin helhet'
 const result={...natureFixture,localities:[{...natureFixture.localities[0],id:'BN-A',name:longName,value:'',natureType:'',kuIds:[],objectIds:[],overlapAreaDaa:0.004},{...natureFixture.localities[0],id:'BN-B',name:longName}]}
-const props={mode:'nature' as const,viewMode:'split' as const,area:null,nature:result,loading:false,error:null,areaSelection:{kind:'all'} as const,natureSelection:{kind:'locality',label:'BN-A'} as const,onMode:vi.fn(),onView:vi.fn(),onArea:vi.fn(),onNature:vi.fn(),onFit:vi.fn(),onLayers:vi.fn(),onEnd:vi.fn(),onDetails:vi.fn(),canFit:true,layersOpen:false,panelId:'test-panel'}
+const props={mode:'nature' as const,viewMode:'split' as const,area:null,nature:result,loading:false,error:null,areaSelection:{kind:'all'} as const,natureSelection:{kind:'locality',label:'BN-A'} as const,onMode:vi.fn(),onView:vi.fn(),onArea:vi.fn(),onNature:vi.fn(),onFit:vi.fn(),onLayers:vi.fn(),onEnd:vi.fn(),onDetails:vi.fn(),onReset:vi.fn(),canFit:true,layersOpen:false,panelId:'test-panel'}
 afterEach(()=>{cleanup();vi.clearAllMocks()})
 it('exposes a full long name and stable ID, labels overlap and keeps a small positive overlap above zero',()=>{
  const view=render(<MobileAnalysisControls {...props}/>)

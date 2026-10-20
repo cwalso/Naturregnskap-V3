@@ -1,0 +1,481 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune:
+Velg kommune
+×
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+
+Naturregnskap / Kart
+
+Utforsk i kart
+
+Se datagrunnlaget. Kombiner kartlag.
+Undersøk registrert natur.
+
+Kartlag
+2 aktive
+
+Velg hva du vil se i kartet.
+
+Analyser planområder
+REGNSKAPSGRUNNLAG
+Grunnkart nivå 0
+PLANDATA
+Framtidig utbygging
+SUPPLERENDE TEMADATA
+Verdsatte naturtyper
+Verneområder
+Inngrepsfri natur (INON)
+Januar 2023
+Villrein
+Grå arealer
+
+Temadata supplerer regnskapsgrunnlaget. Lagvalg starter ingen analyse.
+
+Slå av alle
+Tegnforklaring
+Trondheim
+· Kommuneutsnitt
+Vis hele kommunen
++
+–
+i
+Tegnforklaring
+2 aktive kartlag
+Supplerende kartvisning
+
+Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.
+
+Plananalyser
+Registrerte naturverdier
+Arealfordeling
+Registrerte naturverdier
+Gå til innhold…
+Samlet resultat
+KU-verdi
+Naturtyper
+Lokaliteter og søk
+Metode og datagrunnlag
+Nullstill utvalg
+
+Analysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.
+
+119,38 daa
+Unikt overlappsareal
+70
+Berørte lokaliteter
+7,84 daa
+Svært stor verdi
+34,14 daa
+Stor verdi
+41,98 daa
+De to høyeste samlet · 38 lokaliteter
+
+Kartet viser hele analysen.
+
+Tilpass kart til utvalget
+
+▧ Hele lokaliteten · ■ faktisk overlapp mot rasteravgrensningen
+
+Fordeling etter KU-verdi
+Svært stor verdi
+7,84 daa
+8 lokaliteter · 6,56 % av unikt areal
+Stor verdi
+34,14 daa
+30 lokaliteter · 28,6 % av unikt areal
+Middels verdi
+66,34 daa
+29 lokaliteter · 55,57 % av unikt areal
+Noe verdi
+11,07 daa
+3 lokaliteter · 9,27 % av unikt areal
+Fordeling etter naturtype
+
+Hver naturtype viser unikt areal innen typen. Ulike naturtyper kan overlappe; radene skal ikke summeres til totalarealet.
+
+Sorter naturtyper
+Overlappsareal, størst først
+Naturtype, alfabetisk
+Antall lokaliteter, flest først
+KU-verdier
+Naturtyper med overlapp
+Naturtype	Areal	Antall	KU-verdier
+
+Viktig bekkedrag
+	27,03 daa	10	Middels verdi
+
+Gråor-heggeskog
+	19,92 daa	10	Stor verdi, Middels verdi
+
+Intakt lavlandsmyr i innlandet
+	19,68 daa	2	Middels verdi, Noe verdi
+
+Gammel granskog med gamle trær
+	19,68 daa	5	Svært stor verdi, Stor verdi
+
+Semi-naturlig eng
+	13,84 daa	1	Middels verdi
+
+Ravinedal
+	11,53 daa	3	Stor verdi, Middels verdi
+
+Sørlig nedbørsmyr
+	9,71 daa	5	Stor verdi, Middels verdi, Noe verdi
+
+Gammel høgstaudegråorskog
+	3,9 daa	12	Svært stor verdi, Stor verdi
+
+Naturbeitemark
+	2,39 daa	6	Stor verdi, Middels verdi
+
+Gammel granskog med liggende død ved
+	2,26 daa	2	Stor verdi
+
+Sørvendte berg og rasmarker
+	1,21 daa	1	Middels verdi
+
+Høgstaudegranskog
+	0,68 daa	1	Stor verdi
+
+Flomskogsmark
+	0,66 daa	1	Svært stor verdi
+
+Parklandskap
+	0,51 daa	2	Middels verdi, Noe verdi
+
+Gammel barskog
+	0,45 daa	1	Middels verdi
+
+Rik edellauvskog
+	0,21 daa	1	Middels verdi
+
+Gammel lågurtgranskog
+	0,07 daa	1	Stor verdi
+
+Rik åpen sørlig jordvannsmyr
+	0,07 daa	1	Svært stor verdi
+
+Rikmyr
+	0,05 daa	1	Stor verdi
+
+Åpen grunnlendt kalkrik mark i sørboreal sone
+	0,03 daa	1	Stor verdi
+
+Frisk lågurtedellauvskog
+	0,02 daa	1	Stor verdi
+
+Hule eiker
+	0,01 daa	1	Stor verdi
+
+Åpen flomfastmark
+	0,01 daa	1	Stor verdi
+Berørte lokaliteter
+Søk etter lokalitet
+Sorter lokaliteter
+Overlappsareal, størst først
+Overlappsandel, størst først
+Lokalitet, alfabetisk
+Naturtype, alfabetisk
+KU-verdi
+70 av 70 lokaliteter
+Lokalitet / naturtype	KU-verdi	Overlapp	Andel
+
+Tanemsmyra
+Intakt lavlandsmyr i innlandet · BN00109936
+	Noe verdi	19,61 daa	51,17 %
+
+Svean1
+Semi-naturlig eng · NINFP1910060388
+	Middels verdi	13,84 daa	19,01 %
+
+Storberga
+Gammel granskog med gamle trær · NINFP2310130704
+	Stor verdi	12,11 daa	99,99 %
+
+Rønningsbekken
+Ravinedal · BN00109949
+	Stor verdi	10,47 daa	1 %
+
+Nedre Leirfoss
+Gråor-heggeskog · BN00087460
+	Middels verdi	9,82 daa	6,37 %
+
+Tanemsmyra
+Sørlig nedbørsmyr · NINFP2210081697
+	Middels verdi	9,13 daa	58,92 %
+
+Stokkanbekken
+Viktig bekkedrag · BN00087406
+	Middels verdi	7,43 daa	4,37 %
+
+Gjellan Ø
+Gammel granskog med gamle trær · NINFP2310130703
+	Svært stor verdi	5,18 daa	10,19 %
+
+Kystadbekken
+Viktig bekkedrag · BN00087376
+	Middels verdi	4,49 daa	5,64 %
+
+Leirelva, nedre del
+Viktig bekkedrag · BN00087512
+	Middels verdi	3,86 daa	9,12 %
+
+Marienborg
+Gråor-heggeskog · BN00087513
+	Middels verdi	3,68 daa	8,13 %
+
+Ilabekken, nedre del
+Viktig bekkedrag · BN00087529
+	Middels verdi	2,81 daa	10,87 %
+
+Leirelva, øvre del
+Viktig bekkedrag · BN00087398
+	Middels verdi	2,66 daa	1 %
+
+Bratsberg, Bjørkli
+Naturbeitemark · BN00087490
+	Middels verdi	2,03 daa	2,32 %
+
+Leirelva, Buenget
+Viktig bekkedrag · BN00087467
+	Middels verdi	2,02 daa	2,81 %
+
+Kroppan
+Gråor-heggeskog · BN00087370
+	Middels verdi	1,84 daa	1,29 %
+
+Nordsetkamman 4
+Gammel granskog med liggende død ved · NINFP2310131384
+	Stor verdi	1,84 daa	97,09 %
+
+Nordsetkamman 2
+Gammel granskog med gamle trær · NINFP2310131383
+	Stor verdi	1,71 daa	30,87 %
+
+Ilabekken, midtre del
+Viktig bekkedrag · BN00087378
+	Middels verdi	1,7 daa	1,87 %
+
+Stavne S
+Gammel høgstaudegråorskog · NINFP2310132552
+	Stor verdi	1,66 daa	5,12 %
+
+Leirelva, Forsøkslia
+Viktig bekkedrag · BN00087503
+	Middels verdi	1,27 daa	2,41 %
+
+Ladehammeren, sør
+Sørvendte berg og rasmarker · BN00087468
+	Middels verdi	1,21 daa	24,17 %
+
+Sluppen
+Gråor-heggeskog · BN00087531
+	Stor verdi	1,09 daa	0,64 %
+
+Fossøya V
+Gammel høgstaudegråorskog · NINFP2310132558
+	Svært stor verdi	1,08 daa	9,75 %
+
+Mælbudalen og Storvollbekken II
+Ravinedal · BN00089967
+	Stor verdi	1,04 daa	0,12 %
+
+Skjetnemarka
+Gråor-heggeskog · BN00087486
+	Stor verdi	1,01 daa	0,42 %
+
+Stavne
+Gråor-heggeskog · BN00087452
+	Middels verdi	0,96 daa	3,07 %
+
+Vikelva, Vikåsen
+Viktig bekkedrag · BN00087391
+	Middels verdi	0,78 daa	0,55 %
+
+Sjetne
+Gammel høgstaudegråorskog · NINFP2310131638
+	Svært stor verdi	0,71 daa	1,55 %
+
+Bjørndalen Ø
+Høgstaudegranskog · NINFP2310131715
+	Stor verdi	0,68 daa	5,94 %
+
+Åstrøa flomskog
+Flomskogsmark · NINFP2010038621
+	Svært stor verdi	0,66 daa	50,89 %
+
+Nidarø - Tilfredshet
+Gråor-heggeskog · BN00087415
+	Stor verdi	0,63 daa	1,74 %
+
+Åstrøberga
+Gammel granskog med gamle trær · NINFP2310130498
+	Stor verdi	0,55 daa	2,65 %
+
+Hallset sørvest
+Parklandskap · BN00083172
+	Noe verdi	0,51 daa	3,1 %
+
+Sluppen
+Gråor-heggeskog · BN00087481
+	Middels verdi	0,46 daa	0,44 %
+
+Kroppanmarka
+Gammel barskog · BN00087479
+	Middels verdi	0,45 daa	0,84 %
+
+Nordsetrønningen V
+Gammel granskog med liggende død ved · NINFP2310131386
+	Stor verdi	0,42 daa	12,1 %
+
+Sjetnemarka
+Gråor-heggeskog · BN00087414
+	Middels verdi	0,4 daa	0,33 %
+
+Stormyra 1
+Sørlig nedbørsmyr · NINFP2310131428
+	Stor verdi	0,33 daa	1,98 %
+
+Storhaugen 2
+Naturbeitemark · NINFP2310132177
+	Stor verdi	0,29 daa	6,15 %
+
+Svartdalen
+Rik edellauvskog · BN00087483
+	Middels verdi	0,21 daa	1,79 %
+
+Furuhaugen NØ
+Sørlig nedbørsmyr · NINFP2210099825
+	Stor verdi	0,16 daa	1,17 %
+
+Kystadbekken
+Gammel høgstaudegråorskog · NINFP2310133637
+	Svært stor verdi	0,13 daa	0,38 %
+
+Granli Ø
+Gammel granskog med gamle trær · NINFP2010026619
+	Stor verdi	0,12 daa	1,12 %
+
+Uglabekken
+Gammel høgstaudegråorskog · NINFP2310134223
+	Stor verdi	0,12 daa	1,85 %
+
+Stormyra 2
+Sørlig nedbørsmyr · NINFP2310131994
+	Noe verdi	0,08 daa	1,03 %
+
+Leirfossan 5
+Gammel lågurtgranskog · NINFP2310132562
+	Stor verdi	0,07 daa	1,57 %
+
+Gaddmyra
+Intakt lavlandsmyr i innlandet · BN00113266
+	Middels verdi	0,07 daa	0,2 %
+
+Isdammen S
+Rik åpen sørlig jordvannsmyr · NINFP2310130705
+	Svært stor verdi	0,07 daa	3,15 %
+
+Bjørndalen 4
+Gammel høgstaudegråorskog · NINFP2310134599
+	Stor verdi	0,06 daa	4,56 %
+
+Postmyra
+Rikmyr · BN00113268
+	Stor verdi	0,05 daa	0,16 %
+
+Leira V 6
+Gammel høgstaudegråorskog · NINFP2310132083
+	Stor verdi	0,05 daa	0,09 %
+
+Kroppan vest
+Gammel høgstaudegråorskog · NINFP2310133831
+	Stor verdi	0,04 daa	3,99 %
+
+Klosterenget V
+Gammel høgstaudegråorskog · NINFP2310132544
+	Stor verdi	0,04 daa	0,78 %
+
+Østre Okstad NØ
+Naturbeitemark · NINFP2310133797
+	Stor verdi	0,03 daa	0,46 %
+
+Nidarø - Tilfredshet
+Gråor-heggeskog · BN00087385
+	Middels verdi	0,03 daa	0,53 %
+
+Ladehammeren SSV
+Åpen grunnlendt kalkrik mark i sørboreal sone · NINFP2010038901
+	Stor verdi	0,03 daa	3,93 %
+
+Tverreggen
+Naturbeitemark · NINFP2310132079
+	Stor verdi	0,03 daa	0,18 %
+
+Veisletten allé
+Frisk lågurtedellauvskog · NINFP2310131997
+	Stor verdi	0,02 daa	0,19 %
+
+Tanem III
+Ravinedal · BN00089963
+	Middels verdi	0,02 daa	0,02 %
+
+Bruråk
+Naturbeitemark · BN00087416
+	Middels verdi	0,01 daa	0,01 %
+
+Ikke oppgitt
+Hule eiker · NINNT2610003018
+	Stor verdi	0,01 daa	1,29 %
+
+Storhaugen 1
+Gammel høgstaudegråorskog · NINFP2310132172
+	Svært stor verdi	0,01 daa	0,05 %
+
+Klosterenget NV
+Åpen flomfastmark · NINFP2310132553
+	Stor verdi	0,01 daa	0,05 %
+
+Søra
+Viktig bekkedrag · BN00087495
+	Middels verdi	0 daa	0 %
+
+Steinåsen
+Naturbeitemark · NINFP2010035894
+	Middels verdi	0 daa	0,04 %
+
+Fossgrenda 2
+Gammel høgstaudegråorskog · NINFP2310132075
+	Stor verdi	0 daa	0,04 %
+
+Oddmyra
+Sørlig nedbørsmyr · NINFP2210112613
+	Middels verdi	0 daa	0 %
+
+Leirfossan 4
+Gammel høgstaudegråorskog · NINFP2310132557
+	Svært stor verdi	0 daa	0 %
+
+Ilen kirkegård
+Parklandskap · BN00087459
+	Middels verdi	0 daa	0 %
+Metode, kilder og datakvalitet
+
+Geometrisk overlapp mot rasterbasert analyseavgrensning. DiBK kommuneplaner: arealbruksstatus 2 og arealformål som starter med 1 eller 2, begrenset til Natur og Jordbruk i Grunnkart nivå 0. Planstatus er ikke ytterligere juridisk verifisert.
+
+Rasterceller på 21,16 m i EPSG:25833. Smale komponenter beholdes. Kildepolygoner skjæres mot celleflatene; delceller beregnes geometrisk. Dette er ikke eksakt skjæring mot opprinnelige planpolygoner. Felles UTM-målestokkskorreksjon ved kommunemidtpunktet: 0.99947958.
+
+Høyeste registrerte KU-verdi får fellesareal som analysekonvensjon. KU-arealene summerer til unik union, med toleranse 0,01 m² før arealkorreksjon. Lokalitetstall følger faktisk kategori. Hele lokalitetsgeometrien, også utenfor kommunen, er nevner for overlappsandel.
+
+Registrerte naturtyper er ikke heldekkende kunnskap om naturverdier. Manglende treff betyr ikke manglende naturverdi. Analysen er prototypebeslutningsstøtte, ikke naturtapsregnskap eller konsekvensutredning.
+
+3737 kildeobjekter kontrollert. Ingen andre eller manglende KU-kategorier i uttrekket. Ugyldig eller ufullstendig geometri stopper beregningen.
+
+Grunnkart 2025, oversiktsraster hentet 05.10.2026. Løpende KU- og DiBK-tjenester; uttrekksdato og innholdshash dokumenterer denne analysen. Hentet 2026-10-20T08:32:57.277Z. Beregningstid: 0,74 s.
+
+Metode: future-valued-nature-geometry-v3. Analyse-ID: future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9. Kilde: https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query.

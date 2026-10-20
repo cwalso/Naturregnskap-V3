@@ -1,0 +1,65 @@
+
+> naturregnskap-v3-web@3.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/Naturregnskap-V3/apps/web
+
+ ✓ tests/exploreThemesWorkspace.test.tsx (28 tests) 8470ms
+   ✓ uavhengige kartlag i V2-paneler > opens the primary area analysis, forwards exact selections and isolates results after municipality change  477ms
+   ✓ uavhengige kartlag i V2-paneler > keeps the analysis purpose, resets geographical selection and accepts only new municipality results  566ms
+   ✓ uavhengige kartlag i V2-paneler > keeps loading, empty and error statuses outside layer rows, accessible and in settings  368ms
+   ✓ uavhengige kartlag i V2-paneler > returnerer fokus til kartet når lokalitetskortets objektpanel lukkes  487ms
+   ✓ uavhengige kartlag i V2-paneler > beholder filter, objekt og opasitet når andre lag eller paneler endres  915ms
+   ✓ uavhengige kartlag i V2-paneler > støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge  1896ms
+   ✓ B5.2a aktiv analyse uavhengig av panel > retains area result, selection and consumer through temporary panels and map-only mode  336ms
+   ✓ B5.2a aktiv analyse uavhengig av panel > retains nature result, selection and consumer through temporary panels and map-only mode  525ms
+ ✓ tests/App.test.tsx (41 tests) 3167ms
+   ✓ sidestruktur og Oversikt > uses the primary plan result on forest and wetland pages and opens the selected map category  508ms
+ ✓ tests/overlayCorrectness.test.ts (11 tests) 2278ms
+ ✓ tests/overviewPage.test.tsx (7 tests) 537ms
+ ✓ tests/naturtapetPage.test.tsx (4 tests) 795ms
+   ✓ updates totals, timeline and distributions together for a selected period and restores the full range  338ms
+ ✓ tests/futureNaturePanel.test.tsx (3 tests) 401ms
+ ✓ tests/planAreaPanel.test.tsx (4 tests) 436ms
+   ✓ maps each nature category, main categories and reset to distinct selections without implicit fit  315ms
+ ✓ tests/planAreaSource.test.ts (2 tests) 191ms
+ ✓ tests/localityPresentation.test.tsx (2 tests) 250ms
+ ✓ tests/ecosystemDistribution.test.tsx (2 tests) 181ms
+ ✓ tests/siteHeader.test.tsx (2 tests) 124ms
+ ✓ tests/planAreaIndicator.test.tsx (2 tests) 137ms
+ ✓ tests/municipalityMap.test.ts (12 tests) 82ms
+ ✓ tests/sharedImageRequests.test.ts (2 tests) 97ms
+ ✓ tests/futureDevelopmentDisplay.test.ts (3 tests) 51ms
+ ✓ tests/futureNatureAnalysis.test.ts (17 tests) 39ms
+ ✓ tests/plannedDevelopment.test.ts (7 tests) 36ms
+ ✓ tests/municipalValuedNature.test.ts (4 tests) 19ms
+ ✓ tests/municipalities.test.ts (2 tests) 15ms
+ ✓ tests/accountOverviewRaster.test.ts (2 tests) 11ms
+ ✓ tests/valuedNaturePresentation.test.ts (4 tests) 15ms
+ ✓ tests/analysisCoverage.test.ts (3 tests) 13ms
+ ✓ tests/accountOverview.test.ts (3 tests) 15ms
+ ✓ tests/municipalityWorkspace.test.ts (4 tests) 11ms
+ ✓ tests/utmArea.test.ts (2 tests) 12ms
+ ✓ tests/analysisRasterOverlay.test.ts (3 tests) 11ms
+ ✓ tests/thematicCoverage.test.ts (2 tests) 9ms
+ ✓ tests/futureNatureSource.test.ts (3 tests) 8ms
+ ✓ tests/plannedValuedNature.test.ts (8 tests) 12ms
+ ✓ tests/futureDevelopmentSymbology.test.ts (3 tests) 7ms
+ ✓ tests/exploreOverlapGeometry.test.ts (4 tests) 6ms
+ ✓ tests/historicalLoss.test.ts (4 tests) 7ms
+ ✓ tests/analysisPresentation.test.ts (3 tests) 4ms
+ ✓ tests/planArea.test.ts (3 tests) 4ms
+ ✓ tests/apiUrl.test.ts (2 tests) 3ms
+ ✓ tests/analysisGeometry.test.ts (1 test) 2ms
+
+ Test Files  36 passed (36)
+      Tests  209 passed (209)
+   Start at  08:29:29
+   Duration  46.70s (transform 1.77s, setup 1.72s, collect 5.86s, tests 17.45s, environment 13.62s, prepare 2.27s)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

@@ -1,0 +1,97 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune
+×
+☰
+Utforsk i kart
+Velg aktiv plananalyse
+Arealfordeling
+Registrerte naturverdier
+Kartlag
+Mer kart
+Delt
+Mer resultat
+2 032,22 daa
+Skog
+Kartutvalg i analysen
+Alle arealer
+Natur
+Jordbruk
+Skog
+Hei og buskmark
+Lite vegetert mark
+Våtmark
+Kyststrender, svaberg og dyner
+Ufordelt natur
+Nullstill utvalg
+Tilpass kart
++
+–
+i
+
+Grå arealer vises ved målestokk 1:250 000 eller nærmere. Zoom inn for å se kartdata.
+
+Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.
+
+Gå til innhold…
+Samlet arealfordeling
+Økosystemtype
+Ufordelt natur
+Metode og forbehold
+Nullstill utvalg
+
+Prototypeanalyse · reelle kartdata
+
+Natur
+2 788,8 daa
+Jordbruk
+832,08 daa
+Natur og jordbruk samlet
+3 620,88 daa
+
+Analysen viser natur og jordbruk innenfor arealer avsatt til framtidig utbygging i kommuneplanen. Arealene er ikke nødvendigvis bygget ut, og tallene viser ikke hvor mye natur som faktisk vil gå tapt.
+
+Fargelagte felt med mørk kontur viser det beregnede utvalget. Konturen gjør små felt synlige; den gir ikke mer presis arealavgrensning.
+
+Alle arealer
+Natur
+Jordbruk
+
+Kartutvalg: Skog. Kategoriutvalg beholder kartutsnittet.
+
+Natur etter økosystemtype
+
+Klikk en rad for å vise akkurat disse beregnede arealene i kartet.
+
+Delvis fordeling: 706,71 daa natur kan ikke sikkert klassifiseres. Kjente typer viser identifiserte delarealer. 0 daa er ikke dokumentert fravær av typen.
+
+Kategori	Dekar
+
+Skog	2 032,22
+
+Hei og buskmark	37,24
+
+Lite vegetert mark	0
+
+Våtmark	12,64
+
+Kyststrender, svaberg og dyner	0
+
+Ufordelt natur	706,71
+Tilpass kart til utvalget
+Metode, kilder og usikkerhet
+
+DiBKs kommuneplandata med eksisterende filter for arealbruksstatus 2 og formål i 1000-/2000-serien. Dette er en prototypeforutsetning, ikke en ny juridisk vurdering av planstatus.
+
+Grunnkart 2025 (etablert prototypegrunnlag; WMS-uttaket er ikke en låst årsdistribusjon). Raster fra 2026-10-05. Natur/Jordbruk: eksisterende nivå 0. Naturdetalj: okosystemtypeniva1. Jordbruk vises samlet; underkategorier er ikke beregnet.
+
+Planruter: 21.15625 m. Naturdetalj: 10.578125 m. Areal beregnes fra rutene i EPSG:25833, korrigert med kommunens UTM-faktor 0.9994795815751638. Kartet viser disse ruteflatene, ikke eksakte originale plan- eller økosystempolygoner.
+
+Ufordelt natur omfatter transparente, blandede og ukjente klassefarger. Disse fordeles ikke skjønnsmessig. Uttaket er hentet 2026-10-20T08:32:42.125Z. Kildene er løpende og ikke låst til én felles versjon.
+
+Dette er heldekkende arealkontekst innenfor planmasken. Registrerte naturverdier analyseres separat og skal ikke summeres med disse arealene.
+
+Plankilde: DiBK · Grunnkart-kilde: NIBIO
+
+Metode: planned-land-cover-area-v1. Analyse-ID: planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5. Maske: c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f. Klassifikasjon: 83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5.

@@ -11,7 +11,7 @@ it('links value, type and searched locality to exact geographic selections and r
  fireEvent.click(screen.getByRole('button',{name:/^Stor verdi/}));expect(select).toHaveBeenLastCalledWith({kind:'value',label:'Stor verdi'})
  const types=screen.getByRole('table',{name:'Naturtyper med overlapp'});fireEvent.click(within(types).getByRole('button',{name:'Rikmyr'}));expect(select).toHaveBeenLastCalledWith({kind:'type',label:'Rikmyr'})
  fireEvent.change(screen.getByRole('searchbox'),{target:{value:'Testmyra'}});fireEvent.click(screen.getByRole('button',{name:/Testmyra/}));expect(select).toHaveBeenLastCalledWith({kind:'locality',label:'BN1'})
- fireEvent.click(screen.getByRole('button',{name:'Vis hele analysen'}));expect(select).toHaveBeenLastCalledWith({kind:'all'})
+ fireEvent.click(screen.getByRole('button',{name:'Nullstill utvalg'}));expect(select).toHaveBeenLastCalledWith({kind:'all'});expect(screen.getByRole('searchbox')).toHaveValue('');expect(document.activeElement).toHaveAttribute('data-analysis-section','summary')
  fireEvent.change(screen.getByRole('searchbox'),{target:{value:'notfound'}});expect(screen.queryByRole('button',{name:/Testmyra/})).not.toBeInTheDocument()
 })
 it('distinguishes missing preparation, technical error and valid zero hits',()=>{

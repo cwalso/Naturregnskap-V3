@@ -168,3 +168,11 @@ Pages er uendret av designleveransen. Oppdragsgiver valgte senere C; se B5.2a–
 Aktiv analyse lever uavhengig av panel. Mobil har Mer kart/Delt/Mer resultat
 i samme OpenLayers-instans; desktop beholder sidepanelene. Ingen metode-/kildeendring
 eller Pages-publisering. B5.2c/d er ikke startet.
+
+## B5.2c – kart- og analyseinteraksjon, 20.10.2026
+
+[Beslutning om eksplisitte analysehandlinger](decisions/2026-10-20-analysis-interaction.md)
+og [C1–C4: kontrollrapport og skjermbilder](validation/2026-10-20-mobile-map-b5-2c.md).
+Utvalg flytter ikke kartet; eksplisitt fit bruker analysegeometri. Innholdsvelger,
+lokalitetsdetaljer med ID/overlappsareal og felles nullstilling er implementert.
+B5.2d og eventuell Pages-publisering er separate, senere oppgaver.

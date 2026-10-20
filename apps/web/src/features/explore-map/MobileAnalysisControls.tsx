@@ -20,6 +20,7 @@ interface Props {
   canFit: boolean
   onFit: () => void
   onLayers: () => void
+  onReset: () => void
   onDetails: () => void
   onEnd: () => void
   layersOpen: boolean
@@ -46,6 +47,7 @@ export function MobileAnalysisControls(props: Props) {
   const available=Boolean(mode==='area'?areaResult:natureResult)&&!props.loading&&!props.error
   const selected=mode==='area'?(areaSelection.kind==='category'?`category:${areaSelection.id}`:areaSelection.kind):(natureSelection.kind==='all'?'all':`${natureSelection.kind}:${natureSelection.label}`)
   function select(value:string){
+    if(value==='reset'||value==='all'){props.onReset();return}
     const colon=value.indexOf(':'),kind=colon<0?value:value.slice(0,colon),id=value.slice(colon+1)
     if(mode==='area')props.onArea(kind==='category'?{kind:'category',id}:{kind:kind as 'all'|'nature'|'agriculture'})
     else props.onNature(kind==='all'?{kind:'all'}:{kind:kind as 'value'|'type'|'locality',label:id})
@@ -73,6 +75,7 @@ export function MobileAnalysisControls(props: Props) {
             <optgroup label="Naturtype">{natureResult?.types.map(m=><option key={m.label} value={`type:${m.label}`}>{m.label}</option>)}</optgroup>
             {natureSelection.kind==='locality'&&<option value={selected}>{label}</option>}
           </>}
+          <optgroup label="Handling"><option value="reset">Nullstill utvalg</option></optgroup>
         </select>
         {locality&&<button type="button" className="mobile-analysis-details" onClick={props.onDetails} aria-label={`Åpne lokalitetsdetaljer for ${label} (${locality.id})`}>Detaljer</button>}
         <button type="button" disabled={!available||!props.canFit} title={!props.canFit?'Utvalget mangler gyldig analysegeometri.':undefined} onClick={props.onFit} aria-label="Tilpass aktivt kartutvalg"><ExploreMapIcon name="pin" />Tilpass kart</button>

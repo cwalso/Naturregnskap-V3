@@ -34,6 +34,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   const owner = municipality.number
   const [activeMode, setActiveMode] = useState<'area' | 'nature' | null>(initialAnalysisOpen ? initialAnalysisMode : null)
   const analysisMode = activeMode ?? 'area'
+  const [analysisResetKey,setAnalysisResetKey]=useState(0)
   const [viewMode,setViewMode] = useState<AnalysisViewMode>('split')
   const returnToAnalysis = useRef(initialAnalysisOpen)
   const analysisPanelElement = useRef<HTMLElement>(null)
@@ -158,7 +159,9 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     const abort = new AbortController()
     setAnalysisState({ owner, result: null, loading: true, error: null })
     void calculateFutureNature(owner, abort.signal).then((result) => {
-      if (!abort.signal.aborted) setAnalysisState({ owner, result, loading: false, error: null })
+      if(abort.signal.aborted)return
+      if(result.municipalityNumber!==owner||(result.status==='available'&&(!result.analysisId||result.methodVersion!=='future-valued-nature-geometry-v3')))throw new Error('Analysesvaret gjelder ikke aktiv kommune eller gyldig analyseidentitet.')
+      setAnalysisState({ owner, result, loading: false, error: null })
     }).catch((error: unknown) => {
       if (!abort.signal.aborted) setAnalysisState({ owner, result: null, loading: false, error: error instanceof Error ? error.message : 'Analysen kunne ikke beregnes.' })
     })
@@ -168,7 +171,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
     if(activeMode!=='area'||!activeBoundary)return
     const abort=new AbortController()
     setAreaState(previous=>({owner,result:previous?.owner===owner?previous.result:null,loading:true,error:null}))
-    void calculatePlanArea(owner,abort.signal).then(result=>{if(!abort.signal.aborted)setAreaState({owner,result,loading:false,error:null})}).catch((error:unknown)=>{if(!abort.signal.aborted)setAreaState({owner,result:null,loading:false,error:error instanceof Error?error.message:'Analysen kunne ikke beregnes.'})})
+    void calculatePlanArea(owner,abort.signal).then(result=>{if(abort.signal.aborted)return;if(result.municipalityNumber!==owner||(result.status==='available'&&(!result.analysisId||result.methodVersion!=='planned-land-cover-area-v1')))throw new Error('Analysesvaret gjelder ikke aktiv kommune eller gyldig analyseidentitet.');setAreaState({owner,result,loading:false,error:null})}).catch((error:unknown)=>{if(!abort.signal.aborted)setAreaState({owner,result:null,loading:false,error:error instanceof Error?error.message:'Analysen kunne ikke beregnes.'})})
     return()=>abort.abort()
   },[activeMode,activeBoundary,owner])
   const activeArea=previousOwner.current===owner&&areaState?.owner===owner?areaState:null
@@ -200,6 +203,15 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   function chooseAnalysis(selection: Selection) {
     storeAnalysisSelection({ owner, selection })
     controller.current?.setFutureNature?.(analysisResult, selection)
+  }
+  function resetAnalysisSelection(){
+    if(activeMode==='area')chooseArea({kind:'all'});else chooseAnalysis({kind:'all'})
+    setAnalysisResetKey(key=>key+1)
+    requestAnimationFrame(()=>{
+      const root=analysisPanelElement.current?.querySelector<HTMLElement>('[data-analysis-content]')
+      if(root&&panel==='analysis')focusAnalysisSection(root,'summary')
+      else{const scroll=root?.querySelector<HTMLElement>('.analysis-section-scroll');if(scroll)scroll.scrollTop=0}
+    })
   }
   function changeViewMode(mode: AnalysisViewMode) {setViewMode(mode);setPickerOpen(false);setPanel(mode === 'map' ? null : {owner,value:'analysis'})}
   function showLocalityDetails(){
@@ -251,7 +263,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
   }
   return <section className="explore-themes" aria-label="Kart med flere lag">
     <div className={`explore-themes__body ${panel ? 'has-detail' : ''} ${panel==='analysis'&&analysisMode==='area'?'has-area-analysis':''} ${pickerOpen ? 'layers-open' : ''} ${activeMode ? `has-analysis mode-${viewMode}` : ''} ${pickerOpen || panel && panel !== 'analysis' ? 'has-aux' : ''}`} data-analysis-mode={activeMode??'none'} data-view-mode={viewMode} data-analysis-id={areaResult?.analysisId??analysisResult?.analysisId}>
-      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} onLayers={openLayers} onEnd={endAnalysis} onDetails={showLocalityDetails} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
+      {activeMode && <MobileAnalysisControls mode={activeMode} viewMode={viewMode} area={activeArea?.result??null} nature={activeAnalysis?.result??null} loading={activeMode==='area'?(activeArea?.loading??true):(activeAnalysis?.loading??true)} error={activeMode==='area'?(activeArea?.error??null):(activeAnalysis?.error??null)} areaSelection={areaSelection} natureSelection={analysisSelection} onMode={changeAnalysisMode} onView={changeViewMode} onArea={chooseArea} onNature={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} onLayers={openLayers} onEnd={endAnalysis} onDetails={showLocalityDetails} onReset={resetAnalysisSelection} layersOpen={pickerOpen} panelId={`${id}-analysis`}/>}
       <aside className="explore-themes__panel explore-themes__controls" aria-label="Lagvelger">
         <div className="explore-themes__panel-heading"><h2><ExploreMapIcon name="layers" />Kartlag</h2><span className="explore-themes__counter">{activeDefinitions.length} aktive</span><button type="button" className="explore-themes__mobile-close explore-themes__icon-button" onClick={closePanel} aria-label="Lukk kartlag"><ExploreMapIcon name="close" /></button></div>
         <p className="explore-themes__intro">Velg hva du vil se i kartet.</p>
@@ -303,7 +315,7 @@ export function ExploreThemesWorkspace({ municipality, boundary, coverage, cover
         <div className="explore-themes__detail-scroll" tabIndex={0} role="region" aria-label="Rullbart detaljinnhold">
           <>
             <div className="explore-themes__analysis-switch" role="group" aria-label="Velg plananalyse"><button type="button" aria-pressed={analysisMode==='area'} onClick={()=>{changeAnalysisMode('area')}}>Arealfordeling</button><button type="button" aria-pressed={analysisMode==='nature'} onClick={()=>{changeAnalysisMode('nature')}}>Registrerte naturverdier</button></div>
-            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={fitAnalysis} canFit={canFitAnalysis} onShowMap={showAreaMap}/>:<AnalysisPanel key={`${owner}-${activeMode}`}  result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} onFit={fitAnalysis} canFit={canFitAnalysis} />}
+            {analysisMode==='area'?<PlanAreaPanel result={activeArea?.result??null} loading={activeArea?.loading??true} error={activeArea?.error??null} selection={areaSelection} onSelect={chooseArea} onFit={fitAnalysis} canFit={canFitAnalysis} onShowMap={showAreaMap}/>:<AnalysisPanel key={`${owner}-${activeMode}`}  result={activeAnalysis?.result ?? null} loading={activeAnalysis?.loading ?? true} error={activeAnalysis?.error ?? null} selection={analysisSelection} onSelect={chooseAnalysis} onReset={resetAnalysisSelection} resetKey={analysisResetKey} onFit={fitAnalysis} canFit={canFitAnalysis} />}
           </>
         </div>
       </aside>}

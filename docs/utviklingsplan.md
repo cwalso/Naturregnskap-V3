@@ -310,3 +310,14 @@ oppsummering, hurtigvalg og eksplisitt fit. Delt kartflate er 209 px ved
 Metoder, geometri og datakilder er uendret. Lokalitetens eksisterende auto-fit
 beholdes som tillatt unntak, og vurderes i B5.2c. Ingen Pages-publisering eller
 arbeid på c/d inngår. [Kontrollrapport](validation/2026-10-19-mobile-split-view-b5-2ab.md).
+
+## Oppdatert status 20.10.2026: B5.2c
+
+C1 eksplisitt karttilpassing, C2 direkte innholdsnavigasjon, C3 tydelig lokalitets-
+identitet/overlapp og C4 felles nullstilling er implementert i fire testede trinn.
+Eksisterende beregningsmodeller, datakilder, klassifikasjon og geometrier er beholdt.
+Analysehandlingens fit bruker eksisterende overlappsflate, ikke hele lokaliteten.
+Resultatpanelet gjenbruker samme tabeller, søk og sortering. Ingen ny fast rad
+utenfor panelet; C-arbeidsflaten og desktopens sidepaneler beholdes.
+Se [rapport og evidens](validation/2026-10-20-mobile-map-b5-2c.md).
+B5.2d er en separat sluttkontroll; ingen Pages-publisering er gjennomført her.

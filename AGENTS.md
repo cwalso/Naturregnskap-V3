@@ -394,3 +394,11 @@ også overlappsflaten ved lokalitetsvalg. Hele lokalitetsgrensen er kontekst,
 ikke fit-grunnlag. Ugyldig/manglende geometri deaktiverer fit. Kommunevalg og
 Vis hele kommunen følger eksisterende prinsipp. Se
 [beslutning](docs/decisions/2026-10-20-analysis-interaction.md).
+
+Innholdsvelgeren og Nullstill utvalg ligger i eksisterende resultatpanel, foran
+et eget rulleområde. Navigasjon flytter fokus uten å endre utvalg eller kart.
+Nullstill tømmer også lokalitetssøk, men bevarer lag/opasitet, type, modus og utsnitt.
+Lokalitetsdetaljer viser fullt navn, faglig ID og særskilt merket overlapp/hele
+lokaliteten. Fra Mer kart er eksplisitt Detaljer en åpning av Mer resultat;
+selve lokalitetsvalget endrer ikke modus. B5.2d skal bestilles separat.
+Se [kontrollrapport](docs/validation/2026-10-20-mobile-map-b5-2c.md).

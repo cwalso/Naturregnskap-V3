@@ -22,7 +22,7 @@ const axePath=process.env.UX_AXE_PATH
 const httpCache=process.env.SPLIT_HTTP_CACHE
 if(httpCache)await mkdir(httpCache,{recursive:true})
 async function commune(name,number){await page.getByRole('combobox',{name:'Velg kommune',exact:true}).fill(name);await page.getByRole('option',{name:`${name} ${number}`,exact:true}).click()}
-async function snapshot(){await page.waitForFunction(()=>globalThis.__b5Map&&!globalThis.__b5Map.getView().getAnimating()&&!globalThis.__b5Map.getView().getInteracting());return page.evaluate(async()=>{
+async function snapshot(){await page.waitForFunction(()=>{const map=globalThis.__b5Map;if(!map||map.getView().getAnimating()||map.getView().getInteracting())return false;const rect=document.querySelector('.explore-themes__canvas').getBoundingClientRect(),size=map.getSize();return Math.abs(rect.width-size[0])<1&&Math.abs(rect.height-size[1])<1});return page.evaluate(async()=>{
   const map=globalThis.__b5Map,view=map.getView()
   const geometry=map.getLayers().getArray().filter(l=>['plan-area-categories','future-nature-overlap'].includes(l.getClassName())).map(l=>({name:l.getClassName(),visible:l.getVisible(),features:l.getSource().getFeatures().map(f=>({id:f.getId(),coordinates:f.getGeometry().getCoordinates()}))}))
   const hash=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(geometry)))
@@ -32,10 +32,11 @@ async function snapshot(){await page.waitForFunction(()=>globalThis.__b5Map&&!gl
 function retained(before,after){assert.deepEqual(after.view,before.view);assert.equal(after.creations,before.creations);assert.deepEqual(after.calls,before.calls);assert.equal(after.areaId,before.areaId);assert.equal(after.natureId,before.natureId);assert.deepEqual(after.selection,before.selection);assert.equal(after.geometryHash,before.geometryHash)}
 async function capture(name){
   await page.screenshot({path:`${output}/${name}.png`,fullPage:true})
-  const metrics=await page.evaluate(()=>{const r=document.querySelector('.explore-themes__canvas').getBoundingClientRect();return {width:innerWidth,height:innerHeight,map:{width:r.width,height:r.height},overflow:document.documentElement.scrollWidth-innerWidth}})
+  const metrics=await page.evaluate(()=>{const r=document.querySelector('.explore-themes__canvas').getBoundingClientRect();return {width:innerWidth,height:innerHeight,map:{width:r.width,height:r.height},overflow:document.documentElement.scrollWidth-innerWidth,overflowY:document.documentElement.scrollHeight-innerHeight}})
   assert.equal(metrics.overflow,0,name)
-  const controls=await page.evaluate(()=>Array.from(document.querySelectorAll('.mobile-analysis-toolbar button,.mobile-analysis-toolbar select,.mobile-analysis-modes button,.mobile-analysis-summary button,.mobile-analysis-summary select,.explore-themes__mobile-whole,.has-analysis .ol-zoom button,.has-analysis .ol-attribution button')).filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {label:el.getAttribute('aria-label')??el.textContent,width:r.width,height:r.height,uncovered:hit===el||el.contains(hit)}}))
-  for(const c of controls){assert.ok(c.uncovered,`${name}: covered control ${c.label}`);assert.ok(c.height>=44,`${name}: small control ${c.label}`)}
+  if(stage==='c4')assert.ok(metrics.overflowY<=1,`${name}: vertical page overflow ${metrics.overflowY}`)
+  const controls=await page.evaluate(()=>Array.from(document.querySelectorAll('.mobile-analysis-toolbar button,.mobile-analysis-toolbar select,.mobile-analysis-modes button,.mobile-analysis-summary button,.mobile-analysis-summary select,.explore-themes__mobile-whole,.has-analysis .ol-zoom button,.has-analysis .ol-attribution button,.analysis-contents select,.analysis-contents button')).filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {newControl:Boolean(el.closest('.mobile-analysis-toolbar,.mobile-analysis-modes,.mobile-analysis-summary,.analysis-contents'))||el.matches('.explore-themes__mobile-whole'),label:el.getAttribute('aria-label')??el.textContent,width:r.width,height:r.height,uncovered:hit===el||el.contains(hit)}}))
+  for(const c of controls){assert.ok(c.uncovered,`${name}: covered control ${c.label}`);if(c.newControl||metrics.width<=700)assert.ok(c.width>=44,`${name}: narrow control ${c.label}`);assert.ok(c.height>=44,`${name}: small control ${c.label}`)}
   report.screens.push({name,...metrics,controls})
   if((stage==='b'||stage.startsWith('c'))&&axePath){
     await page.addScriptTag({path:axePath})
@@ -140,8 +141,8 @@ try{
   if(stage.startsWith('c'))await runAnalysisInteractions({page,report,snapshot,retained,capture,commune,settings,stage})
   await commune('Oslo','0301');await page.waitForFunction(()=>!globalThis.__b5Area?.result&&!globalThis.__b5Nature?.result)
   assert.equal(await page.getByRole('button',{name:'Registrerte naturverdier',exact:true}).getAttribute('aria-pressed'),'true');await capture('a-oslo-no-old-results-1440')
-  await commune('Trondheim','5001');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000});await page.getByRole('button',{name:'Avslutt analyse',exact:true}).click()
-  const closed=await snapshot();assert.equal(closed.areaId,null);assert.equal(closed.natureId,null);report.checks.push({endClearsAnalysis:true,closed})
+  await commune('Trondheim','5001');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000});const beforeEnd=await snapshot();const endLayers=await page.evaluate(()=>globalThis.__b5Map.getLayers().getArray().filter(l=>l.getClassName().startsWith('explore-')).map(l=>[l.getClassName(),l.getVisible(),l.getOpacity()]));await page.getByRole('button',{name:'Avslutt analyse',exact:true}).click()
+  const closed=await snapshot();assert.deepEqual(closed.view,beforeEnd.view);assert.equal(closed.creations,beforeEnd.creations);assert.deepEqual(closed.calls,beforeEnd.calls);assert.deepEqual(await page.evaluate(()=>globalThis.__b5Map.getLayers().getArray().filter(l=>l.getClassName().startsWith('explore-')).map(l=>[l.getClassName(),l.getVisible(),l.getOpacity()])),endLayers);assert.equal(closed.areaId,null);assert.equal(closed.natureId,null);report.checks.push({endClearsAnalysis:true,closed})
   assert.deepEqual(report.javascriptErrors,[]);report.completed=true
 }catch(error){report.failure=error.stack;if(page){await capture('failure');report.failureText=(await page.locator('body').innerText()).slice(-6000)}throw error}
 finally{await writeFile(`${output}/checks.json`,JSON.stringify(report,null,2));if(browser)await browser.close();if(network)await network.dispose();await server.close();console.log(JSON.stringify({stage,completed:report.completed,screens:report.screens.length,failure:report.failure}))}

@@ -173,3 +173,15 @@ kun HTTP 200-svar fra faktiske kilder, med URL-/body-hash og hentetid. Ingen
 fiksturer eller prototypetall brukes i denne kontrollen; cache beholdes utenfor
 repoet. Kjør uten variabelen for nye tjenestesvar.
 Se [rapport og lagret evidens](../../../../docs/validation/2026-10-19-mobile-split-view-b5-2ab.md).
+
+## B5.2c – valg, eksplisitt fit, innhold og nullstilling
+
+Bruk samme `check-mobile-split-view.mjs` med `SPLIT_STAGE=c4` og eventuelt
+`UX_AXE_PATH`. `mobile-analysis-interactions.mjs` legger til begge analyser ved
+fire bredder/alle mobile moduser, reell overlap-extent kontra fit-oppløsning,
+tastatur og CDP-berøringspanorering, innholdsnavigasjon, lokalitetsdetaljer,
+nullstilling/søk, ordinære lag/opasitet og mobile/desktop-overganger.
+`c1`, `c2` og `c3` avgrenser tidligere trinn; hovedverktøyet har fortsatt
+separat B5.2a/b-kontroll. Innhold og nullstilling krever dagens produksjonskode.
+HTTP-cache fra faktiske tjenester er valgfri og skal ikke sjekkes inn.
+[Kontrollrapport og reproduksjon](../../../../docs/validation/2026-10-20-mobile-map-b5-2c.md).

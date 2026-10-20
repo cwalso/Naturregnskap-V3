@@ -1,14 +1,16 @@
 import { localityDaa } from './localityPresentation'
 import { AnalysisContents } from '../analysis-ui/AnalysisContents'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Analysis, Result, Selection } from './model'
 const format = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 2 })
 const daa = (area: number) => `${format.format(area)} daa`
 const colors = ['#AF0C0C', '#FD7032', '#FEC02D', '#FFFE37']
 type Sort = 'name' | 'area' | 'count' | 'share' | 'value' | 'type'
-interface Props { result: Result | null; loading: boolean; error: string | null; selection: Selection; onSelect: (selection: Selection) => void; onFit?:()=>void; canFit?:boolean }
-export function AnalysisPanel({ result, loading, error, selection, onSelect, onFit, canFit=true }: Props) {
+interface Props { result: Result | null; loading: boolean; error: string | null; selection: Selection; onSelect: (selection: Selection) => void; onFit?:()=>void; canFit?:boolean; onReset?:()=>void; resetKey?:number }
+export function AnalysisPanel({ result, loading, error, selection, onSelect, onFit, canFit=true, onReset, resetKey=0 }: Props) {
   const [search, setSearch] = useState(''), [typeSort, setTypeSort] = useState<Sort>('area'), [localitySort, setLocalitySort] = useState<Sort>('area')
+  useEffect(()=>{setSearch('')},[resetKey])
+  function resetSelection(){setSearch('');if(onReset)onReset();else onSelect({kind:'all'})}
   const analysis = result?.status === 'available' ? result : null
   const types = useMemo(() => [...(analysis?.types ?? [])].sort((a, b) => typeSort === 'area' ? b.areaDaa - a.areaDaa : typeSort === 'count' ? b.count - a.count : typeSort === 'value' ? a.values.join().localeCompare(b.values.join(), 'nb') : a.label.localeCompare(b.label, 'nb')), [analysis, typeSort])
   const localities = useMemo(() => (analysis?.localities ?? []).filter((l) => `${l.name} ${l.natureType} ${l.id} ${l.value}`.toLocaleLowerCase('nb').includes(search.toLocaleLowerCase('nb'))).slice().sort((a, b) => localitySort === 'area' ? b.overlapAreaDaa - a.overlapAreaDaa : localitySort === 'share' ? b.overlapSharePercent - a.overlapSharePercent : localitySort === 'value' ? a.value.localeCompare(b.value, 'nb') : localitySort === 'type' ? a.natureType.localeCompare(b.natureType, 'nb') : a.name.localeCompare(b.name, 'nb')), [analysis, search, localitySort])
@@ -18,7 +20,7 @@ export function AnalysisPanel({ result, loading, error, selection, onSelect, onF
   if (!analysis) return <p role="status">Venter på analysegrunnlaget…</p>
   const selected = selection.kind === 'locality' ? analysis.localities.find((l) => l.id === selection.label) : null
   return <div className="future-nature-analysis" data-analysis-content>
-    <AnalysisContents sections={[['summary','Samlet resultat'],['values','KU-verdi'],['types','Naturtyper'],['localities','Lokaliteter og søk'],['method','Metode og datagrunnlag'],...(selected?[['selected-locality','Valgt lokalitet']] as const:[])]}/>
+    <AnalysisContents onReset={resetSelection} sections={[['summary','Samlet resultat'],['values','KU-verdi'],['types','Naturtyper'],['localities','Lokaliteter og søk'],['method','Metode og datagrunnlag'],...(selected?[['selected-locality','Valgt lokalitet']] as const:[])]}/>
     <div className="analysis-section-scroll" tabIndex={0} role="region" aria-label="Rullbare analyseresultater">
     <p className="future-nature-analysis__intro" data-analysis-section="summary" tabIndex={-1}>Analysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.</p>
     <div className="future-nature-analysis__summary">
@@ -29,7 +31,6 @@ export function AnalysisPanel({ result, loading, error, selection, onSelect, onF
       <div><strong>{daa(analysis.highestAreaDaa)}</strong><span>De to høyeste samlet · {analysis.highestCount} lokaliteter</span></div>
     </div>
     <p role="status">{selection.kind === 'all' ? 'Kartet viser hele analysen.' : `Kartutvalg: ${selection.label}`}</p>
-    <button type="button" onClick={() => onSelect({ kind: 'all' })}>Vis hele analysen</button>
     {onFit&&<button type="button" onClick={onFit} disabled={!canFit} title={!canFit?'Utvalget mangler gyldig analysegeometri.':undefined}>Tilpass kart til utvalget</button>}
     <p className="future-nature-analysis__legend"><span>▧</span> Hele lokaliteten · <b>■</b> faktisk overlapp mot rasteravgrensningen</p>
     <h3 data-analysis-section="values" tabIndex={-1}>Fordeling etter KU-verdi</h3>
