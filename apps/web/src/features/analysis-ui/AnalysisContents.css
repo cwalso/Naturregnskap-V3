@@ -1,0 +1,10 @@
+.analysis-contents{flex-shrink:0;background:#fff;padding:0 0 8px;margin:0}
+.analysis-contents select{display:block;width:100%;min-height:44px;box-sizing:border-box;border:1px solid #91ada7;border-radius:4px;background:#fff;color:#005e5d;padding:8px;font:inherit;font-size:13px}
+.analysis-contents select:focus-visible{outline:3px solid #af4810;outline-offset:1px}
+[data-analysis-section]:focus-visible{outline:3px solid #af4810;outline-offset:2px}
+.explore-themes__analysis-panel [data-analysis-section]{scroll-margin-top:60px}
+
+.explore-themes .explore-themes__analysis-panel .explore-themes__detail-scroll{display:flex;flex-direction:column;overflow:hidden}
+.explore-themes__analysis-panel :is(.future-nature-analysis,.plan-area-panel){display:flex;flex-direction:column;flex:1;min-height:0}
+.analysis-section-scroll{overflow:auto;min-height:0;overscroll-behavior:contain;padding:3px}
+.explore-themes__analysis-panel .analysis-section-scroll{flex:1}

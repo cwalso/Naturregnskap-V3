@@ -26,6 +26,10 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
     const modes=mobile?[['Delt','split'],['Mer kart','map'],['Mer resultat','results']]:[['Desktop','desktop']]
     const measurements=[]
     await mode('area')
+    if(stage!=='c1'){
+      const baseline=await snapshot(),contents=page.getByRole('combobox',{name:'Gå til analyseinnhold'})
+      for(const section of ['ecosystems','unclassified','method','summary']){await contents.selectOption(section);retained(baseline,await snapshot());if(section==='method'){assert.equal(await page.locator('.plan-area-panel details').evaluate(el=>el.open),true);await capture(`${stage}-area-contents-${size.width}`)}}
+    }
     for(const [label,key]of modes){
       if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
       const before=await snapshot();await chooseArea('skog');await stableView(before);await fitToOverlap()
@@ -36,6 +40,15 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
       if(key==='split')assert.ok(box.height>=(size.width===320?200:260))
     }
     await mode('nature')
+    if(stage!=='c1'){
+      const baseline=await snapshot(),contents=page.getByRole('combobox',{name:'Gå til analyseinnhold'})
+      await contents.selectOption('localities');assert.equal(await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).evaluate(el=>el===document.activeElement),true)
+      await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('___finnes_ikke___')
+      await contents.selectOption('values');retained(baseline,await snapshot())
+      await contents.selectOption('method');assert.equal(await page.locator('.future-nature-analysis details').evaluate(el=>el.open),true);retained(baseline,await snapshot());await capture(`${stage}-nature-contents-${size.width}`)
+      assert.equal(await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).inputValue(),'___finnes_ikke___')
+      await contents.selectOption('summary')
+    }
     for(const [label,key]of modes){
       if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
       let before=await snapshot();await chooseNature('value','Stor verdi');await stableView(before);await fitToOverlap()

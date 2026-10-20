@@ -1,0 +1,24 @@
+
+> naturregnskap-v3-web@3.0.0 test
+> vitest run --run tests/futureNaturePanel.test.tsx tests/planAreaPanel.test.tsx tests/exploreThemesWorkspace.test.tsx
+
+
+ RUN  v3.2.7 /workspace/Naturregnskap-V3/apps/web
+
+ ✓ tests/exploreThemesWorkspace.test.tsx (25 tests) 6498ms
+   ✓ uavhengige kartlag i V2-paneler > beholder filter, objekt og opasitet når andre lag eller paneler endres  711ms
+   ✓ uavhengige kartlag i V2-paneler > støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge  1854ms
+   ✓ B5.2a aktiv analyse uavhengig av panel > resets type-specific selection and search on analysis changes while keeping ordinary layers  350ms
+ ✓ tests/planAreaPanel.test.tsx (4 tests) 255ms
+ ✓ tests/futureNaturePanel.test.tsx (3 tests) 365ms
+
+ Test Files  3 passed (3)
+      Tests  32 passed (32)
+   Start at  08:15:08
+   Duration  9.87s (transform 395ms, setup 161ms, collect 955ms, tests 7.12s, environment 980ms, prepare 172ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
