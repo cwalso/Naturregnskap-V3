@@ -176,3 +176,11 @@ og [C1–C4: kontrollrapport og skjermbilder](validation/2026-10-20-mobile-map-b
 Utvalg flytter ikke kartet; eksplisitt fit bruker analysegeometri. Innholdsvelger,
 lokalitetsdetaljer med ID/overlappsareal og felles nullstilling er implementert.
 B5.2d og eventuell Pages-publisering er separate, senere oppgaver.
+
+## B5.2d – akseptansevurdering, 21.–22.10.2026
+
+[Sluttkontroll, skjermbilder og gjenstående kontroller](validation/2026-10-20-mobile-map-b5-2d-acceptance.md).
+Anbefaling C: lav reflow-høyde gir bortfall av kartets arbeidsflate. Ett høyt og
+to middels feilfunn, samt ett lavt forbedringsforslag. Uavhengige brukerreiser,
+feiltilstander, fontskalering og axe-nodegjennomgang er gjennomført; fysisk mobil,
+skjermleser og native nettleserzoom gjenstår. Produksjon og Pages er uendret.

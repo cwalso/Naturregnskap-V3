@@ -1,0 +1,381 @@
+{
+  "date": "2026-10-22T06:39:13.808Z",
+  "requests": {
+    "replayed": 169,
+    "fresh": 11
+  },
+  "checks": [
+    {
+      "name": "baseline-100",
+      "mapView": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664
+      },
+      "summary": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "result": {
+        "x": 1043,
+        "y": 410,
+        "width": 375,
+        "height": 529
+      },
+      "overflow": {
+        "x": 0,
+        "y": 1
+      },
+      "focus": "<button type=\"button\" class=\"explore-themes__icon-button\" aria-label=\"Avslutt analyse\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 6 12 12M18 6 6 18\"></path></svg></button>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune:\nVelg kommune\n×\nKommuneoversikt\nNaturtapet\nNaturtema\nUtforsk i kart\n\nNaturregnskap / Kart\n\nUtforsk i kart\n\nSe datagrunnlaget. Kombiner kartlag.\nUndersøk registrert natur.\n\nKartlag\n1 aktive\n\nVelg hva du vil se i kartet.\n\nAnalyser planområder\nREGNSKAPSGRUNNLAG\nGrunnkart nivå 0\nPLANDATA\nFramtidig utbygging\nSUPPLERENDE TEMADATA\nVerdsatte naturtyper\nVerneområder\nInngrepsfri natur (INON)\nJanuar 2023\nVillrein\nGrå arealer\n\nTemadata supplerer regnskapsgrunnlaget. Lagvalg starter ingen analyse.\n\nSlå av alle\nTegnforklaring\nTrondheim\n· Kommuneutsnitt\nVis hele kommunen\n+\n–\ni\nTegnforklaring\n1 aktive kartlag\nSupplerende kartvisning\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nPlananalyser\nArealfordeling\nArealfordeling\nRegistrerte naturverdier\nGå til innhold…\nSamlet arealfordeling\nØkosystemtype\nUfordelt natur\nMetode og forbehold\nNullstill utvalg\n\nPrototypeanalyse · reelle kartdata\n\nNatur\n2 788,8 daa\nJordbruk\n832,08 daa\nNatur og jordbruk samlet\n3 620,88 daa\n\nAnalysen viser natur og jordbruk innenfor arealer avsatt til framtidig utbygging i kommuneplanen. Arealene er ikke nødvendigvis bygget ut, og tallene viser ikke hvor mye natur som faktisk vil gå tapt.\n\nFargelagte felt med mørk kontur viser det beregnede utvalget. Konturen"
+    },
+    {
+      "name": "font-only-200",
+      "mapView": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": {
+        "x": 0,
+        "y": 209,
+        "width": 390,
+        "height": 255.296875
+      },
+      "summary": {
+        "x": 0,
+        "y": 464.296875,
+        "width": 390,
+        "height": 124.390625
+      },
+      "result": {
+        "x": 12,
+        "y": 658.6875,
+        "width": 366,
+        "height": 177.3125
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "focus": "<button type=\"button\" aria-pressed=\"true\" aria-controls=\"_r_5_-analysis\" data-audit-inline=\"\" style=\"font-size: 24px;\">Delt</button>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune\n×\n☰\nUtforsk i kart\nVelg aktiv plananalyse\nArealfordeling\nRegistrerte naturverdier\nKartlag\nMer kart\nDelt\nMer resultat\n3 620,88 daa\nAlle arealer\nKartutvalg i analysen\nAlle arealer\nNatur\nJordbruk\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nNullstill utvalg\nTilpass kart\n+\n–\ni\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nGå til innhold…\nSamlet arealfordeling\nØkosystemtype\nUfordelt natur\nMetode og forbehold\nNullstill utvalg\n\nPrototypeanalyse · reelle kartdata\n\nNatur\n2 788,8 daa\nJordbruk\n832,08 daa\nNatur og jordbruk samlet\n3 620,88 daa\n\nAnalysen viser natur og jordbruk innenfor arealer avsatt til framtidig utbygging i kommuneplanen. Arealene er ikke nødvendigvis bygget ut, og tallene viser ikke hvor mye natur som faktisk vil gå tapt.\n\nFargelagte felt med mørk kontur viser det beregnede utvalget. Konturen gjør små felt synlige; den gir ikke mer presis arealavgrensning.\n\nAlle arealer\nNatur\nJordbruk\n\nKartutvalg: Alle arealer. Kategoriutvalg beholder kartutsnittet.\n\nNatur etter økosystemtype\n\nKlikk en rad for å vise akkurat disse beregnede arealene i kartet.\n\nDelvis fordeling: 706,71 daa natur kan ikke sikkert klassifiseres. Kjente typer viser identifiserte delarealer. 0"
+    },
+    {
+      "name": "font-only-400",
+      "mapView": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": {
+        "x": 0,
+        "y": 209,
+        "width": 390,
+        "height": 212.296875
+      },
+      "summary": {
+        "x": 0,
+        "y": 421.296875,
+        "width": 390,
+        "height": 210.390625
+      },
+      "result": {
+        "x": 12,
+        "y": 818.6875,
+        "width": 366,
+        "height": 17.3125
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "focus": "<button type=\"button\" aria-pressed=\"true\" aria-controls=\"_r_5_-analysis\" style=\"font-size: 48px;\" data-audit-inline=\"\">Delt</button>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune\n×\n☰\nUtforsk i kart\nVelg aktiv plananalyse\nArealfordeling\nRegistrerte naturverdier\nKartlag\nMer kart\nDelt\nMer resultat\n3 620,88 daa\nAlle arealer\nKartutvalg i analysen\nAlle arealer\nNatur\nJordbruk\nSkog\nHei og buskmark\nLite vegetert mark\nVåtmark\nKyststrender, svaberg og dyner\nUfordelt natur\nNullstill utvalg\nTilpass kart\n+\n–\ni\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nGå til innhold…\nSamlet arealfordeling\nØkosystemtype\nUfordelt natur\nMetode og forbehold\nNullstill utvalg\n\nPrototypeanalyse · reelle kartdata\n\nNatur\n2 788,8 daa\nJordbruk\n832,08 daa\nNatur og jordbruk samlet\n3 620,88 daa\n\nAnalysen viser natur og jordbruk innenfor arealer avsatt til framtidig utbygging i kommuneplanen. Arealene er ikke nødvendigvis bygget ut, og tallene viser ikke hvor mye natur som faktisk vil gå tapt.\n\nFargelagte felt med mørk kontur viser det beregnede utvalget. Konturen gjør små felt synlige; den gir ikke mer presis arealavgrensning.\n\nAlle arealer\nNatur\nJordbruk\n\nKartutvalg: Alle arealer. Kategoriutvalg beholder kartutsnittet.\n\nNatur etter økosystemtype\n\nKlikk en rad for å vise akkurat disse beregnede arealene i kartet.\n\nDelvis fordeling: 706,71 daa natur kan ikke sikkert klassifiseres. Kjente typer viser identifiserte delarealer. 0"
+    },
+    {
+      "name": "computed-colours",
+      "colours": [
+        {
+          "selector": ".site-header button[aria-label],.combobox__clear",
+          "label": "Gå til kommuneoversikten",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(255, 255, 255)",
+          "outline": "rgb(255, 255, 255)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".site-header button[aria-label],.combobox__clear",
+          "label": "Tøm kommunesøk",
+          "color": "rgb(0, 94, 93)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(0, 94, 93)",
+          "outline": "rgb(0, 94, 93)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".site-header button[aria-label],.combobox__clear",
+          "label": "Åpne meny",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(51, 126, 125)",
+          "border": "rgb(129, 179, 175)",
+          "outline": "rgb(255, 255, 255)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".mobile-analysis-toolbar select",
+          "label": "ArealfordelingRegistrerte naturverdier",
+          "color": "rgb(0, 94, 93)",
+          "background": "rgb(229, 238, 238)",
+          "border": "rgb(145, 173, 167)",
+          "outline": "rgb(0, 94, 93)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".mobile-analysis-modes button[aria-pressed=true]",
+          "label": "Delt",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(0, 94, 93)",
+          "border": "rgb(0, 94, 93)",
+          "outline": "rgb(255, 255, 255)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".mobile-analysis-summary button",
+          "label": "Tilpass aktivt kartutvalg",
+          "color": "rgb(0, 94, 93)",
+          "background": "rgb(255, 255, 255)",
+          "border": "rgb(212, 224, 221)",
+          "outline": "rgb(0, 94, 93)",
+          "outlineWidth": "3px"
+        },
+        {
+          "selector": ".analysis-contents select",
+          "label": "Gå til analyseinnhold",
+          "color": "rgb(36, 57, 55)",
+          "background": "rgb(255, 255, 255)",
+          "border": "rgb(113, 136, 127)",
+          "outline": "rgb(36, 57, 55)",
+          "outlineWidth": "3px"
+        }
+      ]
+    },
+    {
+      "name": "legend-colours",
+      "colours": [
+        {
+          "text": "▧ Hele lokaliteten · ■ faktisk overlapp mot rasteravgrensningen",
+          "color": "rgb(83, 102, 97)",
+          "background": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "name": "empty-table-keyboard",
+      "mapView": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": {
+        "x": 0,
+        "y": 209,
+        "width": 390,
+        "height": 270.546875
+      },
+      "summary": {
+        "x": 0,
+        "y": 479.546875,
+        "width": 390,
+        "height": 93.890625
+      },
+      "result": {
+        "x": 12,
+        "y": 638.4375,
+        "width": 366,
+        "height": 197.5625
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "focus": "<input data-analysis-section=\"localities\" type=\"search\" value=\"___missing___\" style=\"\">",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune\n×\n☰\nUtforsk i kart\nVelg aktiv plananalyse\nArealfordeling\nRegistrerte naturverdier\nKartlag\nMer kart\nDelt\nMer resultat\n119,38 daa\nSamlet resultat · 70 lokaliteter\nKartutvalg i analysen\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nViktig bekkedrag\nGråor-heggeskog\nIntakt lavlandsmyr i innlandet\nGammel granskog med gamle trær\nSemi-naturlig eng\nRavinedal\nSørlig nedbørsmyr\nGammel høgstaudegråorskog\nNaturbeitemark\nGammel granskog med liggende død ved\nSørvendte berg og rasmarker\nHøgstaudegranskog\nFlomskogsmark\nParklandskap\nGammel barskog\nRik edellauvskog\nGammel lågurtgranskog\nRik åpen sørlig jordvannsmyr\nRikmyr\nÅpen grunnlendt kalkrik mark i sørboreal sone\nFrisk lågurtedellauvskog\nHule eiker\nÅpen flomfastmark\nNullstill utvalg\nTilpass kart\n+\n–\ni\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nGå til innhold…\nSamlet resultat\nKU-verdi\nNaturtyper\nLokaliteter og søk\nMetode og datagrunnlag\nNullstill utvalg\n\nAnalysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.\n\n119,38 daa\nUnikt overlappsareal\n70\nBerørte lokaliteter\n7,84 daa\nSvært stor verdi\n34,14 daa\nSto"
+    },
+    {
+      "name": "pinch-during",
+      "transforms": [
+        "matrix(1, 0, 0, 1, 0, 0)",
+        "matrix(1, 0, 0, 1, 0, 0)"
+      ]
+    },
+    {
+      "name": "emulated-pinch",
+      "viewBefore": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "viewAfter": {
+        "center": [
+          268492.29727057205,
+          7030867.505
+        ],
+        "resolution": 29.44658645833512
+      },
+      "before": [
+        "matrix(1, 0, 0, 1, 0, 0)",
+        "matrix(1, 0, 0, 1, 0, 0)"
+      ],
+      "after": [
+        "matrix(1, 0, 0, 1, 0, 0)",
+        "matrix(1, 0, 0, 1, 0, 0)"
+      ]
+    },
+    {
+      "name": "emulated-pinch",
+      "mapView": {
+        "center": [
+          268492.29727057205,
+          7030867.505
+        ],
+        "resolution": 29.44658645833512
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": {
+        "x": 0,
+        "y": 209,
+        "width": 390,
+        "height": 270.546875
+      },
+      "summary": {
+        "x": 0,
+        "y": 479.546875,
+        "width": 390,
+        "height": 93.890625
+      },
+      "result": {
+        "x": 12,
+        "y": 638.4375,
+        "width": 366,
+        "height": 197.5625
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "focus": "<div class=\"explore-themes__canvas\" role=\"region\" aria-label=\"Interaktivt kart i Trondheim\" aria-describedby=\"_r_5_-instructions\" tabindex=\"0\" style=\"\"><div class=\"ol-viewport ol-touch\" style=\"position: relative; overflow: hidden; width: 100%; height: 100%;\"><div class=\"ol-unselectable ol-layers\" style=\"position: absolute; width: 100%; height: 100%; z-index: 0;\"><div class=\"ol-layer\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div><div class=\"explore-level0-detail\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div><div class=\"future-nature-whole\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div><div class=\"future-nature-overlap\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div><div class=\"explore-theme-mask\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div><div class=\"ol-layer\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"390\" height=\"271\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div></div><div class=\"ol-overlaycontainer\" style=\"position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;\"></div><div class=\"ol-overlaycontainer-stopevent\" style=\"position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;\"><div class=\"ol-zoom ol-unselectable ol-control\" style=\"pointer-events: auto;\"><button class=\"ol-zoom-in\" type=\"button\" title=\"Zoom in\" style=\"\">+</button><button class=\"ol-zoom-out\" type=\"button\" title=\"Zoom out\" style=\"\">–</button></div><div class=\"ol-rotate ol-unselectable ol-control ol-hidden\" style=\"pointer-events: auto;\"><button class=\"ol-rotate-reset\" type=\"button\" title=\"Reset rotation\" style=\"\"><span class=\"ol-compass\" style=\"transform: rotate(0rad);\">⇧</span></button></div><div class=\"ol-attribution ol-unselectable ol-control ol-collapsed\" style=\"pointer-events: auto;\"><button type=\"button\" aria-expanded=\"false\" title=\"Attributions\" style=\"\"><span class=\"ol-attribution-expand\" style=\"\">i</span></button><ul style=\"\"><li>© Kartverket</li><li>Kilde: NIBIO, Grunnkart for arealanalyse 2025</li></ul></div></div></div></div>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune\n×\n☰\nUtforsk i kart\nVelg aktiv plananalyse\nArealfordeling\nRegistrerte naturverdier\nKartlag\nMer kart\nDelt\nMer resultat\n119,38 daa\nSamlet resultat · 70 lokaliteter\nKartutvalg i analysen\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nViktig bekkedrag\nGråor-heggeskog\nIntakt lavlandsmyr i innlandet\nGammel granskog med gamle trær\nSemi-naturlig eng\nRavinedal\nSørlig nedbørsmyr\nGammel høgstaudegråorskog\nNaturbeitemark\nGammel granskog med liggende død ved\nSørvendte berg og rasmarker\nHøgstaudegranskog\nFlomskogsmark\nParklandskap\nGammel barskog\nRik edellauvskog\nGammel lågurtgranskog\nRik åpen sørlig jordvannsmyr\nRikmyr\nÅpen grunnlendt kalkrik mark i sørboreal sone\nFrisk lågurtedellauvskog\nHule eiker\nÅpen flomfastmark\nNullstill utvalg\nTilpass kart\n+\n–\ni\n\nLaster grunnkart nivå 0…\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nGå til innhold…\nSamlet resultat\nKU-verdi\nNaturtyper\nLokaliteter og søk\nMetode og datagrunnlag\nNullstill utvalg\n\nAnalysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.\n\n119,38 daa\nUnikt overlappsareal\n70\nBerørte lokaliteter\n7,84 daa\nSvær"
+    },
+    {
+      "name": "method-available",
+      "mapView": {
+        "center": [
+          268492.29727057205,
+          7030867.505
+        ],
+        "resolution": 29.44658645833512
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": {
+        "x": 0,
+        "y": 209,
+        "width": 390,
+        "height": 270.546875
+      },
+      "summary": {
+        "x": 0,
+        "y": 479.546875,
+        "width": 390,
+        "height": 93.890625
+      },
+      "result": {
+        "x": 12,
+        "y": 638.4375,
+        "width": 366,
+        "height": 197.5625
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "focus": "<summary>Metode, kilder og datakvalitet</summary>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\n★ TEST ★\nVelg kommune\n×\n☰\nUtforsk i kart\nVelg aktiv plananalyse\nArealfordeling\nRegistrerte naturverdier\nKartlag\nMer kart\nDelt\nMer resultat\n119,38 daa\nSamlet resultat · 70 lokaliteter\nKartutvalg i analysen\nSamlet resultat\nSvært stor verdi\nStor verdi\nMiddels verdi\nNoe verdi\nViktig bekkedrag\nGråor-heggeskog\nIntakt lavlandsmyr i innlandet\nGammel granskog med gamle trær\nSemi-naturlig eng\nRavinedal\nSørlig nedbørsmyr\nGammel høgstaudegråorskog\nNaturbeitemark\nGammel granskog med liggende død ved\nSørvendte berg og rasmarker\nHøgstaudegranskog\nFlomskogsmark\nParklandskap\nGammel barskog\nRik edellauvskog\nGammel lågurtgranskog\nRik åpen sørlig jordvannsmyr\nRikmyr\nÅpen grunnlendt kalkrik mark i sørboreal sone\nFrisk lågurtedellauvskog\nHule eiker\nÅpen flomfastmark\nNullstill utvalg\nTilpass kart\n+\n–\ni\n\nLaster grunnkart nivå 0…\n\nFlytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.\n\nGå til innhold…\nSamlet resultat\nKU-verdi\nNaturtyper\nLokaliteter og søk\nMetode og datagrunnlag\nNullstill utvalg\n\nAnalysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.\n\n119,38 daa\nUnikt overlappsareal\n70\nBerørte lokaliteter\n7,84 daa\nSvær"
+    },
+    {
+      "name": "mobile-browser-back-theme",
+      "mapView": {
+        "center": [
+          268102.1299999992,
+          7030867.505
+        ],
+        "resolution": 194.15331730770413
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "map": null,
+      "summary": null,
+      "result": null,
+      "overflow": {
+        "x": 0,
+        "y": 2899
+      },
+      "focus": "<body>\n    <div id=\"root\" style=\"\"><div class=\"app-shell \" style=\"\"><a class=\"skip-link\" href=\"#main-content\" style=\"\">Hopp til hovedinnhold</a><header class=\"site-header\" style=\"\"><div class=\"site-header__bar\" style=\"\"><button type=\"button\" class=\"site-header__brand\" aria-label=\"Gå til kommuneoversikten\" style=\"\"><span class=\"site-header__brand-label\" style=\"\">Kommunale naturregnskap</span></button><span class=\"site-header__test\" role=\"note\" aria-label=\"Testversjon\" style=\"\">★ TEST ★</span><div class=\"site-header__utilities\" style=\"\"><div class=\"site-header__municipality\" style=\"\"><span class=\"site-header__municipality-label\" style=\"\">Velg kommune:</span><section id=\"municipality-picker\" class=\"municipality-picker\" aria-label=\"Kommunevalg\" style=\"\"><div class=\"combobox\" style=\"\"><label for=\"_r_3_\" style=\"\">Velg kommune</label><div class=\"combobox__field\" style=\"\"><input id=\"_r_3_\" role=\"combobox\" autocomplete=\"off\" aria-autocomplete=\"list\" aria-controls=\"_r_4_\" aria-expanded=\"false\" placeholder=\"Søk etter kommune\" type=\"text\" value=\"Trondheim\" style=\"\"><button class=\"combobox__clear\" type=\"button\" aria-label=\"Tøm kommunesøk\" style=\"\">×</button></div></div></section></div><button type=\"button\" class=\"site-menu-toggle\" aria-label=\"Åpne meny\" aria-expanded=\"false\" aria-controls=\"_r_0_\" style=\"\"><span aria-hidden=\"true\" style=\"\">☰</span></button></div></div><nav id=\"_r_0_\" class=\"site-navigation \" aria-label=\"Hovednavigasjon\" style=\"\"><a href=\"#oversikt\" style=\"\">Kommuneoversikt</a><a href=\"#naturtapet\" style=\"\">Naturtapet</a><a href=\"#utforsk-naturen\" style=\"\" aria-current=\"page\">Naturtema</a><a href=\"#utforsk-i-kart\" style=\"\">Utforsk i kart</a></nav></header><main id=\"main-content\" class=\"service-main\" tabindex=\"-1\" style=\"\"><section class=\"content-page thematic-page thematic-page--editorial forest-page\" aria-labelledby=\"forest-page-title\"><nav class=\"thematic-breadcrumb\" aria-label=\"Brødsmuler\"><button type=\"button\">Naturtema</button><span aria-hidden=\"true\">›</span><span>Skog</span></nav><header class=\"thematic-hero\"><div class=\"thematic-hero__content\"><div class=\"thematic-hero__title-row\"><span class=\"thematic-hero__icon\"><svg viewBox=\"0 0 48 48\" aria-hidden=\"true\"><path d=\"M24 5v38M24 9 14 20h7L11 31h10l-8 9h22l-8-9h10L27 20h7Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></span><h1 id=\"forest-page-title\">Skog</h1></div><p class=\"thematic-hero__lead\">Her vises skog i Grunnkart for arealanalyse. Hovedtallet og fordelingen på skogtyper bygger på arealdekke, mens analysen mot framtidig utbygging fortsatt bruker økosystemtype skog.</p><div class=\"thematic-questions\"><details><summary>Hva regnes som skog?</summary><p>Hovedtallet på denne siden følger skog i arealdekke i Grunnkart for arealanalyse. Dette er et heldekkende grunnlag.</p></details><details><summary>Hvordan er skogen delt inn?</summary><p>Arealdekke nivå 2 gir en mer detaljert inndeling i granskog, furuskog, barblandingsskog, blandingsskog og lauvskog.</p></details><details><summary>Datagrunnlaget bak skog</summary><p>Tall og kart bygger på Nasjonalt grunnkart for arealanalyse, årsversjon 2025. Grunnkartet er sammenstilt fra nasjonale arealressurs- og arealbruksdata.</p></details></div></div><div class=\"thematic-hero__image forest-hero__image\" role=\"img\" aria-label=\"Illustrasjon av skog\"></div></header><section class=\"thematic-kpis\" aria-label=\"Nøkkeltall for skog\"><article><span>Skogareal i Trondheim</span><strong>…</strong><small>Arealdekke · Grunnkart 2025</small></article><article><span>Andel av kartlagt kommuneareal</span><strong>…</strong><small>Beregnes fra samme heldekkende grunnlag.</small></article></section><section class=\"thematic-plan-cards\" aria-label=\"Framtidig utbygging og skog\"><article class=\"plan-area-indicator\" data-analysis-id=\"planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5\"><strong>Identifisert skog i områder avsatt til framtidig utbygging</strong><span class=\"thematic-plan-cards__value\">2&nbsp;032,22 daa</span><p>Delvis fordeling: 706,71 daa natur er ufordelt.</p><p>Tallene bygger på en foreløpig kartanalyse. Deler av naturarealet kan være ufordelt på økosystemtype. Arealene er avsatt til framtidig utbygging, men er ikke nødvendigvis bygget ut. Planavsetninger er ikke forventet naturtap.</p><button type=\"button\">Vis skog i plananalysen <span aria-hidden=\"true\">→</span></button></article><article><strong>Andel av kommunens skog i framtidige utbyggingsområder</strong><span class=\"thematic-plan-cards__value\">–</span><span>Ikke beregnet her, fordi overlappsanalysen bruker økosystemtype skog, mens hovedtallet på siden bruker arealdekke. Disse skal ikke blandes uten en metodisk avklaring.</span></article></section><details class=\"thematic-source-accordion\"><summary>Hvor er tallene hentet fra?</summary><p>Hovedtallene bygger på NIBIOs WMS for Nasjonalt grunnkart for arealanalyse – årsversjon 2025. Skogarealet og fordelingen på skogtyper beregnes fra arealdekke nivå 2.</p></details><aside class=\"forest-account-note\"><span aria-hidden=\"true\">✓</span><div><strong>Skog er del av det heldekkende regnskapsgrunnlaget</strong><p>Dette skiller siden fra temasiden for Verdsatte naturtyper. Skogarealet er hentet fra Grunnkart for arealanalyse og inngår i det felles arealbaserte naturregnskapet.</p></div></aside><section class=\"thematic-map-section\" aria-labelledby=\"forest-map-title\"><div class=\"thematic-section-heading\"><h2 id=\"forest-map-title\">Skog i Trondheim</h2><p>Kartet og hovedtallet bruker samme rutevise Grunnkart-kilde for skogtypene i arealdekke nivå 2.</p></div><div class=\"thematic-map-card forest-map-card\"><aside class=\"thematic-map-card__legend\" aria-label=\"Tegnforklaring\"><strong>Skogtyper</strong><span>Arealdekke nivå 2</span><div class=\"forest-map-legend__types\"><span><i aria-hidden=\"true\" style=\"background-color: rgb(102, 194, 164);\"></i>Granskog</span><span><i aria-hidden=\"true\" style=\"background-color: rgb(165, 186, 27);\"></i>Furuskog</span><span><i aria-hidden=\"true\" style=\"background-color: rgb(28, 133, 72);\"></i>Barblandingsskog</span><span><i aria-hidden=\"true\" style=\"background-color: rgb(103, 166, 79);\"></i>Blandingsskog</span><span><i aria-hidden=\"true\" style=\"background-color: rgb(158, 204, 115);\"></i>Lauvskog</span></div></aside><div class=\"thematic-map-card__map\"><div class=\"map\" role=\"region\" tabindex=\"0\" aria-label=\"Kart over skogtyper i Trondheim\"><div class=\"ol-viewport ol-touch\" style=\"position: relative; overflow: hidden; width: 100%; height: 100%;\"><div class=\"ol-unselectable ol-layers\" style=\"position: absolute; width: 100%; height: 100%; z-index: 0;\"><div class=\"ol-layer\" style=\"position: absolute; width: 100%; height: 100%;\"><canvas width=\"364\" height=\"352\" style=\"position: absolute; left: 0px; transform-origin: left top; transform: matrix(1, 0, 0, 1, 0, 0);\"></canvas></div></div><div class=\"ol-overlaycontainer\" style=\"position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;\"></div><div class=\"ol-overlaycontainer-stopevent\" style=\"position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;\"><div class=\"ol-zoom ol-unselectable ol-control\" style=\"pointer-events: auto;\"><button class=\"ol-zoom-in\" type=\"button\" title=\"Zoom in\">+</button><button class=\"ol-zoom-out\" type=\"button\" title=\"Zoom out\">–</button></div><div class=\"ol-rotate ol-unselectable ol-control ol-hidden\" style=\"pointer-events: auto;\"><button class=\"ol-rotate-reset\" type=\"button\" title=\"Reset rotation\"><span class=\"ol-compass\" style=\"transform: rotate(0rad);\">⇧</span></button></div><div class=\"ol-attribution ol-unselectable ol-control ol-collapsed\" style=\"pointer-events: auto;\"><button type=\"button\" aria-expanded=\"false\" title=\"Attributions\"><span class=\"ol-attribution-expand\">i</span></button><ul><li>© Kartverket</li><li>Kilde: NIBIO, Grunnkart for arealanalyse 2025</li></ul></div></div></div></div><button type=\"button\" class=\"thematic-map-card__fit\">Tilpass kartet til kommunen</button></div></div></section><section class=\"thematic-insight-row\" aria-labelledby=\"forest-types-title\"><div class=\"thematic-insight-row__text\"><h2 id=\"forest-types-title\">Fordeling på skogtype</h2><p>Arealdekke nivå 2 gir en finere beskrivelse av skogarealet etter dominerende treslag og blanding. Dette er en egenskap ved Grunnkartet, men er ikke en egen økosystemklassifikasjon.</p><p class=\"thematic-insight-row__source\">Kilde: NIBIO, Grunnkart for arealanalyse 2025</p></div><div class=\"thematic-value-chart forest-type-chart\" aria-label=\"Fordeling på skogtype\"><p role=\"status\">Laster skogfordeling…</p></div></section><div class=\"thematic-questions thematic-questions--wide\"><details><summary>Hva betyr skogtypene?</summary><p>Granskog, furuskog og lauvskog beskriver dominerende treslag. Barblandingsskog og blandingsskog brukes der flere treslag inngår.</p></details><details><summary>Hvorfor kan summen av skogtypene avvike fra hovedtallet?</summary><p>Hovedtallet følger økosystemtype nivå 1, mens skogtypene følger arealdekke nivå 2. De beskriver ulike egenskaper i Grunnkartet og skal derfor ikke forventes å være helt identiske.</p></details></div><section class=\"thematic-insight-row\" aria-labelledby=\"forest-table-title\"><div class=\"thematic-insight-row__text\"><h2 id=\"forest-table-title\">Skogtyper etter størrelse</h2><p>Tabellen rangerer skogtypene etter beregnet areal i kommunen. Tallene er prototypeanslag fra samme rasterberegning som diagrammet.</p><p class=\"thematic-insight-row__source\">Kilde: NIBIO, Grunnkart for arealanalyse 2025</p></div><div class=\"thematic-nature-table-wrap\"><p role=\"status\">Laster tabell…</p></div></section><section class=\"thematic-faq\" aria-labelledby=\"forest-faq-title\"><h2 id=\"forest-faq-title\">Ofte stilte spørsmål</h2><details><summary>Er dette en kartlegging av naturverdi eller naturskog?</summary><p>Nei. Grunnkartet gir en standardisert areal- og økosysteminndeling. Det gir ikke i seg selv detaljert informasjon om naturskog, naturverdi eller tilstand.</p></details><details><summary>Kan skogdataene brukes i arealplanlegging?</summary><p>Ja, som heldekkende kunnskapsgrunnlag for areal og økosystemtype. Ved konkrete naturfaglige vurderinger må grunnlaget suppleres med relevante temadata og annen lokal kunnskap.</p></details></section></section></main></div></div>\n    <script type=\"module\" src=\"/src/main.tsx\" style=\"\"></script>\n  \n\n</body>",
+      "visibleText": "Hopp til hovedinnhold\nKommunale naturregnskap\nVelg kommune\n×\n☰\nNaturtema\n›\nSkog\nSkog\n\nHer vises skog i Grunnkart for arealanalyse. Hovedtallet og fordelingen på skogtyper bygger på arealdekke, mens analysen mot framtidig utbygging fortsatt bruker økosystemtype skog.\n\nHva regnes som skog?\nHvordan er skogen delt inn?\nDatagrunnlaget bak skog\nSkogareal i Trondheim\n…\nArealdekke · Grunnkart 2025\nAndel av kartlagt kommuneareal\n…\nBeregnes fra samme heldekkende grunnlag.\nIdentifisert skog i områder avsatt til framtidig utbygging\n2 032,22 daa\n\nDelvis fordeling: 706,71 daa natur er ufordelt.\n\nTallene bygger på en foreløpig kartanalyse. Deler av naturarealet kan være ufordelt på økosystemtype. Arealene er avsatt til framtidig utbygging, men er ikke nødvendigvis bygget ut. Planavsetninger er ikke forventet naturtap.\n\nVis skog i plananalysen\n→\nAndel av kommunens skog i framtidige utbyggingsområder\n–\nIkke beregnet her, fordi overlappsanalysen bruker økosystemtype skog, mens hovedtallet på siden bruker arealdekke. Disse skal ikke blandes uten en metodisk avklaring.\nHvor er tallene hentet fra?\n✓\nSkog er del av det heldekkende regnskapsgrunnlaget\n\nDette skiller siden fra temasiden for Verdsatte naturtyper. Skogarealet er hentet fra Grunnkart for arealanalyse og inngår i det felles arealbaserte naturregnskapet.\n\nSkog i Trondheim\n\nKartet og hovedtallet bruker samme rutevise Grunnkart-kilde for sko"
+    },
+    {
+      "name": "mobile-browser-history",
+      "url": "http://127.0.0.1:5251/?kommune=5001#tema-forest",
+      "municipality": "Trondheim"
+    }
+  ],
+  "limitations": [
+    "No physical devices or screen reader",
+    "Prior dated HTTP replay used for presentation/touch checks, not cold performance or new data validation",
+    "Native browser zoom was attempted separately, but the administrator disables extension loading. No bypass attempted. Viewport reflow and controlled font resizing are separate checks, not native zoom."
+  ],
+  "complete": true
+}

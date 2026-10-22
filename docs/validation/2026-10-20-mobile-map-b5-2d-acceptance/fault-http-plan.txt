@@ -1,0 +1,28 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune
+×
+☰
+Utforsk i kart
+Velg aktiv plananalyse
+Arealfordeling
+Registrerte naturverdier
+Kartlag
+Mer kart
+Delt
+Mer resultat
+Analysen kunne ikke hentes – ikke null treff.
+Kartutvalg i analysen
+Alle arealer
+Natur
+Jordbruk
+Nullstill utvalg
+Tilpass kart
++
+–
+i
+
+Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.
+
+Karttjenesten feilet med HTTP 503 Planarealer er ikke beregnet; dette er ikke null treff.

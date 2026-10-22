@@ -1,0 +1,81 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune
+×
+☰
+Utforsk i kart
+Velg aktiv plananalyse
+Arealfordeling
+Registrerte naturverdier
+Kartlag
+Mer kart
+Delt
+Mer resultat
+0 daa
+Alle arealer
+Kartutvalg i analysen
+Alle arealer
+Natur
+Jordbruk
+Skog
+Hei og buskmark
+Lite vegetert mark
+Våtmark
+Kyststrender, svaberg og dyner
+Ufordelt natur
+Nullstill utvalg
+Tilpass kart
++
+–
+i
+
+Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.
+
+Gå til innhold…
+Samlet arealfordeling
+Økosystemtype
+Ufordelt natur
+Metode og forbehold
+Nullstill utvalg
+
+Prototypeanalyse · reelle kartdata
+
+Natur
+0 daa
+Jordbruk
+0 daa
+Natur og jordbruk samlet
+0 daa
+
+Analysen viser natur og jordbruk innenfor arealer avsatt til framtidig utbygging i kommuneplanen. Arealene er ikke nødvendigvis bygget ut, og tallene viser ikke hvor mye natur som faktisk vil gå tapt.
+
+Fargelagte felt med mørk kontur viser det beregnede utvalget. Konturen gjør små felt synlige; den gir ikke mer presis arealavgrensning.
+
+Ingen natur- eller jordbruksruter treffer planavgrensningen i dette uttaket.
+
+Alle arealer
+Natur
+Jordbruk
+
+Kartutvalg: Alle arealer. Kategoriutvalg beholder kartutsnittet.
+
+Natur etter økosystemtype
+
+Klikk en rad for å vise akkurat disse beregnede arealene i kartet.
+
+Kategori	Dekar
+
+Skog	0
+
+Hei og buskmark	0
+
+Lite vegetert mark	0
+
+Våtmark	0
+
+Kyststrender, svaberg og dyner	0
+
+Ufordelt natur	0
+Tilpass kart til utvalget
+Metode, kilder og usikkerhet

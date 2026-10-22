@@ -321,3 +321,11 @@ Resultatpanelet gjenbruker samme tabeller, søk og sortering. Ingen ny fast rad
 utenfor panelet; C-arbeidsflaten og desktopens sidepaneler beholdes.
 Se [rapport og evidens](validation/2026-10-20-mobile-map-b5-2c.md).
 B5.2d er en separat sluttkontroll; ingen Pages-publisering er gjennomført her.
+
+## Oppdatert status 22.10.2026: B5.2d
+
+[Akseptansevurdering](validation/2026-10-20-mobile-map-b5-2d-acceptance.md): C – ikke klar
+for publisering. Ett høyt reflow-/forstørringsfunn, to middels presentasjons-/
+tastaturfunn og ett lavt forbedringsforslag. Nye regresjoner og uavhengige A1–A5-
+reiser er fullført, med bevart dokumentasjon. Fysisk mobil, skjermleser og native
+nettleserzoom gjenstår. Ingen produksjonsrettelser, merge, main-endring eller Pages.
