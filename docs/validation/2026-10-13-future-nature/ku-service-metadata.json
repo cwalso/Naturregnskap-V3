@@ -1,0 +1,176 @@
+{
+  "currentVersion": 10.91,
+  "serviceDescription": "KU verdi naturtyper -Datasettet viser naturtypelokaliteter fordelt på verdikategorier i henhold til verdsettingskriteriene i veilederen M-1941 Konsekvensutredninger for klima og miljø",
+  "mapName": "Layers",
+  "description": "",
+  "copyrightText": "Miljødirektoratet",
+  "supportsDynamicLayers": true,
+  "layers": [
+    {
+      "id": 0,
+      "name": "kuverdi_naturtype_alle",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 1,
+      "name": "kuverdi_svært_stor_verdi",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 2,
+      "name": "kuverdi_stor_verdi",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 3,
+      "name": "kuverdi_middels_verdi",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 4,
+      "name": "kuverdi_noe_verdi",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 5,
+      "name": "kuverdi_vurderes_per_lokalitet",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 6,
+      "name": "kuverdi_vurderes_per_naturtype",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    },
+    {
+      "id": 7,
+      "name": "kuverdi_ikke_gitt_verdi",
+      "parentLayerId": -1,
+      "defaultVisibility": false,
+      "subLayerIds": null,
+      "minScale": 1500000,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon"
+    }
+  ],
+  "tables": [
+    {
+      "id": 11,
+      "name": "kuverdi_kommune",
+      "type": "Table"
+    }
+  ],
+  "spatialReference": {
+    "wkid": 25833,
+    "latestWkid": 25833
+  },
+  "singleFusedMapCache": false,
+  "initialExtent": {
+    "xmin": 55981.13439669436,
+    "ymin": 6474870.682057644,
+    "xmax": 156258.41828459545,
+    "ymax": 6540421.333992281,
+    "spatialReference": {
+      "wkid": 25833,
+      "latestWkid": 25833
+    }
+  },
+  "fullExtent": {
+    "xmin": -76110.97670000046,
+    "ymin": 6448524.772399999,
+    "xmax": 1108323.7035999997,
+    "ymax": 8686471.530000001,
+    "spatialReference": {
+      "wkid": 25833,
+      "latestWkid": 25833
+    }
+  },
+  "minScale": 1500000,
+  "maxScale": 0,
+  "units": "esriMeters",
+  "supportedImageFormatTypes": "PNG32,PNG24,PNG,JPG,DIB,TIFF,EMF,PS,PDF,GIF,SVG,SVGZ,BMP",
+  "documentInfo": {
+    "Title": "",
+    "Author": "",
+    "Comments": "Utvalgte naturtyper",
+    "Subject": "Utvalgte naturtyper",
+    "Category": "",
+    "AntialiasingMode": "None",
+    "TextAntialiasingMode": "Force",
+    "Keywords": "KU Verdi naturtyper"
+  },
+  "capabilities": "Map,Query,Data",
+  "supportedQueryFormats": "JSON, geoJSON",
+  "exportTilesAllowed": false,
+  "referenceScale": 0,
+  "datumTransformations": [
+    {
+      "geoTransforms": [
+        {
+          "wkid": 108001,
+          "latestWkid": 1241,
+          "transformForward": true,
+          "name": "NAD_1927_To_NAD_1983_NADCON"
+        }
+      ]
+    },
+    {
+      "geoTransforms": [
+        {
+          "wkid": 108001,
+          "latestWkid": 1241,
+          "transformForward": false,
+          "name": "NAD_1927_To_NAD_1983_NADCON"
+        }
+      ]
+    }
+  ],
+  "supportsDatumTransformation": true,
+  "maxRecordCount": 5000,
+  "maxImageHeight": 4096,
+  "maxImageWidth": 4096,
+  "supportedExtensions": "WMSServer",
+  "resampling": false
+}

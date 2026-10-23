@@ -41,7 +41,7 @@ export function UrbanNaturePage({
   return (
     <section className="content-page thematic-page thematic-page--editorial urban-nature-page" aria-labelledby="urban-nature-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>Bynaturen (grå arealer)</span>
       </nav>
@@ -58,6 +58,8 @@ export function UrbanNaturePage({
             kommunen skal vurdere fortetting, transformasjon og gjenbruk framfor
             ny nedbygging av natur- og jordbruksarealer.
           </p>
+
+          <p>Dette er supplerende kartgrunnlag og beslutningsstøtte. Kartet nedenfor viser foreløpig Grunnkartets bebygde og opparbeidede areal. Det separate gråareallaget finnes i Utforsk i kart. Ingen analyse av utbyggingsmuligheter er beregnet.</p>
 
           <div className="thematic-questions">
             <details>

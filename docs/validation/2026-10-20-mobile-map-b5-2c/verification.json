@@ -1,0 +1,105 @@
+{
+  "baseline": "7ce5dfd0c4735b415a75206504956d89fa47eccc",
+  "comparisons": [
+    {
+      "scenario": "areaPanelsRetain",
+      "equalFields": [
+        "areaId",
+        "natureId",
+        "geometryHash",
+        "selection",
+        "calls",
+        "creations"
+      ],
+      "values": {
+        "areaId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+        "natureId": null,
+        "geometryHash": "601b9f3be2869db9cbb184e76b11647cbff6ef2757a7dcaf27a7525dc635a894",
+        "selection": {
+          "kind": "category",
+          "id": "skog"
+        },
+        "calls": {
+          "calculatePlanArea": 2
+        },
+        "creations": 2
+      }
+    },
+    {
+      "scenario": "naturePanelsRetainSearch",
+      "equalFields": [
+        "areaId",
+        "natureId",
+        "geometryHash",
+        "selection",
+        "calls",
+        "creations"
+      ],
+      "values": {
+        "areaId": null,
+        "natureId": "future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+        "geometryHash": "5aa53c60f0a998656285ac92bb455a6a17b58cd9a711cd9ffe079a6ed496fcea",
+        "selection": {
+          "kind": "locality",
+          "label": "BN00109936"
+        },
+        "calls": {
+          "calculatePlanArea": 2,
+          "calculateFutureNature": 1
+        },
+        "creations": 2
+      }
+    }
+  ],
+  "renderedReferences": {
+    "naturDaa": 2788.8,
+    "jordbrukDaa": 832.08,
+    "skogDaa": 2032.22,
+    "vatmarkDaa": 12.64,
+    "ufordeltDaa": 706.71,
+    "registrertDaa": 119.38,
+    "localities": 70,
+    "source": "Rendered body text from actual UI, c4-area-reset-split-320 / c4-nature-reset-results-390"
+  },
+  "protectedPathsUnchanged": [
+    "apps/web/src/features/future-analysis/model.ts",
+    "apps/web/src/features/future-analysis/geometry.ts",
+    "apps/web/src/features/future-analysis/source.ts",
+    "apps/web/src/features/future-analysis/analysisMask.ts",
+    "apps/web/src/features/plan-area/model.ts",
+    "apps/web/src/features/plan-area/source.ts",
+    "apps/api",
+    "apps/web/public",
+    ".github/workflows",
+    "apps/web/src/features/historical-loss"
+  ],
+  "mapAdapterOnlyExplicitFitLineChanged": true,
+  "explicitFits": {
+    "count": 40,
+    "changedView": 38,
+    "matchedExistingOverlapExtent": true
+  },
+  "cssTextContrast": [
+    {
+      "foreground": "#005e5d",
+      "background": "#ffffff",
+      "ratio": 7.61
+    },
+    {
+      "foreground": "#ffffff",
+      "background": "#005e5d",
+      "ratio": 7.61
+    },
+    {
+      "foreground": "#005e5d",
+      "background": "#e5eeee",
+      "ratio": 6.45
+    },
+    {
+      "foreground": "#536661",
+      "background": "#ffffff",
+      "ratio": 6.1
+    }
+  ],
+  "complete": true
+}

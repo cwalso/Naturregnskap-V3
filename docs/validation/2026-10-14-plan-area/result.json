@@ -1,0 +1,194 @@
+{
+  "categories": [
+    {
+      "id": "skog",
+      "label": "Skog",
+      "code": 1,
+      "group": "nature",
+      "color": "#9ECC73",
+      "cells": 18171,
+      "areaDaa": 2032.2172998484675
+    },
+    {
+      "id": "hei-buskmark",
+      "label": "Hei og buskmark",
+      "code": 2,
+      "group": "nature",
+      "color": "#E1C790",
+      "cells": 333,
+      "areaDaa": 37.242218967010054
+    },
+    {
+      "id": "lite-vegetert-mark",
+      "label": "Lite vegetert mark",
+      "code": 3,
+      "group": "nature",
+      "color": "#FFE8C2",
+      "cells": 0,
+      "areaDaa": 0
+    },
+    {
+      "id": "vatmark",
+      "label": "Våtmark",
+      "code": 4,
+      "group": "nature",
+      "color": "#C9B0EC",
+      "cells": 113,
+      "areaDaa": 12.637749979796205
+    },
+    {
+      "id": "kyst",
+      "label": "Kyststrender, svaberg og dyner",
+      "code": 5,
+      "group": "nature",
+      "color": "#DCDCDC",
+      "cells": 0,
+      "areaDaa": 0
+    },
+    {
+      "id": "unclassified-nature",
+      "label": "Ufordelt natur",
+      "code": 6,
+      "group": "nature",
+      "color": "#87948b",
+      "cells": 6319,
+      "areaDaa": 706.7074524100195
+    },
+    {
+      "id": "agriculture",
+      "label": "Jordbruk",
+      "code": 7,
+      "group": "agriculture",
+      "color": "#FFD16E",
+      "cells": 7440,
+      "areaDaa": 832.0784057494137
+    }
+  ],
+  "natureDaa": 2788.8047212052934,
+  "agricultureDaa": 832.0784057494137,
+  "totalDaa": 3620.883126954707,
+  "status": "available",
+  "municipalityNumber": "5001",
+  "methodVersion": "planned-land-cover-area-v1",
+  "analysisId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+  "grid": {
+    "width": 2150,
+    "height": 1974,
+    "extent": [
+      257526.78125,
+      7023573.4375,
+      280269.75,
+      7044454.65625
+    ],
+    "offsetX": 1610,
+    "offsetY": 798
+  },
+  "classification": {
+    "status": "partial",
+    "unclassifiedDaa": 706.7074524100195,
+    "reason": null
+  },
+  "provenance": {
+    "retrievedAt": "2026-10-14T10:46:51.097Z",
+    "planSource": "https://nap.ft.dibk.no/services/wms/kommuneplaner/",
+    "classificationSource": "https://wms.nibio.no/cgi-bin/grunnkart_arealanalyse",
+    "classificationLevel": "Natur/Jordbruk: eksisterende nivå 0. Naturdetalj: okosystemtypeniva1.",
+    "grunnkartVersion": "2025 (etablert prototypegrunnlag; WMS-uttaket er ikke en låst årsdistribusjon)",
+    "overviewRetrieved": "2026-10-05",
+    "maskHash": "c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f",
+    "classificationHash": "83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+    "tileHashes": [
+      {
+        "coordinate": [
+          9,
+          254,
+          185
+        ],
+        "sha256": "bb676926b97bbde33930f9514916544316e82769fa6d04f3e22a643607c99c34"
+      },
+      {
+        "coordinate": [
+          9,
+          255,
+          184
+        ],
+        "sha256": "d6f6aaca638117af4e68ac98ae68227227ddc6821ebf0a65c195beb6f3cb3b42"
+      },
+      {
+        "coordinate": [
+          9,
+          255,
+          185
+        ],
+        "sha256": "80cfa2e46fa359582fb268e6e962c947956afad0a75394df680ee0362193e1db"
+      },
+      {
+        "coordinate": [
+          9,
+          255,
+          186
+        ],
+        "sha256": "1daef66228f6c1805a8df9696f96b1832d71127a482d6f51fc4b8e5de8c68d6e"
+      },
+      {
+        "coordinate": [
+          9,
+          256,
+          184
+        ],
+        "sha256": "b7f3f46b41a2be16841fccc9e2ea37c9cc47661b3d78d4aa401d40f0f19c1778"
+      },
+      {
+        "coordinate": [
+          9,
+          256,
+          185
+        ],
+        "sha256": "782a24c745dcec8bace72bfd727d099af84ddabb7b777a936faaef87b65dd3ec"
+      },
+      {
+        "coordinate": [
+          9,
+          256,
+          186
+        ],
+        "sha256": "43f52448cca2b446237edc4c22a6f25383b6b0685d458a47888255d4dc9f9e68"
+      }
+    ],
+    "areaFactor": 0.9994795815751638,
+    "planCellMeters": 21.15625,
+    "classificationCellMeters": 10.578125,
+    "crs": "EPSG:25833",
+    "computationMs": 3784.2000000011176
+  },
+  "geometryAreas": [
+    {
+      "id": "skog",
+      "projectedM2": 2033275.4538574219
+    },
+    {
+      "id": "hei-buskmark",
+      "projectedM2": 37261.610595703125
+    },
+    {
+      "id": "lite-vegetert-mark",
+      "projectedM2": 0
+    },
+    {
+      "id": "vatmark",
+      "projectedM2": 12644.330322265625
+    },
+    {
+      "id": "kyst",
+      "projectedM2": 0
+    },
+    {
+      "id": "unclassified-nature",
+      "projectedM2": 707075.4274902344
+    },
+    {
+      "id": "agriculture",
+      "projectedM2": 832511.66015625
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+
+> naturregnskap-v3-web@3.0.0 lint
+> eslint .
+
+
+/workspace/Naturregnskap-V3/apps/web/src/pages/EcosystemPage.tsx
+  30:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+✖ 1 problem (0 errors, 1 warning)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

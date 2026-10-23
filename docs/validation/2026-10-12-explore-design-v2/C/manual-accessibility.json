@@ -1,0 +1,19 @@
+{
+  "scope": "Icon controls flagged as incomplete by axe; manual CSS color review plus visible screenshots.",
+  "menu": {
+    "foreground": "#ffffff",
+    "background": "#337e7d",
+    "contrast": 4.74980197205175
+  },
+  "clearMunicipality": {
+    "foreground": "#005e5d",
+    "backgroundRgb": [
+      184,
+      210,
+      210
+    ],
+    "contrast": 4.779502155151313
+  },
+  "nonTextContrastMinimum": 3,
+  "ariaTestBadge": "Explore route now explicitly exposes role=note with the existing accessible label."
+}

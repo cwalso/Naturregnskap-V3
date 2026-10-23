@@ -1,0 +1,182 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune:
+Velg kommune
+×
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+
+Naturregnskap / Kart
+
+Utforsk i kart
+
+Se datagrunnlaget. Kombiner kartlag.
+Undersøk registrert natur.
+
+Kartlag
+1 aktive
+
+Velg hva du vil se i kartet.
+
+Analyser planområder
+REGNSKAPSGRUNNLAG
+Grunnkart nivå 0
+PLANDATA
+Framtidig utbygging
+SUPPLERENDE TEMADATA
+Verdsatte naturtyper
+Verneområder
+Inngrepsfri natur (INON)
+Januar 2023
+Villrein
+Grå arealer
+
+Temadata supplerer regnskapsgrunnlaget. Lagvalg starter ingen analyse.
+
+Slå av alle
+Tegnforklaring
+Trondheim
+· Kommuneutsnitt
+Vis hele kommunen
++
+–
+i
+Tegnforklaring
+1 aktive kartlag
+Supplerende kartvisning
+
+Laster grunnkart nivå 0…
+
+Flytt kartet med mus, berøring eller piltaster. Zoom med musehjul eller pluss og minus. Lagvalg starter ingen analyse. Escape lukker åpne paneler.
+
+Plananalyser
+Registrerte naturverdier
+Arealfordeling
+Registrerte naturverdier
+
+Analysen viser registrerte naturtypelokaliteter som geografisk overlapper områder avsatt til framtidig utbygging. Overlapp betyr ikke at området er bygget ut eller at naturverdiene nødvendigvis vil gå tapt.
+
+119,38 daa
+Unikt overlappsareal
+70
+Berørte lokaliteter
+7,84 daa
+Svært stor verdi
+34,14 daa
+Stor verdi
+41,98 daa
+De to høyeste samlet · 38 lokaliteter
+
+Kartet viser hele analysen.
+
+Vis hele analysen
+
+▧ Hele lokaliteten · ■ faktisk overlapp mot rasteravgrensningen
+
+Fordeling etter KU-verdi
+Svært stor verdi
+7,84 daa
+8 lokaliteter · 6,56 % av unikt areal
+Stor verdi
+34,14 daa
+30 lokaliteter · 28,6 % av unikt areal
+Middels verdi
+66,34 daa
+29 lokaliteter · 55,57 % av unikt areal
+Noe verdi
+11,07 daa
+3 lokaliteter · 9,27 % av unikt areal
+Fordeling etter naturtype
+
+Hver naturtype viser unikt areal innen typen. Ulike naturtyper kan overlappe; radene skal ikke summeres til totalarealet.
+
+Sorter naturtyper
+Overlappsareal, størst først
+Naturtype, alfabetisk
+Antall lokaliteter, flest først
+KU-verdier
+Naturtyper med overlapp
+Naturtype	Areal	Antall	KU-verdier
+
+Viktig bekkedrag
+	27,03 daa	10	Middels verdi
+
+Gråor-heggeskog
+	19,92 daa	10	Stor verdi, Middels verdi
+
+Intakt lavlandsmyr i innlandet
+	19,68 daa	2	Middels verdi, Noe verdi
+
+Gammel granskog med gamle trær
+	19,68 daa	5	Svært stor verdi, Stor verdi
+
+Semi-naturlig eng
+	13,84 daa	1	Middels verdi
+
+Ravinedal
+	11,53 daa	3	Stor verdi, Middels verdi
+
+Sørlig nedbørsmyr
+	9,71 daa	5	Stor verdi, Middels verdi, Noe verdi
+
+Gammel høgstaudegråorskog
+	3,9 daa	12	Svært stor verdi, Stor verdi
+
+Naturbeitemark
+	2,39 daa	6	Stor verdi, Middels verdi
+
+Gammel granskog med liggende død ved
+	2,26 daa	2	Stor verdi
+
+Sørvendte berg og rasmarker
+	1,21 daa	1	Middels verdi
+
+Høgstaudegranskog
+	0,68 daa	1	Stor verdi
+
+Flomskogsmark
+	0,66 daa	1	Svært stor verdi
+
+Parklandskap
+	0,51 daa	2	Middels verdi, Noe verdi
+
+Gammel barskog
+	0,45 daa	1	Middels verdi
+
+Rik edellauvskog
+	0,21 daa	1	Middels verdi
+
+Gammel lågurtgranskog
+	0,07 daa	1	Stor verdi
+
+Rik åpen sørlig jordvannsmyr
+	0,07 daa	1	Svært stor verdi
+
+Rikmyr
+	0,05 daa	1	Stor verdi
+
+Åpen grunnlendt kalkrik mark i sørboreal sone
+	0,03 daa	1	Stor verdi
+
+Frisk lågurtedellauvskog
+	0,02 daa	1	Stor verdi
+
+Hule eiker
+	0,01 daa	1	Stor verdi
+
+Åpen flomfastmark
+	0,01 daa	1	Stor verdi
+Berørte lokaliteter
+Søk etter lokalitet
+Sorter lokaliteter
+Overlappsareal, størst først
+Overlappsandel, størst først
+Lokalitet, alfabetisk
+Naturtype, alfabetisk
+KU-verdi
+0 av 70 lokaliteter
+Lokalitet / naturtype	KU-verdi	Overlapp	Andel
+Metode, kilder og datakvalitet

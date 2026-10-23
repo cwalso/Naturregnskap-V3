@@ -1,0 +1,22 @@
+
+> naturregnskap-v3-web@3.0.0 test
+> vitest run --run tests/localityPresentation.test.tsx tests/exploreThemesWorkspace.test.tsx
+
+
+ RUN  v3.2.7 /workspace/Naturregnskap-V3/apps/web
+
+ ✓ tests/exploreThemesWorkspace.test.tsx (25 tests) 6399ms
+   ✓ uavhengige kartlag i V2-paneler > beholder filter, objekt og opasitet når andre lag eller paneler endres  472ms
+   ✓ uavhengige kartlag i V2-paneler > støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge  2115ms
+ ✓ tests/localityPresentation.test.tsx (2 tests) 201ms
+
+ Test Files  2 passed (2)
+      Tests  27 passed (27)
+   Start at  08:18:27
+   Duration  8.48s (transform 329ms, setup 124ms, collect 697ms, tests 6.60s, environment 661ms, prepare 102ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

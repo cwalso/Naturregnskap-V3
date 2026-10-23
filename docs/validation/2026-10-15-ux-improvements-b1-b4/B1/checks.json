@@ -1,0 +1,46 @@
+{
+  "stage": "B1",
+  "screens": [
+    {
+      "name": "B1-skog-theme-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-skog-map-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-vatmark-theme-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    },
+    {
+      "name": "B1-vatmark-map-1440",
+      "width": 1440,
+      "height": 960,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    {
+      "theme": "skog",
+      "area": "2 032,22 daa",
+      "analysisId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "stockPreserved": "280 586"
+    },
+    {
+      "theme": "våtmark",
+      "area": "12,64 daa",
+      "analysisId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "stockPreserved": "38 495"
+    }
+  ],
+  "javascriptErrors": [],
+  "accessibility": [],
+  "completed": true
+}

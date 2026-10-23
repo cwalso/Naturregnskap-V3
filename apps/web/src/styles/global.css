@@ -2971,6 +2971,7 @@ body { font-size: 16px; }
   padding: .35rem .65rem;
 }
 .site-header__brand {
+  color: inherit;
   display: inline-flex;
   align-items: center;
   padding: .15rem;
@@ -2979,7 +2980,7 @@ body { font-size: 16px; }
   cursor: pointer;
 }
 .site-header__brand-label {
-  color: var(--color-header-text);
+  color: inherit;
   font-size: .92rem;
   font-weight: 700;
   letter-spacing: .01em;
@@ -3080,6 +3081,65 @@ body { font-size: 16px; }
 .site-menu__panel a[aria-current='page'] {
   background: var(--color-brand-surface);
   border-left-color: var(--color-accent);
+}
+
+/* Permanent main navigation on desktop, a disclosure on smaller screens. */
+.site-navigation {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  height: 48px;
+  padding: 0 28px;
+  background: #e5eeee;
+  border-top: 1px solid #c8dada;
+}
+.site-navigation a {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 3px solid transparent;
+  color: #005e5d;
+  font-size: 14px;
+  text-decoration: none;
+}
+.site-navigation a:hover,
+.site-navigation a[aria-current='page'] {
+  background: #ccdfde;
+  border-bottom-color: #005e5d;
+}
+.site-menu-toggle { display: none; }
+.site-menu-toggle:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+@media (max-width: 52rem) {
+  .app-shell .site-header { position: relative; }
+  .site-menu-toggle {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #81b3af;
+    border-radius: 4px;
+    background: #337e7d;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .site-navigation { display: none; }
+  .site-navigation.is-open {
+    position: absolute;
+    top: 100%;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: auto;
+    width: min(288px, calc(100vw - 16px));
+    padding: 8px;
+    background: white;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-floating);
+  }
+  .site-navigation a { min-height: 44px; }
 }
 
 .service-main {
@@ -5029,3 +5089,12 @@ button.overview-status-card:hover {
 .locality-method-metrics > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem; }
 .locality-method-metrics dd { margin: 0; }
 .analysis-map-legend__selected { font-weight: 700; }
+
+/* Native lists retain the existing theme-card grid and keyboard buttons. */
+ul.theme-grid { list-style: none; padding: 0; margin: 0; }
+ul.theme-grid > li { display: flex; min-width: 0; }
+ul.theme-grid > li > .theme-card { width: 100%; }
+.site-header__brand:focus-visible { outline: 3px solid #005e5d; outline-offset: 2px; box-shadow: 0 0 0 2px white; }
+.app-shell--explore .site-header__brand:focus-visible { outline-color: #f0c85a; }
+
+.thematic-nature-table-wrap:focus-visible { outline: 3px solid #005e5d; outline-offset: 2px; }

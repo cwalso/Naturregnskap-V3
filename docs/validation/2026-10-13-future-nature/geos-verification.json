@@ -1,0 +1,8 @@
+{
+  "shapely": "2.2.0",
+  "GEOS_uniqueAreaDaa": 119.38040306544056,
+  "maxLocalityAreaDifferenceDaa": 2.644329200052198e-12,
+  "localities": 70,
+  "validMask": true,
+  "allValueAndNatureTypeAreasVerified": true
+}

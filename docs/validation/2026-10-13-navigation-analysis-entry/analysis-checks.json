@@ -1,0 +1,70 @@
+[
+  {
+    "width": 1440,
+    "height": 960,
+    "dimensions": {
+      "width": 828,
+      "height": 664,
+      "overflow": 0
+    },
+    "geometry": {
+      "wholeArea": 38348.722052597666,
+      "overlapArea": 19621.239367995902,
+      "planShown": true
+    },
+    "filtersPreservedViewport": true,
+    "layersPreserved": true,
+    "singleMapInstance": true
+  },
+  {
+    "width": 900,
+    "height": 900,
+    "dimensions": {
+      "width": 648,
+      "height": 604,
+      "overflow": 0
+    },
+    "geometry": {
+      "wholeArea": 38348.722052597666,
+      "overlapArea": 19621.239367995902,
+      "planShown": true
+    },
+    "filtersPreservedViewport": true,
+    "layersPreserved": true,
+    "singleMapInstance": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "dimensions": {
+      "width": 390,
+      "height": 270,
+      "overflow": 0
+    },
+    "geometry": {
+      "wholeArea": 38348.722052597666,
+      "overlapArea": 19621.239367995902,
+      "planShown": true
+    },
+    "filtersPreservedViewport": true,
+    "layersPreserved": true,
+    "singleMapInstance": true
+  },
+  {
+    "width": 320,
+    "height": 720,
+    "dimensions": {
+      "width": 320,
+      "height": 186,
+      "overflow": 0
+    },
+    "geometry": {
+      "wholeArea": 38348.722052597666,
+      "overlapArea": 19621.239367995902,
+      "planShown": true
+    },
+    "filtersPreservedViewport": true,
+    "layersPreserved": true,
+    "singleMapInstance": true
+  }
+]

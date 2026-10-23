@@ -1,0 +1,10 @@
+{
+  "publishedSha": "b13670daf12b6b9ac276e1eb2200846912827c97",
+  "deploymentStatus": "success",
+  "deploymentId": 7063982503,
+  "pagesAccessError": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+  "reviewStartSha": "789a640d6cb2f0f05b93d243df766d7d645a5ca0",
+  "deploymentLog": "https://github.com/cwalso/Naturregnskap-V3/actions/runs/38556320324/job/115826418335",
+  "reviewDate": "2026-10-15",
+  "note": "Pages direct access blocked by proxy; exact published source built locally. No Pages deployment performed."
+}

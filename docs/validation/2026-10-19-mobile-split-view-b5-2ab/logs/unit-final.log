@@ -1,0 +1,81 @@
+
+> naturregnskap-v3-web@3.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/Naturregnskap-V3/apps/web
+
+ ✓ tests/exploreThemesWorkspace.test.tsx (23 tests) 3869ms
+   ✓ uavhengige kartlag i V2-paneler > beholder filter, objekt og opasitet når andre lag eller paneler endres  317ms
+   ✓ uavhengige kartlag i V2-paneler > støtter alle 128 kombinasjoner og legendene følger aktive lag i tegnerekkefølge  997ms
+ ✓ tests/App.test.tsx (41 tests) 4215ms
+   ✓ sidestruktur og Oversikt > åpner Verdsatte naturtyper som egen temaside og går videre til analyse  301ms
+   ✓ sidestruktur og Oversikt > uses the primary plan result on forest and wetland pages and opens the selected map category  939ms
+ ✓ tests/overlayCorrectness.test.ts (11 tests) 2439ms
+   ✓ analysis cache isolation > keeps plan → polygon A → polygon B → plan isolated for both analysis bases  301ms
+ ✓ tests/overviewPage.test.tsx (7 tests) 800ms
+ ✓ tests/naturtapetPage.test.tsx (4 tests) 419ms
+ ✓ tests/planAreaPanel.test.tsx (3 tests) 184ms
+ ✓ tests/futureNaturePanel.test.tsx (2 tests) 255ms
+ ✓ tests/planAreaSource.test.ts (2 tests) 236ms
+ ✓ tests/ecosystemDistribution.test.tsx (2 tests) 405ms
+ ✓ tests/planAreaIndicator.test.tsx (2 tests) 492ms
+   ✓ uses the supplied analysis identity and category value for both theme indicators  445ms
+ ✓ tests/siteHeader.test.tsx (2 tests) 399ms
+ ✓ tests/sharedImageRequests.test.ts (2 tests) 99ms
+ ✓ tests/municipalityMap.test.ts (12 tests) 124ms
+ ✓ tests/municipalities.test.ts (2 tests) 19ms
+ ✓ tests/futureNatureAnalysis.test.ts (17 tests) 71ms
+ ✓ tests/futureDevelopmentDisplay.test.ts (3 tests) 44ms
+ ✓ tests/municipalValuedNature.test.ts (4 tests) 20ms
+ ✓ tests/plannedDevelopment.test.ts (7 tests) 20ms
+ ✓ tests/valuedNaturePresentation.test.ts (4 tests) 11ms
+ ✓ tests/municipalityWorkspace.test.ts (4 tests) 10ms
+ ✓ tests/analysisRasterOverlay.test.ts (3 tests) 28ms
+ ✓ tests/accountOverview.test.ts (3 tests) 15ms
+ ✓ tests/analysisCoverage.test.ts (3 tests) 12ms
+ ✓ tests/utmArea.test.ts (2 tests) 11ms
+ ✓ tests/accountOverviewRaster.test.ts (2 tests) 14ms
+ ✓ tests/futureNatureSource.test.ts (3 tests) 8ms
+ ✓ tests/thematicCoverage.test.ts (2 tests) 23ms
+ ✓ tests/plannedValuedNature.test.ts (8 tests) 9ms
+ ✓ tests/historicalLoss.test.ts (4 tests) 6ms
+ ✓ tests/exploreOverlapGeometry.test.ts (4 tests) 7ms
+ ✓ tests/analysisPresentation.test.ts (3 tests) 4ms
+ ✓ tests/futureDevelopmentSymbology.test.ts (3 tests) 6ms
+ ✓ tests/planArea.test.ts (3 tests) 4ms
+ ✓ tests/apiUrl.test.ts (2 tests) 3ms
+
+ Test Files  34 passed (34)
+      Tests  199 passed (199)
+   Start at  07:57:08
+   Duration  45.38s (transform 1.23s, setup 2.01s, collect 4.84s, tests 14.28s, environment 15.12s, prepare 2.67s)
+
+
+> naturregnskap-v3-web@3.0.0 lint
+> eslint .
+
+
+/workspace/Naturregnskap-V3/apps/web/src/pages/EcosystemPage.tsx
+  30:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+✖ 1 problem (0 errors, 1 warning)
+
+
+> naturregnskap-v3-web@3.0.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 424 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.41 kB │ gzip:   0.28 kB
+dist/assets/index-DNEYseYt.css  161.18 kB │ gzip:  27.04 kB
+dist/assets/index-COKUijRn.js   998.38 kB │ gzip: 300.80 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.26s

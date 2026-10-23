@@ -1,0 +1,171 @@
+{
+  "stage": "a",
+  "screens": [
+    {
+      "name": "a-area-settings-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0
+    },
+    {
+      "name": "a-area-return-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 746,
+        "height": 664
+      },
+      "overflow": 0
+    },
+    {
+      "name": "a-nature-settings-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0
+    },
+    {
+      "name": "a-locality-return-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0
+    },
+    {
+      "name": "a-oslo-no-old-results-1440",
+      "width": 1440,
+      "height": 960,
+      "map": {
+        "width": 828,
+        "height": 664
+      },
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    {
+      "areaPanelsRetain": true,
+      "view": {
+        "center": [
+          276717.3598666664,
+          7030867.505
+        ],
+        "resolution": 67.30648333333743
+      },
+      "creations": 2,
+      "calls": {
+        "calculatePlanArea": 2
+      },
+      "areaId": "planned-land-cover-area-v1:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:83080adce8f6b43ecc780dc8660cf8668b66e929318d057cee23982fdc47d3e5",
+      "natureId": null,
+      "selection": {
+        "kind": "category",
+        "id": "skog"
+      },
+      "geometryHash": "601b9f3be2869db9cbb184e76b11647cbff6ef2757a7dcaf27a7525dc635a894",
+      "features": [
+        {
+          "name": "future-nature-overlap",
+          "visible": false,
+          "ids": []
+        },
+        {
+          "name": "plan-area-categories",
+          "visible": true,
+          "ids": [
+            "skog"
+          ]
+        }
+      ]
+    },
+    {
+      "naturePanelsRetainSearch": true,
+      "localityFitRetainedException": true,
+      "view": {
+        "center": [
+          271292.7337837835,
+          7028566.754899999
+        ],
+        "resolution": 0.3951858108095523
+      },
+      "creations": 2,
+      "calls": {
+        "calculatePlanArea": 2,
+        "calculateFutureNature": 1
+      },
+      "areaId": null,
+      "natureId": "future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+      "selection": {
+        "kind": "locality",
+        "label": "BN00109936"
+      },
+      "geometryHash": "5aa53c60f0a998656285ac92bb455a6a17b58cd9a711cd9ffe079a6ed496fcea",
+      "features": [
+        {
+          "name": "future-nature-overlap",
+          "visible": true,
+          "ids": [
+            null
+          ]
+        },
+        {
+          "name": "plan-area-categories",
+          "visible": false,
+          "ids": []
+        }
+      ]
+    },
+    {
+      "endClearsAnalysis": true,
+      "closed": {
+        "view": {
+          "center": [
+            268102.1299999992,
+            7030867.505
+          ],
+          "resolution": 67.30648333333743
+        },
+        "creations": 2,
+        "calls": {
+          "calculatePlanArea": 2,
+          "calculateFutureNature": 2
+        },
+        "areaId": null,
+        "natureId": null,
+        "selection": null,
+        "geometryHash": "67ea31d6aba54fe236df41376b3246bb48a71bc642cdc1400b5ba341fdb9aa8b",
+        "features": [
+          {
+            "name": "future-nature-overlap",
+            "visible": false,
+            "ids": []
+          },
+          {
+            "name": "plan-area-categories",
+            "visible": false,
+            "ids": []
+          }
+        ]
+      }
+    }
+  ],
+  "accessibility": [],
+  "javascriptErrors": [],
+  "networkFailures": [
+    {
+      "status": 403,
+      "url": "https://images.unsplash.com/photo-1602836948312-9815af8d4a79?auto=format&fit=crop&w=800&q=80"
+    }
+  ],
+  "completed": true
+}

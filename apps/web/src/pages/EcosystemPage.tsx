@@ -1,18 +1,18 @@
 import type { ReactNode } from 'react'
+import { EcosystemDistributionTable } from '../features/account-overview/EcosystemDistributionTable'
 
 import type {
   EcosystemPageId,
   EcosystemStatistics,
 } from '../api/ecosystemStatistics'
-import type { PlannedNatureBreakdown } from '../map/plannedDevelopment'
+import { PlanAreaIndicator, type PlanAreaIndicatorProps } from '../features/plan-area/PlanAreaIndicator'
 
 interface EcosystemPageProps {
   readonly ecosystemId: EcosystemPageId
   readonly municipalityName: string
   readonly statistics?: EcosystemStatistics | null
   readonly statisticsState?: 'idle' | 'loading' | 'error'
-  readonly plannedNatureBreakdown?: PlannedNatureBreakdown | null
-  readonly plannedNatureBreakdownState?: 'idle' | 'loading' | 'error'
+  readonly planArea: Omit<PlanAreaIndicatorProps, 'categoryId' | 'label' | 'onOpenMap'>
   readonly onBack: () => void
   readonly onOpenMap: () => void
   readonly mapContent?: ReactNode
@@ -54,8 +54,7 @@ export function EcosystemPage({
   municipalityName,
   statistics,
   statisticsState = 'idle',
-  plannedNatureBreakdown,
-  plannedNatureBreakdownState = 'idle',
+  planArea,
   onBack,
   onOpenMap,
   mapContent,
@@ -63,15 +62,11 @@ export function EcosystemPage({
   const config = ecosystemPageConfig[ecosystemId]
   const available = statistics?.status === 'available' ? statistics : null
   const metric = available?.metrics.find((item) => item.id === ecosystemId)
-  const plannedMetric = plannedNatureBreakdown?.metrics.find((item) => item.id === ecosystemId)
-  const plannedShare = metric && plannedMetric && metric.areaKm2 > 0
-    ? plannedMetric.areaKm2 / metric.areaKm2 * 100
-    : null
 
   return (
     <section className="content-page thematic-page thematic-page--editorial ecosystem-page" aria-labelledby="ecosystem-page-title">
       <nav className="thematic-breadcrumb" aria-label="Brødsmuler">
-        <button type="button" onClick={onBack}>Kommuneoversikt</button>
+        <button type="button" onClick={onBack}>Naturtema</button>
         <span aria-hidden="true">›</span>
         <span>{config.title}</span>
       </nav>
@@ -140,34 +135,10 @@ export function EcosystemPage({
       </section>
 
       <section className="thematic-plan-cards" aria-label={`Framtidig utbygging og ${config.title.toLowerCase()}`}>
+        <PlanAreaIndicator {...planArea} categoryId={ecosystemId} label="våtmark" onOpenMap={onOpenMap} />
         <article>
-          <strong>{config.title} i områder satt av til framtidig utbygging</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedNatureBreakdownState === 'loading'
-              ? '…'
-              : plannedNatureBreakdownState === 'error'
-                ? 'Ikke tilgjengelig'
-                : plannedMetric
-                  ? dekar(plannedMetric.areaKm2)
-                  : '–'}
-          </span>
-          <span>
-            Beregnes som overlapp mellom framtidige utbyggingsområder og
-            økosystemtypen i Grunnkartet.
-          </span>
-          <button type="button" onClick={onOpenMap}>
-            Åpne analyse i kart <span aria-hidden="true">→</span>
-          </button>
-        </article>
-        <article>
-          <strong>Andel av kommunens {config.title.toLowerCase()} i framtidige utbyggingsområder</strong>
-          <span className="thematic-plan-cards__value">
-            {plannedShare === null ? '–' : percent(plannedShare)}
-          </span>
-          <span>
-            Sammenligner overlappsarealet med samlet areal for samme
-            økosystemtype i kommunen.
-          </span>
+          <strong>Identifisert delareal, ikke fullstendig fordeling</strong>
+          <p>Ufordelt natur inngår ikke i tallet for våtmark. Det beregnes ikke en andel av kommunens våtmark fra denne delvise fordelingen.</p>
         </article>
       </section>
 
@@ -279,32 +250,8 @@ export function EcosystemPage({
           </p>
         </div>
 
-        <div className="thematic-nature-table-wrap">
-          {available && (
-            <table className="thematic-nature-table ecosystem-type-table">
-              <thead>
-                <tr>
-                  <th>Økosystemtype</th>
-                  <th>Areal</th>
-                  <th>Andel av natur</th>
-                </tr>
-              </thead>
-              <tbody>
-                {available.metrics
-                  .filter((item) => item.areaKm2 > 0)
-                  .sort((a, b) => b.areaKm2 - a.areaKm2)
-                  .map((item) => (
-                    <tr key={item.id} className={item.id === ecosystemId ? 'is-active' : undefined}>
-                      <td>{item.label}</td>
-                      <td>{dekar(item.areaKm2)}</td>
-                      <td>{percent(item.shareOfNaturePercent)}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
-          {statisticsState === 'loading' && <p role="status">Laster tabell…</p>}
-          {statisticsState === 'error' && <p role="alert">Tabellen kunne ikke hentes.</p>}
+        <div className="thematic-nature-table-wrap" tabIndex={0} role="region" aria-label="Økosystemfordeling – rullbar tabell">
+          <EcosystemDistributionTable statistics={statistics} state={statisticsState} municipalityNumber={planArea.municipalityNumber} selectedId={ecosystemId} />
         </div>
       </section>
 

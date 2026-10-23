@@ -1,0 +1,1300 @@
+{
+  "municipalityNumber": "5001",
+  "analysisId": "future-valued-nature-geometry-v3:5001:c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f:f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+  "methodVersion": "future-valued-nature-geometry-v3",
+  "uniqueAreaDaa": 119.38040306544042,
+  "localityCount": 70,
+  "highestAreaDaa": 41.97594075765602,
+  "highestCount": 38,
+  "quality": {
+    "excludedCategories": {},
+    "invalidGeometries": [],
+    "sourceObjectCount": 3737
+  },
+  "provenance": {
+    "retrievedAt": "2026-10-13T07:30:03.172Z",
+    "source": "https://kart.miljodirektoratet.no/arcgis/rest/services/naturtyper_kuverdi/MapServer/0/query",
+    "sourceHash": "f1550e2d4cb1e0b9a531b42c53c9d81ffba5fefb4d7746db72bc2d93561ef3b9",
+    "maskHash": "c2282443c935dc02485b7bb380d4395147012f0d562f4b1c28f365534a15a46f",
+    "areaFactor": 0.9994795815751638,
+    "computationMs": 1012,
+    "gridMeters": 21.15625,
+    "sourceVersion": "Løpende KU- og DiBK-tjenester; uttrekksdato og innholdshash dokumenterer denne analysen",
+    "grunnkartVersion": "2025, oversiktsraster hentet 05.10.2026"
+  },
+  "values": [
+    {
+      "label": "Svært stor verdi",
+      "areaDaa": 7.836561811107845,
+      "count": 8,
+      "sharePercent": 6.564361997347336
+    },
+    {
+      "label": "Stor verdi",
+      "areaDaa": 34.13937894654818,
+      "count": 30,
+      "sharePercent": 28.59713828226404
+    },
+    {
+      "label": "Middels verdi",
+      "areaDaa": 66.33867867949817,
+      "count": 29,
+      "sharePercent": 55.56915287271521
+    },
+    {
+      "label": "Noe verdi",
+      "areaDaa": 11.065783628286423,
+      "count": 3,
+      "sharePercent": 9.269346847673585
+    }
+  ],
+  "types": [
+    {
+      "label": "Viktig bekkedrag",
+      "areaDaa": 27.0298767607637,
+      "count": 10,
+      "values": [
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Gråor-heggeskog",
+      "areaDaa": 19.92362289960445,
+      "count": 10,
+      "values": [
+        "Stor verdi",
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Intakt lavlandsmyr i innlandet",
+      "areaDaa": 19.6811493290788,
+      "count": 2,
+      "values": [
+        "Middels verdi",
+        "Noe verdi"
+      ]
+    },
+    {
+      "label": "Gammel granskog med gamle trær",
+      "areaDaa": 19.675223980510914,
+      "count": 5,
+      "values": [
+        "Svært stor verdi",
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Semi-naturlig eng",
+      "areaDaa": 13.835361322214862,
+      "count": 1,
+      "values": [
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Ravinedal",
+      "areaDaa": 11.526694185499881,
+      "count": 3,
+      "values": [
+        "Stor verdi",
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Sørlig nedbørsmyr",
+      "areaDaa": 9.712048198705599,
+      "count": 5,
+      "values": [
+        "Stor verdi",
+        "Middels verdi",
+        "Noe verdi"
+      ]
+    },
+    {
+      "label": "Gammel høgstaudegråorskog",
+      "areaDaa": 3.9036144916170707,
+      "count": 12,
+      "values": [
+        "Svært stor verdi",
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Naturbeitemark",
+      "areaDaa": 2.387004349933377,
+      "count": 6,
+      "values": [
+        "Stor verdi",
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Gammel granskog med liggende død ved",
+      "areaDaa": 2.2557056184339648,
+      "count": 2,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Sørvendte berg og rasmarker",
+      "areaDaa": 1.2081035771478597,
+      "count": 1,
+      "values": [
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Høgstaudegranskog",
+      "areaDaa": 0.6788108326658596,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Flomskogsmark",
+      "areaDaa": 0.6633785335080236,
+      "count": 1,
+      "values": [
+        "Svært stor verdi"
+      ]
+    },
+    {
+      "label": "Parklandskap",
+      "areaDaa": 0.5059229622343268,
+      "count": 2,
+      "values": [
+        "Middels verdi",
+        "Noe verdi"
+      ]
+    },
+    {
+      "label": "Gammel barskog",
+      "areaDaa": 0.44735398158570633,
+      "count": 1,
+      "values": [
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Rik edellauvskog",
+      "areaDaa": 0.21320850650663756,
+      "count": 1,
+      "values": [
+        "Middels verdi"
+      ]
+    },
+    {
+      "label": "Gammel lågurtgranskog",
+      "areaDaa": 0.07114619566801635,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Rik åpen sørlig jordvannsmyr",
+      "areaDaa": 0.06819438561001966,
+      "count": 1,
+      "values": [
+        "Svært stor verdi"
+      ]
+    },
+    {
+      "label": "Rikmyr",
+      "areaDaa": 0.047839184820266875,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Åpen grunnlendt kalkrik mark i sørboreal sone",
+      "areaDaa": 0.029893708931187937,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Frisk lågurtedellauvskog",
+      "areaDaa": 0.01676568611751373,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Hule eiker",
+      "areaDaa": 0.009007884170429333,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    },
+    {
+      "label": "Åpen flomfastmark",
+      "areaDaa": 0.005144947958159989,
+      "count": 1,
+      "values": [
+        "Stor verdi"
+      ]
+    }
+  ],
+  "localities": [
+    {
+      "id": "NINFP2010038621",
+      "kuIds": [
+        "VKU-NINFP2010038621"
+      ],
+      "objectIds": [
+        41128
+      ],
+      "name": "Åstrøa flomskog",
+      "natureType": "Flomskogsmark",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 1.3035305550616287,
+      "overlapAreaDaa": 0.6633785335080236,
+      "overlapSharePercent": 50.89090784501481
+    },
+    {
+      "id": "NINFP2010038901",
+      "kuIds": [
+        "VKU-NINFP2010038901"
+      ],
+      "objectIds": [
+        41214
+      ],
+      "name": "Ladehammeren SSV",
+      "natureType": "Åpen grunnlendt kalkrik mark i sørboreal sone",
+      "value": "Stor verdi",
+      "totalAreaDaa": 0.7598476950273809,
+      "overlapAreaDaa": 0.029893708931187937,
+      "overlapSharePercent": 3.934171167040353
+    },
+    {
+      "id": "NINFP1910060388",
+      "kuIds": [
+        "VKU-NINFP1910060388"
+      ],
+      "objectIds": [
+        61333
+      ],
+      "name": "Svean1",
+      "natureType": "Semi-naturlig eng",
+      "value": "Middels verdi",
+      "totalAreaDaa": 72.76101527667525,
+      "overlapAreaDaa": 13.835361322214862,
+      "overlapSharePercent": 19.014799710539513
+    },
+    {
+      "id": "BN00083172",
+      "kuIds": [
+        "VKU-BN00083172"
+      ],
+      "objectIds": [
+        482639
+      ],
+      "name": "Hallset sørvest",
+      "natureType": "Parklandskap",
+      "value": "Noe verdi",
+      "totalAreaDaa": 16.299803215203784,
+      "overlapAreaDaa": 0.5057124852664028,
+      "overlapSharePercent": 3.1025680407889533
+    },
+    {
+      "id": "BN00087370",
+      "kuIds": [
+        "VKU-BN00087370"
+      ],
+      "objectIds": [
+        485083
+      ],
+      "name": "Kroppan",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 142.23481119821287,
+      "overlapAreaDaa": 1.8409846477699048,
+      "overlapSharePercent": 1.294327761439765
+    },
+    {
+      "id": "BN00087376",
+      "kuIds": [
+        "VKU-BN00087376"
+      ],
+      "objectIds": [
+        485089
+      ],
+      "name": "Kystadbekken",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 79.65865199837096,
+      "overlapAreaDaa": 4.49489902854203,
+      "overlapSharePercent": 5.642700341745617
+    },
+    {
+      "id": "BN00087378",
+      "kuIds": [
+        "VKU-BN00087378"
+      ],
+      "objectIds": [
+        485091
+      ],
+      "name": "Ilabekken, midtre del",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 90.62371752985997,
+      "overlapAreaDaa": 1.6972234059034188,
+      "overlapSharePercent": 1.872824744078937
+    },
+    {
+      "id": "BN00087385",
+      "kuIds": [
+        "VKU-BN00087385"
+      ],
+      "objectIds": [
+        485098
+      ],
+      "name": "Nidarø - Tilfredshet",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 5.658788598994204,
+      "overlapAreaDaa": 0.030031259092163608,
+      "overlapSharePercent": 0.5307012016229301
+    },
+    {
+      "id": "BN00087391",
+      "kuIds": [
+        "VKU-BN00087391"
+      ],
+      "objectIds": [
+        485104
+      ],
+      "name": "Vikelva, Vikåsen",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 142.38528166959662,
+      "overlapAreaDaa": 0.7811478418081109,
+      "overlapSharePercent": 0.5486155820660982
+    },
+    {
+      "id": "BN00087398",
+      "kuIds": [
+        "VKU-BN00087398"
+      ],
+      "objectIds": [
+        485111
+      ],
+      "name": "Leirelva, øvre del",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 266.79505935814325,
+      "overlapAreaDaa": 2.6586765827828884,
+      "overlapSharePercent": 0.9965239195879957
+    },
+    {
+      "id": "BN00087406",
+      "kuIds": [
+        "VKU-BN00087406"
+      ],
+      "objectIds": [
+        485119
+      ],
+      "name": "Stokkanbekken",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 170.15868386539645,
+      "overlapAreaDaa": 7.432196502540106,
+      "overlapSharePercent": 4.3678032373706674
+    },
+    {
+      "id": "BN00087414",
+      "kuIds": [
+        "VKU-BN00087414"
+      ],
+      "objectIds": [
+        485127
+      ],
+      "name": "Sjetnemarka",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 121.55086880094096,
+      "overlapAreaDaa": 0.3979914843072463,
+      "overlapSharePercent": 0.32742792234502344
+    },
+    {
+      "id": "BN00087415",
+      "kuIds": [
+        "VKU-BN00087415"
+      ],
+      "objectIds": [
+        485128
+      ],
+      "name": "Nidarø - Tilfredshet",
+      "natureType": "Gråor-heggeskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 36.31078538428896,
+      "overlapAreaDaa": 0.6308103063434891,
+      "overlapSharePercent": 1.7372532697032483
+    },
+    {
+      "id": "BN00087416",
+      "kuIds": [
+        "VKU-BN00087416"
+      ],
+      "objectIds": [
+        485129
+      ],
+      "name": "Bruråk",
+      "natureType": "Naturbeitemark",
+      "value": "Middels verdi",
+      "totalAreaDaa": 86.95200665508082,
+      "overlapAreaDaa": 0.010055420458038755,
+      "overlapSharePercent": 0.011564333987053754
+    },
+    {
+      "id": "BN00087452",
+      "kuIds": [
+        "VKU-BN00087452"
+      ],
+      "objectIds": [
+        485163
+      ],
+      "name": "Stavne",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 31.242283693837305,
+      "overlapAreaDaa": 0.9589067270145998,
+      "overlapSharePercent": 3.0692593934922527
+    },
+    {
+      "id": "BN00087459",
+      "kuIds": [
+        "VKU-BN00087459"
+      ],
+      "objectIds": [
+        485170
+      ],
+      "name": "Ilen kirkegård",
+      "natureType": "Parklandskap",
+      "value": "Middels verdi",
+      "totalAreaDaa": 5.988037895228945,
+      "overlapAreaDaa": 0.00021047696792406693,
+      "overlapSharePercent": 0.003514957179742758
+    },
+    {
+      "id": "BN00087460",
+      "kuIds": [
+        "VKU-BN00087460"
+      ],
+      "objectIds": [
+        485171
+      ],
+      "name": "Nedre Leirfoss",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 154.29661133810754,
+      "overlapAreaDaa": 9.823930610656179,
+      "overlapSharePercent": 6.3669127438769
+    },
+    {
+      "id": "BN00087467",
+      "kuIds": [
+        "VKU-BN00087467"
+      ],
+      "objectIds": [
+        485177
+      ],
+      "name": "Leirelva, Buenget",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 71.90278915442991,
+      "overlapAreaDaa": 2.019629238335749,
+      "overlapSharePercent": 2.808832956393487
+    },
+    {
+      "id": "BN00087468",
+      "kuIds": [
+        "VKU-BN00087468"
+      ],
+      "objectIds": [
+        485178
+      ],
+      "name": "Ladehammeren, sør",
+      "natureType": "Sørvendte berg og rasmarker",
+      "value": "Middels verdi",
+      "totalAreaDaa": 4.9982800666895,
+      "overlapAreaDaa": 1.2081035771478597,
+      "overlapSharePercent": 24.170385833301655
+    },
+    {
+      "id": "BN00087479",
+      "kuIds": [
+        "VKU-BN00087479"
+      ],
+      "objectIds": [
+        485189
+      ],
+      "name": "Kroppanmarka",
+      "natureType": "Gammel barskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 53.08646324128562,
+      "overlapAreaDaa": 0.44735398158570633,
+      "overlapSharePercent": 0.8426893680078441
+    },
+    {
+      "id": "BN00087481",
+      "kuIds": [
+        "VKU-BN00087481"
+      ],
+      "objectIds": [
+        485191
+      ],
+      "name": "Sluppen",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 105.84291581563963,
+      "overlapAreaDaa": 0.4643814864861487,
+      "overlapSharePercent": 0.4387459310881252
+    },
+    {
+      "id": "BN00087483",
+      "kuIds": [
+        "VKU-BN00087483"
+      ],
+      "objectIds": [
+        485193
+      ],
+      "name": "Svartdalen",
+      "natureType": "Rik edellauvskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 11.895077115107874,
+      "overlapAreaDaa": 0.21320850650663756,
+      "overlapSharePercent": 1.7924096199077395
+    },
+    {
+      "id": "BN00087486",
+      "kuIds": [
+        "VKU-BN00087486"
+      ],
+      "objectIds": [
+        485195
+      ],
+      "name": "Skjetnemarka",
+      "natureType": "Gråor-heggeskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 239.73592277570637,
+      "overlapAreaDaa": 1.006901745228517,
+      "overlapSharePercent": 0.4200045339765624
+    },
+    {
+      "id": "BN00087490",
+      "kuIds": [
+        "VKU-BN00087490"
+      ],
+      "objectIds": [
+        485199
+      ],
+      "name": "Bratsberg, Bjørkli",
+      "natureType": "Naturbeitemark",
+      "value": "Middels verdi",
+      "totalAreaDaa": 87.35518871709141,
+      "overlapAreaDaa": 2.0273073414780085,
+      "overlapSharePercent": 2.320763507298517
+    },
+    {
+      "id": "BN00087495",
+      "kuIds": [
+        "VKU-BN00087495"
+      ],
+      "objectIds": [
+        485204
+      ],
+      "name": "Søra",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 63.82067504852393,
+      "overlapAreaDaa": 0.003001756155140759,
+      "overlapSharePercent": 0.0047034227589389695
+    },
+    {
+      "id": "BN00087503",
+      "kuIds": [
+        "VKU-BN00087503"
+      ],
+      "objectIds": [
+        485211
+      ],
+      "name": "Leirelva, Forsøkslia",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 52.78162424558525,
+      "overlapAreaDaa": 1.2728593066033262,
+      "overlapSharePercent": 2.411557667647544
+    },
+    {
+      "id": "BN00087512",
+      "kuIds": [
+        "VKU-BN00087512"
+      ],
+      "objectIds": [
+        485219
+      ],
+      "name": "Leirelva, nedre del",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 42.34347761348935,
+      "overlapAreaDaa": 3.860595667500545,
+      "overlapSharePercent": 9.117332550576045
+    },
+    {
+      "id": "BN00087513",
+      "kuIds": [
+        "VKU-BN00087513"
+      ],
+      "objectIds": [
+        485220
+      ],
+      "name": "Marienborg",
+      "natureType": "Gråor-heggeskog",
+      "value": "Middels verdi",
+      "totalAreaDaa": 45.22146771716555,
+      "overlapAreaDaa": 3.67667222177916,
+      "overlapSharePercent": 8.130369064477614
+    },
+    {
+      "id": "BN00087529",
+      "kuIds": [
+        "VKU-BN00087529"
+      ],
+      "objectIds": [
+        485236
+      ],
+      "name": "Ilabekken, nedre del",
+      "natureType": "Viktig bekkedrag",
+      "value": "Middels verdi",
+      "totalAreaDaa": 25.83676621901034,
+      "overlapAreaDaa": 2.8096474305923675,
+      "overlapSharePercent": 10.874609487796763
+    },
+    {
+      "id": "BN00087531",
+      "kuIds": [
+        "VKU-BN00087531"
+      ],
+      "objectIds": [
+        485238
+      ],
+      "name": "Sluppen",
+      "natureType": "Gråor-heggeskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 170.4835177006661,
+      "overlapAreaDaa": 1.0930124109270407,
+      "overlapSharePercent": 0.6411249754044522
+    },
+    {
+      "id": "BN00089963",
+      "kuIds": [
+        "VKU-BN00089963"
+      ],
+      "objectIds": [
+        486494
+      ],
+      "name": "Tanem III",
+      "natureType": "Ravinedal",
+      "value": "Middels verdi",
+      "totalAreaDaa": 69.11539909421914,
+      "overlapAreaDaa": 0.015536021970879046,
+      "overlapSharePercent": 0.022478379889986758
+    },
+    {
+      "id": "BN00089967",
+      "kuIds": [
+        "VKU-BN00089967"
+      ],
+      "objectIds": [
+        486498
+      ],
+      "name": "Mælbudalen og Storvollbekken II",
+      "natureType": "Ravinedal",
+      "value": "Stor verdi",
+      "totalAreaDaa": 890.5863096980141,
+      "overlapAreaDaa": 1.0424638977381953,
+      "overlapSharePercent": 0.11705366300675349
+    },
+    {
+      "id": "BN00109936",
+      "kuIds": [
+        "VKU-BN00109936"
+      ],
+      "objectIds": [
+        496154
+      ],
+      "name": "Tanemsmyra",
+      "natureType": "Intakt lavlandsmyr i innlandet",
+      "value": "Noe verdi",
+      "totalAreaDaa": 38.32876467107257,
+      "overlapAreaDaa": 19.611028113510674,
+      "overlapSharePercent": 51.16530178263608
+    },
+    {
+      "id": "BN00109949",
+      "kuIds": [
+        "VKU-BN00109949"
+      ],
+      "objectIds": [
+        496167
+      ],
+      "name": "Rønningsbekken",
+      "natureType": "Ravinedal",
+      "value": "Stor verdi",
+      "totalAreaDaa": 1051.1246282550376,
+      "overlapAreaDaa": 10.468694265790807,
+      "overlapSharePercent": 0.9959517629388811
+    },
+    {
+      "id": "BN00113266",
+      "kuIds": [
+        "VKU-BN00113266"
+      ],
+      "objectIds": [
+        498525
+      ],
+      "name": "Gaddmyra",
+      "natureType": "Intakt lavlandsmyr i innlandet",
+      "value": "Middels verdi",
+      "totalAreaDaa": 35.42303015351797,
+      "overlapAreaDaa": 0.07012121556812097,
+      "overlapSharePercent": 0.19795374722102094
+    },
+    {
+      "id": "BN00113268",
+      "kuIds": [
+        "VKU-BN00113268"
+      ],
+      "objectIds": [
+        498527
+      ],
+      "name": "Postmyra",
+      "natureType": "Rikmyr",
+      "value": "Stor verdi",
+      "totalAreaDaa": 30.12288588253844,
+      "overlapAreaDaa": 0.047839184820266875,
+      "overlapSharePercent": 0.15881341849785438
+    },
+    {
+      "id": "NINFP2310131638",
+      "kuIds": [
+        "VKU-NINFP2310131638"
+      ],
+      "objectIds": [
+        1166080
+      ],
+      "name": "Sjetne",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 45.869386634947524,
+      "overlapAreaDaa": 0.7092796271878513,
+      "overlapSharePercent": 1.5463028377350414
+    },
+    {
+      "id": "NINFP2310132177",
+      "kuIds": [
+        "VKU-NINFP2310132177"
+      ],
+      "objectIds": [
+        1166098
+      ],
+      "name": "Storhaugen 2",
+      "natureType": "Naturbeitemark",
+      "value": "Stor verdi",
+      "totalAreaDaa": 4.6550719407355565,
+      "overlapAreaDaa": 0.28628990612880856,
+      "overlapSharePercent": 6.150064054296258
+    },
+    {
+      "id": "NINFP2310132075",
+      "kuIds": [
+        "VKU-NINFP2310132075"
+      ],
+      "objectIds": [
+        1166102
+      ],
+      "name": "Fossgrenda 2",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 4.305377835135707,
+      "overlapAreaDaa": 0.0017404213501617941,
+      "overlapSharePercent": 0.04042435801936848
+    },
+    {
+      "id": "NINFP2310132079",
+      "kuIds": [
+        "VKU-NINFP2310132079"
+      ],
+      "objectIds": [
+        1166105
+      ],
+      "name": "Tverreggen",
+      "natureType": "Naturbeitemark",
+      "value": "Stor verdi",
+      "totalAreaDaa": 15.354817114308366,
+      "overlapAreaDaa": 0.027321123064634165,
+      "overlapSharePercent": 0.17793193407152347
+    },
+    {
+      "id": "NINFP2310132083",
+      "kuIds": [
+        "VKU-NINFP2310132083"
+      ],
+      "objectIds": [
+        1166107
+      ],
+      "name": "Leira V 6",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 51.04979953068023,
+      "overlapAreaDaa": 0.04705550985953749,
+      "overlapSharePercent": 0.09217569959556407
+    },
+    {
+      "id": "NINFP2310132557",
+      "kuIds": [
+        "VKU-NINFP2310132557"
+      ],
+      "objectIds": [
+        1166110
+      ],
+      "name": "Leirfossan 4",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 30.87506024991632,
+      "overlapAreaDaa": 0.00036154959514400945,
+      "overlapSharePercent": 0.0011710085493517033
+    },
+    {
+      "id": "NINFP2310132558",
+      "kuIds": [
+        "VKU-NINFP2310132558"
+      ],
+      "objectIds": [
+        1166111
+      ],
+      "name": "Fossøya V",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 11.064333996443848,
+      "overlapAreaDaa": 1.0792520756692345,
+      "overlapSharePercent": 9.754333844369787
+    },
+    {
+      "id": "NINFP2310132552",
+      "kuIds": [
+        "VKU-NINFP2310132552"
+      ],
+      "objectIds": [
+        1166117
+      ],
+      "name": "Stavne S",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 32.48173072470526,
+      "overlapAreaDaa": 1.6621748006982475,
+      "overlapSharePercent": 5.11726057575502
+    },
+    {
+      "id": "NINFP2310133637",
+      "kuIds": [
+        "VKU-NINFP2310133637"
+      ],
+      "objectIds": [
+        1166143
+      ],
+      "name": "Kystadbekken",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 35.03891032595389,
+      "overlapAreaDaa": 0.13222855216943422,
+      "overlapSharePercent": 0.37737632517495945
+    },
+    {
+      "id": "NINFP2310133831",
+      "kuIds": [
+        "VKU-NINFP2310133831"
+      ],
+      "objectIds": [
+        1166151
+      ],
+      "name": "Kroppan vest",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 1.0815863392680385,
+      "overlapAreaDaa": 0.043208702648939466,
+      "overlapSharePercent": 3.9949379055749605
+    },
+    {
+      "id": "NINFP2310134223",
+      "kuIds": [
+        "VKU-NINFP2310134223"
+      ],
+      "objectIds": [
+        1166156
+      ],
+      "name": "Uglabekken",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 6.46492905259499,
+      "overlapAreaDaa": 0.11983865771650014,
+      "overlapSharePercent": 1.8536732072627695
+    },
+    {
+      "id": "NINFP2310131715",
+      "kuIds": [
+        "VKU-NINFP2310131715"
+      ],
+      "objectIds": [
+        1166177
+      ],
+      "name": "Bjørndalen Ø",
+      "natureType": "Høgstaudegranskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 11.422045698128692,
+      "overlapAreaDaa": 0.6788108326658596,
+      "overlapSharePercent": 5.942988240513443
+    },
+    {
+      "id": "NINFP2310131997",
+      "kuIds": [
+        "VKU-NINFP2310131997"
+      ],
+      "objectIds": [
+        1166181
+      ],
+      "name": "Veisletten allé",
+      "natureType": "Frisk lågurtedellauvskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 9.040774041432464,
+      "overlapAreaDaa": 0.01676568611751373,
+      "overlapSharePercent": 0.18544525104464718
+    },
+    {
+      "id": "NINFP2310132172",
+      "kuIds": [
+        "VKU-NINFP2310132172"
+      ],
+      "objectIds": [
+        1166183
+      ],
+      "name": "Storhaugen 1",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 12.520974279981882,
+      "overlapAreaDaa": 0.006410116033313745,
+      "overlapSharePercent": 0.05119502596185367
+    },
+    {
+      "id": "NINFP2310132562",
+      "kuIds": [
+        "VKU-NINFP2310132562"
+      ],
+      "objectIds": [
+        1166195
+      ],
+      "name": "Leirfossan 5",
+      "natureType": "Gammel lågurtgranskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 4.534028437040213,
+      "overlapAreaDaa": 0.07114619566801635,
+      "overlapSharePercent": 1.5691607729408106
+    },
+    {
+      "id": "NINFP2310132544",
+      "kuIds": [
+        "VKU-NINFP2310132544"
+      ],
+      "objectIds": [
+        1166199
+      ],
+      "name": "Klosterenget V",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 5.1295177936324015,
+      "overlapAreaDaa": 0.03983354863217485,
+      "overlapSharePercent": 0.776555423623304
+    },
+    {
+      "id": "NINFP2310132553",
+      "kuIds": [
+        "VKU-NINFP2310132553"
+      ],
+      "objectIds": [
+        1166204
+      ],
+      "name": "Klosterenget NV",
+      "natureType": "Åpen flomfastmark",
+      "value": "Stor verdi",
+      "totalAreaDaa": 10.384639146160662,
+      "overlapAreaDaa": 0.005144947958159989,
+      "overlapSharePercent": 0.049543829937144644
+    },
+    {
+      "id": "NINFP2310133797",
+      "kuIds": [
+        "VKU-NINFP2310133797"
+      ],
+      "objectIds": [
+        1166216
+      ],
+      "name": "Østre Okstad NØ",
+      "natureType": "Naturbeitemark",
+      "value": "Stor verdi",
+      "totalAreaDaa": 7.44054834548433,
+      "overlapAreaDaa": 0.03421251693108127,
+      "overlapSharePercent": 0.45981176846790944
+    },
+    {
+      "id": "NINFP2310134599",
+      "kuIds": [
+        "VKU-NINFP2310134599"
+      ],
+      "objectIds": [
+        1166228
+      ],
+      "name": "Bjørndalen 4",
+      "natureType": "Gammel høgstaudegråorskog",
+      "value": "Stor verdi",
+      "totalAreaDaa": 1.3658309069846835,
+      "overlapAreaDaa": 0.06223093005653166,
+      "overlapSharePercent": 4.556268988956883
+    },
+    {
+      "id": "NINFP2310130704",
+      "kuIds": [
+        "VKU-NINFP2310130704"
+      ],
+      "objectIds": [
+        1184487
+      ],
+      "name": "Storberga",
+      "natureType": "Gammel granskog med gamle trær",
+      "value": "Stor verdi",
+      "totalAreaDaa": 12.113709913152476,
+      "overlapAreaDaa": 12.111902811507148,
+      "overlapSharePercent": 99.98508217830639
+    },
+    {
+      "id": "NINFP2310130705",
+      "kuIds": [
+        "VKU-NINFP2310130705"
+      ],
+      "objectIds": [
+        1184488
+      ],
+      "name": "Isdammen S",
+      "natureType": "Rik åpen sørlig jordvannsmyr",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 2.167143332001784,
+      "overlapAreaDaa": 0.06819438561001966,
+      "overlapSharePercent": 3.1467409009365657
+    },
+    {
+      "id": "NINFP2310131383",
+      "kuIds": [
+        "VKU-NINFP2310131383"
+      ],
+      "objectIds": [
+        1184513
+      ],
+      "name": "Nordsetkamman 2",
+      "natureType": "Gammel granskog med gamle trær",
+      "value": "Stor verdi",
+      "totalAreaDaa": 5.552694212948825,
+      "overlapAreaDaa": 1.7143087113237334,
+      "overlapSharePercent": 30.873457921129233
+    },
+    {
+      "id": "NINFP2310131384",
+      "kuIds": [
+        "VKU-NINFP2310131384"
+      ],
+      "objectIds": [
+        1184514
+      ],
+      "name": "Nordsetkamman 4",
+      "natureType": "Gammel granskog med liggende død ved",
+      "value": "Stor verdi",
+      "totalAreaDaa": 1.8928247888785807,
+      "overlapAreaDaa": 1.8378007755363972,
+      "overlapSharePercent": 97.09302130522165
+    },
+    {
+      "id": "NINFP2310131386",
+      "kuIds": [
+        "VKU-NINFP2310131386"
+      ],
+      "objectIds": [
+        1184516
+      ],
+      "name": "Nordsetrønningen V",
+      "natureType": "Gammel granskog med liggende død ved",
+      "value": "Stor verdi",
+      "totalAreaDaa": 3.4537897377440663,
+      "overlapAreaDaa": 0.4179048428975677,
+      "overlapSharePercent": 12.099892426298457
+    },
+    {
+      "id": "NINFP2310131428",
+      "kuIds": [
+        "VKU-NINFP2310131428"
+      ],
+      "objectIds": [
+        1184517
+      ],
+      "name": "Stormyra 1",
+      "natureType": "Sørlig nedbørsmyr",
+      "value": "Stor verdi",
+      "totalAreaDaa": 16.652371848805448,
+      "overlapAreaDaa": 0.3304905428629689,
+      "overlapSharePercent": 1.9846454659050656
+    },
+    {
+      "id": "NINFP2310131994",
+      "kuIds": [
+        "VKU-NINFP2310131994"
+      ],
+      "objectIds": [
+        1184565
+      ],
+      "name": "Stormyra 2",
+      "natureType": "Sørlig nedbørsmyr",
+      "value": "Noe verdi",
+      "totalAreaDaa": 8.122512926922031,
+      "overlapAreaDaa": 0.08363842411540888,
+      "overlapSharePercent": 1.0297111850470526
+    },
+    {
+      "id": "NINFP2310130498",
+      "kuIds": [
+        "VKU-NINFP2310130498"
+      ],
+      "objectIds": [
+        1184580
+      ],
+      "name": "Åstrøberga",
+      "natureType": "Gammel granskog med gamle trær",
+      "value": "Stor verdi",
+      "totalAreaDaa": 20.699518693907642,
+      "overlapAreaDaa": 0.5479242662117657,
+      "overlapSharePercent": 2.6470386790830687
+    },
+    {
+      "id": "NINFP2310130703",
+      "kuIds": [
+        "VKU-NINFP2310130703"
+      ],
+      "objectIds": [
+        1184582
+      ],
+      "name": "Gjellan Ø",
+      "natureType": "Gammel granskog med gamle trær",
+      "value": "Svært stor verdi",
+      "totalAreaDaa": 50.78960246726675,
+      "overlapAreaDaa": 5.177456971334824,
+      "overlapSharePercent": 10.193930883140165
+    },
+    {
+      "id": "NINFP2210081697",
+      "kuIds": [
+        "VKU-NINFP2210081697"
+      ],
+      "objectIds": [
+        1190495
+      ],
+      "name": "Tanemsmyra",
+      "natureType": "Sørlig nedbørsmyr",
+      "value": "Middels verdi",
+      "totalAreaDaa": 15.503896513557189,
+      "overlapAreaDaa": 9.134595394606064,
+      "overlapSharePercent": 58.91806222144498
+    },
+    {
+      "id": "NINFP2210099825",
+      "kuIds": [
+        "VKU-NINFP2210099825"
+      ],
+      "objectIds": [
+        1190519
+      ],
+      "name": "Furuhaugen NØ",
+      "natureType": "Sørlig nedbørsmyr",
+      "value": "Stor verdi",
+      "totalAreaDaa": 13.913205902132189,
+      "overlapAreaDaa": 0.1628076855896151,
+      "overlapSharePercent": 1.1701665793982459
+    },
+    {
+      "id": "NINFP2210112613",
+      "kuIds": [
+        "VKU-NINFP2210112613"
+      ],
+      "objectIds": [
+        1190570
+      ],
+      "name": "Oddmyra",
+      "natureType": "Sørlig nedbørsmyr",
+      "value": "Middels verdi",
+      "totalAreaDaa": 116.95239209362332,
+      "overlapAreaDaa": 0.0005161515315427145,
+      "overlapSharePercent": 0.00044133473655632655
+    },
+    {
+      "id": "NINFP2010026619",
+      "kuIds": [
+        "VKU-NINFP2010026619"
+      ],
+      "objectIds": [
+        1207646
+      ],
+      "name": "Granli Ø",
+      "natureType": "Gammel granskog med gamle trær",
+      "value": "Stor verdi",
+      "totalAreaDaa": 11.070059376173676,
+      "overlapAreaDaa": 0.12363122013343782,
+      "overlapSharePercent": 1.1168071997836968
+    },
+    {
+      "id": "NINFP2010035894",
+      "kuIds": [
+        "VKU-NINFP2010035894"
+      ],
+      "objectIds": [
+        1207667
+      ],
+      "name": "Steinåsen",
+      "natureType": "Naturbeitemark",
+      "value": "Middels verdi",
+      "totalAreaDaa": 4.685840401335093,
+      "overlapAreaDaa": 0.001818041872805545,
+      "overlapSharePercent": 0.038798629852769786
+    },
+    {
+      "id": "NINNT2610003018",
+      "kuIds": [
+        "VKU-NINNT2610003018"
+      ],
+      "objectIds": [
+        2114873
+      ],
+      "name": "Ikke oppgitt",
+      "natureType": "Hule eiker",
+      "value": "Stor verdi",
+      "totalAreaDaa": 0.6969306642974609,
+      "overlapAreaDaa": 0.009007884170429333,
+      "overlapSharePercent": 1.2925079397259276
+    }
+  ],
+  "elapsedMs": 12914.299999999814,
+  "heapUsedAfterCompute": 66022624
+}

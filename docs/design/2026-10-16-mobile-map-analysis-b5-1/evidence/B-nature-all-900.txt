@@ -1,0 +1,254 @@
+B5.1 · designskisse
+A
+B
+C
+Kommunale naturregnskap Test · B · Resultat først
+Velg kommune
+Trondheim
+Oslo
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+Utforsk i kart
+Kartlag 1
+Lukk analyse
+Velg analyse
+Arealfordeling
+Registrerte naturverdier
+Samlet resultat · 119,38 daa · utsnitt endres bare ved tilpassing
++
+−
+Trondheim · kommuneutsnitt (skisse)
+Kartutvalg: Samlet resultat · illustrert markering
+⌖ Tilpass kart
+Hele kommunen
+Illustrasjon – ikke beregnet geografi
+Resultater
+Vis analyseinnhold
+Lokaliteter
+Samlet resultat
+KU-verdi
+Naturtyper
+Metode og kilder
+Nullstill
+Søk etter lokalitet
+Sorter lokaliteter
+Overlappsareal, størst først
+Navn, alfabetisk
+Overlappsandel, størst først
+Naturtype, alfabetisk
+KU-verdi
+
+70 av 70 lokaliteter
+
+Tanemsmyra
+Intakt lavlandsmyr i innlandet · Noe verdi · BN00109936
+19,61 daa
+Svean1
+Semi-naturlig eng · Middels verdi · NINFP1910060388
+13,84 daa
+Storberga
+Gammel granskog med gamle trær · Stor verdi · NINFP2310130704
+12,11 daa
+Rønningsbekken
+Ravinedal · Stor verdi · BN00109949
+10,47 daa
+Nedre Leirfoss
+Gråor-heggeskog · Middels verdi · BN00087460
+9,82 daa
+Tanemsmyra
+Sørlig nedbørsmyr · Middels verdi · NINFP2210081697
+9,13 daa
+Stokkanbekken
+Viktig bekkedrag · Middels verdi · BN00087406
+7,43 daa
+Gjellan Ø
+Gammel granskog med gamle trær · Svært stor verdi · NINFP2310130703
+5,18 daa
+Kystadbekken
+Viktig bekkedrag · Middels verdi · BN00087376
+4,49 daa
+Leirelva, nedre del
+Viktig bekkedrag · Middels verdi · BN00087512
+3,86 daa
+Marienborg
+Gråor-heggeskog · Middels verdi · BN00087513
+3,68 daa
+Ilabekken, nedre del
+Viktig bekkedrag · Middels verdi · BN00087529
+2,81 daa
+Leirelva, øvre del
+Viktig bekkedrag · Middels verdi · BN00087398
+2,66 daa
+Bratsberg, Bjørkli
+Naturbeitemark · Middels verdi · BN00087490
+2,03 daa
+Leirelva, Buenget
+Viktig bekkedrag · Middels verdi · BN00087467
+2,02 daa
+Kroppan
+Gråor-heggeskog · Middels verdi · BN00087370
+1,84 daa
+Nordsetkamman 4
+Gammel granskog med liggende død ved · Stor verdi · NINFP2310131384
+1,84 daa
+Nordsetkamman 2
+Gammel granskog med gamle trær · Stor verdi · NINFP2310131383
+1,71 daa
+Ilabekken, midtre del
+Viktig bekkedrag · Middels verdi · BN00087378
+1,7 daa
+Stavne S
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310132552
+1,66 daa
+Leirelva, Forsøkslia
+Viktig bekkedrag · Middels verdi · BN00087503
+1,27 daa
+Ladehammeren, sør
+Sørvendte berg og rasmarker · Middels verdi · BN00087468
+1,21 daa
+Sluppen
+Gråor-heggeskog · Stor verdi · BN00087531
+1,09 daa
+Fossøya V
+Gammel høgstaudegråorskog · Svært stor verdi · NINFP2310132558
+1,08 daa
+Mælbudalen og Storvollbekken II
+Ravinedal · Stor verdi · BN00089967
+1,04 daa
+Skjetnemarka
+Gråor-heggeskog · Stor verdi · BN00087486
+1,01 daa
+Stavne
+Gråor-heggeskog · Middels verdi · BN00087452
+0,96 daa
+Vikelva, Vikåsen
+Viktig bekkedrag · Middels verdi · BN00087391
+0,78 daa
+Sjetne
+Gammel høgstaudegråorskog · Svært stor verdi · NINFP2310131638
+0,71 daa
+Bjørndalen Ø
+Høgstaudegranskog · Stor verdi · NINFP2310131715
+0,68 daa
+Åstrøa flomskog
+Flomskogsmark · Svært stor verdi · NINFP2010038621
+0,66 daa
+Nidarø - Tilfredshet
+Gråor-heggeskog · Stor verdi · BN00087415
+0,63 daa
+Åstrøberga
+Gammel granskog med gamle trær · Stor verdi · NINFP2310130498
+0,55 daa
+Hallset sørvest
+Parklandskap · Noe verdi · BN00083172
+0,51 daa
+Sluppen
+Gråor-heggeskog · Middels verdi · BN00087481
+0,46 daa
+Kroppanmarka
+Gammel barskog · Middels verdi · BN00087479
+0,45 daa
+Nordsetrønningen V
+Gammel granskog med liggende død ved · Stor verdi · NINFP2310131386
+0,42 daa
+Sjetnemarka
+Gråor-heggeskog · Middels verdi · BN00087414
+0,4 daa
+Stormyra 1
+Sørlig nedbørsmyr · Stor verdi · NINFP2310131428
+0,33 daa
+Storhaugen 2
+Naturbeitemark · Stor verdi · NINFP2310132177
+0,29 daa
+Svartdalen
+Rik edellauvskog · Middels verdi · BN00087483
+0,21 daa
+Furuhaugen NØ
+Sørlig nedbørsmyr · Stor verdi · NINFP2210099825
+0,16 daa
+Kystadbekken
+Gammel høgstaudegråorskog · Svært stor verdi · NINFP2310133637
+0,13 daa
+Granli Ø
+Gammel granskog med gamle trær · Stor verdi · NINFP2010026619
+0,12 daa
+Uglabekken
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310134223
+0,12 daa
+Stormyra 2
+Sørlig nedbørsmyr · Noe verdi · NINFP2310131994
+0,08 daa
+Leirfossan 5
+Gammel lågurtgranskog · Stor verdi · NINFP2310132562
+0,07 daa
+Gaddmyra
+Intakt lavlandsmyr i innlandet · Middels verdi · BN00113266
+0,07 daa
+Isdammen S
+Rik åpen sørlig jordvannsmyr · Svært stor verdi · NINFP2310130705
+0,07 daa
+Bjørndalen 4
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310134599
+0,06 daa
+Postmyra
+Rikmyr · Stor verdi · BN00113268
+0,05 daa
+Leira V 6
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310132083
+0,05 daa
+Kroppan vest
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310133831
+0,04 daa
+Klosterenget V
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310132544
+0,04 daa
+Østre Okstad NØ
+Naturbeitemark · Stor verdi · NINFP2310133797
+0,03 daa
+Nidarø - Tilfredshet
+Gråor-heggeskog · Middels verdi · BN00087385
+0,03 daa
+Ladehammeren SSV
+Åpen grunnlendt kalkrik mark i sørboreal sone · Stor verdi · NINFP2010038901
+0,03 daa
+Tverreggen
+Naturbeitemark · Stor verdi · NINFP2310132079
+0,03 daa
+Veisletten allé
+Frisk lågurtedellauvskog · Stor verdi · NINFP2310131997
+0,02 daa
+Tanem III
+Ravinedal · Middels verdi · BN00089963
+0,02 daa
+Bruråk
+Naturbeitemark · Middels verdi · BN00087416
+0,01 daa
+Ikke oppgitt
+Hule eiker · Stor verdi · NINNT2610003018
+0,01 daa
+Storhaugen 1
+Gammel høgstaudegråorskog · Svært stor verdi · NINFP2310132172
+0,01 daa
+Klosterenget NV
+Åpen flomfastmark · Stor verdi · NINFP2310132553
+0,01 daa
+Søra
+Viktig bekkedrag · Middels verdi · BN00087495
+0 daa
+Steinåsen
+Naturbeitemark · Middels verdi · NINFP2010035894
+0 daa
+Fossgrenda 2
+Gammel høgstaudegråorskog · Stor verdi · NINFP2310132075
+0 daa
+Oddmyra
+Sørlig nedbørsmyr · Middels verdi · NINFP2210112613
+0 daa
+Leirfossan 4
+Gammel høgstaudegråorskog · Svært stor verdi · NINFP2310132557
+0 daa
+Ilen kirkegård
+Parklandskap · Middels verdi · BN00087459
+0 daa

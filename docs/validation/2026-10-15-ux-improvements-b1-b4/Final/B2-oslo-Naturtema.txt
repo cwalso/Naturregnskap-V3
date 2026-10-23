@@ -1,0 +1,94 @@
+Hopp til hovedinnhold
+Kommunale naturregnskap
+★ TEST ★
+Velg kommune:
+Velg kommune
+×
+Kommuneoversikt
+Naturtapet
+Naturtema
+Utforsk i kart
+
+Naturregnskap / Dagens natur
+
+Hva slags natur har vi i Oslo?
+
+Start med det heldekkende regnskapsgrunnlaget. Gå deretter inn på egne temasider for supplerende naturdata, dekning, kilde og bruk i analyser.
+
+Naturbeholdning
+Fordeling av dagens natur etter økosystemtype
+
+Landbasert natur i kommunen. Kilde: NIBIO, Grunnkart for arealanalyse – årsversjon 2025, økosystemtype nivå 1.
+
+Beregningen krever et klargjort oversiktsraster for kommunen i prototypen.
+
+Dette er en foreløpig rasterbasert arealoversikt over dagens natur. Historisk nedbygging og planoverlapp vises separat. Skogsidens beholdningstall bruker arealdekke, som har en annen avgrensning enn økosystemtype.
+
+Regnskapsgrunnlag
+Heldekkende informasjon om dagens natur
+
+Første versjon bygger på et felles, heldekkende og etterprøvbart arealgrunnlag. Supplerende temadata holdes adskilt fra dette grunnlaget.
+
+Grunnkart
+Felles arealgrunnlag
+
+Grunnkart for arealanalyse er det sentrale heldekkende grunnlaget i første versjon.
+
+Regnskapsgrunnlag
+Temasider fra regnskapsgrunnlaget
+
+Skog og myr/våtmark viser naturbeholdning og utbredelse fra Grunnkart. Beholdningen beskriver dagens natur, adskilt fra historisk nedbygging og plananalyser.
+
+≈
+Myr (våtmark)
+Utbredelse og arealandel for våtmark basert på Grunnkart for arealanalyse.
+Grunnkart 2025
+Åpne temaside →
+♠
+Skog
+Skogareal, utbredelse og fordeling basert på Grunnkart for arealanalyse.
+Grunnkart 2025
+Åpne temaside →
+Supplerende innsikt
+Supplerende temadata
+
+Hvert tema har en egen side. Der beskrives hva datasettet viser, geografisk dekning, status i kommunen, begrensninger og hvordan det kan brukes videre.
+
+◫
+Verdsatte naturtyper
+Kartlagte og verdsatte naturtyper som supplerende innsikt.
+Treff i kommunen
+Åpne temaside →
+◆
+Verneområder
+Verneområder og relevante avgrensninger.
+Treff i kommunen
+Åpne temaside →
+⌁
+Villreinområder
+Villreinområder og relevante temadata.
+Ingen registrerte treff
+Åpne temaside →
+◎
+Inngrepsfri natur
+Inngrepsfri natur og utvikling i relevante soner.
+Kartlag tilgjengelig
+Åpne temaside →
+Analyse- og beslutningsstøtte
+Supplerende analyser og beslutningsstøtte
+
+Bynatur og grå arealer gir supplerende innsikt om arealbruk og grønnstruktur. Kartvisningen er ikke en egen økosystemtype eller en del av det heldekkende naturregnskapet.
+
+Gråarealkartet er kartgrunnlag. Det er ikke beregnet tilgjengelige eller egnede utbyggingsarealer.
+
+▦
+Bynaturen (grå arealer)
+Kartgrunnlag og supplerende innsikt om arealbruk og grønnstruktur.
+Analyse- og beslutningsstøtte
+Åpne temaside →
+
+Metodisk kobling
+
+Grunnkart og temadata har ulike roller
+
+Supplerende temadata kan gi viktig innsikt og brukes i analyser, men bør ikke blandes sammen med selve regnskapsgrunnlaget uten metodisk avklaring. Dekning, versjon og usikkerhet må være synlig.

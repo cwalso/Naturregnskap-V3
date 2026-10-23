@@ -1,0 +1,33 @@
+{
+  "sourceHead": "d934f143ecd8066792a239fcca5f1ec310b8cdde",
+  "capturedPairsReproduced": true,
+  "independentMaskAndCategoryAssertionsPassed": true,
+  "archiveExtractedAndOfflineAuditRepeated": true,
+  "repeatedAuditNumericallyIdentical": true,
+  "rawResponsesSha256Verified": 30,
+  "eightExistingRuleCombinations": 8,
+  "referenceChecks": {
+    "sourceCommit": "d934f143ecd8066792a239fcca5f1ec310b8cdde",
+    "referenceCommit": "b13670daf12b6b9ac276e1eb2200846912827c97",
+    "sameParentHash": true,
+    "sameDetailHash": true,
+    "sameSevenTileHashes": true,
+    "sameAnalysisId": true,
+    "capturedAt": "2026-10-15T11:20:24.916Z",
+    "archiveSha256": "c64244bee74a32371b5d941fe2f658db7178c22d3096b244fa3f48c771415f19"
+  },
+  "frontendTests": {
+    "passed": 178,
+    "testFiles": 32
+  },
+  "eslint": {
+    "errors": 0,
+    "existingWarnings": 1
+  },
+  "build": "passed; existing >500 kB chunk warning",
+  "ruff": "passed",
+  "nodeSyntaxCheck": "passed",
+  "gitDiffCheck": "passed",
+  "productionChanges": false,
+  "pagesPublished": false
+}

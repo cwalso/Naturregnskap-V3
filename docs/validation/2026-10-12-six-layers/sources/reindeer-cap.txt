@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities version="1.3.0"
+  xmlns="http://www.opengis.net/wms"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:esri_wms="http://www.esri.com/wms"
+  xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd http://www.esri.com/wms https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?version=1.3.0%26service=WMS%26request=GetSchemaExtension">
+  <Service>
+    <Name><![CDATA[WMS]]></Name>
+    <Title><![CDATA[villrein]]></Title>
+    <Abstract>WMS</Abstract>
+    <KeywordList><Keyword><![CDATA[]]></Keyword></KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson><![CDATA[]]></ContactPerson>
+        <ContactOrganization><![CDATA[Miljødirektoratet]]></ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition><![CDATA[]]></ContactPosition>
+      <ContactAddress>
+        <AddressType><![CDATA[]]></AddressType>
+        <Address><![CDATA[]]></Address>
+        <City><![CDATA[]]></City>
+        <StateOrProvince><![CDATA[]]></StateOrProvince>
+        <PostCode><![CDATA[]]></PostCode>
+        <Country><![CDATA[]]></Country>
+      </ContactAddress>
+      <ContactVoiceTelephone><![CDATA[]]></ContactVoiceTelephone>
+      <ContactFacsimileTelephone><![CDATA[]]></ContactFacsimileTelephone>
+      <ContactElectronicMailAddress><![CDATA[]]></ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees><![CDATA[]]></Fees>
+    <AccessConstraints><![CDATA[NLOD (https://data.norge.no/nlod)]]></AccessConstraints>
+    <MaxWidth>4096</MaxWidth>
+    <MaxHeight>4096</MaxHeight>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?"/></Get></HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/bmp</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/tiff</Format>
+        <Format>image/png</Format>
+        <Format>image/png8</Format>
+        <Format>image/png24</Format>
+        <Format>image/png32</Format>
+        <Format>image/gif</Format>
+        <Format>image/svg+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?"/></Get></HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>application/vnd.esri.wms_raw_xml</Format>
+        <Format>application/vnd.esri.wms_featureinfo_xml</Format>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>application/geo+json</Format>
+        <Format>text/xml</Format>
+        <Format>text/html</Format>
+        <Format>text/plain</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?"/></Get></HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+      <esri_wms:GetStyles>
+        <Format>application/vnd.ogc.sld+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?"/></Get></HTTP>
+        </DCPType>
+      </esri_wms:GetStyles>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>application/vnd.ogc.se_inimage</Format>
+      <Format>application/vnd.ogc.se_blank</Format>
+      <Format>text/xml</Format>
+      <Format>XML</Format>
+    </Exception>
+    <Layer>
+      <Title><![CDATA[p-villrein]]></Title>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+      <Layer queryable="1">
+        <Title><![CDATA[villrein_beiteomrade]]></Title>
+        <Abstract><![CDATA[villrein_beiteomrade]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+      <Layer queryable="1">
+        <Name>villrein_helarsbeite</Name>
+        <Title><![CDATA[villrein_helarsbeite]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_helarsbeite]]></Title>
+          <LegendURL width="138" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_helarsbeite" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_barmarksbeite</Name>
+        <Title><![CDATA[villrein_barmarksbeite]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_barmarksbeite]]></Title>
+          <LegendURL width="150" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_barmarksbeite" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_vinterbeite</Name>
+        <Title><![CDATA[villrein_vinterbeite]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_vinterbeite]]></Title>
+          <LegendURL width="138" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_vinterbeite" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_sommer_host_beite</Name>
+        <Title><![CDATA[villrein_sommer_host_beite]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_sommer_host_beite]]></Title>
+          <LegendURL width="174" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_sommer_host_beite" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_kalvingsomrade</Name>
+        <Title><![CDATA[villrein_kalvingsomrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_kalvingsomrade]]></Title>
+          <LegendURL width="138" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_kalvingsomrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_trekkomrade</Name>
+        <Title><![CDATA[villrein_trekkomrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_trekkomrade]]></Title>
+          <LegendURL width="138" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_trekkomrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_leveomrade</Name>
+        <Title><![CDATA[villrein_leveomrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_leveomrade]]></Title>
+          <LegendURL width="132" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_leveomrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>villrein_leveomrade_grense</Name>
+        <Title><![CDATA[villrein_leveomrade_grense]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>4.958389</westBoundLongitude><eastBoundLongitude>11.959604</eastBoundLongitude><southBoundLatitude>58.419939</southBoundLatitude><northBoundLatitude>62.967116</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="4.958389" miny="58.419939" maxx="11.959604" maxy="62.967116"/>
+<BoundingBox CRS="EPSG:4326" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:25833" minx="-13181.500600" miny="6509143.610300" maxx="323775.227400" maxy="6986689.599900"/>
+<BoundingBox CRS="EPSG:32631" minx="600371.668455" miny="6479910.558623" maxx="1018441.614552" maxy="7010575.318696"/>
+<BoundingBox CRS="EPSG:32632" minx="292934.753748" miny="6478871.754159" maxx="671543.927552" maxy="6984435.761009"/>
+<BoundingBox CRS="EPSG:32633" minx="-13181.500593" miny="6509143.610423" maxx="323775.227402" maxy="6986689.600021"/>
+<BoundingBox CRS="EPSG:32634" minx="-360170.093728" miny="6540517.944820" maxx="20746.068879" maxy="7049009.681457"/>
+<BoundingBox CRS="EPSG:32635" minx="-702574.924717" miny="6603264.463702" maxx="-279131.272175" maxy="7140190.740960"/>
+<BoundingBox CRS="EPSG:32636" minx="-1038148.651337" miny="6697771.047488" maxx="-573725.309942" maxy="7260371.854225"/>
+<BoundingBox CRS="EPSG:25831" minx="600371.668456" miny="6479910.558499" maxx="1018441.614558" maxy="7010575.318575"/>
+<BoundingBox CRS="EPSG:25832" minx="292934.753746" miny="6478871.754035" maxx="671543.927554" maxy="6984435.760888"/>
+<BoundingBox CRS="EPSG:25834" minx="-360170.093738" miny="6540517.944697" maxx="20746.068873" maxy="7049009.681337"/>
+<BoundingBox CRS="EPSG:25835" minx="-702574.924731" miny="6603264.463580" maxx="-279131.272186" maxy="7140190.740841"/>
+<BoundingBox CRS="EPSG:25836" minx="-1038148.651355" miny="6697771.047367" maxx="-573725.309956" maxy="7260371.854107"/>
+<BoundingBox CRS="EPSG:4258" minx="58.419939" miny="4.958389" maxx="62.967116" maxy="11.959604"/>
+<BoundingBox CRS="EPSG:3857" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+<BoundingBox CRS="EPSG:102100" minx="551965.364345" miny="8056055.808658" maxx="1331337.034808" maxy="9092192.233382"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[villrein_leveomrade_grense]]></Title>
+          <LegendURL width="174" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart3.miljodirektoratet.no:443/arcgis/services/villrein/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=villrein_leveomrade_grense" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

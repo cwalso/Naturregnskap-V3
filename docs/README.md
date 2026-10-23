@@ -1,6 +1,6 @@
 # Dokumentasjon – Kommunale naturregnskap V3
 
-**Sist oppdatert: 08.10.2026**
+**Sist oppdatert: 12.10.2026**
 
 Denne siden viser hvilke dokumenter som er levende styringsdokumenter og hvilke
 som er historiske beslutningslogger.
@@ -62,6 +62,47 @@ senere beslutninger har endret retningen.
 
 Se `decisions/`.
 
+Gjeldende Utforsk-rute viser sju uavhengige kartlag uten automatisk kryssanalyse.
+Se [seks lag og kildevalg](decisions/2026-10-12-v3-six-explore-layers.md),
+[reell Trondheim-/Dovre-kontroll](validation/2026-10-12-six-explore-layers.md) og
+[samtidige kartlag](decisions/2026-10-09-v3-concurrent-map-layers.md) og
+[A–L-kontroll med skjermbilder](validation/2026-10-09-concurrent-map-layers.md). De tidligere tre
+kartvisningene og korrigert planvisning er manuelt godkjent.
+
+Tidligere overgang til selvstendige karttemaer er dokumentert i [tidligere beslutning](decisions/2026-10-09-v3-independent-map-themes.md)
+og [validering med skjermbilder](validation/2026-10-09-independent-map-themes.md).
+Denne beslutningen erstatter den aktive kartflyten i
+`2026-10-09-v3-explore-analysis-map.md`; analysemetoden og verkstedet beholdes.
+[Korrigert planpresentasjon](decisions/2026-10-09-v3-future-development-display.md)
+presiserer at bare Natur/Jordbruk innenfor planformålene vises.
+[Ny Trondheim-kontroll](validation/2026-10-09-future-development-display.md)
+inkluderer råpikselkontroll, referansesammenligning og faktiske skjermbilder.
+Pages-testpublisering gjøres fra PR-branchen uten merge.
+Kommuneoversikt og Naturtapet deler fra 14.10 tydelig merkede historiske demodata;
+se [struktur/SSB-avklaringer](product/historical-loss-pages.md) og
+[tester og skjermbilder](validation/2026-10-14-historical-loss.md).
+Planområdenes heldekkende arealfordeling er primæranalyse fra 14.10, adskilt fra
+registrerte naturverdier. Se [metode](decisions/2026-10-14-plan-land-cover-area.md)
+og [A/B/C-kontroller](validation/2026-10-14-plan-area.md).
+[Undersøkelse av ufordelt natur](validation/2026-10-14-unclassified-plan-nature.md)
+skiller bildeavvisning fra nivå-0-/detaljkonflikt og vurderer direkte geodata.
+Den foreslår en valideringspilot; ingen produksjonsmetode er endret.
+[Direkte Grunnkart-pilot: tilgang og kjørbart lokalt oppsett](validation/2026-10-14-direct-grunnkart-pilot.md)
+stopper reell geometriundersøkelse inntil korrekt 2025-fil og bruksrett er bekreftet.
+[Grå arealer i Trondheim, leveranse A](validation/2026-10-14-grey-areas-trondheim.md)
+kontrollerer Issue #78, vektortilgang, tre separate bruksrettigheter og firekategori-
+modellen. A består ikke; geografisk B og implementering C er ikke gjennomført.
+[Brukerreise- og UX-kontroll 15.10](validation/2026-10-15-user-journey-review.md)
+følger scenario A–F fra Issue #77 i reell Chromium ved fire bredder, med
+faktiske skjermbilder og fem prioriterte tiltak. Kun undersøkelse; ingen
+produksjonsendring eller ny Pages-publisering.
+[Differanseanalyse av økosystemoverlapp 15.10](validation/2026-10-15-ecosystem-overlap-differences.md)
+reproduserer temaside-/planarealtall og forklarer forskjellene ved sampling,
+smalfeltfilter og fargeregel, med uavhengig offline- og geografisk kontroll.
+Ingen produksjonsrettelse eller metodebeslutning er implementert.
+[Visuell korreksjon 12.10](validation/2026-10-12-layer-panel-and-plan-hatch.md)
+dokumenterer lagpanel uten horisontal overflow og planlagets nye skravur.
+
 ADR-en `2026-10-08-v3-public-prototype-branding.md` erstatter den tidligere
 føringen i `2026-08-18-v3-2-3-header-logo-and-map-legend.md` om bruk av
 Miljødirektoratets logo. Den eldre ADR-en beholdes uendret som historikk og er
@@ -75,3 +116,78 @@ vurderes i samme PR.
 
 Hvis dokumentasjonen ikke oppdateres fordi endringen er ren refaktorering eller
 feilretting uten endret kontrakt, bør dette være bevisst.
+
+Grå arealer er koblet inn via NIBIOs offisielle `graastruktur`-WMS, med
+`graa_arealer`, `andel_uten_vegetasjon` og `andel_med_vegetasjon` bak én
+avkryssing. Framstillingsvalg bevarer lag, opasitet, filter/valg og utsnitt.
+Kildens estimater og GetLegendGraphic brukes direkte; ingen egen prosent-
+eller arealberegning. Testversjon 1 har sammensatt kildegrunnlag og er ikke
+lik nivå-0-klassen Bebygd. Kildens målestokkgrense 1:250 000 håndteres som
+`out-of-scale`, med forklaring og uten automatisk zoom. FKB-Grønnstruktur
+er teknisk kontrollert, men publiseres ikke før Norge digitalt-bruksrett
+for denne offentlige prototypen er dokumentert. Gråareal-WMS-en har egne
+tjenestevilkår uten begrensninger; nedlastbare data har annen lisens.
+Se [kilde-/kartkontroll](validation/2026-10-12-grey-areas.md).
+
+## Utforsk-design V2
+
+[Godkjent panelstruktur](decisions/2026-10-12-v3-explore-design-v2.md) og
+[implementeringskontroll](validation/2026-10-12-explore-design-v2.md) beskriver
+A/B/C, reelle kartkontroller, faktiske screenshots og visuell sammenligning.
+
+[Sluttverifikasjon før ny publisering](validation/2026-10-12-explore-design-v2-final.md)
+viderefører start-HEAD f9a2eba med ny fokusregresjon, 128 frontendtester og
+reelle A/B/C-kontroller. Kartmotor og datametoder er beholdt.
+
+## Geometrisk planoverlapp, 13.10.2026
+
+- [Godkjent prototypekonvensjon og teknisk kontrakt](decisions/2026-10-13-v3-geometric-valued-nature-overlap.md)
+- [Reell Trondheim-kontroll, sammenligning med gammel metode og skjermbilder](validation/2026-10-13-future-nature.md)
+
+## Samordnede indikatorer og UX, 15.10.2026
+
+- [Eksplisitt prototypebeslutning for felles planindikatorer](decisions/2026-10-15-common-plan-indicators.md)
+- [B1–B4: implementering, samlet regresjon, skjermbilder og begrensninger](validation/2026-10-15-ux-improvements-b1-b4.md)
+
+Dette følger opp undersøkelsene over: konsumenter og presentasjon er nå endret,
+mens beregningsmetoder og kildegrunnlag er beholdt. B5.1 er gjennomført; se videre status under.
+
+## B5.1 – mobil kart- og analysedesign, 16.10.2026
+
+[Designrapport og anbefaling](design/2026-10-16-mobile-map-analysis-b5-1.md) og
+[kjørbar A/B/C-sammenligning](design/2026-10-16-mobile-map-analysis-b5-1/index.html)
+med [lokal kjøring](design/2026-10-16-mobile-map-analysis-b5-1/README.md),
+54 skjermbilder og ekspertbaserte kontrollmålinger. Anbefaler Kart først med
+brukerstyrt utvidet resultatlesing. Kun dokumentasjonsprototyper; produksjon og
+Pages er uendret av designleveransen. Oppdragsgiver valgte senere C; se B5.2a–b under.
+
+## B5.2a–b – aktiv analyse og delt mobilflate, 19.10.2026
+
+[Beslutning om C](decisions/2026-10-19-mobile-split-view.md) og
+[implementering, faktiske kartmål, tester og skjermbilder](validation/2026-10-19-mobile-split-view-b5-2ab.md).
+Aktiv analyse lever uavhengig av panel. Mobil har Mer kart/Delt/Mer resultat
+i samme OpenLayers-instans; desktop beholder sidepanelene. Ingen metode-/kildeendring
+eller Pages-publisering. B5.2c/d er ikke startet.
+
+## B5.2c – kart- og analyseinteraksjon, 20.10.2026
+
+[Beslutning om eksplisitte analysehandlinger](decisions/2026-10-20-analysis-interaction.md)
+og [C1–C4: kontrollrapport og skjermbilder](validation/2026-10-20-mobile-map-b5-2c.md).
+Utvalg flytter ikke kartet; eksplisitt fit bruker analysegeometri. Innholdsvelger,
+lokalitetsdetaljer med ID/overlappsareal og felles nullstilling er implementert.
+B5.2d og eventuell Pages-publisering er separate, senere oppgaver.
+
+## B5.2d – akseptansevurdering, 21.–22.10.2026
+
+[Sluttkontroll, skjermbilder og gjenstående kontroller](validation/2026-10-20-mobile-map-b5-2d-acceptance.md).
+Anbefaling C: lav reflow-høyde gir bortfall av kartets arbeidsflate. Ett høyt og
+to middels feilfunn, samt ett lavt forbedringsforslag. Uavhengige brukerreiser,
+feiltilstander, fontskalering og axe-nodegjennomgang er gjennomført; fysisk mobil,
+skjermleser og native nettleserzoom gjenstår. Produksjon og Pages er uendret.
+
+## Siste rettelser – 23.10.2026
+
+B5.2d-funn D-01–D-03 er rettet: mobilflaten kan rulles ved lav høyde/stor tekst,
+innholdsvalg bekreftes med «Gå», og små positive arealer/andeler vises med «<0,01».
+[Leveransestatus og forholdsmessig kontroll](utviklingsplan.md). D-04 er ikke fulgt
+opp. Ingen merge, main-endring eller Pages-publisering.

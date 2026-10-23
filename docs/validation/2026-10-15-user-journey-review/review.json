@@ -1,0 +1,5300 @@
+{
+  "mode": "production preview; live public services through unchanged proxy",
+  "widths": [
+    {
+      "width": 1440,
+      "height": 960,
+      "mapViewportNodeRetained": true,
+      "beforeLayers": [
+        {
+          "name": "Grunnkart nivå 0",
+          "checked": true
+        },
+        {
+          "name": "Framtidig utbygging",
+          "checked": false
+        },
+        {
+          "name": "Verdsatte naturtyper",
+          "checked": false
+        },
+        {
+          "name": "Verneområder",
+          "checked": false
+        },
+        {
+          "name": "Inngrepsfri natur (INON)",
+          "checked": false
+        },
+        {
+          "name": "Villrein",
+          "checked": false
+        },
+        {
+          "name": "Grå arealer",
+          "checked": false
+        }
+      ],
+      "keyboardAreaChoice": true
+    },
+    {
+      "width": 900,
+      "height": 900,
+      "mapViewportNodeRetained": true,
+      "beforeLayers": [
+        {
+          "name": "Grunnkart nivå 0",
+          "checked": true
+        },
+        {
+          "name": "Framtidig utbygging",
+          "checked": false
+        },
+        {
+          "name": "Verdsatte naturtyper",
+          "checked": false
+        },
+        {
+          "name": "Verneområder",
+          "checked": false
+        },
+        {
+          "name": "Inngrepsfri natur (INON)",
+          "checked": false
+        },
+        {
+          "name": "Villrein",
+          "checked": false
+        },
+        {
+          "name": "Grå arealer",
+          "checked": false
+        }
+      ],
+      "keyboardAreaChoice": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mapViewportNodeRetained": true,
+      "beforeLayers": [
+        {
+          "name": "Grunnkart nivå 0",
+          "checked": true
+        },
+        {
+          "name": "Framtidig utbygging",
+          "checked": false
+        },
+        {
+          "name": "Verdsatte naturtyper",
+          "checked": false
+        },
+        {
+          "name": "Verneområder",
+          "checked": false
+        },
+        {
+          "name": "Inngrepsfri natur (INON)",
+          "checked": false
+        },
+        {
+          "name": "Villrein",
+          "checked": false
+        },
+        {
+          "name": "Grå arealer",
+          "checked": false
+        }
+      ],
+      "keyboardAreaChoice": true
+    },
+    {
+      "width": 320,
+      "height": 720,
+      "mapViewportNodeRetained": true,
+      "beforeLayers": [
+        {
+          "name": "Grunnkart nivå 0",
+          "checked": true
+        },
+        {
+          "name": "Framtidig utbygging",
+          "checked": false
+        },
+        {
+          "name": "Verdsatte naturtyper",
+          "checked": false
+        },
+        {
+          "name": "Verneområder",
+          "checked": false
+        },
+        {
+          "name": "Inngrepsfri natur (INON)",
+          "checked": false
+        },
+        {
+          "name": "Villrein",
+          "checked": false
+        },
+        {
+          "name": "Grå arealer",
+          "checked": false
+        }
+      ],
+      "keyboardAreaChoice": true
+    }
+  ],
+  "observations": [
+    {
+      "scenario": "A",
+      "action": "Overview → Nature themes → Forest; outgoing map affordances captured in text",
+      "observed": true
+    },
+    {
+      "scenario": "B",
+      "periodChange": "1"
+    },
+    {
+      "scenario": "D",
+      "chosenType": "Viktig bekkedrag",
+      "chosenLocality": "Tanemsmyra\nIntakt lavlandsmyr i innlandet · BN00109936",
+      "searchAfterReset": "___finnes_ikke___",
+      "captionAfterReset": "0 av 70 lokaliteter"
+    },
+    {
+      "scenario": "F",
+      "opacityKeyboardValue": "65"
+    },
+    {
+      "scenario": "E",
+      "viewAfterMunicipalitySwitch": "#oversikt"
+    },
+    {
+      "scenario": "E",
+      "communeAfterReload": ""
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "A-overview-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Trondheim kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Trondheim i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H3",
+          "text": "Nedbygd natur etter økosystemtype"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Trondheim"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 373
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "A-themes-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-naturen",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Hva slags natur har vi i Trondheim?"
+        },
+        {
+          "level": "H2",
+          "text": "Heldekkende informasjon om dagens natur"
+        },
+        {
+          "level": "H2",
+          "text": "Temasider fra regnskapsgrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturtema"
+        },
+        {
+          "level": "H2",
+          "text": "Grunnkart og temadata har ulike roller"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "A-urban-role-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#tema-urban-nature",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Bynaturen (grå arealer)"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygd og opparbeidet areal i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Hva kan Kart over grå arealer fortelle?"
+        },
+        {
+          "level": "H2",
+          "text": "Bruk i kommunal arealplanlegging"
+        },
+        {
+          "level": "H2",
+          "text": "Kilder og metode"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Kommuneoversikt",
+          "width": 98.21875,
+          "height": 17.265625
+        },
+        {
+          "text": "+",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "–",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": []
+    },
+    {
+      "name": "A-forest-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#tema-forest",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Skog"
+        },
+        {
+          "level": "H2",
+          "text": "Skog i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Fordeling på skogtype"
+        },
+        {
+          "level": "H2",
+          "text": "Skogtyper etter størrelse"
+        },
+        {
+          "level": "H2",
+          "text": "Ofte stilte spørsmål"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Kommuneoversikt",
+          "width": 98.21875,
+          "height": 17.265625
+        },
+        {
+          "text": "+",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "–",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": []
+    },
+    {
+      "name": "B-loss-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Utvikling over tid"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilke økosystemtyper er bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva har arealene blitt bygget ned til?"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "B-loss-table-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Utvikling over tid"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilke økosystemtyper er bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva har arealene blitt bygget ned til?"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "C-area-all-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 685,
+        "scrollHeight": 1159,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "C-forest-before-fit-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 685,
+        "scrollHeight": 1159,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "C-forest-fit-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 685,
+        "scrollHeight": 1159,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "D-values-all-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 7198,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "D-value-filter-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 7198,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "D-locality-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 7357,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        },
+        {
+          "level": "H3",
+          "text": "Tanemsmyra"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 162
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "D-empty-search-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 3042,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        },
+        {
+          "level": "H3",
+          "text": "Tanemsmyra"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 162
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "D-reset-with-search-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 2883,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 162
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "C-area-all-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 685,
+        "scrollHeight": 1159,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "D-values-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 197,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 276,
+        "width": 337,
+        "height": 685,
+        "scrollHeight": 7198,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 293,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "F-grey-layers-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 1166,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 125
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "A-overview-900",
+      "width": 900,
+      "height": 900,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Trondheim kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Trondheim i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H3",
+          "text": "Nedbygd natur etter økosystemtype"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Trondheim"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 298
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "B-loss-900",
+      "width": 900,
+      "height": 900,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Utvikling over tid"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilke økosystemtyper er bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva har arealene blitt bygget ned til?"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "C-area-all-900",
+      "width": 900,
+      "height": 900,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 340,
+        "y": 259,
+        "width": 560,
+        "height": 604,
+        "scrollHeight": 604,
+        "clientHeight": 604
+      },
+      "panel": {
+        "x": 0,
+        "y": 197,
+        "width": 340,
+        "height": 704,
+        "scrollHeight": 704,
+        "clientHeight": 704
+      },
+      "detail": {
+        "x": 0,
+        "y": 274,
+        "width": 339,
+        "height": 627,
+        "scrollHeight": 1219,
+        "clientHeight": 627
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "D-values-900",
+      "width": 900,
+      "height": 900,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 252,
+        "y": 259,
+        "width": 648,
+        "height": 604,
+        "scrollHeight": 604,
+        "clientHeight": 604
+      },
+      "panel": {
+        "x": 0,
+        "y": 197,
+        "width": 252,
+        "height": 704,
+        "scrollHeight": 704,
+        "clientHeight": 704
+      },
+      "detail": {
+        "x": 0,
+        "y": 274,
+        "width": 251,
+        "height": 627,
+        "scrollHeight": 7363,
+        "clientHeight": 627
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 215,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 215,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "F-grey-layers-900",
+      "width": 900,
+      "height": 900,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 252,
+        "y": 259,
+        "width": 648,
+        "height": 604,
+        "scrollHeight": 604,
+        "clientHeight": 604
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 553
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "A-overview-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Trondheim kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Trondheim i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H3",
+          "text": "Nedbygd natur etter økosystemtype"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Trondheim"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 298
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "B-loss-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Utvikling over tid"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilke økosystemtyper er bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva har arealene blitt bygget ned til?"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "C-area-all-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 390,
+        "height": 210,
+        "scrollHeight": 210,
+        "clientHeight": 210
+      },
+      "panel": {
+        "x": 0,
+        "y": 424,
+        "width": 390,
+        "height": 360,
+        "scrollHeight": 359,
+        "clientHeight": 359
+      },
+      "detail": {
+        "x": 1,
+        "y": 486,
+        "width": 388,
+        "height": 298,
+        "scrollHeight": 1211,
+        "clientHeight": 298
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "C-map-only-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 390,
+        "height": 570,
+        "scrollHeight": 570,
+        "clientHeight": 570
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "D-values-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 390,
+        "height": 270,
+        "scrollHeight": 270,
+        "clientHeight": 270
+      },
+      "panel": {
+        "x": 0,
+        "y": 484,
+        "width": 390,
+        "height": 300,
+        "scrollHeight": 299,
+        "clientHeight": 299
+      },
+      "detail": {
+        "x": 1,
+        "y": 546,
+        "width": 388,
+        "height": 238,
+        "scrollHeight": 7159,
+        "clientHeight": 238
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 352,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 352,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "F-grey-layers-390",
+      "width": 390,
+      "height": 844,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 390,
+        "height": 270,
+        "scrollHeight": 270,
+        "clientHeight": 270
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 553
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "A-overview-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Trondheim kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Trondheim i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H3",
+          "text": "Nedbygd natur etter økosystemtype"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Trondheim"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 298
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "B-loss-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Trondheim"
+        },
+        {
+          "level": "H2",
+          "text": "Utvikling over tid"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilke økosystemtyper er bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva har arealene blitt bygget ned til?"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "C-area-all-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 320,
+        "height": 122,
+        "scrollHeight": 122,
+        "clientHeight": 122
+      },
+      "panel": {
+        "x": 0,
+        "y": 336,
+        "width": 320,
+        "height": 324,
+        "scrollHeight": 323,
+        "clientHeight": 323
+      },
+      "detail": {
+        "x": 1,
+        "y": 398,
+        "width": 318,
+        "height": 262,
+        "scrollHeight": 1275,
+        "clientHeight": 262
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "C-map-only-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 320,
+        "height": 446,
+        "scrollHeight": 446,
+        "clientHeight": 446
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "D-values-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 320,
+        "height": 186,
+        "scrollHeight": 186,
+        "clientHeight": 186
+      },
+      "panel": {
+        "x": 0,
+        "y": 400,
+        "width": 320,
+        "height": 260,
+        "scrollHeight": 259,
+        "clientHeight": 259
+      },
+      "detail": {
+        "x": 1,
+        "y": 462,
+        "width": 318,
+        "height": 198,
+        "scrollHeight": 7216,
+        "clientHeight": 198
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Registrerte naturverdier"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter KU-verdi"
+        },
+        {
+          "level": "H3",
+          "text": "Fordeling etter naturtype"
+        },
+        {
+          "level": "H3",
+          "text": "Berørte lokaliteter"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 282,
+          "scrollWidth": 440
+        },
+        {
+          "class": "future-nature-analysis__table",
+          "role": null,
+          "clientWidth": 282,
+          "scrollWidth": 440
+        }
+      ]
+    },
+    {
+      "name": "F-grey-layers-320",
+      "width": 320,
+      "height": 720,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 0,
+        "y": 180,
+        "width": 320,
+        "height": 186,
+        "scrollHeight": 186,
+        "clientHeight": 186
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 553
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "F-opacity-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 258,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 196,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 275,
+        "width": 337,
+        "height": 439.5,
+        "scrollHeight": 440,
+        "clientHeight": 440
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Grunnkart nivå 0"
+        },
+        {
+          "level": "H3",
+          "text": "Grunnkart nivå 0"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "F-keyboard-map-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 258,
+        "width": 1166,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "F-legend-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 258,
+        "width": 828,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1102,
+        "y": 196,
+        "width": 338,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1103,
+        "y": 275,
+        "width": 337,
+        "height": 284.5,
+        "scrollHeight": 285,
+        "clientHeight": 285
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Tegnforklaring"
+        },
+        {
+          "level": "H3",
+          "text": "Grunnkart nivå 0"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "F-brand-hover-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 258,
+        "width": 1166,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "E-oslo-forced-overview-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Oslo kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Oslo i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Oslo"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "E-oslo-map-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 1166,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 656
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "E-oslo-analysis-unavailable-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 141.1875,
+        "scrollHeight": 141,
+        "clientHeight": 141
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 656
+        },
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "E-oslo-overview-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#oversikt",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturregnskap for Oslo kommune"
+        },
+        {
+          "level": "H2",
+          "text": "Natur"
+        },
+        {
+          "level": "H2",
+          "text": "Jordbruk"
+        },
+        {
+          "level": "H2",
+          "text": "Bebygget"
+        },
+        {
+          "level": "H2",
+          "text": "Naturen i Oslo i dag"
+        },
+        {
+          "level": "H2",
+          "text": "Om datagrunnlaget"
+        },
+        {
+          "level": "H2",
+          "text": "Natur bygges nedbit for bit."
+        },
+        {
+          "level": "H2",
+          "text": "Hva har blitt bygget ned?"
+        },
+        {
+          "level": "H2",
+          "text": "Hvilken natur ligger i områder avsatt til framtidig utbygging?"
+        },
+        {
+          "level": "H2",
+          "text": "Utforsk naturen i Oslo"
+        },
+        {
+          "level": "H3",
+          "text": "Økosystemer"
+        },
+        {
+          "level": "H3",
+          "text": "Naturverdier og vern"
+        },
+        {
+          "level": "H2",
+          "text": "Se naturen i sammenheng."
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "⇧",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "text": "i",
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 1014
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 161
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 188
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 234
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 281
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 252
+        },
+        {
+          "class": "visually-hidden",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 176
+        }
+      ]
+    },
+    {
+      "name": "E-oslo-loss-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Naturtapet i Oslo"
+        },
+        {
+          "level": "H2",
+          "text": "Statistikk først.Stedfesting senere."
+        },
+        {
+          "level": "H3",
+          "text": "Et annet spørsmål: Hva kan bli berørt?"
+        },
+        {
+          "level": "H2",
+          "text": "Hva forteller tallene?"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "E-oslo-after-reload-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#naturtapet",
+      "map": null,
+      "panel": null,
+      "detail": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Velg kommune for å se naturregnskapet"
+        }
+      ],
+      "smallTargets": [],
+      "innerScrollers": []
+    },
+    {
+      "name": "E-trondheim-restored-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 685,
+        "scrollHeight": 1159,
+        "clientHeight": 685
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        },
+        {
+          "level": "H3",
+          "text": "Natur etter økosystemtype"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    },
+    {
+      "name": "F-controlled-plan-error-1440",
+      "width": 1440,
+      "height": 960,
+      "pageOverflow": 0,
+      "hash": "#utforsk-i-kart",
+      "map": {
+        "x": 274,
+        "y": 259,
+        "width": 746,
+        "height": 664,
+        "scrollHeight": 664,
+        "clientHeight": 664
+      },
+      "panel": {
+        "x": 1020,
+        "y": 197,
+        "width": 420,
+        "height": 764,
+        "scrollHeight": 764,
+        "clientHeight": 764
+      },
+      "detail": {
+        "x": 1021,
+        "y": 276,
+        "width": 419,
+        "height": 141.1875,
+        "scrollHeight": 141,
+        "clientHeight": 141
+      },
+      "headings": [
+        {
+          "level": "H1",
+          "text": "Utforsk i kart"
+        },
+        {
+          "level": "H2",
+          "text": "Kartlag"
+        },
+        {
+          "level": "H2",
+          "text": "Arealfordeling"
+        }
+      ],
+      "smallTargets": [
+        {
+          "text": "Grunnkart nivå 0",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Framtidig utbygging",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verdsatte naturtyper",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Verneområder",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Inngrepsfri natur (INON)",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Villrein",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "Grå arealer",
+          "width": 18,
+          "height": 18
+        },
+        {
+          "text": "⇧",
+          "width": 19.25,
+          "height": 44
+        },
+        {
+          "text": "i",
+          "width": 19.25,
+          "height": 44
+        }
+      ],
+      "innerScrollers": [
+        {
+          "class": "sr-only",
+          "role": null,
+          "clientWidth": 1,
+          "scrollWidth": 950
+        }
+      ]
+    }
+  ],
+  "javascriptErrors": [],
+  "accessibility": [
+    {
+      "screen": "A-overview-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".site-header__test"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"span\" elements with no valid role attribute."
+            },
+            {
+              "target": [
+                ".overview-summary"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            },
+            {
+              "target": [
+                ".overview-home__map-legend"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            },
+            {
+              "target": [
+                ".plan-area-preview"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".ol-attribution-expand"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "footer > a[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-photo__fallback > span"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                "small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                ".overview-story__text > .overview-home__link[href$=\"#naturtapet\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__section-heading > .overview-home__link[href$=\"#naturtapet\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__link[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__link[href$=\"#utforsk-naturen\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-forest\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-vatmark\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-protected-areas\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-valued-nature\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-theme-card:nth-child(3) > a > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-wild-reindeer-areas\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__button > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "A-themes-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [
+        {
+          "id": "aria-required-children",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "description": "Ensure elements with an ARIA role that require child roles contain them",
+          "help": "Certain ARIA roles must contain particular children",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-required-children?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "aria-required-children",
+                  "data": {
+                    "messageKey": "unallowed",
+                    "values": "button"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page theme-card--account\">",
+                      "target": [
+                        ".theme-card--account.theme-card.theme-card--page:nth-child(1)"
+                      ]
+                    },
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page theme-card--account\">",
+                      "target": [
+                        ".theme-card--account.theme-card.theme-card--page:nth-child(2)"
+                      ]
+                    },
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page theme-card--account\">",
+                      "target": [
+                        ".theme-card--account.theme-card.theme-card--page:nth-child(3)"
+                      ]
+                    }
+                  ],
+                  "impact": "critical",
+                  "message": "Element has children which are not allowed: button"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "critical",
+              "html": "<div class=\"theme-grid theme-grid--account\" role=\"list\" aria-label=\"Temasider i regnskapsgrunnlaget\">",
+              "target": [
+                ".theme-grid--account"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has children which are not allowed: button"
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-children",
+                  "data": {
+                    "messageKey": "unallowed",
+                    "values": "button"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page\">",
+                      "target": [
+                        ".theme-grid--pages > .theme-card.theme-card--page:nth-child(1)"
+                      ]
+                    },
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page\">",
+                      "target": [
+                        ".theme-grid--pages > .theme-card.theme-card--page:nth-child(2)"
+                      ]
+                    },
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page\">",
+                      "target": [
+                        ".theme-grid--pages > .theme-card.theme-card--page:nth-child(3)"
+                      ]
+                    },
+                    {
+                      "html": "<button type=\"button\" class=\"theme-card theme-card--page\">",
+                      "target": [
+                        ".theme-card.theme-card--page:nth-child(4)"
+                      ]
+                    }
+                  ],
+                  "impact": "critical",
+                  "message": "Element has children which are not allowed: button"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "critical",
+              "html": "<div class=\"theme-grid theme-grid--pages\" role=\"list\" aria-label=\"Naturtema\">",
+              "target": [
+                ".theme-grid--pages"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has children which are not allowed: button"
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#ffffff",
+                    "bgColor": "#dbe9e9",
+                    "contrastRatio": 1.24,
+                    "fontSize": "11.0pt (14.72px)",
+                    "fontWeight": "bold",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"site-header\">",
+                      "target": [
+                        ".site-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 1.24 (foreground color: #ffffff, background color: #dbe9e9, font size: 11.0pt (14.72px), font weight: bold). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"site-header__brand-label\">Kommunale naturregnskap</span>",
+              "target": [
+                ".site-header__brand-label"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.24 (foreground color: #ffffff, background color: #dbe9e9, font size: 11.0pt (14.72px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".site-header__test"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"span\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".theme-card--account.theme-card.theme-card--page:nth-child(1) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card--account.theme-card.theme-card--page:nth-child(1) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card--account.theme-card.theme-card--page:nth-child(2) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card--account.theme-card.theme-card--page:nth-child(3) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card--account.theme-card.theme-card--page:nth-child(3) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(1) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(1) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(2) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(2) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(3) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-grid--pages > .theme-card.theme-card--page:nth-child(3) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card.theme-card--page:nth-child(4) > .theme-card__icon[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".theme-card.theme-card--page:nth-child(4) > .theme-card__footer > .theme-card__open > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "B-loss-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".site-header__test"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"span\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".overview-photo__fallback > span"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                "small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                ".loss-link[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".loss-link[href$=\"#oversikt\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "C-area-all-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "D-values-all-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#ffffff",
+                    "bgColor": "#e5eeee",
+                    "contrastRatio": 1.18,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" aria-pressed=\"true\">Registrerte naturverdier</button>",
+                      "target": [
+                        ".explore-themes__analysis-switch > button:nth-child(2)"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" aria-pressed=\"true\">Registrerte naturverdier</button>",
+              "target": [
+                ".explore-themes__analysis-switch > button:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".future-nature-analysis__legend > span"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "b"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "C-area-all-390",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#ffffff",
+                    "bgColor": "#e5eeee",
+                    "contrastRatio": 1.18,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" aria-pressed=\"true\">Arealfordeling</button>",
+                      "target": [
+                        ".explore-themes__analysis-switch > button:nth-child(1)"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" aria-pressed=\"true\">Arealfordeling</button>",
+              "target": [
+                ".explore-themes__analysis-switch > button:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".site-menu-toggle > span"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "D-values-390",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "A-overview-320",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".overview-summary"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            },
+            {
+              "target": [
+                ".overview-home__map-legend"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            },
+            {
+              "target": [
+                ".plan-area-preview"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".site-menu-toggle > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".ol-attribution-expand"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                "footer > a[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "strong"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "target": [
+                ".overview-photo__fallback > span"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                "small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                ".overview-story__text > .overview-home__link[href$=\"#naturtapet\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__section-heading > .overview-home__link[href$=\"#naturtapet\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__link[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__link[href$=\"#utforsk-naturen\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-forest\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-vatmark\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-protected-areas\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-valued-nature\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-theme-card:nth-child(3) > a > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                "a[href$=\"#tema-wild-reindeer-areas\"] > .overview-theme-card__footer > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-home__button > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "B-loss-320",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "target": [
+                ".site-menu-toggle > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".overview-photo__fallback > span"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                "small"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "target": [
+                ".loss-link[href$=\"#utforsk-i-kart\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".loss-link[href$=\"#oversikt\"] > span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "C-area-all-320",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#ffffff",
+                    "bgColor": "#e5eeee",
+                    "contrastRatio": 1.18,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" aria-pressed=\"true\">Arealfordeling</button>",
+                      "target": [
+                        ".explore-themes__analysis-switch > button:nth-child(1)"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" aria-pressed=\"true\">Arealfordeling</button>",
+              "target": [
+                ".explore-themes__analysis-switch > button:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.18 (foreground color: #ffffff, background color: #e5eeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".site-menu-toggle > span"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "D-values-320",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "span[aria-hidden=\"true\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "screen": "F-brand-hover-1440",
+      "tool": {
+        "name": "axe-core",
+        "version": "4.14.0"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".combobox__clear"
+              ],
+              "summary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "controlledFailures": [
+    "DiBK HTTP503 on fresh reload; all other data real"
+  ],
+  "completed": true,
+  "networkSummary": [
+    {
+      "host": "api.kartverket.no",
+      "status": "200",
+      "count": 9
+    },
+    {
+      "host": "cache.kartverket.no",
+      "status": "200",
+      "count": 306
+    },
+    {
+      "host": "data.ssb.no",
+      "status": "200",
+      "count": 4
+    },
+    {
+      "host": "images.unsplash.com",
+      "status": "403",
+      "count": 23
+    },
+    {
+      "host": "kart.miljodirektoratet.no",
+      "status": "200",
+      "count": 66
+    },
+    {
+      "host": "kart3.miljodirektoratet.no",
+      "status": "200",
+      "count": 4
+    },
+    {
+      "host": "nap.ft.dibk.no",
+      "status": "200",
+      "count": 40
+    },
+    {
+      "host": "wms.nibio.no",
+      "status": "200",
+      "count": 354
+    }
+  ],
+  "networkRequests": 806,
+  "sameSessionResponseReuses": 258
+}

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities version="1.3.0"
+  xmlns="http://www.opengis.net/wms"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:esri_wms="http://www.esri.com/wms"
+  xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd http://www.esri.com/wms https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?version=1.3.0%26service=WMS%26request=GetSchemaExtension">
+  <Service>
+    <Name><![CDATA[WMS]]></Name>
+    <Title><![CDATA[Verneområder og foreslåtte verneområder]]></Title>
+    <Abstract><![CDATA[Verneområder og foreslåtte verneområder]]></Abstract>
+    <KeywordList><Keyword><![CDATA[Verneområder]]></Keyword></KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson><![CDATA[VMG]]></ContactPerson>
+        <ContactOrganization><![CDATA[Miljødirektoratet]]></ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition><![CDATA[]]></ContactPosition>
+      <ContactAddress>
+        <AddressType><![CDATA[Postboks 5672 Torgarden]]></AddressType>
+        <Address><![CDATA[]]></Address>
+        <City><![CDATA[Trondheim]]></City>
+        <StateOrProvince><![CDATA[Trøndelag]]></StateOrProvince>
+        <PostCode><![CDATA[7485]]></PostCode>
+        <Country><![CDATA[Norge]]></Country>
+      </ContactAddress>
+      <ContactVoiceTelephone><![CDATA[73580500]]></ContactVoiceTelephone>
+      <ContactFacsimileTelephone><![CDATA[]]></ContactFacsimileTelephone>
+      <ContactElectronicMailAddress><![CDATA[wms@miljodirektoratet.no]]></ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees><![CDATA[]]></Fees>
+    <AccessConstraints><![CDATA[NLOD]]></AccessConstraints>
+    <MaxWidth>4096</MaxWidth>
+    <MaxHeight>4096</MaxHeight>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?"/></Get></HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/bmp</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/tiff</Format>
+        <Format>image/png</Format>
+        <Format>image/png8</Format>
+        <Format>image/png24</Format>
+        <Format>image/png32</Format>
+        <Format>image/gif</Format>
+        <Format>image/svg+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?"/></Get></HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>application/vnd.esri.wms_raw_xml</Format>
+        <Format>application/vnd.esri.wms_featureinfo_xml</Format>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>application/geo+json</Format>
+        <Format>text/xml</Format>
+        <Format>text/html</Format>
+        <Format>text/plain</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?"/></Get></HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+      <esri_wms:GetStyles>
+        <Format>application/vnd.ogc.sld+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?"/></Get></HTTP>
+        </DCPType>
+      </esri_wms:GetStyles>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>application/vnd.ogc.se_inimage</Format>
+      <Format>application/vnd.ogc.se_blank</Format>
+      <Format>text/xml</Format>
+      <Format>XML</Format>
+    </Exception>
+    <Layer>
+      <Title><![CDATA[Layers]]></Title>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-19.999981</westBoundLongitude><eastBoundLongitude>46.150583</eastBoundLongitude><southBoundLatitude>57.308559</southBoundLatitude><northBoundLatitude>81.067320</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-19.999981" miny="57.308559" maxx="46.150583" maxy="81.067320"/>
+<BoundingBox CRS="EPSG:4326" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:25833" minx="-383818.550000" miny="6448253.720000" maxx="1099462.690000" maxy="9000718.770000"/>
+<BoundingBox CRS="EPSG:32631" minx="-100023.250447" miny="6355055.704636" maxx="1799910.248760" maxy="9145956.224222"/>
+<BoundingBox CRS="EPSG:32632" minx="-245678.818966" miny="6385578.974322" maxx="1452152.785315" maxy="9068194.679152"/>
+<BoundingBox CRS="EPSG:32633" minx="-383818.549987" miny="6448253.720123" maxx="1099462.689993" maxy="9000718.770098"/>
+<BoundingBox CRS="EPSG:32634" minx="-737595.679379" miny="6410758.480269" maxx="992042.728844" maxy="9078049.994278"/>
+<BoundingBox CRS="EPSG:32635" minx="-1084792.769400" miny="6404957.275938" maxx="879499.788657" maxy="9152076.393235"/>
+<BoundingBox CRS="EPSG:32636" minx="-1422780.308719" miny="6430805.466460" maxx="763030.980490" maxy="9202189.337716"/>
+<BoundingBox CRS="EPSG:25831" minx="-100023.250456" miny="6355055.704513" maxx="1799910.248776" maxy="9145956.224126"/>
+<BoundingBox CRS="EPSG:25832" minx="-245678.818978" miny="6385578.974199" maxx="1452152.785326" maxy="9068194.679055"/>
+<BoundingBox CRS="EPSG:25834" minx="-737595.679393" miny="6410758.480145" maxx="992042.728852" maxy="9078049.994181"/>
+<BoundingBox CRS="EPSG:25835" minx="-1084792.769419" miny="6404957.275814" maxx="879499.788663" maxy="9152076.393139"/>
+<BoundingBox CRS="EPSG:25836" minx="-1422780.308741" miny="6430805.466336" maxx="763030.980494" maxy="9202189.337621"/>
+<BoundingBox CRS="EPSG:4258" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:3857" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+<BoundingBox CRS="EPSG:102100" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+      <Layer queryable="1">
+        <Name>foreslatt_naturvern_grense</Name>
+        <Title><![CDATA[foreslatt_naturvern_grense]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-8.354645</westBoundLongitude><eastBoundLongitude>39.122366</eastBoundLongitude><southBoundLatitude>57.920489</southBoundLatitude><northBoundLatitude>78.257664</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-8.354645" miny="57.920489" maxx="39.122366" maxy="78.257664"/>
+<BoundingBox CRS="EPSG:4326" minx="57.920489" miny="-8.354645" maxx="78.257664" maxy="39.122366"/>
+<BoundingBox CRS="EPSG:25833" minx="-61345.270000" miny="6462403.620000" maxx="1082077.680000" maxy="8687125.320000"/>
+<BoundingBox CRS="EPSG:32631" minx="221748.013882" miny="6425543.171178" maxx="1779941.031695" maxy="8834301.969410"/>
+<BoundingBox CRS="EPSG:32632" minx="78088.702507" miny="6428181.065658" maxx="1433443.901128" maxy="8753901.842480"/>
+<BoundingBox CRS="EPSG:32633" minx="-61345.269991" miny="6462403.620124" maxx="1082077.679993" maxy="8687125.320103"/>
+<BoundingBox CRS="EPSG:32634" minx="-412662.641556" miny="6426342.404651" maxx="942499.136220" maxy="8751762.692289"/>
+<BoundingBox CRS="EPSG:32635" minx="-759227.692987" miny="6421888.573206" maxx="798489.124331" maxy="8830026.926624"/>
+<BoundingBox CRS="EPSG:32636" minx="-1098767.943962" miny="6449008.531714" maxx="651511.174976" maxy="8921219.428621"/>
+<BoundingBox CRS="EPSG:25831" minx="221748.013877" miny="6425543.171054" maxx="1779941.031710" maxy="8834301.969310"/>
+<BoundingBox CRS="EPSG:25832" minx="78088.702500" miny="6428181.065534" maxx="1433443.901139" maxy="8753901.842379"/>
+<BoundingBox CRS="EPSG:25834" minx="-412662.641566" miny="6426342.404528" maxx="942499.136227" maxy="8751762.692188"/>
+<BoundingBox CRS="EPSG:25835" minx="-759227.693002" miny="6421888.573082" maxx="798489.124336" maxy="8830026.926523"/>
+<BoundingBox CRS="EPSG:25836" minx="-1098767.943981" miny="6449008.531590" maxx="651511.174978" maxy="8921219.428522"/>
+<BoundingBox CRS="EPSG:4258" minx="57.920489" miny="-8.354645" maxx="78.257664" maxy="39.122366"/>
+<BoundingBox CRS="EPSG:3857" minx="-930034.877733" miny="7950633.238468" maxx="4355081.860421" maxy="14508122.957167"/>
+<BoundingBox CRS="EPSG:102100" minx="-930034.877733" miny="7950633.238468" maxx="4355081.860421" maxy="14508122.957167"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[foreslatt_naturvern_grense]]></Title>
+          <LegendURL width="198" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=foreslatt_naturvern_grense" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>foreslatt_naturvern_omrade</Name>
+        <Title><![CDATA[foreslatt_naturvern_omrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-8.354645</westBoundLongitude><eastBoundLongitude>39.122366</eastBoundLongitude><southBoundLatitude>57.920489</southBoundLatitude><northBoundLatitude>78.257664</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-8.354645" miny="57.920489" maxx="39.122366" maxy="78.257664"/>
+<BoundingBox CRS="EPSG:4326" minx="57.920489" miny="-8.354645" maxx="78.257664" maxy="39.122366"/>
+<BoundingBox CRS="EPSG:25833" minx="-61345.270000" miny="6462403.620000" maxx="1082077.680000" maxy="8687125.320000"/>
+<BoundingBox CRS="EPSG:32631" minx="221748.013882" miny="6425543.171178" maxx="1779941.031695" maxy="8834301.969410"/>
+<BoundingBox CRS="EPSG:32632" minx="78088.702507" miny="6428181.065658" maxx="1433443.901128" maxy="8753901.842480"/>
+<BoundingBox CRS="EPSG:32633" minx="-61345.269991" miny="6462403.620124" maxx="1082077.679993" maxy="8687125.320103"/>
+<BoundingBox CRS="EPSG:32634" minx="-412662.641556" miny="6426342.404651" maxx="942499.136220" maxy="8751762.692289"/>
+<BoundingBox CRS="EPSG:32635" minx="-759227.692987" miny="6421888.573206" maxx="798489.124331" maxy="8830026.926624"/>
+<BoundingBox CRS="EPSG:32636" minx="-1098767.943962" miny="6449008.531714" maxx="651511.174976" maxy="8921219.428621"/>
+<BoundingBox CRS="EPSG:25831" minx="221748.013877" miny="6425543.171054" maxx="1779941.031710" maxy="8834301.969310"/>
+<BoundingBox CRS="EPSG:25832" minx="78088.702500" miny="6428181.065534" maxx="1433443.901139" maxy="8753901.842379"/>
+<BoundingBox CRS="EPSG:25834" minx="-412662.641566" miny="6426342.404528" maxx="942499.136227" maxy="8751762.692188"/>
+<BoundingBox CRS="EPSG:25835" minx="-759227.693002" miny="6421888.573082" maxx="798489.124336" maxy="8830026.926523"/>
+<BoundingBox CRS="EPSG:25836" minx="-1098767.943981" miny="6449008.531590" maxx="651511.174978" maxy="8921219.428522"/>
+<BoundingBox CRS="EPSG:4258" minx="57.920489" miny="-8.354645" maxx="78.257664" maxy="39.122366"/>
+<BoundingBox CRS="EPSG:3857" minx="-930034.877733" miny="7950633.238468" maxx="4355081.860421" maxy="14508122.957167"/>
+<BoundingBox CRS="EPSG:102100" minx="-930034.877733" miny="7950633.238468" maxx="4355081.860421" maxy="14508122.957167"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[foreslatt_naturvern_omrade]]></Title>
+          <LegendURL width="156" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=foreslatt_naturvern_omrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>naturvern_grense</Name>
+        <Title><![CDATA[naturvern_grense]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-19.999981</westBoundLongitude><eastBoundLongitude>46.150583</eastBoundLongitude><southBoundLatitude>57.308559</southBoundLatitude><northBoundLatitude>81.067320</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-19.999981" miny="57.308559" maxx="46.150583" maxy="81.067320"/>
+<BoundingBox CRS="EPSG:4326" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:25833" minx="-383818.550000" miny="6448253.720000" maxx="1099462.690000" maxy="9000718.770000"/>
+<BoundingBox CRS="EPSG:32631" minx="-100023.250447" miny="6355055.704636" maxx="1799910.248760" maxy="9145956.224222"/>
+<BoundingBox CRS="EPSG:32632" minx="-245678.818966" miny="6385578.974322" maxx="1452152.785315" maxy="9068194.679152"/>
+<BoundingBox CRS="EPSG:32633" minx="-383818.549987" miny="6448253.720123" maxx="1099462.689993" maxy="9000718.770098"/>
+<BoundingBox CRS="EPSG:32634" minx="-737595.679379" miny="6410758.480269" maxx="992042.728844" maxy="9078049.994278"/>
+<BoundingBox CRS="EPSG:32635" minx="-1084792.769400" miny="6404957.275938" maxx="879499.788657" maxy="9152076.393235"/>
+<BoundingBox CRS="EPSG:32636" minx="-1422780.308719" miny="6430805.466460" maxx="763030.980490" maxy="9202189.337716"/>
+<BoundingBox CRS="EPSG:25831" minx="-100023.250456" miny="6355055.704513" maxx="1799910.248776" maxy="9145956.224126"/>
+<BoundingBox CRS="EPSG:25832" minx="-245678.818978" miny="6385578.974199" maxx="1452152.785326" maxy="9068194.679055"/>
+<BoundingBox CRS="EPSG:25834" minx="-737595.679393" miny="6410758.480145" maxx="992042.728852" maxy="9078049.994181"/>
+<BoundingBox CRS="EPSG:25835" minx="-1084792.769419" miny="6404957.275814" maxx="879499.788663" maxy="9152076.393139"/>
+<BoundingBox CRS="EPSG:25836" minx="-1422780.308741" miny="6430805.466336" maxx="763030.980494" maxy="9202189.337621"/>
+<BoundingBox CRS="EPSG:4258" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:3857" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+<BoundingBox CRS="EPSG:102100" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[naturvern_grense]]></Title>
+          <LegendURL width="126" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_grense" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>naturvern_teiggrensepunkt</Name>
+        <Title><![CDATA[naturvern_teiggrensepunkt]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-0.241665</westBoundLongitude><eastBoundLongitude>31.358048</eastBoundLongitude><southBoundLatitude>57.912821</southBoundLatitude><northBoundLatitude>71.560763</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-0.241665" miny="57.912821" maxx="31.358048" maxy="71.560763"/>
+<BoundingBox CRS="EPSG:4326" minx="57.912821" miny="-0.241665" maxx="71.560763" maxy="31.358048"/>
+<BoundingBox CRS="EPSG:25833" minx="-50453.540000" miny="6463136.480000" maxx="1092852.690000" maxy="7939940.420000"/>
+<BoundingBox CRS="EPSG:32631" minx="381876.243969" miny="6428182.579751" maxx="1790574.337011" maxy="8100269.836941"/>
+<BoundingBox CRS="EPSG:32632" minx="164250.175859" miny="6429874.648960" maxx="1444179.388101" maxy="8009574.432583"/>
+<BoundingBox CRS="EPSG:32633" minx="-50453.539992" miny="6463136.480124" maxx="1092852.689993" maxy="7939940.420113"/>
+<BoundingBox CRS="EPSG:32634" minx="-401680.446377" miny="6426114.190326" maxx="877836.695329" maxy="8005323.859057"/>
+<BoundingBox CRS="EPSG:32635" minx="-748214.501256" miny="6420708.142421" maxx="659533.727665" maxy="8091741.384712"/>
+<BoundingBox CRS="EPSG:32636" minx="-1087793.351892" miny="6446877.524070" maxx="439854.488781" maxy="8198731.671136"/>
+<BoundingBox CRS="EPSG:25831" minx="381876.243968" miny="6428182.579627" maxx="1790574.337026" maxy="8100269.836831"/>
+<BoundingBox CRS="EPSG:25832" minx="164250.175854" miny="6429874.648837" maxx="1444179.388112" maxy="8009574.432472"/>
+<BoundingBox CRS="EPSG:25834" minx="-401680.446388" miny="6426114.190203" maxx="877836.695335" maxy="8005323.858945"/>
+<BoundingBox CRS="EPSG:25835" minx="-748214.501270" miny="6420708.142298" maxx="659533.727667" maxy="8091741.384602"/>
+<BoundingBox CRS="EPSG:25836" minx="-1087793.351911" miny="6446877.523947" maxx="439854.488780" maxy="8198731.671028"/>
+<BoundingBox CRS="EPSG:4258" minx="57.912821" miny="-0.241665" maxx="71.560763" maxy="31.358048"/>
+<BoundingBox CRS="EPSG:3857" minx="-26902.033177" miny="7949026.243331" maxx="3490761.884518" maxy="11596791.261487"/>
+<BoundingBox CRS="EPSG:102100" minx="-26902.033177" miny="7949026.243331" maxx="3490761.884518" maxy="11596791.261487"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[naturvern_teiggrensepunkt]]></Title>
+          <LegendURL width="108" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_teiggrensepunkt" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>naturvern_klasser_omrade</Name>
+        <Title><![CDATA[naturvern_klasser_omrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-19.999981</westBoundLongitude><eastBoundLongitude>46.150583</eastBoundLongitude><southBoundLatitude>57.308559</southBoundLatitude><northBoundLatitude>81.067320</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-19.999981" miny="57.308559" maxx="46.150583" maxy="81.067320"/>
+<BoundingBox CRS="EPSG:4326" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:25833" minx="-383818.550000" miny="6448253.720000" maxx="1099462.690000" maxy="9000718.770000"/>
+<BoundingBox CRS="EPSG:32631" minx="-100023.250447" miny="6355055.704636" maxx="1799910.248760" maxy="9145956.224222"/>
+<BoundingBox CRS="EPSG:32632" minx="-245678.818966" miny="6385578.974322" maxx="1452152.785315" maxy="9068194.679152"/>
+<BoundingBox CRS="EPSG:32633" minx="-383818.549987" miny="6448253.720123" maxx="1099462.689993" maxy="9000718.770098"/>
+<BoundingBox CRS="EPSG:32634" minx="-737595.679379" miny="6410758.480269" maxx="992042.728844" maxy="9078049.994278"/>
+<BoundingBox CRS="EPSG:32635" minx="-1084792.769400" miny="6404957.275938" maxx="879499.788657" maxy="9152076.393235"/>
+<BoundingBox CRS="EPSG:32636" minx="-1422780.308719" miny="6430805.466460" maxx="763030.980490" maxy="9202189.337716"/>
+<BoundingBox CRS="EPSG:25831" minx="-100023.250456" miny="6355055.704513" maxx="1799910.248776" maxy="9145956.224126"/>
+<BoundingBox CRS="EPSG:25832" minx="-245678.818978" miny="6385578.974199" maxx="1452152.785326" maxy="9068194.679055"/>
+<BoundingBox CRS="EPSG:25834" minx="-737595.679393" miny="6410758.480145" maxx="992042.728852" maxy="9078049.994181"/>
+<BoundingBox CRS="EPSG:25835" minx="-1084792.769419" miny="6404957.275814" maxx="879499.788663" maxy="9152076.393139"/>
+<BoundingBox CRS="EPSG:25836" minx="-1422780.308741" miny="6430805.466336" maxx="763030.980494" maxy="9202189.337621"/>
+<BoundingBox CRS="EPSG:4258" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:3857" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+<BoundingBox CRS="EPSG:102100" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[naturvern_klasser_omrade]]></Title>
+          <LegendURL width="132" height="108">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_klasser_omrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1">
+        <Name>naturvern_omrade</Name>
+        <Title><![CDATA[naturvern_omrade]]></Title>
+        <Abstract><![CDATA[]]></Abstract>
+<CRS>CRS:84</CRS>
+<CRS>EPSG:4326</CRS>
+<CRS>EPSG:25833</CRS>
+<CRS>EPSG:32631</CRS>
+<CRS>EPSG:32632</CRS>
+<CRS>EPSG:32633</CRS>
+<CRS>EPSG:32634</CRS>
+<CRS>EPSG:32635</CRS>
+<CRS>EPSG:32636</CRS>
+<CRS>EPSG:25831</CRS>
+<CRS>EPSG:25832</CRS>
+<CRS>EPSG:25834</CRS>
+<CRS>EPSG:25835</CRS>
+<CRS>EPSG:25836</CRS>
+<CRS>EPSG:4258</CRS>
+<CRS>EPSG:3857</CRS>
+ <!-- alias 3857 -->
+<CRS>EPSG:102100</CRS>
+<EX_GeographicBoundingBox><westBoundLongitude>-19.999981</westBoundLongitude><eastBoundLongitude>46.150583</eastBoundLongitude><southBoundLatitude>57.308559</southBoundLatitude><northBoundLatitude>81.067320</northBoundLatitude></EX_GeographicBoundingBox>
+<BoundingBox CRS="CRS:84" minx="-19.999981" miny="57.308559" maxx="46.150583" maxy="81.067320"/>
+<BoundingBox CRS="EPSG:4326" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:25833" minx="-383818.550000" miny="6448253.720000" maxx="1099462.690000" maxy="9000718.770000"/>
+<BoundingBox CRS="EPSG:32631" minx="-100023.250447" miny="6355055.704636" maxx="1799910.248760" maxy="9145956.224222"/>
+<BoundingBox CRS="EPSG:32632" minx="-245678.818966" miny="6385578.974322" maxx="1452152.785315" maxy="9068194.679152"/>
+<BoundingBox CRS="EPSG:32633" minx="-383818.549987" miny="6448253.720123" maxx="1099462.689993" maxy="9000718.770098"/>
+<BoundingBox CRS="EPSG:32634" minx="-737595.679379" miny="6410758.480269" maxx="992042.728844" maxy="9078049.994278"/>
+<BoundingBox CRS="EPSG:32635" minx="-1084792.769400" miny="6404957.275938" maxx="879499.788657" maxy="9152076.393235"/>
+<BoundingBox CRS="EPSG:32636" minx="-1422780.308719" miny="6430805.466460" maxx="763030.980490" maxy="9202189.337716"/>
+<BoundingBox CRS="EPSG:25831" minx="-100023.250456" miny="6355055.704513" maxx="1799910.248776" maxy="9145956.224126"/>
+<BoundingBox CRS="EPSG:25832" minx="-245678.818978" miny="6385578.974199" maxx="1452152.785326" maxy="9068194.679055"/>
+<BoundingBox CRS="EPSG:25834" minx="-737595.679393" miny="6410758.480145" maxx="992042.728852" maxy="9078049.994181"/>
+<BoundingBox CRS="EPSG:25835" minx="-1084792.769419" miny="6404957.275814" maxx="879499.788663" maxy="9152076.393139"/>
+<BoundingBox CRS="EPSG:25836" minx="-1422780.308741" miny="6430805.466336" maxx="763030.980494" maxy="9202189.337621"/>
+<BoundingBox CRS="EPSG:4258" minx="57.308559" miny="-19.999981" maxx="81.067320" maxy="46.150583"/>
+<BoundingBox CRS="EPSG:3857" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+<BoundingBox CRS="EPSG:102100" minx="-2226387.737673" miny="7823448.720874" maxx="5137459.419815" maxy="16261885.086441"/>
+        <Style>
+          <Name>default</Name>
+          <Title><![CDATA[naturvern_omrade]]></Title>
+          <LegendURL width="90" height="18">
+            <Format>image/png</Format>
+            <OnlineResource xlink:href="https://kart.miljodirektoratet.no/arcgis/services/vern/MapServer/WmsServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=naturvern_omrade" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>
