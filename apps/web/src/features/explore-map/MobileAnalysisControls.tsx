@@ -65,7 +65,7 @@ export function MobileAnalysisControls(props: Props) {
       {([['map','Mer kart'],['split','Delt'],['results','Mer resultat']] as const).map(([value,label])=><button type="button" key={value} aria-pressed={viewMode===value} aria-controls={props.panelId} onClick={()=>props.onView(value)}>{label}</button>)}
     </div>
     <section className="mobile-analysis-summary" aria-label="Aktiv analyse og kartutvalg">
-      <div className="mobile-analysis-summary__value" role="status">{status?<span>{status}</span>:<><strong>{locality?localityDaa(value!):planDaa(value!)}{locality&&<small> overlapp</small>}</strong><span title={locality?`${locality.id} · ${locality.value||'KU-verdi ikke oppgitt'}`:label}>{locality?`${locality.id}${locality.value?` · ${locality.value}`:''}`:label}{mode==='nature'&&natureSelection.kind==='all'?` · ${natureResult?.localityCount} lokaliteter`:''}</span></>}</div>
+      <div className="mobile-analysis-summary__value" role="status">{status?<span>{status}</span>:<><strong>{mode==='nature'?localityDaa(value!):planDaa(value!)}{locality&&<small> overlapp</small>}</strong><span title={locality?`${locality.id} · ${locality.value||'KU-verdi ikke oppgitt'}`:label}>{locality?`${locality.id}${locality.value?` · ${locality.value}`:''}`:label}{mode==='nature'&&natureSelection.kind==='all'?` · ${natureResult?.localityCount} lokaliteter`:''}</span></>}</div>
       <div className="mobile-analysis-summary__actions">
         <label className="sr-only" htmlFor={`${props.panelId}-selection`}>Kartutvalg i analysen</label>
         <select id={`${props.panelId}-selection`} value={selected} disabled={!available} onChange={e=>select(e.target.value)}>

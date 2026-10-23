@@ -329,3 +329,23 @@ for publisering. Ett høyt reflow-/forstørringsfunn, to middels presentasjons-/
 tastaturfunn og ett lavt forbedringsforslag. Nye regresjoner og uavhengige A1–A5-
 reiser er fullført, med bevart dokumentasjon. Fysisk mobil, skjermleser og native
 nettleserzoom gjenstår. Ingen produksjonsrettelser, merge, main-endring eller Pages.
+
+## Oppdatert status 23.10.2026: siste rettelser
+
+D-01–D-03 fra B5.2d er rettet samlet. Mobil beholder de tre modusene og normal
+kartflate, men lar hele flaten rulles når høyde eller tekststørrelse krever det.
+Kontrollrader og header vokser med innholdet. Innholdsvelgeren beholder native
+valg/fokus, og «Gå» bekrefter navigasjon med mus, berøring eller tastatur.
+Felles presentasjonsformat viser positive arealer/andeler under 0,01 som «<0,01»;
+eksakt null er fortsatt null. Beregninger, kilder og geometrier er uendret.
+
+217 frontendtester og 30 backendtester består, samt lint og build. Den målrettede
+Chromium-kontrollen `tests/browser/check-final-fixes.mjs` består ved 390×844,
+320×720, 360×240 og kontrollert 200/400 % fontskalering, inkludert tastaturvalg,
+liten positiv lokalitet, samme kart, eksplisitt fit, lagvalg og nullstilling.
+Testen bruker eksplisitt daterte HTTP-svar til UI-kontroll; den er ingen kaldlast-
+måling. Fysisk mobil, skjermleser og native browser-zoom er ikke testet her.
+
+Ingen kjente gjenstående feil i D-01–D-03 etter disse kontrollene. Prototypen vurderes
+som egnet til publisering for praktisk gjennomgang; publisering besluttes separat.
+D-04 er ikke fulgt opp. Ingen ny akseptanserunde, merge, main-endring eller Pages.

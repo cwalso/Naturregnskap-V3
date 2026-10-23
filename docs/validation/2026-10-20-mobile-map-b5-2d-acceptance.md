@@ -1,5 +1,9 @@
 # B5.2d – sluttkontroll og akseptansevurdering
 
+> Oppfølging 23.10.2026: D-01–D-03 er rettet og målrettet kontrollert. Se
+> [leveransestatus](../utviklingsplan.md). C-vurderingen nedenfor er historisk,
+> fra før rettelsene. D-04 er ikke fulgt opp. Ingen Pages-publisering er utført.
+
 **C – ikke klar for publisering.** Ordinære kart-/analyseoppgaver fungerer ved de fire normalstørrelsene, og regresjonstestene består. Den faste mobilflaten mister likevel kart og praktisk resultatplass ved lav effektiv viewporthøyde. Kontrollert tekstforstørring gir også overlapping. Dette bør følges opp før publisering. Ingen produksjonsrettelser er utført.
 
 **Funn:** 0 kritiske, 1 høy og 2 middels påviste feil; i tillegg 1 lavt prioritert forbedringsforslag. Manglende testdekning og faglige avklaringsbehov er ikke telt som påviste feil.

@@ -21,6 +21,7 @@ it('exposes a full long name and stable ID, labels overlap and keeps a small pos
 it('opens existing details with full name, ID and separately labelled full area/overlap, with optional attribute fallbacks',()=>{
  render(<AnalysisPanel result={result} loading={false} error={null} selection={{kind:'locality',label:'BN-A'}} onSelect={vi.fn()}/>)
  fireEvent.change(screen.getByRole('combobox',{name:'Gå til analyseinnhold'}),{target:{value:'selected-locality'}})
+ fireEvent.click(screen.getByRole('button',{name:'Gå til valgt analyseinnhold'}))
  const details=screen.getByRole('region',{name:'Valgt lokalitet'})
  expect(details).toHaveFocus();expect(within(details).getByRole('heading',{name:longName})).toBeInTheDocument()
  expect(details).toHaveTextContent('Faglig lokalitets-ID: BN-A')
@@ -28,4 +29,19 @@ it('opens existing details with full name, ID and separately labelled full area/
  expect(details).toHaveTextContent('Overlapp med framtidig planavsetning: <0,01 daa')
  expect(details).toHaveTextContent('Hele lokaliteten:')
  expect(details).toHaveTextContent('KU-ID: Ikke oppgitt')
+})
+
+it('uses the same small-positive display in totals, rows, shares, quick summary and details',()=>{
+ const small={...natureFixture,uniqueAreaDaa:0.004,highestAreaDaa:0.004,
+  values:natureFixture.values.map(value=>({...value,areaDaa:0.004,sharePercent:0.004})),
+  types:[{...natureFixture.types[0],areaDaa:0.004}],
+  localities:[{...natureFixture.localities[0],overlapAreaDaa:0.004,overlapSharePercent:0.004,totalAreaDaa:0.004}]}
+ const view=render(<AnalysisPanel result={small} loading={false} error={null} selection={{kind:'locality',label:small.localities[0].id}} onSelect={vi.fn()}/>)
+ const row=within(screen.getByRole('region',{name:'Rullbar lokalitetsoversikt'})).getAllByRole('row')[1]
+ expect(row).toHaveTextContent('<0,01 daa');expect(row).toHaveTextContent('<0,01 %')
+ const details=screen.getByRole('region',{name:'Valgt lokalitet'})
+ expect(details).toHaveTextContent('Hele lokaliteten: <0,01 daa');expect(details).toHaveTextContent('Overlappsandel av hele lokaliteten: <0,01 %')
+ expect(screen.getByRole('table',{name:'Naturtyper med overlapp'})).toHaveTextContent('<0,01 daa')
+ view.rerender(<MobileAnalysisControls {...props} nature={small} natureSelection={{kind:'all'}}/>)
+ expect(screen.getByRole('region',{name:'Aktiv analyse og kartutvalg'})).toHaveTextContent('<0,01 daa')
 })

@@ -184,3 +184,10 @@ Anbefaling C: lav reflow-høyde gir bortfall av kartets arbeidsflate. Ett høyt 
 to middels feilfunn, samt ett lavt forbedringsforslag. Uavhengige brukerreiser,
 feiltilstander, fontskalering og axe-nodegjennomgang er gjennomført; fysisk mobil,
 skjermleser og native nettleserzoom gjenstår. Produksjon og Pages er uendret.
+
+## Siste rettelser – 23.10.2026
+
+B5.2d-funn D-01–D-03 er rettet: mobilflaten kan rulles ved lav høyde/stor tekst,
+innholdsvalg bekreftes med «Gå», og små positive arealer/andeler vises med «<0,01».
+[Leveransestatus og forholdsmessig kontroll](utviklingsplan.md). D-04 er ikke fulgt
+opp. Ingen merge, main-endring eller Pages-publisering.

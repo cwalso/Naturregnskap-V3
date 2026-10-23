@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 
 export async function runAnalysisInteractions({page,report,snapshot,retained,capture,commune,settings,stage}){
+  async function goContents(value){await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption(value);await page.getByRole('button',{name:'Gå til valgt analyseinnhold'}).click()}
   const canvas=page.getByRole('region',{name:/Interaktivt kart i/})
   async function stableView(before){const after=await snapshot();assert.deepEqual(after.view,before.view);assert.equal(after.creations,before.creations);assert.deepEqual(after.calls,before.calls);assert.equal(after.areaId,before.areaId);assert.equal(after.natureId,before.natureId);return after}
   async function fitToOverlap(){
@@ -41,8 +42,8 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
     const measurements=[]
     await mode('area')
     if(stage!=='c1'){
-      const baseline=await snapshot(),contents=page.getByRole('combobox',{name:'Gå til analyseinnhold'})
-      for(const section of ['ecosystems','unclassified','method','summary']){await contents.selectOption(section);retained(baseline,await snapshot());if(section==='method'){assert.equal(await page.locator('.plan-area-panel details').evaluate(el=>el.open),true);await capture(`${stage}-area-contents-${size.width}`)}}
+      const baseline=await snapshot()
+      for(const section of ['ecosystems','unclassified','method','summary']){await goContents(section);retained(baseline,await snapshot());if(section==='method'){assert.equal(await page.locator('.plan-area-panel details').evaluate(el=>el.open),true);await capture(`${stage}-area-contents-${size.width}`)}}
     }
     for(const [label,key]of modes){
       if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
@@ -62,12 +63,12 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
     await mode('nature')
     if(stage!=='c1'){
       const baseline=await snapshot(),contents=page.getByRole('combobox',{name:'Gå til analyseinnhold'})
-      if(stage==='c4'){await contents.focus();await page.keyboard.press('l')}else await contents.selectOption('localities');assert.equal(await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).evaluate(el=>el===document.activeElement),true)
+      if(stage==='c4'){await contents.focus();await page.keyboard.press('l');await page.getByRole('button',{name:'Gå til valgt analyseinnhold'}).focus();await page.keyboard.press('Enter')}else await goContents('localities');assert.equal(await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).evaluate(el=>el===document.activeElement),true)
       await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('___finnes_ikke___')
-      await contents.selectOption('values');retained(baseline,await snapshot())
-      await contents.selectOption('method');assert.equal(await page.locator('.future-nature-analysis details').evaluate(el=>el.open),true);retained(baseline,await snapshot());await capture(`${stage}-nature-contents-${size.width}`)
+      await goContents('values');retained(baseline,await snapshot())
+      await goContents('method');assert.equal(await page.locator('.future-nature-analysis details').evaluate(el=>el.open),true);retained(baseline,await snapshot());await capture(`${stage}-nature-contents-${size.width}`)
       assert.equal(await page.locator('.future-nature-analysis input[type=search]').inputValue(),'___finnes_ikke___')
-      await contents.selectOption('summary')
+      await goContents('summary')
     }
     for(const [label,key]of modes){
       if(mobile)await page.getByRole('button',{name:label,exact:true}).tap()
@@ -82,7 +83,7 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
       await fitToOverlap();await capture(`${stage}-locality-${key}-${size.width}`)
       if(['c3','c4'].includes(stage)){
         const beforeDetails=await snapshot()
-        if(mobile)await page.getByRole('button',{name:/Åpne lokalitetsdetaljer for.*BN00109936/}).tap();else await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('selected-locality')
+        if(mobile)await page.getByRole('button',{name:/Åpne lokalitetsdetaljer for.*BN00109936/}).tap();else await goContents('selected-locality')
         await page.waitForFunction(()=>document.activeElement?.matches('[data-analysis-section=selected-locality]'))
         retained(beforeDetails,await snapshot())
         const details=page.getByRole('region',{name:'Valgt lokalitet',exact:true})
@@ -112,11 +113,11 @@ export async function runAnalysisInteractions({page,report,snapshot,retained,cap
         await capture(`${stage}-nature-reset-${key}-${size.width}`)
         // Reset must clear a failed search even when the map selection is already all.
         if(mobile&&key==='map')await page.getByRole('button',{name:'Delt',exact:true}).tap()
-        await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('localities')
+        await goContents('localities')
         await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('___ingen_treff___');await reset()
         assert.equal(await page.locator('.future-nature-analysis input[type=search]').inputValue(),'')
         const alternate=await page.evaluate(()=>globalThis.__b5Nature.result.localities.find(l=>l.name==='Tanemsmyra'&&l.id!=='BN00109936'))
-        assert.ok(alternate);await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill(alternate.id)
+        assert.ok(alternate);await goContents('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill(alternate.id)
         const beforeAlternate=await snapshot();await page.locator('.future-nature-analysis__table').getByRole('button',{name:new RegExp(alternate.id)}).click();await stableView(beforeAlternate)
         assert.equal((await snapshot()).selection.label,alternate.id)
         if(mobile){assert.equal((await page.getByRole('region',{name:'Aktiv analyse og kartutvalg'}).innerText()).includes('BN00109936'),false);assert.match(await page.getByRole('region',{name:'Aktiv analyse og kartutvalg'}).innerText(),new RegExp(alternate.id));if(key==='map')await page.getByRole('button',{name:'Mer kart',exact:true}).tap()}

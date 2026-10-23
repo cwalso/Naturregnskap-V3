@@ -45,7 +45,7 @@ async function fresh(size={width:390,height:844}){
 }
 async function commune(name,id){await page.getByRole('combobox',{name:'Velg kommune',exact:true}).fill(name);await page.getByRole('option',{name:`${name} ${id}`,exact:true}).click();step+=2}
 async function click(name){await page.getByRole('button',{name,exact:true}).filter({visible:true}).first().click();step++}
-async function select(name,value){await page.getByRole('combobox',{name,exact:true}).selectOption(value);step++}
+async function select(name,value){await page.getByRole('combobox',{name,exact:true}).selectOption(value);if(name==='Gå til analyseinnhold')await page.getByRole('button',{name:'Gå til valgt analyseinnhold',exact:true}).click();step++}
 async function area(){await navigateSite(page,'Utforsk i kart');await click('Analyser planområder');await page.locator('.plan-area-totals').waitFor({timeout:180000});step++}
 async function nature(){if(page.viewportSize().width<=700)await select('Velg aktiv plananalyse','nature');else await click('Registrerte naturverdier');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000})}
 async function screen(name){

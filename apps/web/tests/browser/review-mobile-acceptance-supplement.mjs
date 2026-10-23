@@ -15,6 +15,7 @@ const network=await request.newContext(process.env.HTTPS_PROXY?{proxy:{server:pr
 let page=browser.pages()[0]??await browser.newPage()
 page.setDefaultTimeout(20000)
 await browser.route('https://**/*',async route=>{const req=route.request(),key=req.method()+req.url()+(req.postData()??''),hash=createHash('sha256').update(key).digest('hex');try{let response;try{const base=`${process.env.SPLIT_HTTP_CACHE??'/workspace/work/mobile-split/http-cache'}/${hash}`;response={...JSON.parse(await readFile(`${base}.json`,'utf8')),body:await readFile(`${base}.bin`)};report.requests.replayed++}catch{const r=await network.fetch(req.url(),{method:req.method(),data:req.postData()??undefined,headers:req.headers(),timeout:60000});response={status:r.status(),headers:r.headers(),body:await r.body()};report.requests.fresh++}await route.fulfill({...response,headers:{...response.headers,'access-control-allow-origin':'*'}})}catch(error){report.requests.lastError=String(error);report.requests.lastUrl=req.url().split('?')[0];await route.abort().catch(()=>{})}})
+async function goContents(value){await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption(value);await page.getByRole('button',{name:'Gå til valgt analyseinnhold'}).click()}
 async function capture(name){await page.screenshot({path:`${output}/${name}.png`,fullPage:true});const metrics=await page.evaluate(()=>{const box=el=>{const r=el?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null};return {mapView:globalThis.__acceptanceMap?{center:globalThis.__acceptanceMap.getView().getCenter(),resolution:globalThis.__acceptanceMap.getView().getResolution()}:null,viewport:{width:innerWidth,height:innerHeight},map:box(document.querySelector('.explore-themes__canvas')),summary:box(document.querySelector('.mobile-analysis-summary')),result:box(document.querySelector('.analysis-section-scroll')),overflow:{x:document.documentElement.scrollWidth-innerWidth,y:document.documentElement.scrollHeight-innerHeight},focus:document.activeElement.outerHTML,visibleText:document.body.innerText.slice(0,1400)}});report.checks.push({name,...metrics});await writeFile(`${output}/supplement.json`,JSON.stringify(report,null,2));return metrics}
 try{
   await page.goto('http://127.0.0.1:5251/')
@@ -34,11 +35,11 @@ try{
   // Actual browser accessibility tree table semantics (not a screen reader).
   const cdp=await browser.newCDPSession(page)
   await page.getByRole('combobox',{name:'Velg aktiv plananalyse'}).selectOption('nature');await page.locator('.future-nature-analysis__summary').waitFor({timeout:180000})
-  await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('Tanemsmyra')
+  await goContents('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('Tanemsmyra')
   report.checks.push({name:'legend-colours',colours:await page.locator('.future-nature-analysis__legend').evaluateAll(els=>els.map(el=>({text:el.textContent,color:getComputedStyle(el).color,background:getComputedStyle(el).backgroundColor})))})
   const ax=await cdp.send('Accessibility.getFullAXTree');await writeFile(`${output}/table-accessibility-tree.json`,JSON.stringify(ax.nodes.filter(n=>['table','row','columnheader','cell','caption'].includes(n.role?.value)),null,2))
   await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('___missing___');await capture('empty-table-keyboard')
-  await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('');await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('summary')
+  await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('');await goContents('summary')
   // Pinch uses real touch events; retained vector identity is separately checked by C4.
   await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:2})
   const canvas=page.locator('.explore-themes__canvas'),box=await canvas.boundingBox(),x=box.x+box.width/2,y=box.y+box.height/2
@@ -48,7 +49,7 @@ try{
   for(const distance of [40,50,65,80]){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:x-distance,y},{id:2,x:x+distance,y}]});await page.waitForTimeout(40)}
   report.checks.push({name:'pinch-during',transforms:await transform()});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await page.waitForTimeout(350);report.checks.push({name:'emulated-pinch',viewBefore,viewAfter:await page.evaluate(()=>({center:globalThis.__acceptanceMap.getView().getCenter(),resolution:globalThis.__acceptanceMap.getView().getResolution()})),before,after:await transform()});await capture('emulated-pinch')
   await cdp.detach()
-  await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('method');await capture('method-available')
+  await goContents('method');await capture('method-available')
   }
   await page.setViewportSize({width:390,height:844});await navigateSite(page,'Kommuneoversikt');await page.getByRole('link',{name:/Åpne temasiden Skog$/}).click()
   await page.locator('.plan-area-indicator .thematic-plan-cards__value').waitFor({timeout:45000});await page.getByRole('button',{name:/Vis skog i plananalysen/}).click();await page.locator('.plan-area-totals').waitFor();await page.goBack();await capture('mobile-browser-back-theme')
@@ -60,7 +61,7 @@ try{
     report.checks.push({name:`nature-theme-${name}`,indicator,summary,url:page.url()})
   }
   await page.getByRole('button',{name:/Vis .* i plananalysen/}).click();await page.locator('.plan-area-totals').waitFor();await page.getByRole('combobox',{name:'Velg aktiv plananalyse'}).selectOption('nature');await page.locator('.future-nature-analysis__summary').waitFor()
-  await page.getByRole('combobox',{name:'Gå til analyseinnhold'}).selectOption('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('BN00087495');await page.getByRole('button',{name:/Søra.*BN00087495/}).click()
+  await goContents('localities');await page.getByRole('searchbox',{name:'Søk etter lokalitet'}).fill('BN00087495');await page.getByRole('button',{name:/Søra.*BN00087495/}).click()
   const tinyTable=await page.getByRole('region',{name:'Rullbar lokalitetsoversikt',exact:true}).innerText();await capture('tiny-overlap-table')
   await page.getByRole('button',{name:/Åpne lokalitetsdetaljer for.*BN00087495/}).click();await capture('tiny-overlap-details')
   report.checks.push({name:'tiny-overlap',table:tinyTable,summary:await page.getByRole('region',{name:'Aktiv analyse og kartutvalg'}).innerText(),details:await page.getByRole('region',{name:'Valgt lokalitet',exact:true}).innerText()})

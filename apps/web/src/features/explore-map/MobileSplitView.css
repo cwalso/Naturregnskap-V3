@@ -1,18 +1,18 @@
 /* C: the same map target, three presentation modes. Desktop uses the existing panels. */
 .mobile-analysis-toolbar,.mobile-analysis-modes,.mobile-analysis-summary,.explore-themes .explore-themes__mobile-whole{display:none}
 @media(max-width:700px){
-  .app-shell--explore{height:100dvh;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .app-shell--explore{height:100dvh;min-height:0;display:flex;flex-direction:column;overflow:auto}
   .app-shell--explore .site-header{flex-shrink:0}
-  .app-shell--explore .service-main{flex:1;min-height:0;display:flex;overflow:hidden;padding:0}
+  .app-shell--explore .service-main{flex:1;min-height:0;display:flex;overflow:visible;padding:0}
   .app-shell--explore .service-main .content-page.map-page{display:flex;flex-direction:column;height:100%;min-height:0}
   .app-shell--explore .map-page__intro{height:36px;min-height:36px;flex-shrink:0;padding:0 12px}
   .app-shell--explore .map-page__intro h1{font-size:20px;letter-spacing:0}
   .app-shell--explore .map-page__intro .content-page__eyebrow{display:none}
   .app-shell--explore .explore-themes{display:flex;flex:1;min-height:0;width:100%}
   .app-shell--explore .explore-themes .explore-themes__body{flex:1;height:100%;min-height:0}
-  .app-shell--explore .explore-themes .explore-themes__body.has-analysis{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'toolbar' 'modes' 'map' 'summary' 'results';grid-template-rows:48px 48px minmax(0,1fr) auto minmax(0,1fr);padding:0}
-  .app-shell--explore .explore-themes .explore-themes__body.has-analysis.mode-map:not(.has-aux){grid-template-rows:48px 48px minmax(0,1fr) auto 0}
-  .app-shell--explore .explore-themes .explore-themes__body.has-analysis.mode-results:not(.has-aux){grid-template-rows:48px 48px 100px auto minmax(0,1fr)}
+  .app-shell--explore .explore-themes .explore-themes__body.has-analysis{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:'toolbar' 'modes' 'map' 'summary' 'results';grid-template-rows:min-content min-content minmax(160px,1fr) min-content minmax(192px,1fr);padding:0}
+  .app-shell--explore .explore-themes .explore-themes__body.has-analysis.mode-map:not(.has-aux){grid-template-rows:min-content min-content minmax(160px,1fr) min-content 0}
+  .app-shell--explore .explore-themes .explore-themes__body.has-analysis.mode-results:not(.has-aux){grid-template-rows:min-content min-content 100px min-content minmax(192px,1fr)}
   .mobile-analysis-toolbar{grid-area:toolbar;display:flex;gap:4px;align-items:center;padding:2px 6px;border-bottom:1px solid #d4e0dd;background:white}
   .mobile-analysis-toolbar select{flex:1;min-width:0;width:0;min-height:44px;border:1px solid #91ada7;border-radius:4px;padding:6px;background:#e5eeee;color:#005e5d;font-size:12px}
   .explore-themes .mobile-analysis-toolbar button{font-size:12px;padding:4px 6px;gap:4px;flex-shrink:0}
@@ -50,3 +50,27 @@
 @media(max-width:700px){.has-analysis .ol-attribution{max-width:calc(100% - 8px);font-size:10px}.has-analysis .ol-attribution button{width:44px;height:44px;min-height:44px;margin:0;justify-content:center;padding:0}}
 
 @media(max-width:700px){.mobile-analysis-summary__value strong small{display:inline;font-size:10px;font-weight:400}.mobile-analysis-summary__value>span{font-size:11px}.mobile-analysis-summary .mobile-analysis-details{min-width:44px}.future-nature-analysis [data-analysis-section="selected-locality"]{overflow-wrap:anywhere}.future-nature-analysis [data-analysis-section="selected-locality"] h3{white-space:normal}}
+
+/* Let short viewports and larger text scroll, without changing the normal split. */
+@media(max-width:700px){
+  .app-shell--explore .site-header__bar,.app-shell--explore .site-header__brand,.app-shell--explore .site-header__utilities,.app-shell--explore .map-page__intro{height:auto}
+  .app-shell--explore .site-header__brand{min-width:0;max-width:100%}
+  .app-shell--explore .site-header__brand-label{white-space:normal;overflow-wrap:anywhere}
+  .app-shell--explore .site-header__utilities{min-height:44px;flex-wrap:wrap}
+  .app-shell--explore .site-header__municipality{min-width:min(100%,12em)}
+  .app-shell--explore .site-header__municipality .combobox input{height:auto;padding-right:3em}
+  .app-shell--explore .site-header__municipality .combobox__clear{width:1.5em;min-width:34px;height:100%}
+  .app-shell--explore .site-menu-toggle{height:auto;min-height:44px;width:auto;min-width:44px}
+  .app-shell--explore .map-page__intro{flex-shrink:0}
+  .app-shell--explore .explore-themes .explore-themes__body.has-analysis{min-height:550px;overflow:visible}
+  .mobile-analysis-toolbar,.mobile-analysis-modes,.mobile-analysis-summary__actions,.mobile-analysis-summary__value{flex-wrap:wrap}
+  .mobile-analysis-toolbar select{flex:1 1 10em;max-width:100%}
+  .explore-themes .mobile-analysis-modes button{flex:1 1 auto;white-space:normal;overflow-wrap:anywhere}
+  .mobile-analysis-summary select{flex:1 1 7em;max-width:100%}
+  .mobile-analysis-summary__value strong{white-space:normal;overflow-wrap:anywhere}
+  .explore-themes .explore-themes__analysis-panel .explore-themes__detail-scroll{overflow:auto}
+  .explore-themes__analysis-panel .analysis-section-scroll{min-height:128px}
+  .analysis-contents{flex-wrap:wrap}
+  .analysis-contents select{flex-basis:6em}
+  .analysis-contents button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+}
